@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+    <extension point="org.maven.ide.eclipse.projectConfigurators">
+        <configurator id="com.bylur.eclipse.maven.android" class="com.bylur.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator" name="Android"/>
+    </extension>
+    <extension point="org.maven.ide.eclipse.jdt.classpathConfiguratorFactories">
+        <classpathConfiguratorFactory id="org.maven.ide.eclipse.ajdt.classpathConfiguratorFactory"
+            class="com.bylur.eclipse.maven.android.AndroidDevelopmentToolsConfiguratorFactory"
+            priority="1000"/>
+    </extension>
+</plugin>
