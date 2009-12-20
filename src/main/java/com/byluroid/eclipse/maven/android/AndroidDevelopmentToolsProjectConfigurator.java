@@ -44,10 +44,11 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 			classpath.addSourceEntry(javaProject.getPath().append("gen"), javaProject.getOutputLocation(), true);
 		}
 
+		// add compile dependencies to core build path so they are included in ADT APK build
 		if (request.getProject().hasNature(ANDROID_NATURE_ID)) {
 			for (Artifact artifact : request.getMavenProject().getArtifacts()) {
 				if (artifact.getScope().equals(Artifact.SCOPE_COMPILE)) {
-					classpath.addProjectEntry(artifact, request.getMavenProjectFacade());
+					classpath.addLibraryEntry(artifact, null, null, null);
 				}
 			}
 		}
