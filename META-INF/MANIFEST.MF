@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: M2Eclipse Android Development Tools Integration
-Bundle-SymbolicName: com.bylur.eclipse.maven.android; singleton:=true
-Bundle-Version: 1.0.0
-Bundle-Activator: com.bylur.eclipse.maven.android.Activator
-Bundle-Vendor: Bylur
+Bundle-Name: Maven Android Development Tools Integration
+Bundle-SymbolicName: com.byluroid.eclipse.maven.android;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-Activator: com.byluroid.eclipse.maven.android.Activator
+Bundle-Vendor: Byluroid
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core;bundle-version="3.5.1",
  org.eclipse.core.resources;bundle-version="3.5.1",
- org.maven.ide.eclipse;bundle-version="0.9.8",
- org.maven.ide.eclipse.jdt;bundle-version="0.9.8",
- org.maven.ide.components.maven_embedder;bundle-version="2.1.0",
- com.android.ide.eclipse.adt;bundle-version="0.9.5"
+ com.android.ide.eclipse.adt;bundle-version="0.9.5",
+ org.maven.ide.eclipse;bundle-version="0.9.9",
+ org.maven.ide.eclipse.jdt;bundle-version="0.9.9",
+ org.maven.ide.components.maven_embedder;bundle-version="3.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

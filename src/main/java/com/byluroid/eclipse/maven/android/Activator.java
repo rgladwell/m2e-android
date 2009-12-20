@@ -1,4 +1,4 @@
-package com.bylur.eclipse.maven.android;
+package com.byluroid.eclipse.maven.android;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.bylur.eclipse.maven.android";
+	public static final String PLUGIN_ID = "com.byluroid.eclipse.maven.android";
 
 	// The shared instance
 	private static Activator plugin;
