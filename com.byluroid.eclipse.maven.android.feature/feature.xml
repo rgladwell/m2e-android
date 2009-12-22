@@ -2,7 +2,7 @@
 <feature
       id="com.byluroid.eclipse.maven.android.feature"
       label="Maven Android Development Tools Integration"
-      version="0.1.0"
+      version="0.2.0"
       provider-name="Byluroid">
 
    <description url="http://code.google.com/p/m2eclipse-android-integration/">
@@ -859,16 +859,20 @@ Public License instead of this License.  But first, please read
 &lt;http://www.gnu.org/philosophy/why-not-lgpl.html&gt;.
    </license>
 
+   <url>
+      <update label="Maven Android Development Tools Integration" url="http://m2eclipse-android-integration.googlecode.com/svn/trunk/com.byluroid.eclipse.maven.android.update/"/>
+   </url>
+
    <requires>
-      <import feature="com.android.ide.eclipse.adt" version="0.9.5.v200911191123-20404"/>
-      <import feature="org.maven.ide.eclipse.feature" version="0.9.9.200912160759"/>
+      <import feature="com.android.ide.eclipse.adt" version="0.9.5.v200911191123-20404" match="greaterOrEqual"/>
+      <import feature="org.maven.ide.eclipse.feature" version="0.9.9.200912160759" match="greaterOrEqual"/>
    </requires>
 
    <plugin
          id="com.byluroid.eclipse.maven.android"
          download-size="0"
          install-size="0"
-         version="0.1.0"
+         version="0.2.0"
          unpack="false"/>
 
 </feature>
