@@ -3,6 +3,8 @@
 	<name>com.byluroid.eclipse.maven.android.update</name>
 	<comment></comment>
 	<projects>
+		<project>com.byluroid.eclipse.maven.android</project>
+		<project>com.byluroid.eclipse.maven.android.feature</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
