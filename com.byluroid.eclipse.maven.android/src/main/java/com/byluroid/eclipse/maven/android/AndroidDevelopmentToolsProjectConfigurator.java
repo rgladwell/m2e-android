@@ -42,7 +42,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		if (project.hasNature(ANDROID_NATURE_ID)) {
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 
-			// TODO change build path to "target" directory
+			javaProject.setOutputLocation(javaProject.getPath().append("target"), monitor);
 
 			// add gen source folder if it does not already exist
 			if (!hasGenSourceEntry(classpath)) {
