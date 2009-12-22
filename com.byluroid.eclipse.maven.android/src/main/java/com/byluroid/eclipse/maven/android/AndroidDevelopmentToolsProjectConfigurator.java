@@ -39,7 +39,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		IProject project = request.getProject();
 
-		if (!project.hasNature(ANDROID_NATURE_ID)) {
+		if (project.hasNature(ANDROID_NATURE_ID)) {
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 	
 			// add gen source folder if it does not already exist

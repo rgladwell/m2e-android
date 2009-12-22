@@ -2,4 +2,5 @@
 <site>
    <feature url="features/com.byluroid.eclipse.maven.android.feature_0.1.0.jar" id="com.byluroid.eclipse.maven.android.feature" version="0.1.0"/>
    <feature url="features/com.byluroid.eclipse.maven.android.feature_0.2.0.jar" id="com.byluroid.eclipse.maven.android.feature" version="0.2.0"/>
+   <feature url="features/com.byluroid.eclipse.maven.android.feature_0.2.1.jar" id="com.byluroid.eclipse.maven.android.feature" version="0.2.1"/>
 </site>

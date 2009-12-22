@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.byluroid.eclipse.maven.android.feature"
-      label="Maven Android Development Tools Integration"
-      version="0.2.0"
+      label="Maven Integration for Android Development Tools"
+      version="0.2.1"
       provider-name="Byluroid">
 
    <description url="http://code.google.com/p/m2eclipse-android-integration/">
@@ -872,7 +872,7 @@ Public License instead of this License.  But first, please read
          id="com.byluroid.eclipse.maven.android"
          download-size="0"
          install-size="0"
-         version="0.2.0"
+         version="0.2.1"
          unpack="false"/>
 
 </feature>
