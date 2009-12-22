@@ -1,7 +1,5 @@
 package com.byluroid.eclipse.maven.android;
 
-import org.apache.log4j.Logger;
-
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
@@ -20,8 +18,6 @@ import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
-
-	private static final Logger log = Logger.getLogger(AndroidDevelopmentToolsProjectConfigurator.class);
 
 	private static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
 	private static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
@@ -44,20 +40,16 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		IProject project = request.getProject();
 
 		if (!project.hasNature(ANDROID_NATURE_ID)) {
-			if(log.isInfoEnabled()) log.info("Configuring raw classpath for Android Projetct.");
-
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 	
 			// add gen source folder if it does not already exist
 			if (!hasGenSourceEntry(classpath)) {
-				if(log.isInfoEnabled()) log.info("Adding 'gen' generated source as source folder.");
 				classpath.addSourceEntry(javaProject.getPath().append("gen"), javaProject.getOutputLocation(), true);
 			}
 
 			// add compile dependencies to core build path so they are included in ADT APK build
 			for (Artifact artifact : request.getMavenProject().getArtifacts()) {
 				if (artifact.getScope().equals(Artifact.SCOPE_COMPILE)) {
-					if(log.isInfoEnabled()) log.info("Adding 'gen' generated source as source folder.");
 					classpath.addLibraryEntry(artifact, null, null, null);
 				}
 			}
