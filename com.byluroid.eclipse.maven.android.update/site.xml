@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/com.byluroid.eclipse.maven.android.feature_0.1.0.jar" id="com.byluroid.eclipse.maven.android.feature" version="0.1.0">
-      <category name="new_category_1"/>
+      <category name="com.byluroid.eclipse.maven.android"/>
    </feature>
    <category-def name="com.byluroid.eclipse.maven.android" label="Maven Android Development Tools Integration"/>
 </site>
