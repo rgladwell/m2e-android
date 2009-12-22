@@ -8,6 +8,7 @@ import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -19,6 +20,7 @@ import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
+	private static final String ANDROID_GEN_PATH = "gen";
 	private static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
 	private static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
 	private static final String ANDROID_NATURE_ID = "com.android.ide.eclipse.adt.AndroidNature";
@@ -41,16 +43,17 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 		if (project.hasNature(ANDROID_NATURE_ID)) {
 			IJavaProject javaProject = JavaCore.create(request.getProject());
+			MavenProject mavenProject = request.getMavenProject();
 
-			javaProject.setOutputLocation(javaProject.getPath().append("target"), monitor);
+			javaProject.setOutputLocation(new Path(mavenProject.getBasedir().toString()), monitor);
 
 			// add gen source folder if it does not already exist
 			if (!hasGenSourceEntry(classpath)) {
-				classpath.addSourceEntry(javaProject.getPath().append("gen"), javaProject.getOutputLocation(), true);
+				classpath.addSourceEntry(javaProject.getPath().append(ANDROID_GEN_PATH), javaProject.getOutputLocation(), true);
 			}
 
 			// add compile dependencies to core build path so they are included in ADT APK build
-			for (Artifact artifact : request.getMavenProject().getArtifacts()) {
+			for (Artifact artifact : mavenProject.getArtifacts()) {
 				if (artifact.getScope().equals(Artifact.SCOPE_COMPILE)) {
 					classpath.addLibraryEntry(artifact, null, null, null);
 				}
@@ -72,7 +75,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	private boolean hasGenSourceEntry(IClasspathDescriptor classpath) {
 		for (IClasspathEntry entry : classpath.getEntries()) {
-			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toOSString().endsWith("gen")) {
+			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toOSString().endsWith(ANDROID_GEN_PATH)) {
 				return true;
 			}
 		}
