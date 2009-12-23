@@ -1,6 +1,5 @@
 package com.byluroid.eclipse.maven.android;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
