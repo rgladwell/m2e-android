@@ -6,18 +6,18 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends Plugin {
+public class AndroidMavenPlugin extends Plugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "com.byluroid.eclipse.maven.android";
 
 	// The shared instance
-	private static Activator plugin;
+	private static AndroidMavenPlugin plugin;
 	
 	/**
 	 * The constructor
 	 */
-	public Activator() {
+	public AndroidMavenPlugin() {
 	}
 
 	/*
@@ -43,7 +43,7 @@ public class Activator extends Plugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static Activator getDefault() {
+	public static AndroidMavenPlugin getDefault() {
 		return plugin;
 	}
 

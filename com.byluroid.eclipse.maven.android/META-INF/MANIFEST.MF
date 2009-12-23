@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Maven Integration for Android Development Tools
 Bundle-SymbolicName: com.byluroid.eclipse.maven.android;singleton:=true
 Bundle-Version: 0.2.1
-Bundle-Activator: com.byluroid.eclipse.maven.android.Activator
+Bundle-Activator: com.byluroid.eclipse.maven.android.AndroidMavenPlugin
 Bundle-Vendor: Byluroid
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core;bundle-version="3.5.1",

@@ -1,5 +1,6 @@
 package com.byluroid.eclipse.maven.android;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
@@ -8,7 +9,6 @@ import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -27,11 +27,16 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		if (hasAndroidPlugin(request.getMavenProject())) {
+		MavenProject mavenProject = request.getMavenProject();
+
+		if (hasAndroidPlugin(mavenProject)) {
 			IProject project = request.getProject();
 			if (!project.hasNature(ANDROID_NATURE_ID)) {
 				addNature(project, ANDROID_NATURE_ID, monitor);
 			}
+
+//			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
+//			mavenProject.getBuild().setOutputDirectory(outputLocation);
 		}
 	}
 
@@ -42,10 +47,9 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		IProject project = request.getProject();
 
 		if (project.hasNature(ANDROID_NATURE_ID)) {
-			IJavaProject javaProject = JavaCore.create(request.getProject());
 			MavenProject mavenProject = request.getMavenProject();
 
-			javaProject.setOutputLocation(new Path(mavenProject.getBasedir().toString()), monitor);
+			IJavaProject javaProject = JavaCore.create(request.getProject());
 
 			// add gen source folder if it does not already exist
 			if (!hasGenSourceEntry(classpath)) {
