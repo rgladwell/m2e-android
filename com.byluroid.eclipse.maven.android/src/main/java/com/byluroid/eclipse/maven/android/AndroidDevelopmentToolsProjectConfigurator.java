@@ -32,7 +32,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		configureAndroidMavenProject(request.getMavenProjectFacade(), monitor);
 	}
 
-
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 	}
 
