@@ -29,30 +29,21 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		MavenProject mavenProject = request.getMavenProject();
-
-		if (hasAndroidPlugin(mavenProject)) {
-			IProject project = request.getProject();
-			if (!project.hasNature(ANDROID_NATURE_ID)) {
-				addNature(project, ANDROID_NATURE_ID, monitor);
-			}
-
-//			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
-//			mavenProject.getBuild().setOutputDirectory(outputLocation);
-		}
+		configureAndroidMavenProject(request.getMavenProjectFacade(), monitor);
 	}
+
 
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 	}
 
 	@Override
     protected void mavenProjectChanged(MavenProjectChangedEvent event,  IProgressMonitor monitor) throws CoreException {
-	    super.mavenProjectChanged(event, monitor);
-    }
+	    configureAndroidMavenProject(event.getMavenProject(), monitor);
+	}
 
 	@Override
     public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
-	    return new AndroidMavenBuildParticipant();
+		return new AndroidMavenBuildParticipant();
     }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
@@ -76,6 +67,18 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 			}
 		}
 	}
+
+	protected void configureAndroidMavenProject(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
+		if (hasAndroidPlugin(facade.getMavenProject())) {
+			IProject project = facade.getProject();
+			if (!project.hasNature(ANDROID_NATURE_ID)) {
+				addNature(project, ANDROID_NATURE_ID, monitor);
+			}
+
+//			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
+//			mavenProject.getBuild().setOutputDirectory(outputLocation);
+		}
+    }
 
 	private boolean hasAndroidPlugin(MavenProject mavenProject) {
 		List<Plugin> plugins = mavenProject.getBuildPlugins();

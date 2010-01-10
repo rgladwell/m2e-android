@@ -12,7 +12,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		if(IncrementalProjectBuilder.FULL_BUILD == kind) {
-			
+			System.setProperty("android.sdk.path", "/opt/android-sdk-linux/");
 		}
 
 		return null;
