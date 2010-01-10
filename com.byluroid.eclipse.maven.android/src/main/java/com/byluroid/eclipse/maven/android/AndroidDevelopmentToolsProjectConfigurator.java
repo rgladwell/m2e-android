@@ -36,16 +36,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 	}
 
-	@Override
-    protected void mavenProjectChanged(MavenProjectChangedEvent event,  IProgressMonitor monitor) throws CoreException {
-	    configureAndroidMavenProject(event.getMavenProject(), monitor);
-	}
-
-	@Override
-    public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
-		return new AndroidMavenBuildParticipant();
-    }
-
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		IProject project = request.getProject();
 
@@ -67,6 +57,16 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 			}
 		}
 	}
+
+	@Override
+    protected void mavenProjectChanged(MavenProjectChangedEvent event,  IProgressMonitor monitor) throws CoreException {
+	    configureAndroidMavenProject(event.getMavenProject(), monitor);
+	}
+
+	@Override
+    public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
+		return new AndroidMavenBuildParticipant();
+    }
 
 	protected void configureAndroidMavenProject(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
 		if (hasAndroidPlugin(facade.getMavenProject())) {
