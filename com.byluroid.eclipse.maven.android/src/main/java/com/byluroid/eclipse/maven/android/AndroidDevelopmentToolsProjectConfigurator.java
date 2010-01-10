@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -14,6 +15,8 @@ import org.eclipse.jdt.core.JavaCore;
 import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
 import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
+import org.maven.ide.eclipse.project.MavenProjectChangedEvent;
+import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
@@ -41,6 +44,16 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 	}
+
+	@Override
+    protected void mavenProjectChanged(MavenProjectChangedEvent event,  IProgressMonitor monitor) throws CoreException {
+	    super.mavenProjectChanged(event, monitor);
+    }
+
+	@Override
+    public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
+	    return new AndroidMavenBuildParticipant();
+    }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		IProject project = request.getProject();
