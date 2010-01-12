@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
-import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -16,7 +19,6 @@ import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
 import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.MavenProjectChangedEvent;
-import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
@@ -62,33 +64,39 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	    configureAndroidMavenProject(event.getMavenProject(), monitor);
 	}
 
-	@Override
-    public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
-		return new AndroidMavenBuildParticipant();
-    }
-
 	protected void configureAndroidMavenProject(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
-		if (hasAndroidPlugin(facade.getMavenProject())) {
+		Plugin plugin = getAndroidPlugin(facade.getMavenProject());
+
+		if (plugin != null) {
 			IProject project = facade.getProject();
 			if (!project.hasNature(ANDROID_NATURE_ID)) {
 				addNature(project, ANDROID_NATURE_ID, monitor);
 			}
+
+//			IEclipsePreferences root = Platform.getPreferencesService().getRootNode();
+//			String androidPath = root.node(InstanceScope.SCOPE).node("tes").get("test", null);
+
+			Xpp3Dom dom = (Xpp3Dom) plugin.getConfiguration();
+			if(dom.getChild("sdk") != null && dom.getChild("sdk").getChild("path") != null /* && !dom.getChild("sdk").getChild("path").getValue().equals(androidPath) */) {
+				dom.getChild("sdk").getChild("path").setValue("C:\\Program Files\\Java\\android-sdk-windows");
+			}
+			plugin.setConfiguration(dom);
 
 //			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
 //			mavenProject.getBuild().setOutputDirectory(outputLocation);
 		}
     }
 
-	private boolean hasAndroidPlugin(MavenProject mavenProject) {
+	private Plugin getAndroidPlugin(MavenProject mavenProject) {
 		List<Plugin> plugins = mavenProject.getBuildPlugins();
 
 		for (Plugin plugin : plugins) {
 			if (ANDROID_PLUGIN_GROUP_ID.equals(plugin.getGroupId()) && ANDROID_PLUGIN_ARTIFACT_ID.equals(plugin.getArtifactId())) {
-				return true;
+				return plugin;
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	private boolean hasGenSourceEntry(IClasspathDescriptor classpath) {
