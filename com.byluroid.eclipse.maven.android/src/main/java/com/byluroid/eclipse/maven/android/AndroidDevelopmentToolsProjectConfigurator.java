@@ -9,9 +9,6 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -21,6 +18,8 @@ import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.MavenProjectChangedEvent;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
+
+import com.android.ide.eclipse.adt.AdtPlugin;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
@@ -73,14 +72,29 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 				addNature(project, ANDROID_NATURE_ID, monitor);
 			}
 
-//			IEclipsePreferences root = Platform.getPreferencesService().getRootNode();
-//			String androidPath = root.node(InstanceScope.SCOPE).node("tes").get("test", null);
+			String sdkPath = AdtPlugin.getOsSdkFolder().replaceAll("////", "//");
 
-			Xpp3Dom dom = (Xpp3Dom) plugin.getConfiguration();
-			if(dom.getChild("sdk") != null && dom.getChild("sdk").getChild("path") != null /* && !dom.getChild("sdk").getChild("path").getValue().equals(androidPath) */) {
-				dom.getChild("sdk").getChild("path").setValue("C:\\Program Files\\Java\\android-sdk-windows");
+			if(sdkPath != null) {
+
+				Xpp3Dom dom = (Xpp3Dom) plugin.getConfiguration();
+
+				if(dom.getChild("sdk") == null) {
+					Xpp3Dom sdk = new Xpp3Dom("sdk");
+					dom.addChild(sdk);
+				}
+
+				if(dom.getChild("sdk").getChild("path") == null) {
+					Xpp3Dom path = new Xpp3Dom("path");
+					dom.getChild("sdk").addChild(path);
+				}
+
+				Xpp3Dom path = dom.getChild("sdk").getChild("path");
+				if(!sdkPath.equals(path.getValue())) {
+					path.setValue(sdkPath);
+				}
+
+				plugin.setConfiguration(dom);
 			}
-			plugin.setConfiguration(dom);
 
 //			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
 //			mavenProject.getBuild().setOutputDirectory(outputLocation);
