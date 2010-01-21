@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.core.resources.IProject;
@@ -16,6 +17,7 @@ import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
 import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.MavenProjectChangedEvent;
+import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
@@ -63,6 +65,34 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	    configureAndroidMavenProject(event.getMavenProject(), monitor);
 	}
 
+	@Override
+	public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
+		String sdkPath = AdtPlugin.getOsSdkFolder().replaceAll("////", "//");
+
+		if(sdkPath != null) {
+			Xpp3Dom dom = execution.getConfiguration();
+
+			if(dom.getChild("sdk") == null) {
+				Xpp3Dom sdk = new Xpp3Dom("sdk");
+				dom.addChild(sdk);
+			}
+
+			if(dom.getChild("sdk").getChild("path") == null) {
+				Xpp3Dom path = new Xpp3Dom("path");
+				dom.getChild("sdk").addChild(path);
+			}
+
+			Xpp3Dom path = dom.getChild("sdk").getChild("path");
+			if(!sdkPath.equals(path.getValue())) {
+				path.setValue(sdkPath);
+			}
+
+			execution.setConfiguration(dom);
+		}
+
+		return super.getBuildParticipant(execution);
+	}
+
 	protected void configureAndroidMavenProject(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
 		Plugin plugin = getAndroidPlugin(facade.getMavenProject());
 
@@ -70,30 +100,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 			IProject project = facade.getProject();
 			if (!project.hasNature(ANDROID_NATURE_ID)) {
 				addNature(project, ANDROID_NATURE_ID, monitor);
-			}
-
-			String sdkPath = AdtPlugin.getOsSdkFolder().replaceAll("////", "//");
-
-			if(sdkPath != null) {
-
-				Xpp3Dom dom = (Xpp3Dom) plugin.getConfiguration();
-
-				if(dom.getChild("sdk") == null) {
-					Xpp3Dom sdk = new Xpp3Dom("sdk");
-					dom.addChild(sdk);
-				}
-
-				if(dom.getChild("sdk").getChild("path") == null) {
-					Xpp3Dom path = new Xpp3Dom("path");
-					dom.getChild("sdk").addChild(path);
-				}
-
-				Xpp3Dom path = dom.getChild("sdk").getChild("path");
-				if(!sdkPath.equals(path.getValue())) {
-					path.setValue(sdkPath);
-				}
-
-				plugin.setConfiguration(dom);
 			}
 
 //			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
