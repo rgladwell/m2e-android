@@ -13,7 +13,7 @@ public class AndroidMavenPlugin extends Plugin {
 
 	// The shared instance
 	private static AndroidMavenPlugin plugin;
-	
+
 	/**
 	 * The constructor
 	 */

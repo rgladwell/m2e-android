@@ -2,8 +2,8 @@ package com.byluroid.eclipse.maven.android;
 
 import java.util.List;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -11,17 +11,20 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.maven.ide.eclipse.MavenPlugin;
 import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
 import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.MavenProjectChangedEvent;
+import org.maven.ide.eclipse.project.MavenProjectManager;
+import org.maven.ide.eclipse.project.ResolverConfiguration;
+import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
-import com.android.ide.eclipse.adt.AdtPlugin;
-
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
+	private static final String ANDROID_APK_GOAL = "android:apk";
 	private static final String ANDROID_GEN_PATH = "gen";
 	private static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
 	private static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
@@ -39,20 +42,11 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		IProject project = request.getProject();
 
 		if (project.hasNature(ANDROID_NATURE_ID)) {
-			MavenProject mavenProject = request.getMavenProject();
-
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 
 			// add gen source folder if it does not already exist
 			if (!hasGenSourceEntry(classpath)) {
 				classpath.addSourceEntry(javaProject.getPath().append(ANDROID_GEN_PATH), javaProject.getOutputLocation(), true);
-			}
-
-			// add compile dependencies to core build path so they are included in ADT APK build
-			for (Artifact artifact : mavenProject.getArtifacts()) {
-				if (artifact.getScope().equals(Artifact.SCOPE_COMPILE)) {
-					classpath.addLibraryEntry(artifact, null, null, null);
-				}
 			}
 		}
 	}
@@ -71,9 +65,22 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 				addNature(project, ANDROID_NATURE_ID, monitor);
 			}
 
+			MavenProjectManager projectManager = MavenPlugin.getDefault().getMavenProjectManager();
+			ResolverConfiguration configuration = facade.getResolverConfiguration();
+			
+			if(!configuration.getFullBuildGoals().contains(ANDROID_APK_GOAL)) {
+				configuration.setFullBuildGoals(configuration.getFullBuildGoals() + " "+ ANDROID_APK_GOAL);
+				projectManager.setResolverConfiguration(project, configuration);
+			}
+
 //			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
 //			mavenProject.getBuild().setOutputDirectory(outputLocation);
 		}
+    }
+
+	@Override
+    public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
+	    return super.getBuildParticipant(execution);
     }
 
 	private Plugin getAndroidPlugin(MavenProject mavenProject) {
