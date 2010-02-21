@@ -11,20 +11,19 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.maven.ide.eclipse.MavenPlugin;
+//import org.maven.ide.eclipse.MavenPlugin;
 import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
 import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
-import org.maven.ide.eclipse.project.MavenProjectChangedEvent;
-import org.maven.ide.eclipse.project.MavenProjectManager;
-import org.maven.ide.eclipse.project.ResolverConfiguration;
+//import org.maven.ide.eclipse.project.MavenProjectManager;
+//import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
-	private static final String ANDROID_APK_GOAL = "android:apk";
+//	private static final String ANDROID_APK_GOAL = "android:apk";
 	private static final String ANDROID_GEN_PATH = "gen";
 	private static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
 	private static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
@@ -51,11 +50,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		}
 	}
 
-	@Override
-    protected void mavenProjectChanged(MavenProjectChangedEvent event,  IProgressMonitor monitor) throws CoreException {
-	    configureAndroidMavenProject(event.getMavenProject(), monitor);
-	}
-
 	protected void configureAndroidMavenProject(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
 		Plugin plugin = getAndroidPlugin(facade.getMavenProject());
 
@@ -65,13 +59,13 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 				addNature(project, ANDROID_NATURE_ID, monitor);
 			}
 
-			MavenProjectManager projectManager = MavenPlugin.getDefault().getMavenProjectManager();
-			ResolverConfiguration configuration = facade.getResolverConfiguration();
-			
-			if(!configuration.getFullBuildGoals().contains(ANDROID_APK_GOAL)) {
-				configuration.setFullBuildGoals(configuration.getFullBuildGoals() + " "+ ANDROID_APK_GOAL);
-				projectManager.setResolverConfiguration(project, configuration);
-			}
+//			MavenProjectManager projectManager = MavenPlugin.getDefault().getMavenProjectManager();
+//			ResolverConfiguration configuration = facade.getResolverConfiguration();
+//
+//			if(!configuration.getFullBuildGoals().contains(ANDROID_APK_GOAL)) {
+//				configuration.setFullBuildGoals(configuration.getFullBuildGoals() + " "+ ANDROID_APK_GOAL);
+//				projectManager.setResolverConfiguration(project, configuration);
+//			}
 
 //			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
 //			mavenProject.getBuild().setOutputDirectory(outputLocation);
@@ -80,6 +74,9 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	@Override
     public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
+		if(execution.getGoal().equals("compile")) {
+			return new AndroidMavenBuildParticipant(execution);
+		}
 	    return super.getBuildParticipant(execution);
     }
 
