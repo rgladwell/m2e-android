@@ -6,6 +6,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.maven.execution.MavenExecutionRequest;
+import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -47,7 +48,14 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 			properties.setProperty("maven.test.skip", "true");
 			request.setUserProperties(properties);
 
-			maven.execute(request, monitor);
+			MavenExecutionResult executionResult = maven.execute(request, monitor);
+
+			if (executionResult.hasExceptions()){
+				List<Throwable> exceptions = executionResult.getExceptions();
+				for (Throwable throwable : exceptions) {
+					throwable.printStackTrace();
+				}
+			}
 		}
 		return null;
 	}
