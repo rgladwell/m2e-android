@@ -37,42 +37,50 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
+		final IProject project = getMavenProjectFacade().getProject();
 		if(IncrementalProjectBuilder.CLEAN_BUILD == kind || IncrementalProjectBuilder.FULL_BUILD == kind) {
-			MavenPlugin plugin = MavenPlugin.getDefault();
-			MavenProjectManager projectManager = plugin.getMavenProjectManager();
-			IMaven maven = plugin.getMaven();
-			IProject project = getMavenProjectFacade().getProject();
-			IFile pom = project.getFile(new Path(IMavenConstants.POM_FILE_NAME));
-			IMavenProjectFacade projectFacade = projectManager.create(pom, false, monitor);
-			ResolverConfiguration resolverConfiguration = projectFacade.getResolverConfiguration();
-			MavenExecutionRequest request = projectManager.createExecutionRequest(pom, resolverConfiguration, monitor);
+			try{
+				MavenPlugin plugin = MavenPlugin.getDefault();
+				MavenProjectManager projectManager = plugin.getMavenProjectManager();
+				IMaven maven = plugin.getMaven();
+				IFile pom = project.getFile(new Path(IMavenConstants.POM_FILE_NAME));
+				IMavenProjectFacade projectFacade = projectManager.create(pom, false, monitor);
+				ResolverConfiguration resolverConfiguration = projectFacade.getResolverConfiguration();
+				MavenExecutionRequest request = projectManager.createExecutionRequest(pom, resolverConfiguration, monitor);
 
-			List<String> goals = new ArrayList<String>();
-			goals.add("package");
-			request.setGoals(goals);
+				List<String> goals = new ArrayList<String>();
+				goals.add("package");
+				request.setGoals(goals);
 
-			Properties properties = request.getUserProperties();
-			properties.setProperty("maven.test.skip", "true");
-			request.setUserProperties(properties);
+				Properties properties = request.getUserProperties();
+				properties.setProperty("maven.test.skip", "true");
+				request.setUserProperties(properties);
 
-			MavenExecutionResult executionResult = maven.execute(request, monitor);
+				MavenExecutionResult executionResult = maven.execute(request, monitor);
 
-			if (executionResult.hasExceptions()){
-				List<Throwable> exceptions = executionResult.getExceptions();
-				for (Throwable throwable : exceptions) {
-					throwable.printStackTrace();
+				if (executionResult.hasExceptions()){
+					List<Throwable> exceptions = executionResult.getExceptions();
+					for (Throwable throwable : exceptions) {
+						throwable.printStackTrace();
+					}
+				}else{
+					Artifact apkArtifact = executionResult.getProject().getArtifact();
+					if ("apk".equals(apkArtifact.getType())){
+						File apkFile = apkArtifact.getFile();
+						IJavaProject javaProject = JavaCore.create(project);
+						IPath outputLocation = javaProject.getOutputLocation();
+						File realOutputFolder = project.getWorkspace().getRoot().getFolder(outputLocation).getLocation().toFile();
+						String newApkFilename = project.getName() + ".apk";
+						File newApkFile = new File(realOutputFolder, newApkFilename);
+						FileUtils.copyFile(apkFile, newApkFile);
+					}
 				}
-			}else{
-				Artifact apkArtifact = executionResult.getProject().getArtifact();
-				if ("apk".equals(apkArtifact.getType())){
-					File apkFile = apkArtifact.getFile();
-					IJavaProject javaProject = JavaCore.create(project);
-					IPath outputLocation = javaProject.getOutputLocation();
-					File realOutputFolder = project.getWorkspace().getRoot().getFolder(outputLocation).getLocation().toFile();
-					String newApkFilename = project.getName() + ".apk";
-					File newApkFile = new File(realOutputFolder, newApkFilename);
-					FileUtils.copyFile(apkFile, newApkFile);
-				}
+
+			}catch(Exception e){
+				e.printStackTrace();
+				throw e;
+			}finally{
+				project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 			}
 		}
 		return null;
