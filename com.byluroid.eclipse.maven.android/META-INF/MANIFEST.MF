@@ -17,3 +17,4 @@ Bundle-ActivationPolicy: lazy
 Export-Package: com.byluroid.eclipse.maven.android
 Bundle-ClassPath: lib/commons-io-1.4.jar,
  .
+Import-Package: com.android.ide.eclipse.adt.internal.project

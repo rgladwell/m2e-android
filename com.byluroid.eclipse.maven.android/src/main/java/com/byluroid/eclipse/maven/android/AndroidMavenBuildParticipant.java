@@ -27,6 +27,8 @@ import org.maven.ide.eclipse.project.MavenProjectManager;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 
+import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
+
 public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	MojoExecution execution;
@@ -35,6 +37,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 		this.execution = execution;
 	}
 
+	@SuppressWarnings("restriction")
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		final IProject project = getMavenProjectFacade().getProject();
@@ -73,6 +76,9 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 						String newApkFilename = project.getName() + ".apk";
 						File newApkFile = new File(realOutputFolder, newApkFilename);
 						FileUtils.copyFile(apkFile, newApkFile);
+
+						// reset the installation manager to force new installs of this project
+						ApkInstallManager.getInstance().resetInstallationFor(project);
 					}
 				}
 
@@ -82,6 +88,9 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 			}finally{
 				project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 			}
+		}else{
+			// reset the installation manager to force new installs of this project
+			ApkInstallManager.getInstance().resetInstallationFor(project);
 		}
 		return null;
 	}
