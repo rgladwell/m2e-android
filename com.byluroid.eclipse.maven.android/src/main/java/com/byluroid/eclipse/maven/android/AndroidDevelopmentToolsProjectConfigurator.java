@@ -1,5 +1,6 @@
 package com.byluroid.eclipse.maven.android;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.maven.model.Plugin;
@@ -45,6 +46,11 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 			// add gen source folder if it does not already exist
 			if (!hasGenSourceEntry(classpath)) {
+				final File genFolder = javaProject.getPath().append(ANDROID_GEN_PATH).toFile();
+				if (!genFolder.exists()){
+					genFolder.mkdirs();
+					request.getProject().refreshLocal(IProject.DEPTH_INFINITE, monitor);
+				}
 				classpath.addSourceEntry(javaProject.getPath().append(ANDROID_GEN_PATH), javaProject.getOutputLocation(), true);
 			}
 		}
