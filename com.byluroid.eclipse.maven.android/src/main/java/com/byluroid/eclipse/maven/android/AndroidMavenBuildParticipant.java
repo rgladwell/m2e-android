@@ -2,6 +2,7 @@ package com.byluroid.eclipse.maven.android;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import org.apache.maven.execution.MavenExecutionRequest;
@@ -41,6 +42,11 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 			List<String> goals = new ArrayList<String>();
 			goals.add("package");
 			request.setGoals(goals);
+
+			Properties properties = request.getUserProperties();
+			properties.setProperty("maven.test.skip", "true");
+			request.setUserProperties(properties);
+
 			maven.execute(request, monitor);
 		}
 		return null;
