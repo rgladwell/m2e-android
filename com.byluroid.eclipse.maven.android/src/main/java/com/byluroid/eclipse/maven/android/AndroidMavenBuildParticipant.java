@@ -39,7 +39,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 			ResolverConfiguration resolverConfiguration = projectFacade.getResolverConfiguration();
 			MavenExecutionRequest request = projectManager.createExecutionRequest(pom, resolverConfiguration, monitor);
 			List<String> goals = new ArrayList<String>();
-			goals.add("android:apk");
+			goals.add("package");
 			request.setGoals(goals);
 			maven.execute(request, monitor);
 		}
