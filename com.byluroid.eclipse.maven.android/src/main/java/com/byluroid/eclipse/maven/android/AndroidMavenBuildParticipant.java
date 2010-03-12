@@ -1,18 +1,24 @@
 package com.byluroid.eclipse.maven.android;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.maven.ide.eclipse.MavenPlugin;
 import org.maven.ide.eclipse.core.IMavenConstants;
 import org.maven.ide.eclipse.embedder.IMaven;
@@ -55,6 +61,17 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				List<Throwable> exceptions = executionResult.getExceptions();
 				for (Throwable throwable : exceptions) {
 					throwable.printStackTrace();
+				}
+			}else{
+				Artifact apkArtifact = executionResult.getProject().getArtifact();
+				if ("apk".equals(apkArtifact.getType())){
+					File apkFile = apkArtifact.getFile();
+					IJavaProject javaProject = JavaCore.create(project);
+					IPath outputLocation = javaProject.getOutputLocation();
+					File realOutputFolder = project.getWorkspace().getRoot().getFolder(outputLocation).getLocation().toFile();
+					String newApkFilename = project.getName() + ".apk";
+					File newApkFile = new File(realOutputFolder, newApkFilename);
+					FileUtils.copyFile(apkFile, newApkFile);
 				}
 			}
 		}
