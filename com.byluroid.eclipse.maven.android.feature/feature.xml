@@ -2,7 +2,7 @@
 <feature
       id="com.byluroid.eclipse.maven.android.feature"
       label="Maven Integration for Android Development Tools"
-      version="0.2.1"
+      version="0.2.2"
       provider-name="Byluroid">
 
    <description url="http://code.google.com/p/m2eclipse-android-integration/">
@@ -865,14 +865,14 @@ Public License instead of this License.  But first, please read
 
    <requires>
       <import feature="com.android.ide.eclipse.adt" version="0.9.5.v200911191123-20404" match="greaterOrEqual"/>
-      <import feature="org.maven.ide.eclipse.feature" version="0.9.9.200912160759" match="greaterOrEqual"/>
+      <import feature="org.maven.ide.eclipse.feature" version="0.10.0.20100209-0800"/>
    </requires>
 
    <plugin
          id="com.byluroid.eclipse.maven.android"
          download-size="0"
          install-size="0"
-         version="0.2.1"
+         version="0.2.2"
          unpack="false"/>
 
 </feature>
