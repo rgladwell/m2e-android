@@ -8,10 +8,10 @@ Bundle-Vendor: Byluroid
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core;bundle-version="3.5.1",
  org.eclipse.core.resources;bundle-version="3.5.1",
- com.android.ide.eclipse.adt;bundle-version="0.9.5",
  org.maven.ide.eclipse;bundle-version="0.10.0",
  org.maven.ide.eclipse.jdt;bundle-version="0.10.0",
- org.maven.ide.eclipse.maven_embedder;bundle-version="0.10.0"
+ org.maven.ide.eclipse.maven_embedder;bundle-version="0.10.0",
+ com.android.ide.eclipse.adt;bundle-version="0.9.6"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: com.byluroid.eclipse.maven.android
