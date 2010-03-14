@@ -49,10 +49,11 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				IFile pom = project.getFile(new Path(IMavenConstants.POM_FILE_NAME));
 				IMavenProjectFacade projectFacade = projectManager.create(pom, false, monitor);
 				ResolverConfiguration resolverConfiguration = projectFacade.getResolverConfiguration();
+				resolverConfiguration.setResolveWorkspaceProjects(false);
 				MavenExecutionRequest request = projectManager.createExecutionRequest(pom, resolverConfiguration, monitor);
 
 				List<String> goals = new ArrayList<String>();
-				goals.add("package");
+				goals.add("install");
 				request.setGoals(goals);
 
 				Properties properties = request.getUserProperties();
