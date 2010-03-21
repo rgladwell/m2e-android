@@ -8,75 +8,63 @@ import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-//import org.maven.ide.eclipse.MavenPlugin;
 import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
 import org.maven.ide.eclipse.jdt.IJavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
-//import org.maven.ide.eclipse.project.MavenProjectManager;
-//import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
+import com.android.ide.eclipse.adt.AndroidConstants;
+
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
-//	private static final String ANDROID_APK_GOAL = "android:apk";
 	private static final String ANDROID_GEN_PATH = "gen";
 	private static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
 	private static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
-	private static final String ANDROID_NATURE_ID = "com.android.ide.eclipse.adt.AndroidNature";
 
 	@Override
+	@SuppressWarnings("restriction")
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		configureAndroidMavenProject(request.getMavenProjectFacade(), monitor);
+		Plugin plugin = getAndroidPlugin(request.getMavenProject());
+
+		if (plugin != null) {
+			IProject project = request.getProject();
+			if (!project.hasNature(AndroidConstants.NATURE)) {
+				addNature(project, AndroidConstants.NATURE, monitor);
+			}
+		}
 	}
 
+	@SuppressWarnings("restriction")
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 	}
 
+	@SuppressWarnings("restriction")
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		IProject project = request.getProject();
 
-		if (project.hasNature(ANDROID_NATURE_ID)) {
+		if (project.hasNature(AndroidConstants.NATURE)) {
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 
 			// add gen source folder if it does not already exist
 			if (!hasGenSourceEntry(classpath)) {
-				final File genFolder = javaProject.getPath().append(ANDROID_GEN_PATH).toFile();
-				if (!genFolder.exists()){
+				IPath path = javaProject.getPath().append(ANDROID_GEN_PATH);
+				final File genFolder = path.toFile();
+				if(!genFolder.exists()) {
 					genFolder.mkdirs();
 					request.getProject().refreshLocal(IProject.DEPTH_INFINITE, monitor);
 				}
-				classpath.addSourceEntry(javaProject.getPath().append(ANDROID_GEN_PATH), javaProject.getOutputLocation(), true);
+
+				classpath.addSourceEntry(path, javaProject.getOutputLocation(), true);
 			}
 		}
 	}
-
-	protected void configureAndroidMavenProject(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
-		Plugin plugin = getAndroidPlugin(facade.getMavenProject());
-
-		if (plugin != null) {
-			IProject project = facade.getProject();
-			if (!project.hasNature(ANDROID_NATURE_ID)) {
-				addNature(project, ANDROID_NATURE_ID, monitor);
-			}
-
-//			MavenProjectManager projectManager = MavenPlugin.getDefault().getMavenProjectManager();
-//			ResolverConfiguration configuration = facade.getResolverConfiguration();
-//
-//			if(!configuration.getFullBuildGoals().contains(ANDROID_APK_GOAL)) {
-//				configuration.setFullBuildGoals(configuration.getFullBuildGoals() + " "+ ANDROID_APK_GOAL);
-//				projectManager.setResolverConfiguration(project, configuration);
-//			}
-
-//			String outputLocation = mavenProject.getBasedir().getAbsolutePath() + File.separator + "target";
-//			mavenProject.getBuild().setOutputDirectory(outputLocation);
-		}
-    }
 
 	@Override
     public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {

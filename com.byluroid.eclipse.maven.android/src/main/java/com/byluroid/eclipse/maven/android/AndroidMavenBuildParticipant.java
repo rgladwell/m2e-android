@@ -27,7 +27,9 @@ import org.maven.ide.eclipse.project.MavenProjectManager;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 
+import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
+import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 
 public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
@@ -37,8 +39,8 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 		this.execution = execution;
 	}
 
-	@SuppressWarnings("restriction")
 	@Override
+	@SuppressWarnings("restriction")
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		final IProject project = getMavenProjectFacade().getProject();
 		if(IncrementalProjectBuilder.AUTO_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind || IncrementalProjectBuilder.FULL_BUILD == kind) {
@@ -49,11 +51,10 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				IFile pom = project.getFile(new Path(IMavenConstants.POM_FILE_NAME));
 				IMavenProjectFacade projectFacade = projectManager.create(pom, false, monitor);
 				ResolverConfiguration resolverConfiguration = projectFacade.getResolverConfiguration();
-				resolverConfiguration.setResolveWorkspaceProjects(false);
 				MavenExecutionRequest request = projectManager.createExecutionRequest(pom, resolverConfiguration, monitor);
 
 				List<String> goals = new ArrayList<String>();
-				goals.add("install");
+				goals.add("package");
 				request.setGoals(goals);
 
 				Properties properties = request.getUserProperties();
@@ -69,13 +70,12 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 					}
 				}else{
 					Artifact apkArtifact = executionResult.getProject().getArtifact();
-					if ("apk".equals(apkArtifact.getType())){
+					if (AndroidConstants.EXT_ANDROID_PACKAGE.equals(apkArtifact.getType())){
 						File apkFile = apkArtifact.getFile();
 						IJavaProject javaProject = JavaCore.create(project);
 						IPath outputLocation = javaProject.getOutputLocation();
 						File realOutputFolder = project.getWorkspace().getRoot().getFolder(outputLocation).getLocation().toFile();
-						String newApkFilename = project.getName() + ".apk";
-						File newApkFile = new File(realOutputFolder, newApkFilename);
+						File newApkFile = new File(realOutputFolder, ProjectHelper.getApkFilename(project, null));
 						FileUtils.copyFile(apkFile, newApkFile);
 
 						// reset the installation manager to force new installs of this project
@@ -84,6 +84,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				}
 
 			}catch(Exception e){
+				// TODO properly log this exception
 				e.printStackTrace();
 				throw e;
 			}finally{
