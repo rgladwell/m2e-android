@@ -43,6 +43,9 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	@SuppressWarnings("restriction")
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
+		IJavaProject javaProject = JavaCore.create(facade.getProject());
+		// set output location somewhere safe and out of the way
+		javaProject.setOutputLocation(javaProject.getPath().append("target").append("android-classes"), monitor);
 	}
 
 	@SuppressWarnings("restriction")
