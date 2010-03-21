@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maven Integration for Android Development Tools Tests
-Bundle-SymbolicName: com.byluroid.eclipse.maven.android.test
+Bundle-SymbolicName: com.byluroid.eclipse.maven.android.test;singleton:=true
 Bundle-Version: 0.2.2
 Bundle-Activator: com.byluroid.eclipse.maven.android.test.Activator
 Bundle-Vendor: Byluroid
