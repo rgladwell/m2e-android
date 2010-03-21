@@ -2,7 +2,7 @@
 <feature
       id="com.byluroid.eclipse.maven.android.feature"
       label="Maven Integration for Android Development Tools"
-      version="0.2.2"
+      version="0.2.3"
       provider-name="Byluroid">
 
    <description url="http://code.google.com/p/m2eclipse-android-integration/">
@@ -267,7 +267,7 @@ The Apache Software Foundation (http://www.apache.org/).
          id="com.byluroid.eclipse.maven.android"
          download-size="0"
          install-size="0"
-         version="0.2.2"
+         version="0.2.3"
          unpack="false"/>
 
 </feature>
