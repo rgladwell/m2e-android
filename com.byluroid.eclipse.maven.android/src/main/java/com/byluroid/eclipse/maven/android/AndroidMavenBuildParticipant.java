@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.plugin.MojoExecution;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.internal.filesystem.local.LocalFile;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -63,24 +64,23 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 					for (Throwable throwable : exceptions) {
 						throwable.printStackTrace();
 					}
-				}else{
+				} else {
 					Artifact apkArtifact = executionResult.getProject().getArtifact();
-					if (AndroidConstants.EXT_ANDROID_PACKAGE.equals(apkArtifact.getType())){
-						FileUtils.copyFile(apkArtifact.getFile(), AndroidMavenPluginUtil.getApkFile(project));
-
+					if (AndroidConstants.EXT_ANDROID_PACKAGE.equals(apkArtifact.getType())) {
+						new LocalFile(apkArtifact.getFile()).copy(new LocalFile(AndroidMavenPluginUtil.getApkFile(project)), EFS.NONE, monitor) ;
 						// reset the installation manager to force new installs of this project
 						ApkInstallManager.getInstance().resetInstallationFor(project);
 					}
 				}
 
-			}catch(Exception e){
+			} catch(Exception e) {
 				// TODO properly log this exception
 				e.printStackTrace();
 				throw e;
-			}finally{
+			} finally {
 				project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 			}
-		}else{
+		} else {
 			// reset the installation manager to force new installs of this project
 			ApkInstallManager.getInstance().resetInstallationFor(project);
 		}
