@@ -1,6 +1,14 @@
 package com.byluroid.eclipse.maven.android;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+
+import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 
 public class AndroidMavenPluginUtil {
 
@@ -13,4 +21,9 @@ public class AndroidMavenPluginUtil {
 		return null;
 	}
 
+	public final static File getApkFile(IProject project) throws JavaModelException {
+		IJavaProject javaProject = JavaCore.create(project);
+		File outputFolder = project.getWorkspace().getRoot().getFolder(javaProject.getOutputLocation()).getLocation().toFile();
+		return new File(outputFolder, ProjectHelper.getApkFilename(project, null));
+	}
 }

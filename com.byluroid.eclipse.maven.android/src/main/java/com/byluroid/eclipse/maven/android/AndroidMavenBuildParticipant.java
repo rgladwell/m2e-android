@@ -1,6 +1,5 @@
 package com.byluroid.eclipse.maven.android;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -14,11 +13,8 @@ import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.maven.ide.eclipse.MavenPlugin;
 import org.maven.ide.eclipse.core.IMavenConstants;
 import org.maven.ide.eclipse.embedder.IMaven;
@@ -29,7 +25,6 @@ import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
-import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 
 public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
@@ -71,12 +66,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				}else{
 					Artifact apkArtifact = executionResult.getProject().getArtifact();
 					if (AndroidConstants.EXT_ANDROID_PACKAGE.equals(apkArtifact.getType())){
-						File apkFile = apkArtifact.getFile();
-						IJavaProject javaProject = JavaCore.create(project);
-						IPath outputLocation = javaProject.getOutputLocation();
-						File realOutputFolder = project.getWorkspace().getRoot().getFolder(outputLocation).getLocation().toFile();
-						File newApkFile = new File(realOutputFolder, ProjectHelper.getApkFilename(project, null));
-						FileUtils.copyFile(apkFile, newApkFile);
+						FileUtils.copyFile(apkArtifact.getFile(), AndroidMavenPluginUtil.getApkFile(project));
 
 						// reset the installation manager to force new installs of this project
 						ApkInstallManager.getInstance().resetInstallationFor(project);
