@@ -93,7 +93,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 	}
 
-	public void testConfigureSimpleProject() throws Exception {
+	public void testConfigureNonAndroidProject() throws Exception {
 		deleteProject(SIMPLE_PROJECT_NAME);
 		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -101,6 +101,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("set output location", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
+		assertNull("added gen source folder", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
 	}
 
 	@SuppressWarnings("restriction")

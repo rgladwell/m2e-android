@@ -42,9 +42,11 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	}
 
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		IJavaProject javaProject = JavaCore.create(facade.getProject());
-		// set output location to target/android-classes so APK blob is not including in APK resources
-		javaProject.setOutputLocation(javaProject.getPath().append("target").append("android-classes"), monitor);
+		if(getAndroidPlugin(facade.getMavenProject()) != null) {
+			IJavaProject javaProject = JavaCore.create(facade.getProject());
+			// set output location to target/android-classes so APK blob is not including in APK resources
+			javaProject.setOutputLocation(javaProject.getPath().append("target").append("android-classes"), monitor);
+		}
 	}
 
 	@SuppressWarnings("restriction")
