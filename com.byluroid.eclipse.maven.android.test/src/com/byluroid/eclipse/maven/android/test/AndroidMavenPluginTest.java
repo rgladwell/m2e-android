@@ -13,6 +13,7 @@ import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
 
+import com.byluroid.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator;
 import com.byluroid.eclipse.maven.android.AndroidMavenPluginUtil;
 
 public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
@@ -21,6 +22,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	private static final String ANDROID_15_PROJECT_NAME = "apidemos-15-app";
 	private static final String ANDROID_15_DEPS_PROJECT_NAME = "test-android-15-deps";
 	private static final String SIMPLE_PROJECT_NAME = "simple-project";
+	private static final String ISSUE_7_PROJECT_NAME = "issue-7";
 
 	@Override
 	protected void setUp() throws Exception {
@@ -52,6 +54,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 			waitForJobsToComplete();
 		} catch(ResourceException e) {
+			e.printStackTrace();
 		}
 
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
@@ -66,6 +69,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 			waitForJobsToComplete();
 		} catch(ResourceException e) {
+			e.printStackTrace();
 		}
 
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
@@ -88,6 +92,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 			waitForJobsToComplete();
 		} catch(ResourceException e) {
+			e.printStackTrace();
 		}
 
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
@@ -102,6 +107,29 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("set output location", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
 		assertNull("added gen source folder", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
+	}
+
+	/**
+	 * @see http://code.google.com/p/m2eclipse-android-integration/issues/detail?id=7
+	 */
+	public void testIssue7() throws Exception {
+		deleteProject(ISSUE_7_PROJECT_NAME);
+		IProject project = importProject("projects/"+ISSUE_7_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		waitForJobsToComplete();
+
+	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE));
+		IJavaProject javaProject = JavaCore.create(project);
+		assertFalse("set output location", javaProject.getOutputLocation().toString().equals("/"+ISSUE_7_PROJECT_NAME+"/target/android-classes"));
+		assertNull("added gen source folder", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
+		
+		boolean suplementarySourceExists = false;
+		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toOSString().endsWith("src-sup")) {
+				suplementarySourceExists = true;
+			}
+		}
+		
+		assertTrue("supplementary source folder not added", suplementarySourceExists);
 	}
 
 	@SuppressWarnings("restriction")
