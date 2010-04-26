@@ -16,26 +16,24 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.jayway.maven.plugins.android.generation2.samples.apidemos-15</groupId>
-        <artifactId>apidemos-15</artifactId>
-        <version>2.3.3-SNAPSHOT</version>
-    </parent>
+    <version>2.3.3-SNAPSHOT</version>
     <groupId>com.jayway.maven.plugins.android.generation2.samples.apidemos-15</groupId>
     <artifactId>apidemos-15-app</artifactId>
     <packaging>apk</packaging>
     <name>Maven Android Plugin - samples - Android SDK 1.5 ApiDemos - App</name>
 
     <dependencies>
-        <dependency>
-            <groupId>android</groupId>
-            <artifactId>android</artifactId>
-            <scope>provided</scope>
-        </dependency>
+		<dependency>
+			<groupId>android</groupId>
+			<artifactId>android</artifactId>
+			<version>1.5_r3</version>
+			<scope>provided</scope>
+		</dependency>
 
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.7</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -49,7 +47,7 @@
                 <configuration>
                     <sdk>
                         <path>${env.ANDROID_HOME}</path>
-                        <platform>1.5</platform>
+                        <platform>3</platform>
                     </sdk>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                 </configuration>

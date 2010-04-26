@@ -24,9 +24,9 @@ import com.android.ide.eclipse.adt.AndroidConstants;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
-	private static final String ANDROID_GEN_PATH = "gen";
-	private static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
-	private static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
+	static final String ANDROID_GEN_PATH = "gen";
+	static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
+	static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
 
 	@Override
 	@SuppressWarnings("restriction")
@@ -41,10 +41,9 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		}
 	}
 
-	@SuppressWarnings("restriction")
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		IJavaProject javaProject = JavaCore.create(facade.getProject());
-		// set output location somewhere safe and out of the way
+		// set output location to target/android-classes so APK blob is not including in APK resources
 		javaProject.setOutputLocation(javaProject.getPath().append("target").append("android-classes"), monitor);
 	}
 
@@ -56,7 +55,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 
 			// add gen source folder if it does not already exist
-			if (!hasGenSourceEntry(classpath)) {
+			if (AndroidMavenPluginUtil.getGenSourceEntry(classpath.getEntries()) == null) {
 				IPath path = javaProject.getPath().append(ANDROID_GEN_PATH);
 				final File genFolder = path.toFile();
 				if(!genFolder.exists()) {
@@ -87,15 +86,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		}
 
 		return null;
-	}
-
-	private boolean hasGenSourceEntry(IClasspathDescriptor classpath) {
-		for (IClasspathEntry entry : classpath.getEntries()) {
-			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toOSString().endsWith(ANDROID_GEN_PATH)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }
