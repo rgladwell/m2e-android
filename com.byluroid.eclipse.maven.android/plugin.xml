@@ -7,10 +7,5 @@
               id="com.bylur.eclipse.maven.android"
               name="Android"
               priority="101"/>
-        <configurator
-              class="org.maven.ide.eclipse.jdt.internal.JavaProjectConfigurator"
-              id="org.maven.ide.eclipse.jdt.internal"
-              name="Java"
-              priority="101"/>
     </extension>
 </plugin>

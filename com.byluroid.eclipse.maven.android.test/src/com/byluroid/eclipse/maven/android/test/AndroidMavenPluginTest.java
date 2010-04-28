@@ -121,14 +121,14 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("set output location", javaProject.getOutputLocation().toString().equals("/"+ISSUE_7_PROJECT_NAME+"/target/android-classes"));
 		assertNull("added gen source folder", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
-		
+
 		boolean suplementarySourceExists = false;
 		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
 			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toOSString().endsWith("src-sup")) {
 				suplementarySourceExists = true;
 			}
 		}
-		
+
 		assertTrue("supplementary source folder not added", suplementarySourceExists);
 	}
 
