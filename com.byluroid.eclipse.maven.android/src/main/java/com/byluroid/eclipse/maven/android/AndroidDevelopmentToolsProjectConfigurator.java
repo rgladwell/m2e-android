@@ -31,7 +31,9 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	@Override
 	@SuppressWarnings("restriction")
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		if (getAndroidPlugin(request.getMavenProject()) != null) {
+		Plugin plugin = getAndroidPlugin(request.getMavenProject());
+
+		if (plugin != null) {
 			IProject project = request.getProject();
 			if (!project.hasNature(AndroidConstants.NATURE)) {
 				addNature(project, AndroidConstants.NATURE, monitor);
