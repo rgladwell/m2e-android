@@ -31,9 +31,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	@Override
 	@SuppressWarnings("restriction")
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		Plugin plugin = getAndroidPlugin(request.getMavenProject());
-
-		if (plugin != null) {
+		if (getAndroidPlugin(request.getMavenProject()) != null) {
 			IProject project = request.getProject();
 			if (!project.hasNature(AndroidConstants.NATURE)) {
 				addNature(project, AndroidConstants.NATURE, monitor);
@@ -51,9 +49,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	@SuppressWarnings("restriction")
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		IProject project = request.getProject();
-
-		if (project.hasNature(AndroidConstants.NATURE)) {
+		if (getAndroidPlugin(request.getMavenProject()) != null) {
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 
 			// add gen source folder if it does not already exist
