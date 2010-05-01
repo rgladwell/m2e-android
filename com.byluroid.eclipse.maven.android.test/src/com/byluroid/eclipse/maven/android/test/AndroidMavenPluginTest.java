@@ -1,5 +1,7 @@
 package com.byluroid.eclipse.maven.android.test;
 
+import java.io.File;
+
 import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -112,7 +114,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	/**
 	 * @see http://code.google.com/p/m2eclipse-android-integration/issues/detail?id=7
 	 */
-	public void testIssue7() throws Exception {
+	public void testConfigureDoesNotAffectNonAndroidProjects() throws Exception {
 		deleteProject(ISSUE_7_PROJECT_NAME);
 		IProject project = importProject("projects/"+ISSUE_7_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -132,6 +134,32 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertTrue("supplementary source folder not added", suplementarySourceExists);
 	}
 
+	public void testBuildOverwritesExistingApk() throws Exception {
+		deleteProject(ANDROID_11_PROJECT_NAME);
+		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		waitForJobsToComplete();
+
+		try {
+			project.build(IncrementalProjectBuilder.FULL_BUILD, monitor);
+			waitForJobsToComplete();
+		} catch(ResourceException e) {
+			e.printStackTrace();
+		}
+
+		long first = AndroidMavenPluginUtil.getApkFile(project).lastModified();
+
+		try {
+			project.build(IncrementalProjectBuilder.AUTO_BUILD, monitor);
+			waitForJobsToComplete();
+		} catch(ResourceException e) {
+			e.printStackTrace();
+		}
+
+		long second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
+		
+		assertTrue("failed to overwrite existing APK", first < second);
+	}
+	
 	@SuppressWarnings("restriction")
     protected void assertValidAndroidProject(IProject project, String projectName) throws CoreException, JavaModelException {
 	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE));

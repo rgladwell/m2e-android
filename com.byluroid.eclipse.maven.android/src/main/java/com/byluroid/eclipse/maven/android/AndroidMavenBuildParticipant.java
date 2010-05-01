@@ -67,7 +67,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				} else {
 					Artifact apkArtifact = executionResult.getProject().getArtifact();
 					if (AndroidConstants.EXT_ANDROID_PACKAGE.equals(apkArtifact.getType())) {
-						new LocalFile(apkArtifact.getFile()).copy(new LocalFile(AndroidMavenPluginUtil.getApkFile(project)), EFS.NONE, monitor) ;
+						new LocalFile(apkArtifact.getFile()).copy(new LocalFile(AndroidMavenPluginUtil.getApkFile(project)), EFS.OVERWRITE, monitor) ;
 						// reset the installation manager to force new installs of this project
 						ApkInstallManager.getInstance().resetInstallationFor(project);
 					}
