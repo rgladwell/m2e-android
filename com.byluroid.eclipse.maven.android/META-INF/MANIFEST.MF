@@ -16,5 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: com.byluroid.eclipse.maven.android
-Bundle-ClassPath: .
+Bundle-ClassPath: lib/commons-io-1.4.jar,
+ .
 Import-Package: com.android.ide.eclipse.adt.internal.project

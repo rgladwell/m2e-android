@@ -10,7 +10,8 @@ import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenExecutionResult;
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.internal.filesystem.local.LocalFile;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.filesystem.IFileSystem;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -36,7 +37,6 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 	}
 
 	@Override
-	@SuppressWarnings("restriction")
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		final IProject project = getMavenProjectFacade().getProject();
 		if(IncrementalProjectBuilder.AUTO_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind || IncrementalProjectBuilder.FULL_BUILD == kind) {
@@ -67,8 +67,10 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				} else {
 					Artifact apkArtifact = executionResult.getProject().getArtifact();
 					if (AndroidConstants.EXT_ANDROID_PACKAGE.equals(apkArtifact.getType())) {
-						new LocalFile(apkArtifact.getFile()).copy(new LocalFile(AndroidMavenPluginUtil.getApkFile(project)), EFS.OVERWRITE, monitor) ;
-						// reset the installation manager to force new installs of this project
+						IFileSystem fileSystem = EFS.getLocalFileSystem();
+						IFileStore source = fileSystem.fromLocalFile(apkArtifact.getFile());
+						IFileStore destination = fileSystem.fromLocalFile(AndroidMavenPluginUtil.getApkFile(project));
+						source.copy(destination, EFS.OVERWRITE, monitor);						// reset the installation manager to force new installs of this project
 						ApkInstallManager.getInstance().resetInstallationFor(project);
 					}
 				}
