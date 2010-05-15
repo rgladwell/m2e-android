@@ -1,4 +1,4 @@
-package com.byluroid.eclipse.maven.android.test;
+package com.urbanmania.eclipse.maven.android.test;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.byluroid.eclipse.maven.android.test";
+	public static final String PLUGIN_ID = "com.urbanmania.eclipse.maven.android.test";
 
 	// The shared instance
 	private static Activator plugin;

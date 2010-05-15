@@ -3,7 +3,7 @@
 <plugin>
     <extension point="org.maven.ide.eclipse.projectConfigurators">
         <configurator
-              class="com.byluroid.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator"
+              class="com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator"
               id="com.bylur.eclipse.maven.android"
               name="Android"
               priority="101"/>

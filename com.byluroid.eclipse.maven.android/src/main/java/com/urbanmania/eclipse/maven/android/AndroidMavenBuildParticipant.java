@@ -1,4 +1,4 @@
-package com.byluroid.eclipse.maven.android;
+package com.urbanmania.eclipse.maven.android;
 
 import java.util.ArrayList;
 import java.util.List;

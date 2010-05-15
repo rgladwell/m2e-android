@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="com.byluroid.eclipse.maven.android.feature"
+      id="com.urbanmania.eclipse.maven.android.feature"
       label="Maven Integration for Android Development Tools"
       version="0.2.3"
-      provider-name="Byluroid">
+      provider-name="Urbanmania.com">
 
    <description url="http://code.google.com/p/m2eclipse-android-integration/">
       Integration for the Android Development Tools and the M2Eclipse Maven2 plugin.
@@ -255,7 +255,7 @@ The Apache Software Foundation (http://www.apache.org/).
    </license>
 
    <url>
-      <update label="Maven Android Development Tools Integration" url="http://m2eclipse-android-integration.googlecode.com/svn/trunk/com.byluroid.eclipse.maven.android.update/"/>
+      <update label="Maven Android Development Tools Integration" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/"/>
    </url>
 
    <requires>
@@ -264,7 +264,7 @@ The Apache Software Foundation (http://www.apache.org/).
    </requires>
 
    <plugin
-         id="com.byluroid.eclipse.maven.android"
+         id="com.urbanmania.eclipse.maven.android"
          download-size="0"
          install-size="0"
          version="0.2.3"

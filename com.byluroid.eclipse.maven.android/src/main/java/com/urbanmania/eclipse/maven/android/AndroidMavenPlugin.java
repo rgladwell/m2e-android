@@ -1,4 +1,4 @@
-package com.byluroid.eclipse.maven.android;
+package com.urbanmania.eclipse.maven.android;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class AndroidMavenPlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.byluroid.eclipse.maven.android";
+	public static final String PLUGIN_ID = "com.urbanmania.eclipse.maven.android";
 
 	// The shared instance
 	private static AndroidMavenPlugin plugin;

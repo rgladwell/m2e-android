@@ -1,4 +1,4 @@
-package com.byluroid.eclipse.maven.android.test;
+package com.urbanmania.eclipse.maven.android.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,8 +22,7 @@ import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.sdk.LoadStatus;
-
-import com.byluroid.eclipse.maven.android.AndroidMavenPluginUtil;
+import com.urbanmania.eclipse.maven.android.AndroidMavenPluginUtil;
 
 public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 

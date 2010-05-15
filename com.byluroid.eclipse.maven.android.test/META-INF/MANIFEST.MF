@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maven Integration for Android Development Tools Tests
-Bundle-SymbolicName: com.byluroid.eclipse.maven.android.test;singleton:=true
+Bundle-SymbolicName: com.urbanmania.eclipse.maven.android.test;singleton:=true
 Bundle-Version: 0.2.2
-Bundle-Activator: com.byluroid.eclipse.maven.android.test.Activator
-Bundle-Vendor: Byluroid
+Bundle-Activator: com.urbanmania.eclipse.maven.android.test.Activator
+Bundle-Vendor: Urbanmania.com
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
@@ -17,7 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.maven.ide.eclipse.tests.common;bundle-version="[0.10.0,0.11.0)",
  com.android.ide.eclipse.adt;bundle-version="0.9.6",
  org.junit;bundle-version="3.8.2",
- com.byluroid.eclipse.maven.android;bundle-version="0.2.2"
+ com.urbanmania.eclipse.maven.android;bundle-version="0.2.4"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: com.byluroid.eclipse.maven.android.test
+Export-Package: com.urbanmania.eclipse.maven.android.test
