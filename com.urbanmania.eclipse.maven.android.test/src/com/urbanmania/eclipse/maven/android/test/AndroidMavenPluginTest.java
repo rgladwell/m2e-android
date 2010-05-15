@@ -26,6 +26,7 @@ import com.urbanmania.eclipse.maven.android.AndroidMavenPluginUtil;
 
 public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
+	private static final int MAX_AUTO_BUILD_LOOPS = 3;
 	private static final String ANDROID_11_PROJECT_NAME = "apidemos-11-app";
 	private static final String ANDROID_15_PROJECT_NAME = "apidemos-15-app";
 	private static final String ANDROID_15_DEPS_PROJECT_NAME = "test-android-15-deps";
@@ -184,20 +185,20 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		waitForJobsToComplete();
 
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 
 		long first = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 		long second = first + 1;
 		int builds = 0;
 
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
+
 		while(first < second) {
 			builds++;
 			first = second;
-			waitForJobsToComplete();
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 
-			assertTrue(builds <= 3);
+			assertTrue("auto build looping more than 3 times", builds < MAX_AUTO_BUILD_LOOPS);
 		}
 	}
 
