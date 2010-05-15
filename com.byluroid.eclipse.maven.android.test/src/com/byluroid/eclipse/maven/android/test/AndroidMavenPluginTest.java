@@ -143,6 +143,12 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	}
 
 	public void testBuildOverwritesExistingApk() throws Exception {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+	    IWorkspaceDescription description = workspace.getDescription();
+	    description.setAutoBuilding(true);
+	    workspace.setDescription(description);
+	    waitForJobsToComplete();
+
 		deleteProject(ANDROID_11_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -157,6 +163,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    out.write("\r\n");
 	    out.close();
 
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.AUTO_BUILD);
 
 		long second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
@@ -178,6 +185,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		waitForJobsToComplete();
 
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 
 		long first = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 		long second = first + 1;
@@ -187,6 +195,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 			builds++;
 			first = second;
 			waitForJobsToComplete();
+			Thread.sleep(1000);
 			second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 
 			assertTrue(builds <= 3);
