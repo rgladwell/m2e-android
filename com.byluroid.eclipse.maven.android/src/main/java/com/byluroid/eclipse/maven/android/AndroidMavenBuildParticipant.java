@@ -70,7 +70,8 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 						IFileSystem fileSystem = EFS.getLocalFileSystem();
 						IFileStore source = fileSystem.fromLocalFile(apkArtifact.getFile());
 						IFileStore destination = fileSystem.fromLocalFile(AndroidMavenPluginUtil.getApkFile(project));
-						source.copy(destination, EFS.OVERWRITE, monitor);						// reset the installation manager to force new installs of this project
+						source.copy(destination, EFS.OVERWRITE, monitor);
+						// reset the installation manager to force new installs of this project
 						ApkInstallManager.getInstance().resetInstallationFor(project);
 					}
 				}
