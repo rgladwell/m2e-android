@@ -76,10 +76,6 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 					}
 				}
 
-			} catch(Exception e) {
-				// TODO properly log this exception
-				e.printStackTrace();
-				throw e;
 			} finally {
 				project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 			}

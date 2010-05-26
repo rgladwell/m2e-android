@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 import org.eclipse.core.internal.resources.ResourceException;
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
@@ -20,7 +21,9 @@ import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.AndroidConstants;
+import com.android.ide.eclipse.adt.internal.build.ApkBuilder;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
+import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
 import com.android.ide.eclipse.adt.internal.sdk.LoadStatus;
 import com.urbanmania.eclipse.maven.android.AndroidMavenPluginUtil;
 
@@ -54,7 +57,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    super.setUp();
     }
 
-	public void testConfigureForAndroid11() throws Exception {
+	public void testConfigureForAndroid2() throws Exception {
 		deleteProject(ANDROID_11_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -62,7 +65,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertValidAndroidProject(project, ANDROID_11_PROJECT_NAME);
 	}
 
-	public void testConfigureForAndroid15() throws Exception {
+	public void testConfigureForAndroid3() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -70,7 +73,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertValidAndroidProject(project, ANDROID_15_PROJECT_NAME);
 	}
 
-	public void testBuildForAndroid11() throws Exception {
+	public void testBuildForAndroid2() throws Exception {
 		deleteProject(ANDROID_11_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -80,7 +83,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 	}
 
-	public void testBuildForAndroid15() throws Exception {
+	public void testBuildForAndroid3() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -90,7 +93,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 	}
 
-	public void testConfigureForAndroid15WithDependencies() throws Exception {
+	public void testConfigureForAndroid3WithDependencies() throws Exception {
 		deleteProject(ANDROID_15_DEPS_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_15_DEPS_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -98,7 +101,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertValidAndroidProject(project, ANDROID_15_DEPS_PROJECT_NAME);
 	}
 
-	public void testBuildForAndroid15WithDependencies() throws Exception {
+	public void testBuildForAndroid3WithDependencies() throws Exception {
 		deleteProject(ANDROID_15_DEPS_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_15_DEPS_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -106,6 +109,8 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
+		
+		// TODO assert dependency classes and resources got added to project APK
 	}
 
 	public void testConfigureNonAndroidProject() throws Exception {
@@ -143,12 +148,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	}
 
 	public void testBuildOverwritesExistingApk() throws Exception {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-	    IWorkspaceDescription description = workspace.getDescription();
-	    description.setAutoBuilding(true);
-	    workspace.setDescription(description);
-	    waitForJobsToComplete();
-
 		deleteProject(ANDROID_11_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -169,6 +168,34 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		long second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 
 		assertTrue("failed to overwrite existing APK", first < second);
+	}
+
+	public void testInfiniteBuildWithAndroid2() throws Exception {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+	    IWorkspaceDescription description = workspace.getDescription();
+	    description.setAutoBuilding(true);
+	    workspace.setDescription(description);
+
+		deleteProject(ANDROID_11_PROJECT_NAME);
+		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		waitForJobsToComplete();
+
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+
+		long first = AndroidMavenPluginUtil.getApkFile(project).lastModified();
+		long second = first + 1;
+		int builds = 0;
+
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
+
+		while(first < second) {
+			builds++;
+			first = second;
+			Thread.sleep(2000);
+			second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
+
+			assertTrue("auto build looping more than 3 times", builds <= MAX_AUTO_BUILD_LOOPS);
+		}
 	}
 
 	/**
@@ -198,11 +225,10 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 			Thread.sleep(2000);
 			second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 
-			assertTrue("auto build looping more than 3 times", builds < MAX_AUTO_BUILD_LOOPS);
+			assertTrue("auto build looping more than 3 times", builds <= MAX_AUTO_BUILD_LOOPS);
 		}
 	}
 
-	@SuppressWarnings("restriction")
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
 	    try {
 			project.build(kind, monitor);
@@ -212,7 +238,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		}
     }
 
-	@SuppressWarnings("restriction")
     protected void assertValidAndroidProject(IProject project, String projectName) throws CoreException, JavaModelException {
 	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
@@ -221,6 +246,17 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertNotNull("failed to add gen source folder", genSourceEntry);
 		assertEquals("failed to set output location for gen folder", genSourceEntry.getOutputLocation().toString(), "/"+projectName+"/target/android-classes");
 		assertNoErrors(project);
+		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
     }
+	
+	public final static boolean containsApkBuildCommand(IProject project) throws CoreException {
+		for(ICommand command : project.getDescription().getBuildSpec()) {
+			if(ApkBuilder.ID.equals(command.getBuilderName())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 }

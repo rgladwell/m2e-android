@@ -1,15 +1,19 @@
 package com.urbanmania.eclipse.maven.android;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
@@ -20,6 +24,7 @@ import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
+import com.android.ide.eclipse.adt.internal.build.ApkBuilder;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
@@ -28,13 +33,25 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
 
 	@Override
-	@SuppressWarnings("restriction")
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
 		if (getAndroidPlugin(request.getMavenProject()) != null) {
 			IProject project = request.getProject();
 			if (!project.hasNature(AndroidConstants.NATURE)) {
 				addNature(project, AndroidConstants.NATURE, monitor);
 			}
+			
+			// issue 6: remove redundant APKBuilder build command 
+			IProjectDescription description = project.getDescription();
+			List<ICommand> buildCommands = new LinkedList<ICommand>();
+			for(ICommand command : description.getBuildSpec()) {
+				if(!ApkBuilder.ID.equals(command.getBuilderName())) {
+					buildCommands.add(command);
+				}
+			}
+
+			ICommand[] buildSpec = buildCommands.toArray(new ICommand[0]);
+			description.setBuildSpec(buildSpec);
+			project.setDescription(description, monitor);
 		}
 	}
 
@@ -46,7 +63,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		}
 	}
 
-	@SuppressWarnings("restriction")
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		if (getAndroidPlugin(request.getMavenProject()) != null) {
 			IJavaProject javaProject = JavaCore.create(request.getProject());
