@@ -120,8 +120,8 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
 	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
-		assertFalse("set output location", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
-		assertNull("added gen source folder", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
+		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
+		assertNull("added gen source folder for non-android project", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
 	}
 
 	/**
@@ -132,10 +132,10 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		IProject project = importProject("projects/"+ISSUE_7_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
 
-	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE));
+	    assertFalse("configurer added android nature for non-android project", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
-		assertFalse("set output location", javaProject.getOutputLocation().toString().equals("/"+ISSUE_7_PROJECT_NAME+"/target/android-classes"));
-		assertNull("added gen source folder", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
+		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+ISSUE_7_PROJECT_NAME+"/target/android-classes"));
+		assertNull("added android gen source folder for non-android project", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
 
 		boolean suplementarySourceExists = false;
 		for(IClasspathEntry entry : javaProject.getRawClasspath()) {

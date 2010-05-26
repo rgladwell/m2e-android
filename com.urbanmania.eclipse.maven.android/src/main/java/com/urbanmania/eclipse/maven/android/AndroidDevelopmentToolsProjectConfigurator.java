@@ -29,12 +29,10 @@ import com.android.ide.eclipse.adt.internal.build.ApkBuilder;
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
 	static final String ANDROID_GEN_PATH = "gen";
-	static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
-	static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
 
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		if (getAndroidPlugin(request.getMavenProject()) != null) {
+		if (AndroidMavenPluginUtil.isAndroidProject(request.getMavenProject())) {
 			IProject project = request.getProject();
 			if (!project.hasNature(AndroidConstants.NATURE)) {
 				addNature(project, AndroidConstants.NATURE, monitor);
@@ -56,7 +54,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	}
 
 	public void configureClasspath(IMavenProjectFacade facade,  IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		if(getAndroidPlugin(facade.getMavenProject()) != null) {
+		if(AndroidMavenPluginUtil.isAndroidProject(facade.getMavenProject())) {
 			IJavaProject javaProject = JavaCore.create(facade.getProject());
 			// set output location to target/android-classes so APK blob is not including in APK resources
 			javaProject.setOutputLocation(javaProject.getPath().append("target").append("android-classes"), monitor);
@@ -64,7 +62,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	}
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		if (getAndroidPlugin(request.getMavenProject()) != null) {
+		if (AndroidMavenPluginUtil.isAndroidProject(request.getMavenProject())) {
 			IJavaProject javaProject = JavaCore.create(request.getProject());
 
 			// add gen source folder if it does not already exist
@@ -89,16 +87,5 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	    return super.getBuildParticipant(execution);
     }
 
-	private Plugin getAndroidPlugin(MavenProject mavenProject) {
-		List<Plugin> plugins = mavenProject.getBuildPlugins();
-
-		for (Plugin plugin : plugins) {
-			if (ANDROID_PLUGIN_GROUP_ID.equals(plugin.getGroupId()) && ANDROID_PLUGIN_ARTIFACT_ID.equals(plugin.getArtifactId())) {
-				return plugin;
-			}
-		}
-
-		return null;
-	}
 
 }
