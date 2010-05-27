@@ -248,7 +248,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertNoErrors(project);
 		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
     }
-	
+
 	public final static boolean containsApkBuildCommand(IProject project) throws CoreException {
 		for(ICommand command : project.getDescription().getBuildSpec()) {
 			if(ApkBuilder.ID.equals(command.getBuilderName())) {
