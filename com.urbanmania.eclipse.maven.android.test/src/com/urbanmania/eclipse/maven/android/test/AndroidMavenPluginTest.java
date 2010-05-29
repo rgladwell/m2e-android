@@ -122,29 +122,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
-		assertNull("added gen source folder for non-android project", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
-	}
-
-	/**
-	 * @see http://code.google.com/p/m2eclipse-android-integration/issues/detail?id=7
-	 */
-	public void testConfigureDoesNotAffectNonAndroidProjects() throws Exception {
-		deleteProject(ISSUE_7_PROJECT_NAME);
-		IProject project = importProject("projects/"+ISSUE_7_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
-		waitForJobsToComplete();
-
-	    assertFalse("configurer added android nature for non-android project", project.hasNature(AndroidConstants.NATURE));
-		IJavaProject javaProject = JavaCore.create(project);
-		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+ISSUE_7_PROJECT_NAME+"/target/android-classes"));
-
-		boolean suplementarySourceExists = false;
-		for(IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
-			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toOSString().endsWith("src-sup")) {
-				suplementarySourceExists = true;
-			}
-		}
-
-		assertTrue("supplementary source folder not added", suplementarySourceExists);
 	}
 
 	public void testBuildOverwritesExistingApk() throws Exception {
@@ -242,7 +219,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
 		assertEquals("failed to set output location", javaProject.getOutputLocation().toString(), "/"+projectName+"/target/android-classes");
-		IClasspathEntry genSourceEntry =  AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath());
 		assertNoErrors(project);
 		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
     }
