@@ -60,6 +60,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	public void testConfigureForAndroid2() throws Exception {
 		deleteProject(ANDROID_11_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+
 		waitForJobsToComplete();
 
 		assertValidAndroidProject(project, ANDROID_11_PROJECT_NAME);
@@ -135,10 +136,9 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    assertFalse("configurer added android nature for non-android project", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+ISSUE_7_PROJECT_NAME+"/target/android-classes"));
-		assertNull("added android gen source folder for non-android project", AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath()));
 
 		boolean suplementarySourceExists = false;
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+		for(IClasspathEntry entry : javaProject.getResolvedClasspath(true)) {
 			if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toOSString().endsWith("src-sup")) {
 				suplementarySourceExists = true;
 			}
@@ -243,8 +243,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		IJavaProject javaProject = JavaCore.create(project);
 		assertEquals("failed to set output location", javaProject.getOutputLocation().toString(), "/"+projectName+"/target/android-classes");
 		IClasspathEntry genSourceEntry =  AndroidMavenPluginUtil.getGenSourceEntry(javaProject.getRawClasspath());
-		assertNotNull("failed to add gen source folder", genSourceEntry);
-		assertEquals("failed to set output location for gen folder", genSourceEntry.getOutputLocation().toString(), "/"+projectName+"/target/android-classes");
 		assertNoErrors(project);
 		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
     }
