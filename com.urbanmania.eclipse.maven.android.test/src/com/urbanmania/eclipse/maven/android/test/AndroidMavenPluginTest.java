@@ -34,7 +34,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	private static final String ANDROID_15_PROJECT_NAME = "apidemos-15-app";
 	private static final String ANDROID_15_DEPS_PROJECT_NAME = "test-android-15-deps";
 	private static final String SIMPLE_PROJECT_NAME = "simple-project";
-	private static final String ISSUE_7_PROJECT_NAME = "issue-7";
 	private static final String ISSUE_6_PROJECT_NAME = "issue-6";
 
 	protected AdtPlugin adtPlugin;
@@ -216,11 +215,16 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
     }
 
     protected void assertValidAndroidProject(IProject project, String projectName) throws CoreException, JavaModelException {
-	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE));
 		IJavaProject javaProject = JavaCore.create(project);
+
+	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE));
 		assertEquals("failed to set output location", javaProject.getOutputLocation().toString(), "/"+projectName+"/target/android-classes");
 		assertNoErrors(project);
 		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
+		
+		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+			assertFalse("classpath contains reference to target directory: cause infinite build loops and build conflicts", entry.getPath().toOSString().contains("target"));
+		}
     }
 
 	public final static boolean containsApkBuildCommand(IProject project) throws CoreException {

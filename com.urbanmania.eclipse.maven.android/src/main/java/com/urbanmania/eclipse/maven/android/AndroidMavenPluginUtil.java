@@ -14,8 +14,8 @@ import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 
 public class AndroidMavenPluginUtil {
 
-	static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
-	static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
+	private static final String ANDROID_PLUGIN_GROUP_ID = "com.jayway.maven.plugins.android.generation2";
+	private static final String ANDROID_PLUGIN_ARTIFACT_ID = "maven-android-plugin";
 
 	public final static File getApkFile(IProject project) throws JavaModelException {
 		IJavaProject javaProject = JavaCore.create(project);
