@@ -5,8 +5,9 @@
       version="0.2.3"
       provider-name="Urbanmania.com">
 
-   <description url="http://code.google.com/p/m2eclipse-android-integration/">
-      Integration for the Android Development Tools and the M2Eclipse Maven2 plugin.
+   <description url="http://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/">
+      Integration for the Android Development Tools and the M2Eclipse
+Maven2 plugin.
    </description>
 
    <copyright>
