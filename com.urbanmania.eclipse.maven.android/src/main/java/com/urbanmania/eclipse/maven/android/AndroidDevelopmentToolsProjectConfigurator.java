@@ -17,6 +17,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.ClasspathEntry;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
@@ -34,10 +35,11 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
 		if (AndroidMavenPluginUtil.isAndroidProject(request.getMavenProject())) {
 			IProject project = request.getProject();
+
 			if (!project.hasNature(AndroidConstants.NATURE)) {
 				addNature(project, AndroidConstants.NATURE, monitor);
 			}
-			
+
 			// issue 6: remove redundant APKBuilder build command 
 			IProjectDescription description = project.getDescription();
 			List<ICommand> buildCommands = new LinkedList<ICommand>();
@@ -50,39 +52,44 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 			ICommand[] buildSpec = buildCommands.toArray(new ICommand[0]);
 			description.setBuildSpec(buildSpec);
 			project.setDescription(description, monitor);
-			
+
 			IJavaProject javaProject = JavaCore.create(project);
 			// set output location to target/android-classes so APK blob is not including in APK resources
 			javaProject.setOutputLocation(javaProject.getPath().append("target").append("android-classes"), monitor);
 			
-			IClasspathEntry[] oldClasspath = javaProject.getRawClasspath();
-			List<IClasspathEntry> newClasspath = new ArrayList<IClasspathEntry>();
-			IPath genPath = javaProject.getPath().append(ANDROID_GEN_PATH);
-			boolean foundGenPath = false;
-
-			for(IClasspathEntry entry : oldClasspath) {
-				if(!entry.getPath().toString().contains("target")) {
-					newClasspath.add(entry);
-				} 
-
-				if (entry.getPath().equals(genPath)) {
-					foundGenPath = true;
-				}
-			}
-
-			if(!foundGenPath) {
-				final File genFolder = genPath.toFile();
-				if(!genFolder.exists()) {
-					genFolder.mkdirs();
-				}
-
-				IClasspathEntry genClasspathEntry = new ClasspathEntry(IPackageFragmentRoot.K_SOURCE, IClasspathEntry.CPE_SOURCE, genPath, ClasspathEntry.INCLUDE_ALL, ClasspathEntry.EXCLUDE_NONE, null, null, null, false, null, false, new IClasspathAttribute[0]);
-				newClasspath.add(genClasspathEntry);
-			}
-
-			javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[newClasspath.size()]), monitor);
+			configureClasspath(monitor, javaProject);
 		}
 	}
+
+	protected void configureClasspath(IProgressMonitor monitor, IJavaProject javaProject) throws JavaModelException {
+	    IClasspathEntry[] oldClasspath = javaProject.getRawClasspath();
+	    List<IClasspathEntry> newClasspath = new ArrayList<IClasspathEntry>();
+	    IPath targetResourcePath = javaProject.getPath().append("target").append("generated-sources").append("r");
+	    IPath genPath = javaProject.getPath().append(ANDROID_GEN_PATH);
+	    boolean foundGenPath = false;
+
+	    for(IClasspathEntry entry : oldClasspath) {
+	    	if(!entry.getPath().equals(targetResourcePath)) {
+	    		newClasspath.add(entry);
+	    	} 
+
+	    	if (entry.getPath().equals(genPath)) {
+	    		foundGenPath = true;
+	    	}
+	    }
+
+	    if(!foundGenPath) {
+	    	final File genFolder = genPath.toFile();
+	    	if(!genFolder.exists()) {
+	    		genFolder.mkdirs();
+	    	}
+
+	    	IClasspathEntry genClasspathEntry = new ClasspathEntry(IPackageFragmentRoot.K_SOURCE, IClasspathEntry.CPE_SOURCE, genPath, ClasspathEntry.INCLUDE_ALL, ClasspathEntry.EXCLUDE_NONE, null, null, null, false, null, false, new IClasspathAttribute[0]);
+	    	newClasspath.add(genClasspathEntry);
+	    }
+
+	    javaProject.setRawClasspath(newClasspath.toArray(new IClasspathEntry[newClasspath.size()]), monitor);
+    }
 
 	@Override
     public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
