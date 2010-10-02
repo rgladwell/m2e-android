@@ -7,7 +7,7 @@ Bundle-Activator: com.urbanmania.eclipse.maven.android.AndroidMavenPlugin
 Bundle-Vendor: Urbanmania.com
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core;bundle-version="3.5.1",
- org.eclipse.core.resources;bundle-version="3.5.1",
+ org.eclipse.core.resources;bundle-version="3.5.0",
  org.maven.ide.eclipse;bundle-version="0.10.0",
  org.maven.ide.eclipse.jdt;bundle-version="0.10.0",
  org.maven.ide.eclipse.maven_embedder;bundle-version="0.10.0",
@@ -17,6 +17,3 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: com.urbanmania.eclipse.maven.android
-Bundle-ClassPath: lib/commons-io-1.4.jar,
- .
-Import-Package: com.android.ide.eclipse.adt.internal.project

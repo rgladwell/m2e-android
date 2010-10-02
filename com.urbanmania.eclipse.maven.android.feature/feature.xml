@@ -631,7 +631,7 @@ The Apache Software Foundation (http://www.apache.org/).
 
    <requires>
       <import feature="com.android.ide.eclipse.adt" version="0.9.5.v200911191123-20404" match="greaterOrEqual"/>
-      <import feature="org.maven.ide.eclipse.feature" version="0.10.0.20100209-0800"/>
+      <import feature="org.maven.ide.eclipse.feature" version="0.10.0.20100209-0800" match="greaterOrEqual"/>
    </requires>
 
    <plugin
