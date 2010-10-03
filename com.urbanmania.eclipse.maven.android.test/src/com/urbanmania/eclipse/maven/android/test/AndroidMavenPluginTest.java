@@ -29,10 +29,10 @@ import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.AndroidConstants;
-import com.android.ide.eclipse.adt.internal.build.ApkBuilder;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
 import com.android.ide.eclipse.adt.internal.sdk.LoadStatus;
+import com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator;
 import com.urbanmania.eclipse.maven.android.AndroidMavenPluginUtil;
 
 public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
@@ -67,7 +67,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	public void testConfigureForAndroid2() throws Exception {
 		deleteProject(ANDROID_11_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_11_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
-
 		waitForJobsToComplete();
 
 		assertValidAndroidProject(project, ANDROID_11_PROJECT_NAME);
@@ -126,7 +125,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
 
-	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE));
+	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
 	}
@@ -225,19 +224,20 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
     protected void assertValidAndroidProject(IProject project, String projectName) throws CoreException, JavaModelException {
 		IJavaProject javaProject = JavaCore.create(project);
 
-	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE));
+	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
 		assertEquals("failed to set output location", javaProject.getOutputLocation().toString(), "/"+projectName+"/target/android-classes");
-		assertNoErrors(project);
 		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
 		
 		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
 			assertFalse("classpath contains reference to target directory: cause infinite build loops and build conflicts", entry.getPath().toOSString().contains("target"));
 		}
+
+		assertNoErrors(project);
     }
 
 	public final static boolean containsApkBuildCommand(IProject project) throws CoreException {
 		for(ICommand command : project.getDescription().getBuildSpec()) {
-			if(ApkBuilder.ID.equals(command.getBuilderName())) {
+			if(AndroidDevelopmentToolsProjectConfigurator.APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
 				return true;
 			}
 		}

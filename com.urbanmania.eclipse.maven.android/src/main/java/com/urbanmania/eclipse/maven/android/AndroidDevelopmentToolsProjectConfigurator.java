@@ -33,10 +33,10 @@ import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.AndroidConstants;
-import com.android.ide.eclipse.adt.internal.build.ApkBuilder;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator {
 
+	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 	private static final String ANDROID_GEN_PATH = "gen";
 
 	@Override
@@ -44,15 +44,15 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 		if (AndroidMavenPluginUtil.isAndroidProject(request.getMavenProject())) {
 			IProject project = request.getProject();
 
-			if (!project.hasNature(AndroidConstants.NATURE)) {
-				addNature(project, AndroidConstants.NATURE, monitor);
+			if (!project.hasNature(AndroidConstants.NATURE_DEFAULT)) {
+				addNature(project, AndroidConstants.NATURE_DEFAULT, monitor);
 			}
 
 			// issue 6: remove redundant APKBuilder build command 
 			IProjectDescription description = project.getDescription();
 			List<ICommand> buildCommands = new LinkedList<ICommand>();
 			for(ICommand command : description.getBuildSpec()) {
-				if(!ApkBuilder.ID.equals(command.getBuilderName())) {
+				if(!APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
 					buildCommands.add(command);
 				}
 			}
