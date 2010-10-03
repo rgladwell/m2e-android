@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
+   <description name="m2eclipse-android-integration" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/">
+      Feature that add Maven support for the Android Development Tools.
+   </description>
    <feature url="features/com.urbanmania.eclipse.maven.android.feature_0.2.3.jar" id="com.urbanmania.eclipse.maven.android.feature" version="0.2.3">
       <category name="com.urbanmania.eclipse.maven.android"/>
    </feature>
