@@ -4,7 +4,7 @@
     <extension point="org.maven.ide.eclipse.projectConfigurators">
         <configurator
               class="com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator"
-              id="com.bylur.eclipse.maven.android"
-              name="Android"/>
+              id="com.urbanmania.eclipse.maven.android"
+              name="Android"/>   
     </extension>
 </plugin>
