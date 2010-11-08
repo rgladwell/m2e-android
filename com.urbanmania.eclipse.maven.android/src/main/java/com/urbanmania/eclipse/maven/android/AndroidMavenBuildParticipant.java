@@ -70,6 +70,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 				if (executionResult.hasExceptions()){
 					List<Throwable> exceptions = executionResult.getExceptions();
 					for (Throwable throwable : exceptions) {
+						// TODO report failed build
 						throwable.printStackTrace();
 					}
 				} else {
