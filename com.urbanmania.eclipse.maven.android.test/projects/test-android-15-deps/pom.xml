@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>android</groupId>
 			<artifactId>android</artifactId>
-			<version>1.5_r3</version>
+			<version>1.5_r4</version>
 			<scope>provided</scope>
 		</dependency>
 <dependency>
