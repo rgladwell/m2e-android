@@ -72,8 +72,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	    return super.getBuildParticipant(execution);
     }
 
-	public void configureClasspath(IMavenProjectFacade arg0, IClasspathDescriptor arg1, IProgressMonitor arg2)
-            throws CoreException {	    
+	public void configureClasspath(IMavenProjectFacade arg0, IClasspathDescriptor arg1, IProgressMonitor arg2) throws CoreException {	    
     }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
