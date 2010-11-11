@@ -72,10 +72,10 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	    return super.getBuildParticipant(execution);
     }
 
-	public void configureClasspath(IMavenProjectFacade arg0, IClasspathDescriptor arg1, IProgressMonitor arg2) throws CoreException {	    
+	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
     }
 
-	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
+	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
 		IJavaProject javaProject = JavaCore.create(request.getProject());
 
 		IPath targetResourcePath = javaProject.getPath().append("target").append("generated-sources").append("r");

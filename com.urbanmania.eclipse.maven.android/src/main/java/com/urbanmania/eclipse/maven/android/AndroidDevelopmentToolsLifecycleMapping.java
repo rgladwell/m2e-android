@@ -12,10 +12,8 @@ import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 
 public class AndroidDevelopmentToolsLifecycleMapping extends AbstractLifecycleMapping {
 
-	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
-
 	public String getId() {
-		return "android-maven";
+		return "com.urbanmania.eclipse.maven.android.lifecycleMapping";
 	}
 
 	public String getName() {
