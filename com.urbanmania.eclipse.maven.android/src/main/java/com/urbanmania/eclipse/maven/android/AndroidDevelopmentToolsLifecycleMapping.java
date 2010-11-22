@@ -24,7 +24,7 @@ public class AndroidDevelopmentToolsLifecycleMapping extends AbstractLifecycleMa
 	    return this.getBuildParticipants(facade, getProjectConfigurators(facade, monitor), monitor);
 	}
 
-	public List<String> getPotentialMojoExecutionsForBuildKind(IMavenProjectFacade facede, int kind, IProgressMonitor monitor) {
+	public List<String> getPotentialMojoExecutionsForBuildKind(IMavenProjectFacade facade, int kind, IProgressMonitor monitor) {
 		return null;
 	}
 
