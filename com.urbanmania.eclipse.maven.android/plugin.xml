@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension point="org.maven.ide.eclipse.lifecycleMappings">
+      <lifecycleMapping
+            class="com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsLifecycleMapping"
+            id="com.urbanmania.eclipse.maven.android.androidDevelopmentToolsLifecycleMapping"
+            name="Android Build Lifecycle Mapping">
+      </lifecycleMapping>
+   </extension>
+   <extension point="org.maven.ide.eclipse.defaultLifecycleMappings">
+      <defaultLifecycleMapping
+            id="com.urbanmania.eclipse.maven.android.adt"
+            lifecycleMappingId="com.urbanmania.eclipse.maven.android.androidDevelopmentToolsLifecycleMapping"
+            packaging="apk"/>
+   </extension>
     <extension point="org.maven.ide.eclipse.projectConfigurators">
         <configurator
               class="com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator"

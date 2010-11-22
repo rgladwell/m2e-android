@@ -13,11 +13,11 @@ import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 public class AndroidDevelopmentToolsLifecycleMapping extends AbstractLifecycleMapping {
 
 	public String getId() {
-		return "com.urbanmania.eclipse.maven.android.lifecycleMapping";
+		return "com.urbanmania.eclipse.maven.android.androidDevelopmentToolsLifecycleMapping";
 	}
 
 	public String getName() {
-		return "Maven Integration for Android Development Tools Lifecycle";
+		return "Android Build Lifecycle Mapping";
 	}
 
 	public List<AbstractBuildParticipant> getBuildParticipants(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
