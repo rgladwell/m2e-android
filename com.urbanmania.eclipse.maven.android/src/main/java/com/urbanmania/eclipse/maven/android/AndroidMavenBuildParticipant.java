@@ -33,6 +33,7 @@ import org.maven.ide.eclipse.project.MavenProjectManager;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 
+import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
 
@@ -63,6 +64,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 				Properties properties = request.getUserProperties();
 				properties.setProperty("maven.test.skip", "true");
+				properties.setProperty("android.sdk.path", AdtPlugin.getOsSdkFolder());
 				request.setUserProperties(properties);
 
 				MavenExecutionResult executionResult = maven.execute(request, monitor);
