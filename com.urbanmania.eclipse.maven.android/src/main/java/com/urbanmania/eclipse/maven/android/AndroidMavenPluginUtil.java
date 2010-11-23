@@ -12,6 +12,7 @@ import java.io.File;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -31,5 +32,9 @@ public class AndroidMavenPluginUtil {
 	public static boolean isAndroidProject(MavenProject mavenProject) {
 		return mavenProject.getPackaging().equalsIgnoreCase(ANDROID_PACKAGE_TYPE);
 	}
+
+	public static IPath getAndroidClassesOutputFolder(IJavaProject javaProject) {
+	    return javaProject.getPath().append("target").append("android-classes");
+    }
 
 }

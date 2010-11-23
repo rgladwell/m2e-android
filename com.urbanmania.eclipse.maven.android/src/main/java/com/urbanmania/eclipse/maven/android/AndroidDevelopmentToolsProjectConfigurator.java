@@ -59,7 +59,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 			IJavaProject javaProject = JavaCore.create(project);
 			// set output location to target/android-classes so APK blob is not including in APK resources
-			javaProject.setOutputLocation(javaProject.getPath().append("target").append("android-classes"), monitor);
+			javaProject.setOutputLocation(AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), monitor);
 		}
 	}
 
@@ -77,9 +77,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
 		IJavaProject javaProject = JavaCore.create(request.getProject());
 
-		IPath targetResourcePath = javaProject.getPath().append("target").append("generated-sources").append("r");
-	    classpath.removeEntry(targetResourcePath);
-	    
 	    IPath genPath = javaProject.getPath().append(ANDROID_GEN_PATH);
 
 	    if(!classpath.containsPath(genPath)) {
@@ -88,7 +85,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	    		genFolder.mkdirs();
 	    	}
 
-	    	classpath.addSourceEntry(genPath, javaProject.getPath().append("target").append("android-classes"), true);
+	    	classpath.addSourceEntry(genPath, AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), true);
 	    }
     }
 
