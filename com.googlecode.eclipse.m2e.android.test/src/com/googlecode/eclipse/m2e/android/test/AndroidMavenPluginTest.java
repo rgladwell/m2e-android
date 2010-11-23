@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package com.urbanmania.eclipse.maven.android.test;
+package com.googlecode.eclipse.m2e.android.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,8 +32,8 @@ import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
 import com.android.ide.eclipse.adt.internal.sdk.LoadStatus;
-import com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator;
-import com.urbanmania.eclipse.maven.android.AndroidMavenPluginUtil;
+import com.googlecode.eclipse.m2e.android.AndroidDevelopmentToolsProjectConfigurator;
+import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package com.urbanmania.eclipse.maven.android;
+package com.googlecode.eclipse.m2e.android;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -17,7 +17,7 @@ import org.osgi.framework.BundleContext;
 public class AndroidMavenPlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "com.urbanmania.eclipse.maven.android";
+	public static final String PLUGIN_ID = "com.googlecode.eclipse.m2e.android";
 
 	// The shared instance
 	private static AndroidMavenPlugin plugin;

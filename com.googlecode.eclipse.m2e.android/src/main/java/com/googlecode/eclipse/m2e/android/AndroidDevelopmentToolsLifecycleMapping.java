@@ -1,4 +1,4 @@
-package com.urbanmania.eclipse.maven.android;
+package com.googlecode.eclipse.m2e.android;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 public class AndroidDevelopmentToolsLifecycleMapping extends AbstractLifecycleMapping {
 
 	public String getId() {
-		return "com.urbanmania.eclipse.maven.android.androidDevelopmentToolsLifecycleMapping";
+		return "com.googlecode.eclipse.m2e.android.androidDevelopmentToolsLifecycleMapping";
 	}
 
 	public String getName() {

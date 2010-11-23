@@ -3,21 +3,21 @@
 <plugin>
    <extension point="org.maven.ide.eclipse.lifecycleMappings">
       <lifecycleMapping
-            class="com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsLifecycleMapping"
-            id="com.urbanmania.eclipse.maven.android.androidDevelopmentToolsLifecycleMapping"
+            class="com.googlecode.eclipse.m2e.android.AndroidDevelopmentToolsLifecycleMapping"
+            id="com.googlecode.eclipse.m2e.android.androidDevelopmentToolsLifecycleMapping"
             name="Android Build Lifecycle Mapping">
       </lifecycleMapping>
    </extension>
    <extension point="org.maven.ide.eclipse.defaultLifecycleMappings">
       <defaultLifecycleMapping
-            id="com.urbanmania.eclipse.maven.android.adt"
-            lifecycleMappingId="com.urbanmania.eclipse.maven.android.androidDevelopmentToolsLifecycleMapping"
+            id="com.googlecode.eclipse.m2e.android"
+            lifecycleMappingId="com.googlecode.eclipse.m2e.android.androidDevelopmentToolsLifecycleMapping"
             packaging="apk"/>
    </extension>
     <extension point="org.maven.ide.eclipse.projectConfigurators">
         <configurator
-              class="com.urbanmania.eclipse.maven.android.AndroidDevelopmentToolsProjectConfigurator"
-              id="com.urbanmania.eclipse.maven.android.androidDevelopmentToolsProjectConfigurator"
+              class="com.googlecode.eclipse.m2e.android.AndroidDevelopmentToolsProjectConfigurator"
+              id="com.googlecode.eclipse.m2e.android.androidDevelopmentToolsProjectConfigurator"
               name="Android Development Tools Project Configurator"/>   
     </extension>
 </plugin>

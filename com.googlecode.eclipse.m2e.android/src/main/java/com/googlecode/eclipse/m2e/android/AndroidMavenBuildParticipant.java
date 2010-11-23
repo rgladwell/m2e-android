@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package com.urbanmania.eclipse.maven.android;
+package com.googlecode.eclipse.m2e.android;
 
 import java.util.ArrayList;
 import java.util.List;

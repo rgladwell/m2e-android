@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>com.urbanmania.eclipse.maven.android.update</name>
+	<name>com.googlecode.eclipse.m2e.android.update</name>
 	<comment></comment>
 	<projects>
-		<project>com.urbanmania.eclipse.maven.android</project>
-		<project>com.urbanmania.eclipse.maven.android.feature</project>
+		<project>com.googlecode.eclipse.m2e.android</project>
+		<project>com.googlecode.eclipse.m2e.android.feature</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
