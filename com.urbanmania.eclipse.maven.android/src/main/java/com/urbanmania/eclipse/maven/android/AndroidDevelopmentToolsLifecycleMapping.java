@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.maven.ide.eclipse.MavenPlugin;
+import org.maven.ide.eclipse.jdt.internal.JavaProjectConfigurator;
 import org.maven.ide.eclipse.project.IMavenProjectFacade;
 import org.maven.ide.eclipse.project.configurator.AbstractBuildParticipant;
 import org.maven.ide.eclipse.project.configurator.AbstractLifecycleMapping;
@@ -30,6 +32,9 @@ public class AndroidDevelopmentToolsLifecycleMapping extends AbstractLifecycleMa
 
 	public List<AbstractProjectConfigurator> getProjectConfigurators(IMavenProjectFacade facade, IProgressMonitor monitor) throws CoreException {
 		List<AbstractProjectConfigurator> projectConfigurators = new ArrayList<AbstractProjectConfigurator>();
+		JavaProjectConfigurator javaProjectConfigurator = new JavaProjectConfigurator();
+		javaProjectConfigurator.setConsole(MavenPlugin.getDefault().getConsole());
+		projectConfigurators.add(javaProjectConfigurator);
 		projectConfigurators.add(new AndroidDevelopmentToolsProjectConfigurator());
 		return projectConfigurators;
 	}
