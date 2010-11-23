@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="m2eclipse-android-integration" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/">
+      Feature that add Maven support for the Android Development Tools.
+   </description>
+   <category-def name="com.googlecode.eclipse.m2e.android" label="Maven Integration for Android Development Tools"/>
+</site>
