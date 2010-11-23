@@ -21,6 +21,7 @@ import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 
 public class AndroidMavenPluginUtil {
 
+	private static final String ANDROID_CLASSES_FOLDER = "android-classes";
 	private static final String ANDROID_PACKAGE_TYPE = "apk";
 
 	public final static File getApkFile(IProject project) throws JavaModelException {
@@ -34,7 +35,7 @@ public class AndroidMavenPluginUtil {
 	}
 
 	public static IPath getAndroidClassesOutputFolder(IJavaProject javaProject) {
-	    return javaProject.getPath().append("target").append("android-classes");
+	    return javaProject.getPath().append("target").append(ANDROID_CLASSES_FOLDER);
     }
 
 }
