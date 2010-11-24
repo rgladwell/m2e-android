@@ -2,7 +2,7 @@
 <feature
       id="com.googlecode.eclipse.m2e.android.feature"
       label="Maven Integration for Android Development Tools"
-      version="0.2.3"
+      version="0.2.4"
       provider-name="Google Code">
 
    <description url="http://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/">
@@ -240,12 +240,19 @@ to a jury trial in any resulting litigation.
    </license>
 
    <url>
-      <update label="Maven Android Development Tools Integration" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/"/>
+      <update label="m2eclipse-android-integration Update Site" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/"/>
    </url>
 
    <requires>
       <import plugin="com.android.ide.eclipse.adt"/>
       <import plugin="org.maven.ide.eclipse"/>
    </requires>
+
+   <plugin
+         id="com.googlecode.eclipse.m2e.android"
+         download-size="0"
+         install-size="0"
+         version="0.2.4"
+         unpack="false"/>
 
 </feature>
