@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Maven Integration for Android Development Tools
+Bundle-SymbolicName: com.googlecode.eclipse.m2e.android;singleton:=true
+Bundle-Version: 0.2.4
+Bundle-Activator: com.googlecode.eclipse.m2e.android.AndroidMavenPlugin
+Bundle-Vendor: Google Code
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.jdt.core;bundle-version="3.5.1",
+ org.eclipse.core.resources;bundle-version="3.5.0",
+ org.maven.ide.eclipse;bundle-version="0.12.0",
+ org.maven.ide.eclipse.jdt;bundle-version="0.12.0",
+ org.maven.ide.eclipse.maven_embedder;bundle-version="0.12.0",
+ com.android.ide.eclipse.adt;bundle-version="0.9.9",
+ org.eclipse.core.filesystem;bundle-version="1.2.0",
+ org.eclipse.ui.console;bundle-version="3.4.0"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Export-Package: com.googlecode.eclipse.m2e.android
