@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maven Integration for Android Development Tools Tests
 Bundle-SymbolicName: com.googlecode.eclipse.m2e.android.test;singleton:=true
-Bundle-Version: 0.2.2
+Bundle-Version: 0.2.5
 Bundle-Activator: com.googlecode.eclipse.m2e.android.test.Activator
 Bundle-Vendor: Google Code
 Require-Bundle: org.eclipse.ui,
