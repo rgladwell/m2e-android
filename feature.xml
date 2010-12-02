@@ -2,7 +2,7 @@
 <feature
       id="com.googlecode.eclipse.m2e.android.feature"
       label="Maven Integration for Android Development Tools"
-      version="0.2.4"
+      version="0.2.5"
       provider-name="Google Code">
 
    <description url="http://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/">
@@ -252,7 +252,7 @@ to a jury trial in any resulting litigation.
          id="com.googlecode.eclipse.m2e.android"
          download-size="0"
          install-size="0"
-         version="0.2.4"
+         version="0.2.5"
          unpack="false"/>
 
 </feature>
