@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.googlecode.eclipse.m2e.android</groupId>
+	<artifactId>m2eclipse-android-integration</artifactId>
+	<version>0.2.5-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<properties>
+		<tycho-version>0.10.0</tycho-version>
+	</properties>
+	<repositories>
+		<repository>
+			<id>helios</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/helios</url>
+		</repository>
+		<repository>
+			<id>m2eclipse</id>
+			<layout>p2</layout>
+			<url>http://m2eclipse.sonatype.org/sites/m2e/</url>
+		</repository>
+		<repository>
+			<id>android-developer-tools</id>
+			<layout>p2</layout>
+			<!-- this is too bad google android team does not export their features 
+				in a p2 repo http://code.google.com/p/android/issues/detail?id=12847 and 
+				tycho, 0.10.0 pretty much does not like some non p2 repo, see the partial 
+				IU bug : https://issues.sonatype.org/browse/TYCHO-455 so when tycho reaches 
+				0.11.0 or android team releases a p2 repo for adt, we should be good to go 
+				with the original URL -->
+			<!--url>http://dl-ssl.google.com/android/eclipse/</url -->
+			<url>http://g2.dahanne.net/android-p2repo/</url>
+		</repository>
+		<!--I though this one may help for the tests, but it did not... -->
+		<!--repository> 
+	             <id>swtbot</id> <layout>p2</layout> <url>http://download.eclipse.org/technology/swtbot/galileo/dev-build/update-site/</url> 
+			</repository -->
+	</repositories>
+	<modules>
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
