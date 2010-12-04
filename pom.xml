@@ -7,6 +7,7 @@
 		<artifactId>m2eclipse-android-integration</artifactId>
 		<groupId>com.googlecode.eclipse.m2e.android</groupId>
 		<version>0.2.5-SNAPSHOT</version>
+		<relativePath>../m2eclipse-android-integration/pom.xml</relativePath>
 	</parent>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.feature</artifactId>
