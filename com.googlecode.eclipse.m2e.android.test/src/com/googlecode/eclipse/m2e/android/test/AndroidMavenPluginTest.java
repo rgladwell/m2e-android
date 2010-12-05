@@ -62,7 +62,8 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
 	    super.setUp();
     }
-	public void testConfigureForAndroid3() throws Exception {
+
+    public void testConfigureForAndroid3() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
