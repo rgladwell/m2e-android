@@ -37,6 +37,7 @@ import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
+	private static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 5;
 	private static final int MAX_AUTO_BUILD_LOOPS = 3;
 	private static final String ANDROID_15_PROJECT_NAME = "apidemos-15-app";
 	private static final String ANDROID_15_DEPS_PROJECT_NAME = "test-android-15-deps";
@@ -55,9 +56,14 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		    adtPlugin.getPreferenceStore().setValue(AdtPrefs.PREFS_SDK_DIR, androidHome);
 		    adtPlugin.savePluginPreferences();
 	    }
-	    
+
+	    int loops = 0;
 	    while(!adtPlugin.getSdkLoadStatus().equals(LoadStatus.LOADED)) {
 	    	Thread.sleep(1000);
+	    	loops++;
+	    	if(loops == MAXIMUM_SECONDS_TO_LOAD_ADT) {
+	    		throw new Exception("failed to load ADT using SDK=["+androidHome+"] - check the ANDROID_HOME envar is correct.");
+	    	}
 	    }
 
 	    super.setUp();
