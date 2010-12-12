@@ -16,7 +16,7 @@
 	<name>Maven Integration for Android Development Tools Test Project with external Dependency</name>
 	<dependencies>
 		<dependency>
-			<groupId>android</groupId>
+			<groupId>com.google.android</groupId>
 			<artifactId>android</artifactId>
 			<version>1.5_r4</version>
 			<scope>provided</scope>
