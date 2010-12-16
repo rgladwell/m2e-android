@@ -244,8 +244,17 @@ to a jury trial in any resulting litigation.
    </url>
 
    <requires>
-      <import plugin="com.android.ide.eclipse.adt"/>
-      <import plugin="org.maven.ide.eclipse"/>
+      <import feature="org.maven.ide.eclipse.feature" version="0.12.0"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jdt.core" version="3.5.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.maven.ide.eclipse" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="org.maven.ide.eclipse.jdt" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="org.maven.ide.eclipse.maven_embedder" version="0.12.0" match="greaterOrEqual"/>
+      <import plugin="com.android.ide.eclipse.adt" version="0.9.9" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
+      <import feature="com.android.ide.eclipse.adt" version="0.9.9"/>
    </requires>
 
    <plugin
