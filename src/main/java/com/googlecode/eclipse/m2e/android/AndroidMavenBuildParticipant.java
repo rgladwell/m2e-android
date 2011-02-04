@@ -39,12 +39,6 @@ import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
 
 public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
-	MojoExecution execution;
-
-	public AndroidMavenBuildParticipant (MojoExecution execution) {
-		this.execution = execution;
-	}
-
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		if(!AndroidMavenPluginUtil.isAndroidProject(getMavenProjectFacade().getMavenProject())) {
