@@ -35,7 +35,9 @@ public class AndroidDevelopmentToolsLifecycleMapping extends AbstractLifecycleMa
 		JavaProjectConfigurator javaProjectConfigurator = new JavaProjectConfigurator();
 		javaProjectConfigurator.setConsole(MavenPlugin.getDefault().getConsole());
 		projectConfigurators.add(javaProjectConfigurator);
-		projectConfigurators.add(new AndroidDevelopmentToolsProjectConfigurator());
+		if(AndroidMavenPluginUtil.isAndroidProject(facade.getMavenProject())) {
+			projectConfigurators.add(new AndroidDevelopmentToolsProjectConfigurator());
+		}
 		return projectConfigurators;
 	}
 
