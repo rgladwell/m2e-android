@@ -118,6 +118,24 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
 	}
 
+	/**
+	 * Test to ensure that AndroidMavenBuildParticipant isn't applied to non-android projects.
+	 * @throws Exception
+	 * @see <a href="https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/issues/detail?id=40">Issue 40</a>
+	 */
+	public void testBuildNonAndroidProject() throws Exception {
+		deleteProject(SIMPLE_PROJECT_NAME);
+		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		waitForJobsToComplete();
+		File file = new File(project.getLocation().toFile(), "/target/simple-project-1.0-SNAPSHOT.jar");		
+
+		buildAndroidProject(project, IncrementalProjectBuilder.CLEAN_BUILD);
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+		waitForJobsToComplete();
+		
+		assertFalse("Android builder building non-android projects", file.exists());
+	}
+
 	public void testBuildOverwritesExistingApk() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
