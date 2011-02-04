@@ -19,9 +19,6 @@
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
 </listAttribute>
-<mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="ANDROID_HOME" value="/opt/android-sdk-linux_x86"/>
-</mapAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=com.googlecode.eclipse.m2e.android.test"/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
