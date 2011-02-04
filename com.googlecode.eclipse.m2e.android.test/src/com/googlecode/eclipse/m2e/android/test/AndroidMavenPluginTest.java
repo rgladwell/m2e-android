@@ -27,11 +27,12 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.maven.ide.eclipse.project.ResolverConfiguration;
 import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
 
+import com.android.ide.common.sdk.LoadStatus;
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
-import com.android.ide.eclipse.adt.internal.sdk.LoadStatus;
+import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.googlecode.eclipse.m2e.android.AndroidDevelopmentToolsProjectConfigurator;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
@@ -49,6 +50,8 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
     @Override
 	@SuppressWarnings("restriction")
     protected void setUp() throws Exception {
+	    super.setUp();
+
 	    adtPlugin = AdtPlugin.getDefault();
 	    String androidHome = System.getenv("ANDROID_HOME");
 	    
@@ -65,8 +68,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    		throw new Exception("failed to load ADT using SDK=["+androidHome+"] - check the ANDROID_HOME envar is correct.");
 	    	}
 	    }
-
-	    super.setUp();
     }
 
     public void testConfigureForAndroid3() throws Exception {
