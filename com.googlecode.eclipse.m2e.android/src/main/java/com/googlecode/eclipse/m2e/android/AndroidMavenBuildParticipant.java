@@ -47,6 +47,9 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
+		if(!AndroidMavenPluginUtil.isAndroidProject(getMavenProjectFacade().getMavenProject())) {
+			return null;
+		}
 		final IProject project = getMavenProjectFacade().getProject();
 		if(IncrementalProjectBuilder.AUTO_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind || IncrementalProjectBuilder.FULL_BUILD == kind) {
 			try{
