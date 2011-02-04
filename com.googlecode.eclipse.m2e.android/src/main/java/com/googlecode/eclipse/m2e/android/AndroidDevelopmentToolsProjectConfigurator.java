@@ -72,7 +72,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	@Override
     public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
 		if(execution.getGoal().equals("compile")) {
-			return new AndroidMavenBuildParticipant(execution);
+			return new AndroidMavenBuildParticipant();
 		}
 	    return super.getBuildParticipant(execution);
     }
