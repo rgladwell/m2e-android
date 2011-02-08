@@ -116,6 +116,10 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
+
+		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+			assertFalse("classpath contains reference to gen directory", entry.getPath().toOSString().contains("gen"));
+		}
 	}
 
 	/**
