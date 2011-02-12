@@ -10,8 +10,20 @@
 	</parent>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android</artifactId>
+	<name>Maven Integration for Android Development Tools Plug-in</name>
 	<version>0.2.5</version>
 	<packaging>eclipse-plugin</packaging>
+	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
+	<inceptionYear>2009</inceptionYear>
+	<scm>
+		<connection>http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/com.googlecode.eclipse.m2e.android</connection>
+		<developerConnection>https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/com.googlecode.eclipse.m2e.android</developerConnection>
+		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout</url>
+	</scm>
+	<organization>
+		<name>Eclipse Labs</name>
+		<url>https://code.google.com/a/eclipselabs.org/hosting/</url>
+	</organization>
 	<build>
 		<plugins>
 			<plugin>
