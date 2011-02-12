@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.update</artifactId>
-	<version>0.2.5</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>eclipse-update-site</packaging>
 	<scm>
 		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/com.googlecode.eclipse.m2e.android.update/</connection>
