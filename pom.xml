@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>m2eclipse-android-integration</artifactId>
@@ -11,14 +9,14 @@
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android</artifactId>
 	<name>Maven Integration for Android Development Tools Plug-in</name>
-	<version>0.2.5-SNAPSHOT</version>
+	<version>0.2.5</version>
 	<packaging>eclipse-plugin</packaging>
 	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
 	<inceptionYear>2009</inceptionYear>
 	<scm>
-		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/com.googlecode.eclipse.m2e.android</connection>
-		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/com.googlecode.eclipse.m2e.android</developerConnection>
-		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout</url>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android-0.2.5</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android-0.2.5</developerConnection>
+		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout/tags/com.googlecode.eclipse.m2e.android-0.2.5</url>
 	</scm>
 	<organization>
 		<name>Eclipse Labs</name>
