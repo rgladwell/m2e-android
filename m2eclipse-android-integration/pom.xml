@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>m2eclipse-android-integration</artifactId>
-	<version>0.2.5</version>
+	<version>0.2.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
 	<inceptionYear>2009</inceptionYear>
 	<scm>
-		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/m2eclipse-android-integration-0.2.5</connection>
-		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/m2eclipse-android-integration-0.2.5</developerConnection>
-		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout/tags/m2eclipse-android-integration-0.2.5</url>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</developerConnection>
+		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout</url>
 	</scm>
 	<organization>
 		<name>Eclipse Labs</name>
