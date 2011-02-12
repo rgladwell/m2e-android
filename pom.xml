@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>m2eclipse-android-integration</artifactId>
 		<groupId>com.googlecode.eclipse.m2e.android</groupId>
-		<version>0.2.5-SNAPSHOT</version>
+		<version>0.2.5</version>
 	</parent>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android</artifactId>
