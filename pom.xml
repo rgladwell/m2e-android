@@ -10,8 +10,8 @@
 		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
 	<inceptionYear>2009</inceptionYear>
 	<scm>
-		<connection>http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</connection>
-		<developerConnection>https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</developerConnection>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</developerConnection>
 		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout</url>
 	</scm>
 	<organization>
