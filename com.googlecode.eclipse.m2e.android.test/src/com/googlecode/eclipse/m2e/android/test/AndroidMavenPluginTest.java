@@ -44,6 +44,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	private static final String ANDROID_15_DEPS_PROJECT_NAME = "test-android-15-deps";
 	private static final String SIMPLE_PROJECT_NAME = "simple-project";
 	private static final String ISSUE_6_PROJECT_NAME = "issue-6";
+	private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
 
 	protected AdtPlugin adtPlugin;
 
@@ -76,6 +77,14 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		waitForJobsToComplete();
 
 		assertValidAndroidProject(project, ANDROID_15_PROJECT_NAME);
+	}
+
+    public void testConfigureForLibraryInAndroid9() throws Exception {
+		deleteProject(ANDROID_LIB_PROJECT_NAME);
+		IProject project = importProject("projects/" + ANDROID_LIB_PROJECT_NAME + "/pom.xml",  new ResolverConfiguration());
+		waitForJobsToComplete();
+
+		assertValidAndroidProject(project, ANDROID_LIB_PROJECT_NAME);
 	}
 
 	public void testBuildForAndroid3() throws Exception {
