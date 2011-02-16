@@ -9,6 +9,8 @@
 package com.googlecode.eclipse.m2e.android;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
@@ -22,7 +24,7 @@ import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 public class AndroidMavenPluginUtil {
 
 	private static final String ANDROID_CLASSES_FOLDER = "android-classes";
-	private static final String ANDROID_PACKAGE_TYPE = "apk";
+	private static final List<String> ANDROID_PACKAGE_TYPES = Arrays.asList("apk", "apklib");
 
 	public final static File getApkFile(IProject project) throws JavaModelException {
 		IJavaProject javaProject = JavaCore.create(project);
@@ -31,7 +33,7 @@ public class AndroidMavenPluginUtil {
 	}
 
 	public static boolean isAndroidProject(MavenProject mavenProject) {
-		return mavenProject.getPackaging().equalsIgnoreCase(ANDROID_PACKAGE_TYPE);
+		return ANDROID_PACKAGE_TYPES.contains(mavenProject.getPackaging().toLowerCase());
 	}
 
 	public static IPath getAndroidClassesOutputFolder(IJavaProject javaProject) {
