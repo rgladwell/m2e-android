@@ -4,7 +4,7 @@
 	<groupId>com.example.android.tictactoe</groupId>
 	<artifactId>apklib-project</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>apklib</packaging>
 	<name>Tic Tac Toe library</name>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
