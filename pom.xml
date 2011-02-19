@@ -14,8 +14,8 @@
 		<url>https://code.google.com/a/eclipselabs.org/hosting/</url>
 	</organization>
 	<scm>
-		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho/</connection>
-		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho/</developerConnection>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</developerConnection>
 		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout</url>
 	</scm>
 	<properties>
@@ -89,11 +89,6 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.1</version>
 			</plugin>
 		</plugins>
 	</build>
