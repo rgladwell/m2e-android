@@ -16,7 +16,7 @@
 	<scm>
 		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</connection>
 		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</developerConnection>
-		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout</url>
+		<url>http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</url>
 	</scm>
 	<properties>
 		<tycho-version>0.10.0</tycho-version>
