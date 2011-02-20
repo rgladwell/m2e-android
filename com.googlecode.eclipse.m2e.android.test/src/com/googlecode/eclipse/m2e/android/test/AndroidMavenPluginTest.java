@@ -156,7 +156,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    out.close();
 
 		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
-		buildAndroidProject(project, IncrementalProjectBuilder.AUTO_BUILD);
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
 		long second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 

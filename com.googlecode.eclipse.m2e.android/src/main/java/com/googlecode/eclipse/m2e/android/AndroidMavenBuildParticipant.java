@@ -44,7 +44,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 			return null;
 		}
 		final IProject project = getMavenProjectFacade().getProject();
-		if(IncrementalProjectBuilder.AUTO_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind || IncrementalProjectBuilder.FULL_BUILD == kind) {
+		if(IncrementalProjectBuilder.CLEAN_BUILD == kind || IncrementalProjectBuilder.FULL_BUILD == kind) {
 			try{
 				MavenPlugin plugin = MavenPlugin.getDefault();
 				MavenProjectManager projectManager = plugin.getMavenProjectManager();
