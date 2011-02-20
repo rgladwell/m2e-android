@@ -9,9 +9,9 @@
 	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
 	<inceptionYear>2009</inceptionYear>
 	<scm>
-		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/com.googlecode.eclipse.m2e.android</connection>
-		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/com.googlecode.eclipse.m2e.android</developerConnection>
-		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/source/checkout</url>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android.feature-0.2.4-tycho</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android.feature-0.2.4-tycho</developerConnection>
+		<url>https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android.feature-0.2.4-tycho</url>
 	</scm>
 	<organization>
 		<name>Eclipse Labs</name>
