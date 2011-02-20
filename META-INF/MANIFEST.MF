@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maven Integration for Android Development Tools
 Bundle-SymbolicName: com.googlecode.eclipse.m2e.android;singleton:=true
-Bundle-Version: 0.2.4.qualifier
+Bundle-Version: 0.2.4
 Bundle-Activator: com.googlecode.eclipse.m2e.android.AndroidMavenPlugin
 Bundle-Vendor: Google Code
 Require-Bundle: org.eclipse.core.runtime,
