@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/sdk-common.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.googlecode.eclipse.m2e.android"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

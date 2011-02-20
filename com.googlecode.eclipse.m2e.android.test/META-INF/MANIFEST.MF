@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maven Integration for Android Development Tools Tests
 Bundle-SymbolicName: com.googlecode.eclipse.m2e.android.test;singleton:=true
-Bundle-Version: 0.2.5
+Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: com.googlecode.eclipse.m2e.android.test.Activator
 Bundle-Vendor: Google Code
 Require-Bundle: org.eclipse.ui,
@@ -18,6 +18,5 @@ Require-Bundle: org.eclipse.ui,
  com.android.ide.eclipse.adt;bundle-version="0.9.9",
  org.junit;bundle-version="3.8.2",
  com.googlecode.eclipse.m2e.android;bundle-version="0.3.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: com.googlecode.eclipse.m2e.android.test
