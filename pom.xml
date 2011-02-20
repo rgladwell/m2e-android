@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.feature</artifactId>
-	<version>0.2.5-SNAPSHOT</version>
+	<version>0.2.4-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 	<name>Maven Integration for Android Development Tools Plug-in</name>
 	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
