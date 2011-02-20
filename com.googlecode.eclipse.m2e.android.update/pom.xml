@@ -11,4 +11,15 @@
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.update</artifactId>
 	<packaging>eclipse-update-site</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<configuration>
+					<allowConflictingDependencies>true</allowConflictingDependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

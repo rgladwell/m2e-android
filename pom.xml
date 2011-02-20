@@ -57,6 +57,11 @@
 			<!--url>http://dl-ssl.google.com/android/eclipse/</url -->
 			<url>http://g2.dahanne.net/android-p2repo/</url>
 		</repository>
+		<repository>
+			<id>m2eclipse-android-integration</id>
+			<layout>p2</layout>
+			<url>https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/m2eclipse-android-integration/</url>
+		</repository>
 	</repositories>
 	<modules>
 		<module>com.googlecode.eclipse.m2e.android</module>
