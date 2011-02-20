@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android</artifactId>
-	<version>0.2.4-SNAPSHOT</version>
+	<version>0.2.4</version>
 	<name>Maven Integration for Android Development Tools Plug-in</name>
 	<packaging>eclipse-plugin</packaging>
 	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
@@ -14,9 +13,9 @@
 		<url>https://code.google.com/a/eclipselabs.org/hosting/</url>
 	</organization>
 	<scm>
-		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</connection>
-		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</developerConnection>
-		<url>http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android-0.2.4-tycho</url>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android-0.2.4</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android-0.2.4</developerConnection>
+		<url>http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android-0.2.4</url>
 	</scm>
 	<properties>
 		<tycho-version>0.10.0</tycho-version>
