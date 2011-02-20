@@ -3,15 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.feature</artifactId>
-	<version>0.2.4</version>
+	<version>0.2.5-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 	<name>Maven Integration for Android Development Tools Plug-in</name>
 	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
 	<inceptionYear>2009</inceptionYear>
 	<scm>
-		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android.feature-0.2.4</connection>
-		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android.feature-0.2.4</developerConnection>
-		<url>https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/tags/com.googlecode.eclipse.m2e.android.feature-0.2.4</url>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android.feature-0.2.4-tycho</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android.feature-0.2.4-tycho</developerConnection>
+		<url>https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/branches/com.googlecode.eclipse.m2e.android.feature-0.2.4-tycho</url>
 	</scm>
 	<organization>
 		<name>Eclipse Labs</name>
