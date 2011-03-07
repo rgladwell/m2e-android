@@ -40,7 +40,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
-		if(!AndroidMavenPluginUtil.isAndroidProject(getMavenProjectFacade().getMavenProject())) {
+		if(AndroidMavenPluginUtil.getAndroidProjectType(getMavenProjectFacade().getMavenProject()) == null) {
 			return null;
 		}
 		final IProject project = getMavenProjectFacade().getProject();

@@ -20,20 +20,27 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
+import com.googlecode.eclipse.m2e.android.model.AndroidProjectType;
 
 public class AndroidMavenPluginUtil {
 
         private static final String ANDROID_CLASSES_FOLDER = "android-classes";
-        private static final List<String> ANDROID_PACKAGE_TYPES = Arrays.asList("apk", "apklib");
+        private static final String ANDROID_PACKAGE_TYPE = "apk";
+        private static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
 
         public final static File getApkFile(IProject project) throws JavaModelException {
-                IJavaProject javaProject = JavaCore.create(project);
-                File outputFolder = project.getWorkspace().getRoot().getFolder(javaProject.getOutputLocation()).getLocation().toFile();
-                return new File(outputFolder, ProjectHelper.getApkFilename(project, null));
+        	IJavaProject javaProject = JavaCore.create(project);
+        	File outputFolder = project.getWorkspace().getRoot().getFolder(javaProject.getOutputLocation()).getLocation().toFile();
+        	return new File(outputFolder, ProjectHelper.getApkFilename(project, null));
         }
 
-        public static boolean isAndroidProject(MavenProject mavenProject) {
-                return ANDROID_PACKAGE_TYPES.contains(mavenProject.getPackaging().toLowerCase());
+        public static AndroidProjectType getAndroidProjectType(MavenProject mavenProject) {
+        	if(ANDROID_PACKAGE_TYPE.equals(mavenProject.getPackaging().toLowerCase())) {
+        		return AndroidProjectType.AndroidApp;
+        	} else if(ANDROID_LIBRARY_PACKAGE_TYPE.equals(mavenProject.getPackaging().toLowerCase())) {
+        		return AndroidProjectType.AndroidLibrary;
+        	}
+        	return null;
         }
 
         public static IPath getAndroidClassesOutputFolder(IJavaProject javaProject) {

@@ -29,6 +29,7 @@ import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
+import com.googlecode.eclipse.m2e.android.model.AndroidProjectType;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
@@ -37,7 +38,8 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		if (AndroidMavenPluginUtil.isAndroidProject(request.getMavenProject())) {
+		AndroidProjectType type = AndroidMavenPluginUtil.getAndroidProjectType(request.getMavenProject());
+		if (type != null) {
 			IProject project = request.getProject();
 
 			if (!project.hasNature(AndroidConstants.NATURE_DEFAULT)) {
