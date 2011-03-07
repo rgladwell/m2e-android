@@ -9,6 +9,8 @@
 package com.googlecode.eclipse.m2e.android;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
@@ -21,21 +23,21 @@ import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 
 public class AndroidMavenPluginUtil {
 
-	private static final String ANDROID_CLASSES_FOLDER = "android-classes";
-	private static final String ANDROID_PACKAGE_TYPE = "apk";
+        private static final String ANDROID_CLASSES_FOLDER = "android-classes";
+        private static final List<String> ANDROID_PACKAGE_TYPES = Arrays.asList("apk", "apklib");
 
-	public final static File getApkFile(IProject project) throws JavaModelException {
-		IJavaProject javaProject = JavaCore.create(project);
-		File outputFolder = project.getWorkspace().getRoot().getFolder(javaProject.getOutputLocation()).getLocation().toFile();
-		return new File(outputFolder, ProjectHelper.getApkFilename(project, null));
-	}
+        public final static File getApkFile(IProject project) throws JavaModelException {
+                IJavaProject javaProject = JavaCore.create(project);
+                File outputFolder = project.getWorkspace().getRoot().getFolder(javaProject.getOutputLocation()).getLocation().toFile();
+                return new File(outputFolder, ProjectHelper.getApkFilename(project, null));
+        }
 
-	public static boolean isAndroidProject(MavenProject mavenProject) {
-		return mavenProject.getPackaging().equalsIgnoreCase(ANDROID_PACKAGE_TYPE);
-	}
+        public static boolean isAndroidProject(MavenProject mavenProject) {
+                return ANDROID_PACKAGE_TYPES.contains(mavenProject.getPackaging().toLowerCase());
+        }
 
-	public static IPath getAndroidClassesOutputFolder(IJavaProject javaProject) {
-	    return javaProject.getPath().append("target").append(ANDROID_CLASSES_FOLDER);
+        public static IPath getAndroidClassesOutputFolder(IJavaProject javaProject) {
+            return javaProject.getPath().append("target").append(ANDROID_CLASSES_FOLDER);
     }
 
 }

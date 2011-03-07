@@ -10,10 +10,15 @@ package com.googlecode.eclipse.m2e.android.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
 
 import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.ICommand;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
@@ -44,6 +49,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	private static final String ANDROID_15_DEPS_PROJECT_NAME = "test-android-15-deps";
 	private static final String SIMPLE_PROJECT_NAME = "simple-project";
 	private static final String ISSUE_6_PROJECT_NAME = "issue-6";
+    private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
 
 	protected AdtPlugin adtPlugin;
 
@@ -78,7 +84,16 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		assertValidAndroidProject(project, ANDROID_15_PROJECT_NAME);
 	}
 
-	public void testBuildForAndroid3() throws Exception {
+    public void testConfigureForLibraryInAndroid9() throws Exception {
+		deleteProject(ANDROID_LIB_PROJECT_NAME);
+		IProject project = importProject("projects/" + ANDROID_LIB_PROJECT_NAME + "/pom.xml",  new ResolverConfiguration());
+		waitForJobsToComplete();
+
+		assertValidAndroidProject(project, ANDROID_LIB_PROJECT_NAME);
+		assertDefaultPropertiesContains(project, "android.library", "true");
+	}
+
+    public void testBuildForAndroid3() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
 		waitForJobsToComplete();
@@ -215,6 +230,16 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		}
 
 		assertNoErrors(project);
+    }
+
+	private void assertDefaultPropertiesContains(IProject project, String key, String value) throws IOException {
+	    Properties properties = new Properties();
+	    IFile defaultProperties = project.getFile("default.properties");
+	    FileReader reader = new FileReader(new File(defaultProperties.getRawLocation().toOSString()));
+	    properties.load(reader);
+	    reader.close();
+	    assertTrue("no such value", properties.containsKey(key));
+	    assertEquals("incorrect value", value, properties.get(key));
     }
 
 	public final static boolean containsApkBuildCommand(IProject project) throws CoreException {
