@@ -29,6 +29,8 @@ import org.maven.ide.eclipse.project.configurator.AbstractProjectConfigurator;
 import org.maven.ide.eclipse.project.configurator.ProjectConfigurationRequest;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
+import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
+import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.googlecode.eclipse.m2e.android.model.AndroidProjectType;
 
 public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
@@ -62,6 +64,11 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 			IJavaProject javaProject = JavaCore.create(project);
 			// set output location to target/android-classes so APK blob is not including in APK resources
 			javaProject.setOutputLocation(AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), monitor);
+
+			ProjectState state = Sdk.getProjectState(project);
+			if(type == AndroidProjectType.AndroidLibrary && !state.isLibrary()) {
+				state.reloadProperties();
+			}
 		}
 	}
 
@@ -84,7 +91,9 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 	    if(!classpath.containsPath(genPath)) {
 	    	final File genFolder = genPath.toFile();
 	    	if(!genFolder.exists()) {
-	    		genFolder.mkdirs();
+	    		if(!genFolder.mkdirs()) {
+	    			// TODO throw exception
+	    		}
 	    	}
 
 	    	classpath.addSourceEntry(genPath, AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), true);
