@@ -8,17 +8,24 @@
 
 package com.googlecode.eclipse.m2e.android;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.ICommand;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.maven.ide.eclipse.jdt.IClasspathDescriptor;
@@ -67,6 +74,25 @@ public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectC
 
 			ProjectState state = Sdk.getProjectState(project);
 			if(type == AndroidProjectType.AndroidLibrary && !state.isLibrary()) {
+			    IFile defaultProperties = project.getFile("default.properties");
+			    BufferedWriter writer = null;
+			    try {
+			    	writer = new BufferedWriter( new FileWriter(new File(defaultProperties.getRawLocation().toOSString())) );
+			    	writer.newLine();
+					writer.append("android.library=true");
+				} catch (FileNotFoundException e) {
+					throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "cannot find default.propertie file", e));
+				} catch (IOException e) {
+					throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "cannot read default.propertie file", e));
+				} finally {
+					if(writer != null) {
+						try {
+							writer.close();
+						} catch (IOException e) {
+							throw new CoreException(new Status(IStatus.WARNING, AndroidMavenPlugin.PLUGIN_ID, "error closing file", e));
+						}
+					}
+				}
 				state.reloadProperties();
 			}
 		}

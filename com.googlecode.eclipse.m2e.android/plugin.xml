@@ -13,6 +13,10 @@
             id="com.googlecode.eclipse.m2e.android"
             lifecycleMappingId="com.googlecode.eclipse.m2e.android.androidDevelopmentToolsLifecycleMapping"
             packaging="apk"/>
+      <defaultLifecycleMapping
+            id="com.googlecode.eclipse.m2e.android.library"
+            lifecycleMappingId="com.googlecode.eclipse.m2e.android.androidDevelopmentToolsLifecycleMapping"
+            packaging="apklib"/>
    </extension>
     <extension point="org.maven.ide.eclipse.projectConfigurators">
         <configurator

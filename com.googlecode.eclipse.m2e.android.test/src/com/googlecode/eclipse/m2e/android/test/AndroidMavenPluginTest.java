@@ -10,15 +10,10 @@ package com.googlecode.eclipse.m2e.android.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Properties;
 
 import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.ICommand;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceDescription;
@@ -90,7 +85,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		waitForJobsToComplete();
 
 		assertValidAndroidProject(project, ANDROID_LIB_PROJECT_NAME);
-		assertDefaultPropertiesContains(project, "android.library", "true");
+		assertTrue(Sdk.getProjectState(project).isLibrary());
 	}
 
     public void testBuildForAndroid3() throws Exception {
@@ -230,16 +225,6 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 		}
 
 		assertNoErrors(project);
-    }
-
-	private void assertDefaultPropertiesContains(IProject project, String key, String value) throws IOException {
-	    Properties properties = new Properties();
-	    IFile defaultProperties = project.getFile("default.properties");
-	    FileReader reader = new FileReader(new File(defaultProperties.getRawLocation().toOSString()));
-	    properties.load(reader);
-	    reader.close();
-	    assertTrue("no such value", properties.containsKey(key));
-	    assertEquals("incorrect value", value, properties.get(key));
     }
 
 	public final static boolean containsApkBuildCommand(IProject project) throws CoreException {
