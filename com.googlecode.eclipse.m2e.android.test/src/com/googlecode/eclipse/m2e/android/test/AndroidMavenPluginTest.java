@@ -47,6 +47,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
     private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
 
 	protected AdtPlugin adtPlugin;
+//	DexInfoService dexInfoService;
 
     @Override
 	@SuppressWarnings("restriction")
@@ -203,6 +204,16 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 			assertTrue("auto build looping more than 3 times", builds <= MAX_AUTO_BUILD_LOOPS);
 		}
 	}
+
+//    public void testNotBuildingOnIncrementalBuild() throws Exception {
+//		deleteProject(ANDROID_15_PROJECT_NAME);
+//		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+//		waitForJobsToComplete();
+//
+//		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
+//
+//		assertTrue("destination apk built on incremental only build", !AndroidMavenPluginUtil.getApkFile(project).exists());
+//	}
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
 	    try {
