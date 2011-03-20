@@ -68,6 +68,7 @@
 		<module>com.googlecode.eclipse.m2e.android.feature</module>
 		<!-- module>com.googlecode.eclipse.m2e.android.test</module-->
 		<module>com.googlecode.eclipse.m2e.android.update</module>
+		<module>com.github.android.tools</module>
 	</modules>
 	<build>
 		<plugins>

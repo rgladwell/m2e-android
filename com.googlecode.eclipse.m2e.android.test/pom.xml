@@ -11,4 +11,12 @@
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
+	<!-- dependencies>
+		<dependency>
+			<groupId>com.github</groupId>
+			<artifactId>com.github.android.tools</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+			<type>bundle</type>
+		</dependency>
+	</dependencies -->
 </project>

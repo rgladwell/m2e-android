@@ -24,8 +24,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.maven.ide.eclipse.project.ResolverConfiguration;
-import org.maven.ide.eclipse.tests.common.AbstractMavenProjectTestCase;
+import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 
 import com.android.ide.common.sdk.LoadStatus;
 import com.android.ide.eclipse.adt.AdtPlugin;
@@ -33,6 +32,9 @@ import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+//import com.github.android.tools.ClassDescriptor;
+//import com.github.android.tools.CommandLineAndroidTools;
+//import com.github.android.tools.DexService;
 import com.googlecode.eclipse.m2e.android.AndroidDevelopmentToolsProjectConfigurator;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
@@ -47,7 +49,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
     private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
 
 	protected AdtPlugin adtPlugin;
-//	DexInfoService dexInfoService;
+//	DexService dexInfoService;
 
     @Override
 	@SuppressWarnings("restriction")
@@ -70,11 +72,13 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    		throw new Exception("failed to load ADT using SDK=["+androidHome+"] - check the ANDROID_HOME envar is correct.");
 	    	}
 	    }
+	    
+//	    dexInfoService = new CommandLineAndroidTools();
     }
 
     public void testConfigureForAndroid3() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
-		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
 		assertValidAndroidProject(project, ANDROID_15_PROJECT_NAME);
@@ -82,7 +86,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
     public void testConfigureForLibraryInAndroid9() throws Exception {
 		deleteProject(ANDROID_LIB_PROJECT_NAME);
-		IProject project = importProject("projects/" + ANDROID_LIB_PROJECT_NAME + "/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/" + ANDROID_LIB_PROJECT_NAME + "/pom.xml");
 		waitForJobsToComplete();
 
 		assertValidAndroidProject(project, ANDROID_LIB_PROJECT_NAME);
@@ -91,7 +95,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
     public void testBuildForAndroid3() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
-		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
@@ -101,7 +105,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
 	public void testConfigureForAndroid3WithDependencies() throws Exception {
 		deleteProject(ANDROID_15_DEPS_PROJECT_NAME);
-		IProject project = importProject("projects/"+ANDROID_15_DEPS_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+ANDROID_15_DEPS_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
 		assertValidAndroidProject(project, ANDROID_15_DEPS_PROJECT_NAME);
@@ -109,19 +113,21 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
 	public void testBuildForAndroid3WithDependencies() throws Exception {
 		deleteProject(ANDROID_15_DEPS_PROJECT_NAME);
-		IProject project = importProject("projects/"+ANDROID_15_DEPS_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+ANDROID_15_DEPS_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
-		
-		// TODO assert dependency classes and resources got added to project APK
+
+//		ClassDescriptor stringUtilsClass = new ClassDescriptor();
+//		stringUtilsClass.setType("org.apache.commons.lang.StringUtils");
+//		assertTrue(dexInfoService.getDexInfo(project.getFullPath().append("target").append("classes.dex").toFile()).getClassDescriptors().contains(stringUtilsClass));
 	}
 
 	public void testConfigureNonAndroidProject() throws Exception {
 		deleteProject(SIMPLE_PROJECT_NAME);
-		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
 	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
@@ -140,7 +146,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	 */
 	public void testBuildNonAndroidProject() throws Exception {
 		deleteProject(SIMPLE_PROJECT_NAME);
-		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 		File file = new File(project.getLocation().toFile(), "/target/simple-project-1.0-SNAPSHOT.jar");		
 
@@ -153,7 +159,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 
 	public void testBuildOverwritesExistingApk() throws Exception {
 		deleteProject(ANDROID_15_PROJECT_NAME);
-		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
@@ -184,7 +190,7 @@ public class AndroidMavenPluginTest extends AbstractMavenProjectTestCase {
 	    workspace.setDescription(description);
 
 		deleteProject(ISSUE_6_PROJECT_NAME);
-		IProject project = importProject("projects/"+ISSUE_6_PROJECT_NAME+"/pom.xml",  new ResolverConfiguration());
+		IProject project = importProject("projects/"+ISSUE_6_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
