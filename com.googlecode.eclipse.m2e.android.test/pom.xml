@@ -8,7 +8,6 @@
 		<groupId>com.googlecode.eclipse.m2e.android</groupId>
 		<version>0.3.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<!-- dependencies>

@@ -6,8 +6,6 @@
 		<groupId>com.googlecode.eclipse.m2e.android</groupId>
 		<version>0.3.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>com.googlecode.eclipse.m2e.android.feature</artifactId>
-	<version>0.3.0-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 </project>
