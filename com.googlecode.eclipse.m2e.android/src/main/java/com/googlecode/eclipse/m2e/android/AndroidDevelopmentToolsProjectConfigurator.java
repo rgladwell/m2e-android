@@ -32,19 +32,21 @@ import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
+import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.googlecode.eclipse.m2e.android.model.AndroidProjectType;
 
-public class AndroidDevelopmentToolsProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
+public class AndroidDevelopmentToolsProjectConfigurator extends JavaProjectConfigurator implements IJavaProjectConfigurator {
 
 	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 	private static final String ANDROID_GEN_PATH = "gen";
 
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
+		super.configure(request, monitor);
 		AndroidProjectType type = AndroidMavenPluginUtil.getAndroidProjectType(request.getMavenProject());
 		if (type != null) {
 			IProject project = request.getProject();

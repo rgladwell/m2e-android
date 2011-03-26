@@ -21,20 +21,20 @@
 				</configurator>
 			</action>
 		</pluginExecution>
+		<pluginExecution>
+			<pluginExecutionFilter>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<versionRange>[2.0,)</versionRange>
+				<goals>
+					<goal>jar</goal>
+				</goals>
+			</pluginExecutionFilter>
+			<action>
+				<configurator>
+					<id>org.sonatype.m2e.mavenarchiver.pomProperties</id>
+				</configurator>
+			</action>
+		</pluginExecution>
 	</pluginExecutions>
-	<pluginExecution>
-		<pluginExecutionFilter>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-jar-plugin</artifactId>
-			<versionRange>[2.0,)</versionRange>
-			<goals>
-				<goal>jar</goal>
-			</goals>
-		</pluginExecutionFilter>
-		<action>
-			<configurator>
-				<id>org.sonatype.m2e.mavenarchiver.pomProperties</id>
-			</configurator>
-		</action>
-	</pluginExecution>
 </lifecycleMappingMetadata>
