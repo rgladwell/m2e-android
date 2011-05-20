@@ -67,10 +67,6 @@ public class AndroidDevelopmentToolsProjectConfigurator extends JavaProjectConfi
 			description.setBuildSpec(buildSpec);
 			project.setDescription(description, monitor);
 
-			IJavaProject javaProject = JavaCore.create(project);
-			// set output location to target/android-classes so APK blob is not including in APK resources
-			javaProject.setOutputLocation(AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), monitor);
-
 			ProjectState state = Sdk.getProjectState(project);
 			if(type == AndroidProjectType.AndroidLibrary && !state.isLibrary()) {
 			    IFile defaultProperties = project.getFile("default.properties");
@@ -106,6 +102,9 @@ public class AndroidDevelopmentToolsProjectConfigurator extends JavaProjectConfi
 //    }
 
 	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
+		IJavaProject javaProject = JavaCore.create(facade.getProject());
+		// set output location to target/android-classes so APK blob is not including in APK resources
+		javaProject.setOutputLocation(AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), monitor);
     }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
