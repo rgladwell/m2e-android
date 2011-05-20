@@ -25,10 +25,11 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.m2e.core.MavenPlugin;
-import org.eclipse.m2e.core.core.IMavenConstants;
 import org.eclipse.m2e.core.embedder.IMaven;
+import org.eclipse.m2e.core.internal.IMavenConstants;
+import org.eclipse.m2e.core.internal.MavenPluginActivator;
+import org.eclipse.m2e.core.internal.project.registry.MavenProjectManager;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
-import org.eclipse.m2e.core.project.MavenProjectManager;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 
@@ -46,7 +47,7 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 		final IProject project = getMavenProjectFacade().getProject();
 		if(IncrementalProjectBuilder.CLEAN_BUILD == kind || IncrementalProjectBuilder.FULL_BUILD == kind) {
 			try{
-				MavenPlugin plugin = MavenPlugin.getDefault();
+				MavenPluginActivator plugin = MavenPluginActivator.getDefault();
 				MavenProjectManager projectManager = plugin.getMavenProjectManager();
 				IMaven maven = plugin.getMaven();
 				IFile pom = project.getFile(new Path(IMavenConstants.POM_FILE_NAME));
