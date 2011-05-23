@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -27,7 +28,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
+import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
@@ -93,19 +96,19 @@ public class AndroidDevelopmentToolsProjectConfigurator extends JavaProjectConfi
 		}
 	}
 
-//	@Override
-//    public AbstractBuildParticipant getBuildParticipant(MojoExecution execution) {
-//		if(execution.getGoal().equals("compile")) {
-//			return new AndroidMavenBuildParticipant();
-//		}
-//	    return super.getBuildParticipant(execution);
-//    }
-
 	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		IJavaProject javaProject = JavaCore.create(facade.getProject());
 		// set output location to target/android-classes so APK blob is not including in APK resources
 		javaProject.setOutputLocation(AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), monitor);
     }
+
+	@Override
+	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
+		if(execution.getGoal().equals("generate-sources")) {
+			return new AndroidMavenBuildParticipant();
+		}
+		return super.getBuildParticipant(projectFacade, execution, executionMetadata);
+	}
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
 		IJavaProject javaProject = JavaCore.create(request.getProject());
