@@ -9,12 +9,6 @@
 				<goals>
 					<goal>generate-sources</goal>
 					<goal>unpack</goal>
-					<!-- goal>process-classes</goal -->
-					<!-- goal>compile</goal>
-					<goal>package</goal>
-					<goal>process-resources</goal>
-					<goal>unpack</goal>
-					<goal>generate-sources</goal-->
 				</goals>
 			</pluginExecutionFilter>
 			<action>
