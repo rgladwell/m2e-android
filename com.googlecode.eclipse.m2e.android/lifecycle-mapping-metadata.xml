@@ -7,11 +7,14 @@
 				<artifactId>maven-android-plugin</artifactId>
 				<versionRange>[2.6.0,)</versionRange>
 				<goals>
-					<goal>compile</goal>
+					<goal>generate-sources</goal>
+					<goal>unpack</goal>
+					<!-- goal>process-classes</goal -->
+					<!-- goal>compile</goal>
 					<goal>package</goal>
 					<goal>process-resources</goal>
 					<goal>unpack</goal>
-					<goal>generate-sources</goal>
+					<goal>generate-sources</goal-->
 				</goals>
 			</pluginExecutionFilter>
 			<action>
