@@ -20,7 +20,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
-import com.googlecode.eclipse.m2e.android.model.AndroidProjectType;
+import com.googlecode.eclipse.m2e.android.model.ProjectType;
 
 public class AndroidMavenPluginUtil {
 
@@ -34,12 +34,12 @@ public class AndroidMavenPluginUtil {
 		return new File(outputFolder, ProjectHelper.getApkFilename(project, null));
 	}
 
-	public static AndroidProjectType getAndroidProjectType( MavenProject mavenProject) {
+	public static ProjectType getAndroidProjectType( MavenProject mavenProject) {
 		String packaging = mavenProject.getPackaging().toLowerCase();
 		if (ANDROID_PACKAGE_TYPE.equals(packaging)) {
-			return AndroidProjectType.AndroidApp;
+			return ProjectType.Application;
 		} else if (ANDROID_LIBRARY_PACKAGE_TYPE.equals(packaging)) {
-			return AndroidProjectType.AndroidLibrary;
+			return ProjectType.Library;
 		}
 		return null;
 	}

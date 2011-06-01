@@ -75,13 +75,13 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	public void testBuildAddedDependenciesToAPK() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		DexInfo dexInfo = dexInfoService.getDexInfo(project.getLocation().append("target").append("classes.dex").toFile());
+		DexInfo dexInfo = dexInfoService.getDexInfo(AndroidMavenPluginUtil.getApkFile(project));
 		PackageInfo packageInfo = new PackageInfo();
 		packageInfo.setName("org.apache.commons.lang");
 		ClassDescriptor stringUtils = new ClassDescriptor();
 		stringUtils.setName("StringUtils");
 		stringUtils.setPackageInfo(packageInfo);
-		assertTrue("org.apache.commons.lang.StringUtils from external dep not found in dex file", dexInfo.getClassDescriptors().contains(stringUtils));
+		assertTrue("external dep class=["+stringUtils+"] not found in file=["+AndroidMavenPluginUtil.getApkFile(project)+"]", dexInfo.getClassDescriptors().contains(stringUtils));
 	}
 
 	public void testBuildOverwritesExistingApk() throws Exception {

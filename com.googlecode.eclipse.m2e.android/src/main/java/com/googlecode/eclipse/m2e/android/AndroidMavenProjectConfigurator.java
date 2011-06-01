@@ -39,9 +39,9 @@ import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
-import com.googlecode.eclipse.m2e.android.model.AndroidProjectType;
+import com.googlecode.eclipse.m2e.android.model.ProjectType;
 
-public class AndroidDevelopmentToolsProjectConfigurator extends JavaProjectConfigurator implements IJavaProjectConfigurator {
+public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator implements IJavaProjectConfigurator {
 
 	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 	private static final String ANDROID_GEN_PATH = "gen";
@@ -49,7 +49,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends JavaProjectConfi
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
 		super.configure(request, monitor);
-		AndroidProjectType type = AndroidMavenPluginUtil.getAndroidProjectType(request.getMavenProject());
+		ProjectType type = AndroidMavenPluginUtil.getAndroidProjectType(request.getMavenProject());
 		if (type != null) {
 			IProject project = request.getProject();
 
@@ -71,7 +71,7 @@ public class AndroidDevelopmentToolsProjectConfigurator extends JavaProjectConfi
 			project.setDescription(description, monitor);
 
 			ProjectState state = Sdk.getProjectState(project);
-			if(type == AndroidProjectType.AndroidLibrary && !state.isLibrary()) {
+			if(type == ProjectType.Library && !state.isLibrary()) {
 			    IFile defaultProperties = project.getFile("default.properties");
 			    BufferedWriter writer = null;
 			    try {

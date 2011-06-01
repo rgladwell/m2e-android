@@ -17,10 +17,7 @@ import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import com.android.ide.common.sdk.LoadStatus;
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
-//import com.github.android.tools.ClassDescriptor;
-//import com.github.android.tools.CommandLineAndroidTools;
-//import com.github.android.tools.DexService;
-import com.googlecode.eclipse.m2e.android.AndroidDevelopmentToolsProjectConfigurator;
+import com.googlecode.eclipse.m2e.android.AndroidMavenProjectConfigurator;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
@@ -62,7 +59,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	protected final static boolean containsApkBuildCommand(IProject project) throws CoreException {
 		for(ICommand command : project.getDescription().getBuildSpec()) {
-			if(AndroidDevelopmentToolsProjectConfigurator.APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
+			if(AndroidMavenProjectConfigurator.APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
 				return true;
 			}
 		}

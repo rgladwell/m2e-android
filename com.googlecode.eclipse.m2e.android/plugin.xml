@@ -4,7 +4,7 @@
     <extension
           point="org.eclipse.m2e.core.projectConfigurators">
        <configurator
-             class="com.googlecode.eclipse.m2e.android.AndroidDevelopmentToolsProjectConfigurator"
+             class="com.googlecode.eclipse.m2e.android.ADTProjectConfigurator"
              id="com.googlecode.eclipse.m2e.android.androidDevelopmentToolsProjectConfigurator"
              name="Android Development Tools Project Configurator">
        </configurator>
