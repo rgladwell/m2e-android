@@ -58,4 +58,9 @@ public class ClassDescriptor {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "ClassDescriptor [" + packageInfo.getName() + "." + name + "]";
+	}
+
 }
