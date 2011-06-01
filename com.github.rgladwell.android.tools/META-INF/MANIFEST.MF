@@ -4,7 +4,11 @@ Bundle-Name: Tools
 Bundle-SymbolicName: com.github.android.tools
 Bundle-Version: 0.1.0.SNAPSHOT
 Bundle-Vendor: Github
-Export-Package: com.github.android.tools
+Export-Package: com.github.android.tools,
+ com.github.android.tools.model
 Require-Bundle: org.eclipse.m2e.maven.runtime;bundle-version="0.13.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
+Import-Package: javax.xml.bind,
+ javax.xml.bind.annotation,
+ javax.xml.bind.annotation.adapters

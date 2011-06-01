@@ -13,9 +13,11 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
-import com.github.android.tools.ClassDescriptor;
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
+import com.github.android.tools.model.ClassDescriptor;
+import com.github.android.tools.model.DexInfo;
+import com.github.android.tools.model.PackageInfo;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 /**
@@ -71,13 +73,15 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 	
 	public void testBuildAddedDependenciesToAPK() throws Exception {
-		// TODO implement
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		ClassDescriptor stringUtilsClass = new ClassDescriptor();
-		stringUtilsClass.setType("org.apache.commons.lang.StringUtils");
-		IPath dex = project.getLocation().append("target").append("classes.dex");
-		assertTrue(dexInfoService.getDexInfo(dex.toFile()).getClassDescriptors().contains(stringUtilsClass));
+		DexInfo dexInfo = dexInfoService.getDexInfo(project.getLocation().append("target").append("classes.dex").toFile());
+		PackageInfo packageInfo = new PackageInfo();
+		packageInfo.setName("org.apache.commons.lang");
+		ClassDescriptor stringUtils = new ClassDescriptor();
+		stringUtils.setName("StringUtils");
+		stringUtils.setPackageInfo(packageInfo);
+		assertTrue("org.apache.commons.lang.StringUtils from external dep not found in dex file", dexInfo.getClassDescriptors().contains(stringUtils));
 	}
 
 	public void testBuildOverwritesExistingApk() throws Exception {
