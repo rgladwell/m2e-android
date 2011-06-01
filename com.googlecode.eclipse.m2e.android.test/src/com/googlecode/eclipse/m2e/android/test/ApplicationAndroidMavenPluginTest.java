@@ -7,11 +7,15 @@ import java.io.FileWriter;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
+import com.github.android.tools.ClassDescriptor;
+import com.github.android.tools.CommandLineAndroidTools;
+import com.github.android.tools.DexService;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 /**
@@ -24,6 +28,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	private static final String ANDROID_15_PROJECT_NAME = "apidemos-15-app";
 
 	private IProject project;
+	private DexService dexInfoService;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -32,6 +37,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
+	    
+	    dexInfoService = new CommandLineAndroidTools();
 	}
 
 	public void testConfigure() throws Exception {
@@ -67,9 +74,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		// TODO implement
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-//		ClassDescriptor stringUtilsClass = new ClassDescriptor();
-//		stringUtilsClass.setType("org.apache.commons.lang.StringUtils");
-//		assertTrue(dexInfoService.getDexInfo(project.getFullPath().append("target").append("classes.dex").toFile()).getClassDescriptors().contains(stringUtilsClass));
+		ClassDescriptor stringUtilsClass = new ClassDescriptor();
+		stringUtilsClass.setType("org.apache.commons.lang.StringUtils");
+		IPath dex = project.getLocation().append("target").append("classes.dex");
+		assertTrue(dexInfoService.getDexInfo(dex.toFile()).getClassDescriptors().contains(stringUtilsClass));
 	}
 
 	public void testBuildOverwritesExistingApk() throws Exception {

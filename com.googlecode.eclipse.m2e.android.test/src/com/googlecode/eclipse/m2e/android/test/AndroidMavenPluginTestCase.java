@@ -27,7 +27,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 5;
 
 	protected AdtPlugin adtPlugin;
-//	DexService dexInfoService;
 
     @Override
 	@SuppressWarnings("restriction")
@@ -50,8 +49,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	    		throw new Exception("failed to load ADT using SDK=["+androidHome+"] - check the ANDROID_HOME envar is correct.");
 	    	}
 	    }
-	    
-//	    dexInfoService = new CommandLineAndroidTools();
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
