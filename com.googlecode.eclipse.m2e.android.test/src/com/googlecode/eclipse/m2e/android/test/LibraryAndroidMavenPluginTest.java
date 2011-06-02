@@ -29,24 +29,4 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		assertTrue(Sdk.getProjectState(project).isLibrary());
 	}
 
-	public void testConfigureAddsAndroidNature() throws Exception {
-	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
-	}
-
-	public void testConfigureSetsAndroidOutputLocation() throws Exception {
-		IJavaProject javaProject = JavaCore.create(project);
-		assertEquals("failed to set output location", javaProject.getOutputLocation().toString(), "/"+ANDROID_LIB_PROJECT_NAME+"/target/android-classes");
-	}
-
-	public void testConfigureRemovesApkBuilder() throws Exception {
-		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
-	}
-
-	public void testConfigureDoesNotAddTargetDirectoryToClasspath() throws Exception {
-		IJavaProject javaProject = JavaCore.create(project);
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-			assertFalse("classpath contains reference to target directory: cause infinite build loops and build conflicts", entry.getPath().toOSString().contains("target"));
-		}
-	}
-
 }
