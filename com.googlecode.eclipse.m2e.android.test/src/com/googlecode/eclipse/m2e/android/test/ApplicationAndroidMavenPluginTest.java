@@ -11,8 +11,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
+import com.github.android.tools.AndroidToolsException;
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
 import com.github.android.tools.model.ClassDescriptor;
@@ -30,7 +32,6 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	private static final String ANDROID_15_PROJECT_NAME = "apidemos-15-app";
 
 	private IProject project;
-	private DexService dexInfoService;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -39,8 +40,6 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
-	    
-	    dexInfoService = new CommandLineAndroidTools();
 	}
 
 	public void testConfigure() throws Exception {
@@ -71,17 +70,29 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 	}
-	
+
+
+	public void testBuildAddedClassFileToApk() throws Exception {
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
+
+		PackageInfo packageInfo = new PackageInfo();
+		packageInfo.setName("com.example.android.apis");
+		ClassDescriptor apiDemos = new ClassDescriptor();
+		apiDemos.setName("ApiDemos");
+		apiDemos.setPackageInfo(packageInfo);
+		assertApkContains(apiDemos, project);
+	}
+
 	public void testBuildAddedDependenciesToAPK() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		DexInfo dexInfo = dexInfoService.getDexInfo(AndroidMavenPluginUtil.getApkFile(project));
 		PackageInfo packageInfo = new PackageInfo();
 		packageInfo.setName("org.apache.commons.lang");
 		ClassDescriptor stringUtils = new ClassDescriptor();
 		stringUtils.setName("StringUtils");
 		stringUtils.setPackageInfo(packageInfo);
-		assertTrue("external dep class=["+stringUtils+"] not found in file=["+AndroidMavenPluginUtil.getApkFile(project)+"]", dexInfo.getClassDescriptors().contains(stringUtils));
+		assertApkContains(stringUtils, project);
 	}
 
 	public void testBuildOverwritesExistingApk() throws Exception {

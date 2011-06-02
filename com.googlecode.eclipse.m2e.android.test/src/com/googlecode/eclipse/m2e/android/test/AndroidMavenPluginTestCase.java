@@ -12,11 +12,18 @@ import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 
 import com.android.ide.common.sdk.LoadStatus;
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
+import com.github.android.tools.AndroidToolsException;
+import com.github.android.tools.CommandLineAndroidTools;
+import com.github.android.tools.DexService;
+import com.github.android.tools.model.ClassDescriptor;
+import com.github.android.tools.model.DexInfo;
+import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 import com.googlecode.eclipse.m2e.android.AndroidMavenProjectConfigurator;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
@@ -25,7 +32,9 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	protected AdtPlugin adtPlugin;
 
-    @Override
+	private DexService dexInfoService;
+
+	@Override
 	@SuppressWarnings("restriction")
     protected void setUp() throws Exception {
 	    super.setUp();
@@ -46,6 +55,8 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	    		throw new Exception("failed to load ADT using SDK=["+androidHome+"] - check the ANDROID_HOME envar is correct.");
 	    	}
 	    }
+	    
+	    dexInfoService = new CommandLineAndroidTools();
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
@@ -67,4 +78,9 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		return false;
 	}
 
+
+	void assertApkContains(ClassDescriptor stringUtils, IProject project) throws AndroidToolsException, JavaModelException {
+		DexInfo dexInfo = dexInfoService.getDexInfo(AndroidMavenPluginUtil.getApkFile(project));
+		assertTrue("external dep class=["+stringUtils+"] not found in file=["+AndroidMavenPluginUtil.getApkFile(project)+"]", dexInfo.getClassDescriptors().contains(stringUtils));
+	}
 }
