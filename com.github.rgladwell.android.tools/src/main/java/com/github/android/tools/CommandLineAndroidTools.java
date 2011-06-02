@@ -2,6 +2,7 @@ package com.github.android.tools;
 
 import java.io.File;
 
+import com.github.android.tools.drivers.DexCommand;
 import com.github.android.tools.drivers.DexdumpCommand;
 import com.github.android.tools.drivers.ExecutionException;
 import com.github.android.tools.drivers.MavenCommandExecutor;
@@ -27,5 +28,17 @@ public class CommandLineAndroidTools implements DexService {
         dexInfo.setSource(dexfile);
 	    return dexInfo;
     }
+
+	public void convertClassFiles(File output, File... files) throws AndroidToolsException {
+	    DexCommand command = new DexCommand();
+	    command.setOutput(output);
+	    command.setClassFiles(files);
+	    MavenCommandExecutor executor = new MavenCommandExecutor();
+	    try {
+			command.execute(executor);
+		} catch (ExecutionException e) {
+	        throw new AndroidToolsException("error executing dx command=["+command+"]", e);
+		}		
+	}
 
 }
