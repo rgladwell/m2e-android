@@ -5,22 +5,19 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.m2e.core.internal.IMavenConstants;
 
 import com.android.ide.eclipse.adt.AndroidConstants;
-import com.github.android.tools.AndroidToolsException;
-import com.github.android.tools.CommandLineAndroidTools;
-import com.github.android.tools.DexService;
 import com.github.android.tools.model.ClassDescriptor;
-import com.github.android.tools.model.DexInfo;
 import com.github.android.tools.model.PackageInfo;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
+import com.googlecode.eclipse.m2e.android.AndroidMavenProjectConfigurator;
 
 /**
  * Test suite for configuring and building Android applications.
@@ -50,13 +47,17 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
 	}
 
-	public void testConfigureSetsAndroidOutputLocation() throws Exception {
-		IJavaProject javaProject = JavaCore.create(project);
-		assertEquals("failed to set output location", javaProject.getOutputLocation().toString(), "/"+ANDROID_15_PROJECT_NAME+"/target/android-classes");
-	}
+	public void testConfigureApkBuilderBeforeMavenBuilder() throws Exception {
+		boolean foundApkBuilder = false;
+		for(ICommand command : project.getDescription().getBuildSpec()) {
+			if(AndroidMavenProjectConfigurator.APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
+				foundApkBuilder = true;
+			} else if(IMavenConstants.BUILDER_ID.equals(command.getBuilderName())) {
+				assertTrue("project APKBuilder not configured before maven builder", foundApkBuilder);
+			}
+		}
 
-	public void testConfigureRemovesApkBuilder() throws Exception {
-		assertFalse("project contains redundant APKBuilder build command", containsApkBuildCommand(project));
+		assertTrue("project does not contain APKBuilder build command", foundApkBuilder);
 	}
 
 	public void testConfigureDoesNotAddTargetDirectoryToClasspath() throws Exception {
@@ -68,13 +69,13 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 	public void testBuild() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 	}
 
 
 	public void testBuildAddedClassFileToApk() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 
 		PackageInfo packageInfo = new PackageInfo();
 		packageInfo.setName("com.example.android.apis");

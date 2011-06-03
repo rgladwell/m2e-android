@@ -68,17 +68,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		}
     }
 
-	protected final static boolean containsApkBuildCommand(IProject project) throws CoreException {
-		for(ICommand command : project.getDescription().getBuildSpec()) {
-			if(AndroidMavenProjectConfigurator.APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-
 	void assertApkContains(ClassDescriptor stringUtils, IProject project) throws AndroidToolsException, JavaModelException {
 		DexInfo dexInfo = dexInfoService.getDexInfo(AndroidMavenPluginUtil.getApkFile(project));
 		assertTrue("external dep class=["+stringUtils+"] not found in file=["+AndroidMavenPluginUtil.getApkFile(project)+"]", dexInfo.getClassDescriptors().contains(stringUtils));
