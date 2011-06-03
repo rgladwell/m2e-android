@@ -13,6 +13,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
@@ -57,14 +61,21 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 				addNature(project, AndroidConstants.NATURE_DEFAULT, monitor);
 			}
 
-			// issue 6: remove redundant APKBuilder build command 
+			// ensure APKBuilder build command is before maven build command 
 			IProjectDescription description = project.getDescription();
-			List<ICommand> buildCommands = new LinkedList<ICommand>();
-			for(ICommand command : description.getBuildSpec()) {
-				if(!APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
-					buildCommands.add(command);
+			List<ICommand> buildCommands = Arrays.asList(description.getBuildSpec());
+			
+			Collections.sort(buildCommands, new Comparator<ICommand>() {
+				public int compare(ICommand command1, ICommand command2) {
+					if(IMavenConstants.BUILDER_ID.equals(command1.getBuilderName()) && APK_BUILDER_COMMAND_NAME.equals(command2.getBuilderName())) {
+						return 1;
+					} else if(APK_BUILDER_COMMAND_NAME.equals(command1.getBuilderName()) && IMavenConstants.BUILDER_ID.equals(command2.getBuilderName())) {
+						return -1;
+					}
+
+					return 0;
 				}
-			}
+			});
 
 			ICommand[] buildSpec = buildCommands.toArray(new ICommand[0]);
 			description.setBuildSpec(buildSpec);
@@ -97,15 +108,12 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 	}
 
 	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		IJavaProject javaProject = JavaCore.create(facade.getProject());
-		// set output location to target/android-classes so APK blob is not including in APK resources
-		javaProject.setOutputLocation(AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), monitor);
     }
 
 	@Override
 	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
 		if(execution.getGoal().equals("generate-sources")) {
-			return new AndroidMavenBuildParticipant();
+			return new IncrementalAndroidMavenBuildParticipant();
 		}
 		return super.getBuildParticipant(projectFacade, execution, executionMetadata);
 	}

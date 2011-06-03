@@ -37,6 +37,7 @@ import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.AndroidConstants;
 import com.android.ide.eclipse.adt.internal.project.ApkInstallManager;
 
+@Deprecated
 public class AndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	@Override
