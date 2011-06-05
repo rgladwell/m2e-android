@@ -69,7 +69,6 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 	public void testBuild() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 	}
 

@@ -39,8 +39,9 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		final IProject project = getMavenProjectFacade().getProject();
 		final File apk = AndroidMavenPluginUtil.getApkFile(project);
 
-		if(apk.exists()) {
-			
+		if(!apk.exists()) {
+			// TODO should never reach here, throw meaningful exception
+			throw new Exception("error: APK not built");
 		}
 
 		final IResourceDelta delta = getDelta(project);
