@@ -54,10 +54,11 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 				foundApkBuilder = true;
 			} else if(IMavenConstants.BUILDER_ID.equals(command.getBuilderName())) {
 				assertTrue("project APKBuilder not configured before maven builder", foundApkBuilder);
+				return;
 			}
 		}
 
-		assertTrue("project does not contain APKBuilder build command", foundApkBuilder);
+		fail("project does not contain maven builder build command");
 	}
 
 	public void testConfigureDoesNotAddTargetDirectoryToClasspath() throws Exception {
