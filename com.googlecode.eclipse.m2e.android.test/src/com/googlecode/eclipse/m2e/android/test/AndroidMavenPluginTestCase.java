@@ -8,8 +8,6 @@
 
 package com.googlecode.eclipse.m2e.android.test;
 
-import org.eclipse.core.internal.resources.ResourceException;
-import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.JavaModelException;
@@ -24,7 +22,6 @@ import com.github.android.tools.DexService;
 import com.github.android.tools.model.ClassDescriptor;
 import com.github.android.tools.model.DexInfo;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
-import com.googlecode.eclipse.m2e.android.AndroidMavenProjectConfigurator;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
@@ -60,12 +57,8 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
-	    try {
-			project.build(kind, monitor);
-			waitForJobsToComplete();
-		} catch(ResourceException e) {
-			e.printStackTrace();
-		}
+		project.build(kind, monitor);
+		waitForJobsToComplete();
     }
 
 	void assertApkContains(ClassDescriptor stringUtils, IProject project) throws AndroidToolsException, JavaModelException {
