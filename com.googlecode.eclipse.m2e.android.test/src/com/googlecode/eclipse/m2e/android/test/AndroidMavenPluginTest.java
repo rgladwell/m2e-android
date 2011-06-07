@@ -11,7 +11,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
-import com.android.ide.eclipse.adt.AndroidConstants;
+import com.android.ide.eclipse.adt.AdtConstants;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
@@ -25,7 +25,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml");
 		waitForJobsToComplete();
 
-	    assertFalse("configurer added android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
+	    assertFalse("configurer added android nature", project.hasNature(AdtConstants.NATURE_DEFAULT));
 		IJavaProject javaProject = JavaCore.create(project);
 		assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation().toString().equals("/"+SIMPLE_PROJECT_NAME+"/target/android-classes"));
 

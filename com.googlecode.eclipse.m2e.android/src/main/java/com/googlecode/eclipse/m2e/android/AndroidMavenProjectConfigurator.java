@@ -39,7 +39,7 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
-import com.android.ide.eclipse.adt.AndroidConstants;
+import com.android.ide.eclipse.adt.AdtConstants;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.googlecode.eclipse.m2e.android.model.ProjectType;
@@ -56,8 +56,8 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 		if (type != null) {
 			IProject project = request.getProject();
 
-			if (!project.hasNature(AndroidConstants.NATURE_DEFAULT)) {
-				addNature(project, AndroidConstants.NATURE_DEFAULT, monitor);
+			if (!project.hasNature(AdtConstants.NATURE_DEFAULT)) {
+				addNature(project, AdtConstants.NATURE_DEFAULT, monitor);
 			}
 
 			// ensure APKBuilder build command is before maven build command 

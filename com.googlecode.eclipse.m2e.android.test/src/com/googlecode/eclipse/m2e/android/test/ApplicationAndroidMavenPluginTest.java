@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
-import com.android.ide.eclipse.adt.AndroidConstants;
+import com.android.ide.eclipse.adt.AdtConstants;
 import com.github.android.tools.model.ClassDescriptor;
 import com.github.android.tools.model.PackageInfo;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
@@ -44,7 +44,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
 	public void testConfigureAddsAndroidNature() throws Exception {
-	    assertTrue("configurer failed to add android nature", project.hasNature(AndroidConstants.NATURE_DEFAULT));
+	    assertTrue("configurer failed to add android nature", project.hasNature(AdtConstants.NATURE_DEFAULT));
 	}
 
 	public void testConfigureApkBuilderBeforeMavenBuilder() throws Exception {
