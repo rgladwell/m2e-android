@@ -24,12 +24,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
@@ -106,9 +103,6 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 		}
 	}
 
-	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-    }
-
 	@Override
 	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
 		if(execution.getGoal().equals("generate-sources")) {
@@ -117,21 +111,10 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 		return super.getBuildParticipant(projectFacade, execution, executionMetadata);
 	}
 
+	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
+    }
+
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
-		IJavaProject javaProject = JavaCore.create(request.getProject());
-
-	    IPath genPath = javaProject.getPath().append(ANDROID_GEN_PATH);
-
-	    if(!classpath.containsPath(genPath)) {
-	    	final File genFolder = genPath.toFile();
-	    	if(!genFolder.exists()) {
-	    		if(!genFolder.mkdirs()) {
-	    			// TODO throw exception
-	    		}
-	    	}
-
-	    	classpath.addSourceEntry(genPath, AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), true);
-	    }
     }
 
 }

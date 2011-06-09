@@ -15,13 +15,13 @@ import java.util.Set;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
+
 
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
@@ -41,10 +41,9 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 
 		if(!apk.exists()) {
 			// TODO should never reach here, throw meaningful exception
-			throw new Exception("error: APK not built");
 		}
 
-		final IResourceDelta delta = getDelta(project);
+//		final IResourceDelta delta = getDelta(project);
 		final List<File> artifacts = new ArrayList<File>();
 
 		// determine if POM dependencies have changed, or if SNAPSHOTS have updated since last build, if so:
