@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
+import org.eclipse.m2e.tests.common.JobHelpers;
+import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
 
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
@@ -23,8 +25,6 @@ import com.github.android.tools.DexService;
 import com.github.android.tools.model.ClassDescriptor;
 import com.github.android.tools.model.DexInfo;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
-import com.googlecode.eclipse.m2e.android.JobHelpers;
-import com.googlecode.eclipse.m2e.android.JobHelpers.IJobMatcher;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
