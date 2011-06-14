@@ -42,12 +42,11 @@ public class DexdumpCommand extends AndroidCommand implements Command {
 		List<String> commands = new ArrayList<String>();
 		
 		commands.add(DISASSEMBLE_ARG);
-		commands.add(pathToDex.getAbsolutePath());
-
 		if(outputLayout.equals(OutputLayout.Xml)) {
 			commands.add(OUTPUT_LAYOUT_ARG);
 			commands.add(outputLayout.toString());
 		}
+		commands.add(pathToDex.getAbsolutePath());
 
 		try {
 			executor.executeCommand(getAndroidSdk().getPathForTool(DEXDUMP_COMMAND), commands , false);
