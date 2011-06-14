@@ -10,18 +10,21 @@ package com.googlecode.eclipse.m2e.android.test;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 
-import com.android.ide.common.sdk.LoadStatus;
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
+import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.github.android.tools.AndroidToolsException;
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
 import com.github.android.tools.model.ClassDescriptor;
 import com.github.android.tools.model.DexInfo;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
+import com.googlecode.eclipse.m2e.android.JobHelpers;
+import com.googlecode.eclipse.m2e.android.JobHelpers.IJobMatcher;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
@@ -44,17 +47,19 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		    adtPlugin.savePluginPreferences();
 	    }
 
-	    int loops = 0;
-	    while(!adtPlugin.getSdkLoadStatus().equals(LoadStatus.LOADED)) {
-	    	Thread.sleep(1000);
-	    	loops++;
-	    	if(loops == MAXIMUM_SECONDS_TO_LOAD_ADT) {
-	    		throw new Exception("failed to load ADT using SDK=["+androidHome+"] - check the ANDROID_HOME envar is correct.");
-	    	}
-	    }
+	    waitForAdtToLoad();
 	    
 	    dexInfoService = new CommandLineAndroidTools();
     }
+
+	protected void waitForAdtToLoad() throws InterruptedException, Exception {
+		JobHelpers.waitForJobs(new IJobMatcher() {
+			public boolean matches(Job job) {
+				return job.getClass().getName().contains(Sdk.class.getName());
+			}
+			
+		}, MAXIMUM_SECONDS_TO_LOAD_ADT * 1000);
+	}
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
 		project.build(kind, monitor);
