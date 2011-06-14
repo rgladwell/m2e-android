@@ -35,12 +35,13 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			// TODO should never reach here, throw meaningful exception
 			return null;
 		}
-		
+
 		final IProject project = getMavenProjectFacade().getProject();
 		final File apk = AndroidMavenPluginUtil.getApkFile(project);
 
 		if(!apk.exists()) {
 			// TODO should never reach here, throw meaningful exception
+			return null;
 		}
 
 //		final IResourceDelta delta = getDelta(project);

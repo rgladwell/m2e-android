@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 import org.eclipse.core.resources.ICommand;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -36,6 +37,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	private static final String ANDROID_15_PROJECT_NAME = "apidemos-15-app";
 
 	private IProject project;
+	private IJavaProject javaProject;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -43,6 +45,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 		deleteProject(ANDROID_15_PROJECT_NAME);
 		project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
+		javaProject = JavaCore.create(project);
 		waitForJobsToComplete();
 	}
 
@@ -69,15 +72,23 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
 	public void testConfigureDoesNotAddTargetDirectoryToClasspath() throws Exception {
-		IJavaProject javaProject = JavaCore.create(project);
 		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
 			assertFalse("classpath contains reference to target directory: cause infinite build loops and build conflicts", entry.getPath().toOSString().contains("target"));
 		}
 	}
 
+	public void testConfigureGeneratedResourcesFolderCreated() throws Exception {
+		final IFolder genFolder = project.getWorkspace().getRoot().getFolder(javaProject.getPath().append(AndroidMavenProjectConfigurator.ANDROID_GEN_PATH));
+		assertTrue(genFolder.exists());
+		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+			if(entry.getPath().toOSString().contains("gen")) {
+				return;
+			}
+		}
+		fail("gen not added to classpath");
+	}
+
 	public void testBuild() throws Exception {
-//		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
-//	    waitForAdtToLoad();
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
 	}
