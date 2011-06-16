@@ -29,6 +29,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
+		
 		final MavenProject pom = getMavenProjectFacade().getMavenProject();
 
 		if(AndroidMavenPluginUtil.getAndroidProjectType(pom) == null) {
@@ -37,6 +38,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		}
 
 		final IProject project = getMavenProjectFacade().getProject();
+		
 		final File apk = AndroidMavenPluginUtil.getApkFile(project);
 
 		if(!apk.exists()) {

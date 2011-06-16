@@ -124,11 +124,6 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 	    final IPath genPath = javaProject.getPath().append(ANDROID_GEN_PATH);
 
 	    if(!classpath.containsPath(genPath)) {
-		    final IFolder genFolder = request.getProject().getWorkspace().getRoot().getFolder(genPath);
-	    	if(!genFolder.exists()) {
-	    		genFolder.create(true, true, monitor);
-	    	}
-
 	    	classpath.addSourceEntry(genPath, AndroidMavenPluginUtil.getAndroidClassesOutputFolder(javaProject), true);
 	    }
     }

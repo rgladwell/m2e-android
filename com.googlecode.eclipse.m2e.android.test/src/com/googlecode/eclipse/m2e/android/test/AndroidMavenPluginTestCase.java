@@ -48,7 +48,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	    }
 
 	    waitForAdtToLoad();
-	    
+
 	    dexInfoService = new CommandLineAndroidTools();
     }
 
@@ -62,7 +62,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	}
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
-		waitForJobsToComplete();
 		project.build(kind, monitor);
 		waitForJobsToComplete();
     }

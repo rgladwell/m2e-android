@@ -13,8 +13,6 @@ import java.io.File;
 import java.io.FileWriter;
 
 import org.eclipse.core.resources.ICommand;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -86,9 +84,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		}
 	}
 
-	public void testConfigureGeneratedResourcesFolderCreated() throws Exception {
-		final IFolder genFolder = project.getWorkspace().getRoot().getFolder(javaProject.getPath().append(AndroidMavenProjectConfigurator.ANDROID_GEN_PATH));
-		assertTrue(genFolder.exists());
+	public void testConfigureGeneratedResourcesFolderInRawClasspath() throws Exception {
 		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
 			if(entry.getPath().toOSString().contains("gen")) {
 				return;
@@ -141,15 +137,6 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		long second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
 
 		assertTrue("failed to overwrite existing APK", first < second);
-	}
-
-	public void testBuildGeneratingResourcesClass() throws Exception {
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-
-		final IFolder genFolder = project.getWorkspace().getRoot().getFolder(javaProject.getPath().append(AndroidMavenProjectConfigurator.ANDROID_GEN_PATH));
-		final IFile resourceClass = project.getWorkspace().getRoot().getFolder(genFolder.getLocation().append("com").append("example").append("android").append("apis")).getFile("R.java");
-
-		assertTrue("Android resource file not generated", (new File(resourceClass.getFullPath().toOSString())).exists());
 	}
 
 }
