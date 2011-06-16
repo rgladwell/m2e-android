@@ -42,6 +42,7 @@ import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
 import com.android.ide.eclipse.adt.AdtConstants;
+import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.googlecode.eclipse.m2e.android.model.ProjectType;
@@ -105,6 +106,8 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 				}
 				state.reloadProperties();
 			}
+			
+			ProjectHelper.fixProject(project);
 		}
 	}
 
