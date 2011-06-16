@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
@@ -29,7 +30,6 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
-		
 		final MavenProject pom = getMavenProjectFacade().getMavenProject();
 
 		if(AndroidMavenPluginUtil.getAndroidProjectType(pom) == null) {
@@ -46,7 +46,19 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			return null;
 		}
 
-//		final IResourceDelta delta = getDelta(project);
+		final IResourceDelta delta = getDelta(project);
+		
+		boolean pomModified = false;
+		
+		if(delta != null) {
+			for(IResourceDelta child : delta.getAffectedChildren()) {
+				if(child.getResource().getName().equals("pom.xml")) {
+					// TODO store copy of previous Maven classpath state and compare to finer increment detection
+					pomModified = true;
+				}
+			}
+		}
+		
 		final List<File> artifacts = new ArrayList<File>();
 
 		// determine if POM dependencies have changed, or if SNAPSHOTS have updated since last build, if so:
@@ -60,7 +72,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			}
 		}
 
-		if(modifiedDependencies || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
+		if(modifiedDependencies || pomModified || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
 			// create new classes.dex in existing APK
 			artifacts.add(apk);
 			dexService.convertClassFiles(apk, artifacts.toArray(new File[artifacts.size()]));

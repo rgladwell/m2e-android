@@ -28,7 +28,7 @@ import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
-	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 5;
+	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 10;
 
 	protected AdtPlugin adtPlugin;
 
