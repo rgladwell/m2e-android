@@ -50,6 +50,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
 		javaProject = JavaCore.create(project);
 		waitForJobsToComplete();
+	    waitForAdtToLoad();
 	}
 
 	@Override
