@@ -71,7 +71,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		long second = first + 1;
 		int builds = 0;
 
-		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
+		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
 
 		while(first < second) {
 			builds++;

@@ -10,13 +10,17 @@ package com.googlecode.eclipse.m2e.android.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Developer;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -126,26 +130,20 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		assertApkContains(stringUtils, project);
 	}
 
-	public void testIncrementalBuildWithoutChangesDoesNotUpdateApks() throws Exception {
+	public void testIncrementalBuildWithoutChangesDoesNotUpdateApk() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		long first = AndroidMavenPluginUtil.getApkFile(project).lastModified();
-
-		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
+		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
-		long second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
-
-		assertTrue("overwrote existing APK", first == second);
+		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
 	}
 
 	public void testIncrementalBuildUpdatesDependencies() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		long first = AndroidMavenPluginUtil.getApkFile(project).lastModified();
-
-		MavenXpp3Reader reader = new MavenXpp3Reader();
 		File pom = new File(project.getLocation().toFile(), "pom.xml");
+		MavenXpp3Reader reader = new MavenXpp3Reader();
 		Model model = reader.read(new FileReader(pom));
 		Dependency dependency = new Dependency();
 		dependency.setArtifactId("commons-io");
@@ -155,12 +153,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		MavenXpp3Writer writer = new MavenXpp3Writer();
 		writer.write(new FileWriter(pom), model);
 
-		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
+		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
-		long second = AndroidMavenPluginUtil.getApkFile(project).lastModified();
-
-		assertTrue("failed to overwrite existing APK", first < second);
+		assertTrue("failed to overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
 
 		PackageInfo packageInfo = new PackageInfo();
 		packageInfo.setName("org.apache.commons.io");
@@ -168,6 +164,46 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		ioUtils.setName("IOUtils");
 		ioUtils.setPackageInfo(packageInfo);
 		assertApkContains(ioUtils, project);
+	}
+
+	public void testIncrementalBuildUpdatesLatestDependencies() throws Exception {
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+
+		IClasspathEntry[] classpath = getMavenContainerEntries(project);
+		IClasspathEntry commonsLang = null;
+		
+		for(IClasspathEntry entry : classpath) {
+			if(entry.getPath().toOSString().contains("commons-lang")) {
+				commonsLang = entry;
+				break;
+			}
+		}
+
+		long first = System.currentTimeMillis();
+		commonsLang.getPath().toFile().setLastModified(first);
+
+		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
+
+		assertTrue("failed to overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
+	}
+
+	public void testIncrementalBuildWithoutChangesToClasspathDoesNotUpdateApk() throws Exception {
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+
+		File pom = new File(project.getLocation().toFile(), "pom.xml");
+		MavenXpp3Reader reader = new MavenXpp3Reader();
+		Model model = reader.read(new FileReader(pom));
+		Developer developer = new Developer();
+		developer.setId("developer");
+		developer.setName("Developer");
+		model.getDevelopers().add(developer);
+		MavenXpp3Writer writer = new MavenXpp3Writer();
+		writer.write(new FileWriter(pom), model);
+
+		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
+		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
+
+		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
 	}
 
 }

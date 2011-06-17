@@ -10,6 +10,8 @@ package com.googlecode.eclipse.m2e.android;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EventObject;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,15 +20,23 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.ProgressMonitorWrapper;
+import org.eclipse.jdt.core.IClasspathContainer;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
+import org.eclipse.m2e.jdt.IClasspathManager;
 
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
-
+import com.googlecode.eclipse.m2e.android.model.MavenArtifact;
 
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	private DexService dexService = new CommandLineAndroidTools();
+	private Set<MavenArtifact> lastMavenClasspath;
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
@@ -46,40 +56,73 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			return null;
 		}
 
-		final IResourceDelta delta = getDelta(project);
-		
-		boolean pomModified = false;
-		
-		if(delta != null) {
-			for(IResourceDelta child : delta.getAffectedChildren()) {
-				if(child.getResource().getName().equals("pom.xml")) {
-					// TODO store copy of previous Maven classpath state and compare to finer increment detection
-					pomModified = true;
-				}
-			}
-		}
-		
-		final List<File> artifacts = new ArrayList<File>();
-
-		// determine if POM dependencies have changed, or if SNAPSHOTS have updated since last build, if so:
+		Set<File> artifacts = getArtifacts(project);
+		Set<MavenArtifact> mavenClasspath = convertToMavenArtifacts(artifacts);
 		boolean modifiedDependencies = false;
 
-		for(String path : pom.getRuntimeClasspathElements()) {
-			File artifact = new File(path);
-			artifacts.add(artifact);
-			if(artifact.lastModified() > apk.lastModified()) {
+		synchronized(this) {
+			if(!mavenClasspath.equals(lastMavenClasspath)) {
 				modifiedDependencies = true;
 			}
+			lastMavenClasspath = mavenClasspath;
 		}
 
-		if(modifiedDependencies || pomModified || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
+		if(modifiedDependencies || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
 			// create new classes.dex in existing APK
 			artifacts.add(apk);
 			dexService.convertClassFiles(apk, artifacts.toArray(new File[artifacts.size()]));
 			// TODO regenerate classes.dex security signature if enabled
+
+			IAndroidMavenProgressMonitor androidMavenMonitor = findAndroidMavenProgressMonitor(monitor);
+			if(null != androidMavenMonitor) {
+				androidMavenMonitor.onAndroidMavenBuild((new EventObject(this)));
+			}
 		}
 
 		return null;
 	}
 
+	private Set<MavenArtifact> convertToMavenArtifacts(Set<File> artifacts) {
+		Set<MavenArtifact> results = new HashSet<MavenArtifact>();
+		for(File artifact : artifacts) {
+			MavenArtifact mavenArtifact = new MavenArtifact();
+			mavenArtifact.setLastModified(artifact.lastModified());
+			mavenArtifact.setPath(artifact.getAbsolutePath());
+			results.add(mavenArtifact);
+		}
+		return results;
+	}
+
+	private IAndroidMavenProgressMonitor findAndroidMavenProgressMonitor(IProgressMonitor monitor) {
+		if(monitor instanceof IAndroidMavenProgressMonitor) {
+			return (IAndroidMavenProgressMonitor) monitor;
+		} else if(monitor instanceof ProgressMonitorWrapper) {
+			ProgressMonitorWrapper wrapper = (ProgressMonitorWrapper) monitor;
+			return findAndroidMavenProgressMonitor(wrapper.getWrappedProgressMonitor());
+		}
+		return null;
+	}
+
+	private Set<File> getArtifacts(IProject project) throws JavaModelException {
+		IJavaProject javaProject = JavaCore.create(project);
+		IClasspathContainer container = null;
+		IClasspathEntry[] entries = javaProject.getRawClasspath();
+
+		for (int i = 0; i < entries.length; i++) {
+			IClasspathEntry entry = entries[i];
+			if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER && entry.getPath() != null && entry.getPath().segmentCount() > 0
+			        && IClasspathManager.CONTAINER_ID.equals(entry.getPath().segment(0))) {
+				container = JavaCore.getClasspathContainer(entry.getPath(),	javaProject);
+			}
+		}
+		
+		IClasspathEntry[] classpathEntries = container.getClasspathEntries();
+		Set<File> result = new HashSet<File>();
+
+		for(IClasspathEntry entry : classpathEntries) {
+			result.add(entry.getPath().toFile());
+		}
+		
+		return result;
+	}
 }

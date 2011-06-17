@@ -28,11 +28,13 @@ import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
-	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 10;
+	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 30;
 
 	protected AdtPlugin adtPlugin;
 
 	private DexService dexInfoService;
+
+	protected TestAndroidMavenProgressMonitor androidMavenMonitor;
 
 	@Override
 	@SuppressWarnings("restriction")
@@ -50,6 +52,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	    waitForAdtToLoad();
 
 	    dexInfoService = new CommandLineAndroidTools();
+	    androidMavenMonitor = new TestAndroidMavenProgressMonitor(monitor);
     }
 
 	protected void waitForAdtToLoad() throws InterruptedException, Exception {
@@ -62,7 +65,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	}
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
-		project.build(kind, monitor);
+		project.build(kind, androidMavenMonitor);
 		waitForJobsToComplete();
     }
 
