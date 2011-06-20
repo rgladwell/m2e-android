@@ -49,4 +49,9 @@ public class MavenArtifact {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "MavenArtifact [path=" + path + ", lastModified=" + lastModified + "]";
+	}
+
 }

@@ -17,7 +17,6 @@ import java.util.Set;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ProgressMonitorWrapper;
@@ -56,8 +55,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			return null;
 		}
 
-		Set<File> artifacts = getArtifacts(project);
-		Set<MavenArtifact> mavenClasspath = convertToMavenArtifacts(artifacts);
+		Set<MavenArtifact> mavenClasspath = convertToMavenArtifacts(project);
 		boolean modifiedDependencies = false;
 
 		synchronized(this) {
@@ -69,6 +67,16 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 
 		if(modifiedDependencies || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
 			// create new classes.dex in existing APK
+			List<File> artifacts = new ArrayList<File>();
+			
+			for(String path : pom.getRuntimeClasspathElements()) {
+				File artifact = new File(path);
+				artifacts.add(artifact);
+				if(artifact.lastModified() > apk.lastModified()) {
+					modifiedDependencies = true;
+				}
+			}
+			
 			artifacts.add(apk);
 			dexService.convertClassFiles(apk, artifacts.toArray(new File[artifacts.size()]));
 			// TODO regenerate classes.dex security signature if enabled
@@ -82,7 +90,26 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		return null;
 	}
 
-	private Set<MavenArtifact> convertToMavenArtifacts(Set<File> artifacts) {
+	private Set<MavenArtifact> convertToMavenArtifacts(IProject project) throws JavaModelException {
+		IJavaProject javaProject = JavaCore.create(project);
+		IClasspathContainer container = null;
+		IClasspathEntry[] entries = javaProject.getRawClasspath();
+
+		for (int i = 0; i < entries.length; i++) {
+			IClasspathEntry entry = entries[i];
+			if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER && entry.getPath() != null && entry.getPath().segmentCount() > 0
+			        && IClasspathManager.CONTAINER_ID.equals(entry.getPath().segment(0))) {
+				container = JavaCore.getClasspathContainer(entry.getPath(),	javaProject);
+			}
+		}
+		
+		IClasspathEntry[] classpathEntries = container.getClasspathEntries();
+		Set<File> artifacts = new HashSet<File>();
+
+		for(IClasspathEntry entry : classpathEntries) {
+			artifacts.add(entry.getPath().toFile());
+		}
+		
 		Set<MavenArtifact> results = new HashSet<MavenArtifact>();
 		for(File artifact : artifacts) {
 			MavenArtifact mavenArtifact = new MavenArtifact();
@@ -103,26 +130,4 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		return null;
 	}
 
-	private Set<File> getArtifacts(IProject project) throws JavaModelException {
-		IJavaProject javaProject = JavaCore.create(project);
-		IClasspathContainer container = null;
-		IClasspathEntry[] entries = javaProject.getRawClasspath();
-
-		for (int i = 0; i < entries.length; i++) {
-			IClasspathEntry entry = entries[i];
-			if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER && entry.getPath() != null && entry.getPath().segmentCount() > 0
-			        && IClasspathManager.CONTAINER_ID.equals(entry.getPath().segment(0))) {
-				container = JavaCore.getClasspathContainer(entry.getPath(),	javaProject);
-			}
-		}
-		
-		IClasspathEntry[] classpathEntries = container.getClasspathEntries();
-		Set<File> result = new HashSet<File>();
-
-		for(IClasspathEntry entry : classpathEntries) {
-			result.add(entry.getPath().toFile());
-		}
-		
-		return result;
-	}
 }

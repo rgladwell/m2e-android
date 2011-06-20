@@ -50,6 +50,8 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 	public static final String ANDROID_GEN_PATH = "gen";
 
+	private static AbstractBuildParticipant incrementalAndroidMavenBuildParticipant = new IncrementalAndroidMavenBuildParticipant();
+	
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
 		super.configure(request, monitor);
@@ -77,7 +79,7 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 	@Override
 	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
 		if(execution.getGoal().equals("generate-sources")) {
-			return new IncrementalAndroidMavenBuildParticipant();
+			return incrementalAndroidMavenBuildParticipant;
 		}
 		return super.getBuildParticipant(projectFacade, execution, executionMetadata);
 	}
