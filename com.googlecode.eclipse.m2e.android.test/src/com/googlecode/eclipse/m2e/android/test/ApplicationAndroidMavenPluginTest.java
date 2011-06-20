@@ -206,4 +206,19 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
 	}
 
+	public void testSimultaneousIncrementalBuildWithoutChangesDoesNotUpdateApk() throws Exception {
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+
+		IProject secondProject = importProject("projects/"+AndroidMavenPluginTest.ISSUE_6_PROJECT_NAME+"/pom.xml");
+		waitForJobsToComplete();
+	    waitForAdtToLoad();
+
+		buildAndroidProject(secondProject, IncrementalProjectBuilder.FULL_BUILD);
+
+		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
+		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
+
+		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 2);
+	}
+
 }

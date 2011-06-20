@@ -68,7 +68,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		if(modifiedDependencies || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
 			// create new classes.dex in existing APK
 			List<File> artifacts = new ArrayList<File>();
-			
+
 			for(String path : pom.getRuntimeClasspathElements()) {
 				File artifact = new File(path);
 				artifacts.add(artifact);
@@ -102,7 +102,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 				container = JavaCore.getClasspathContainer(entry.getPath(),	javaProject);
 			}
 		}
-		
+
 		IClasspathEntry[] classpathEntries = container.getClasspathEntries();
 		Set<File> artifacts = new HashSet<File>();
 

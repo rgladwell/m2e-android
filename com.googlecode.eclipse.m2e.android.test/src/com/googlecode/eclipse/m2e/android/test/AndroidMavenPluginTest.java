@@ -18,7 +18,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	private static final int MAX_AUTO_BUILD_LOOPS = 3;
 	private static final String SIMPLE_PROJECT_NAME = "simple-project";
-	private static final String ISSUE_6_PROJECT_NAME = "issue-6";
+	static final String ISSUE_6_PROJECT_NAME = "issue-6";
 
 	public void testConfigureNonAndroidProject() throws Exception {
 		deleteProject(SIMPLE_PROJECT_NAME);
