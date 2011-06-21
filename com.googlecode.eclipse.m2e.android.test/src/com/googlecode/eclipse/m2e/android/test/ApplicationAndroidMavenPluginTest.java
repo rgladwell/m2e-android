@@ -14,6 +14,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Developer;
@@ -219,6 +228,43 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
 		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 2);
+
+		deleteProject(secondProject);
+	}
+
+	public void testVerifySecuritySignature() throws Exception {
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+
+		JarFile jar = new JarFile(AndroidMavenPluginUtil.getApkFile(project));
+
+		try {
+			InputStream is = jar.getInputStream(jar.getEntry("META-INF/MANIFEST.MF"));
+			Manifest man = new Manifest(is);
+			is.close();
+
+			Set<String> signed = new HashSet();
+			for(Map.Entry<String, Attributes> entry: man.getEntries().entrySet()) {
+			    for(Object attrkey: entry.getValue().keySet()) {
+			        if (attrkey instanceof Attributes.Name && ((Attributes.Name)attrkey).toString().indexOf("-Digest") != -1)
+			            signed.add(entry.getKey());
+			    }
+			}
+
+			Set<String> entries = new HashSet<String>();
+			for(Enumeration<JarEntry> entry = jar.entries(); entry.hasMoreElements(); ) {
+			    JarEntry je = entry.nextElement();
+			    if (!je.isDirectory()) {
+			        entries.add(je.getName());
+			    }
+			}
+
+			Set<String> unsigned = new HashSet<String>(entries);
+			unsigned.removeAll(signed);
+
+			assertTrue("error unsigned elements in APL=[" + unsigned + "]", unsigned.isEmpty());
+		} catch(SecurityException e) {
+			fail("APK signatures failed verification");
+		}
 	}
 
 }
