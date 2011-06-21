@@ -11,8 +11,10 @@ package com.googlecode.eclipse.m2e.android;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.maven.project.MavenProject;
@@ -35,7 +37,7 @@ import com.googlecode.eclipse.m2e.android.model.MavenArtifact;
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	private DexService dexService = new CommandLineAndroidTools();
-	private Set<MavenArtifact> lastMavenClasspath;
+	private Map<String, Set<MavenArtifact>> lastMavenClasspaths = new HashMap<String, Set<MavenArtifact>>();
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
@@ -59,10 +61,11 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		boolean modifiedDependencies = false;
 
 		synchronized(this) {
+			Set<MavenArtifact> lastMavenClasspath = lastMavenClasspaths.get(project.getName());
 			if(!mavenClasspath.equals(lastMavenClasspath)) {
 				modifiedDependencies = true;
 			}
-			lastMavenClasspath = mavenClasspath;
+			lastMavenClasspaths.put(project.getName(), mavenClasspath);
 		}
 
 		if(modifiedDependencies || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
