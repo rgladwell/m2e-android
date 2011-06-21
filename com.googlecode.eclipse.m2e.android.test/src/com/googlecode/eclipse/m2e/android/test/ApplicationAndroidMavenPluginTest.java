@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.CodeSigner;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Map;
@@ -232,29 +233,38 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		deleteProject(secondProject);
 	}
 
-	public void testVerifySecuritySignature() throws Exception {
+	public void testBuildCreatesSignedApk() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
 		JarFile jar = new JarFile(AndroidMavenPluginUtil.getApkFile(project));
 
 		try {
-			InputStream is = jar.getInputStream(jar.getEntry("META-INF/MANIFEST.MF"));
-			Manifest man = new Manifest(is);
-			is.close();
-
-			Set<String> signed = new HashSet();
-			for(Map.Entry<String, Attributes> entry: man.getEntries().entrySet()) {
-			    for(Object attrkey: entry.getValue().keySet()) {
-			        if (attrkey instanceof Attributes.Name && ((Attributes.Name)attrkey).toString().indexOf("-Digest") != -1)
-			            signed.add(entry.getKey());
-			    }
-			}
+			Set<String> signed = new HashSet<String>();
 
 			Set<String> entries = new HashSet<String>();
 			for(Enumeration<JarEntry> entry = jar.entries(); entry.hasMoreElements(); ) {
 			    JarEntry je = entry.nextElement();
 			    if (!je.isDirectory()) {
+			    	CodeSigner[] codeSigners = je.getCodeSigners();
+			    	if(codeSigners != null) {
+			    		signed.add(je.getName());
+			    	}
 			        entries.add(je.getName());
+			        
+	                InputStream is = null;
+	                byte[] buffer = new byte[8192];
+	                try {
+	                    is = jar.getInputStream(je);
+	                    int n;
+	                    while ((n = is.read(buffer, 0, buffer.length)) != -1) {
+	                        // we just read. this will throw a SecurityException
+	                        // if  a signature/digest check fails.
+	                    }
+	                } finally {
+	                    if (is != null) {
+	                        is.close();
+	                    }
+	                }
 			    }
 			}
 
@@ -263,7 +273,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 			assertTrue("error unsigned elements in APK=[" + unsigned + "]", unsigned.isEmpty());
 		} catch(SecurityException e) {
-			fail("APK signatures failed verification");
+			fail(e.getMessage());
 		}
 	}
 
