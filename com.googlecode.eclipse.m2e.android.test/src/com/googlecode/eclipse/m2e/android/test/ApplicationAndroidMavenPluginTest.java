@@ -261,7 +261,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 			Set<String> unsigned = new HashSet<String>(entries);
 			unsigned.removeAll(signed);
 
-			assertTrue("error unsigned elements in APL=[" + unsigned + "]", unsigned.isEmpty());
+			assertTrue("error unsigned elements in APK=[" + unsigned + "]", unsigned.isEmpty());
 		} catch(SecurityException e) {
 			fail("APK signatures failed verification");
 		}
