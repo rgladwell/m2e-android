@@ -30,13 +30,16 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
+import com.github.android.tools.AndroidBuildService;
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
+import com.github.android.tools.MavenAndroidPluginBuildService;
 import com.googlecode.eclipse.m2e.android.model.MavenArtifact;
 
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	private DexService dexService = new CommandLineAndroidTools();
+	private AndroidBuildService buildService = new MavenAndroidPluginBuildService();
 	private Map<String, Set<MavenArtifact>> lastMavenClasspaths = new HashMap<String, Set<MavenArtifact>>();
 
 	@Override
@@ -79,7 +82,11 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 					modifiedDependencies = true;
 				}
 			}
-			
+
+			File outputDirectory = new File(getMavenProjectFacade().getMavenProject().getBuild().getDirectory(), "android-classes");
+			File sourceDirectory = project.getWorkspace().getRoot().getFolder(JavaCore.create(project).getOutputLocation()).getLocation().toFile();
+			buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
+
 			artifacts.add(apk);
 			dexService.convertClassFiles(apk, artifacts.toArray(new File[artifacts.size()]));
 			// TODO regenerate classes.dex security signature if enabled

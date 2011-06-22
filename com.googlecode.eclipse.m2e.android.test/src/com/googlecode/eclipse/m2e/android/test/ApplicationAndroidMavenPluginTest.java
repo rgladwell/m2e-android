@@ -276,7 +276,6 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		    	String name = je.getName();
 		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith(".ap_"));
 		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith(".apk"));
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith(".aidl"));
 		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("LICENSE.txt"));
 		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("NOTICE.txt"));
 		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.contains("maven"));
