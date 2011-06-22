@@ -8,29 +8,22 @@
 
 package com.googlecode.eclipse.m2e.android.test;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.CodeSigner;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Developer;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -252,13 +245,9 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 			        entries.add(je.getName());
 			        
 	                InputStream is = null;
-	                byte[] buffer = new byte[8192];
 	                try {
 	                    is = jar.getInputStream(je);
-	                    int n;
-	                    while ((n = is.read(buffer, 0, buffer.length)) != -1) {
-	                        // we just read. this will throw a SecurityException
-	                        // if  a signature/digest check fails.
+	                    while (is.read() != -1) {
 	                    }
 	                } finally {
 	                    if (is != null) {
@@ -277,4 +266,21 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		}
 	}
 
+	public void testBuildOnlyAddsRequiredResourcesToApk() throws Exception {
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+
+		JarFile jar = new JarFile(AndroidMavenPluginUtil.getApkFile(project));
+		for(Enumeration<JarEntry> entry = jar.entries(); entry.hasMoreElements(); ) {
+		    JarEntry je = entry.nextElement();
+		    if (!je.isDirectory()) {
+		    	String name = je.getName();
+		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith(".ap_"));
+		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith(".aidl"));
+		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("LICENSE.txt"));
+		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.contains("maven"));
+		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("pom.xml"));
+		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("pom.properties"));
+		    }
+		}
+	}
 }
