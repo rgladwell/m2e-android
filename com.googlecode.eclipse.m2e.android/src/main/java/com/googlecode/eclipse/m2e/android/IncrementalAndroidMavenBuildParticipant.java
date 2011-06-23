@@ -9,15 +9,25 @@
 package com.googlecode.eclipse.m2e.android;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
 
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.Base64;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -38,6 +48,7 @@ import com.googlecode.eclipse.m2e.android.model.MavenArtifact;
 
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
+	private static final String DIGEST_ALGORITHMN = "SHA1";
 	private DexService dexService = new CommandLineAndroidTools();
 	private AndroidBuildService buildService = new MavenAndroidPluginBuildService();
 	private Map<String, Set<MavenArtifact>> lastMavenClasspaths = new HashMap<String, Set<MavenArtifact>>();
@@ -78,18 +89,14 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			for(String path : pom.getRuntimeClasspathElements()) {
 				File artifact = new File(path);
 				artifacts.add(artifact);
-				if(artifact.lastModified() > apk.lastModified()) {
-					modifiedDependencies = true;
-				}
 			}
 
 			File outputDirectory = new File(getMavenProjectFacade().getMavenProject().getBuild().getDirectory(), "android-classes");
 			File sourceDirectory = project.getWorkspace().getRoot().getFolder(JavaCore.create(project).getOutputLocation()).getLocation().toFile();
+
 			buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
-
 			dexService.convertClassFiles(apk, outputDirectory, apk);
-
-			// TODO regenerate classes.dex security signature if enabled
+			updateClassesDexSignature(project);
 
 			// TODO replace progress monitor with listener
 			IAndroidMavenProgressMonitor androidMavenMonitor = findAndroidMavenProgressMonitor(monitor);
@@ -140,4 +147,37 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		return null;
 	}
 
+	private void updateClassesDexSignature(final IProject project) throws JavaModelException, IOException, NoSuchAlgorithmException {
+		JarFile jar = new JarFile(AndroidMavenPluginUtil.getApkFile(project));
+		try {
+			for(Enumeration<JarEntry> entries = jar.entries(); entries.hasMoreElements(); ) {
+			    JarEntry entry = entries.nextElement();
+			    if("classes.dex".equals(entry.getName())) {
+			    	MessageDigest messageDigest = MessageDigest.getInstance(DIGEST_ALGORITHMN);
+			    	entry.getAttributes().putValue("SHA1-Digest", updateDigest(messageDigest, jar.getInputStream(entry)));
+			    	JarOutputStream jos = new JarOutputStream(new FileOutputStream(AndroidMavenPluginUtil.getApkFile(project)));
+			    	jos.putNextEntry(entry);
+			    	jos.close();
+			    }
+			}
+		} finally {
+			jar.close();
+		}
+	}
+
+	private static String updateDigest(MessageDigest digest, InputStream inputStream) throws IOException {
+		byte[] buffer = new byte[2048];
+		int read = 0;
+		try {
+			while ((read = inputStream.read(buffer)) > 0) {
+				digest.update(buffer, 0, read);
+			}
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			inputStream.close();
+		}
+
+		return new String(Base64.encodeBase64(digest.digest()));
+	}
 }
