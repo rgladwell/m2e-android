@@ -91,6 +91,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			dexService.convertClassFiles(apk, artifacts.toArray(new File[artifacts.size()]));
 			// TODO regenerate classes.dex security signature if enabled
 
+			// TODO replace progress monitor with listener
 			IAndroidMavenProgressMonitor androidMavenMonitor = findAndroidMavenProgressMonitor(monitor);
 			if(null != androidMavenMonitor) {
 				androidMavenMonitor.onAndroidMavenBuild((new EventObject(this)));
