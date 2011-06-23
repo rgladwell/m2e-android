@@ -87,8 +87,8 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			File sourceDirectory = project.getWorkspace().getRoot().getFolder(JavaCore.create(project).getOutputLocation()).getLocation().toFile();
 			buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
 
-			artifacts.add(apk);
-			dexService.convertClassFiles(apk, artifacts.toArray(new File[artifacts.size()]));
+			dexService.convertClassFiles(apk, outputDirectory, apk);
+
 			// TODO regenerate classes.dex security signature if enabled
 
 			// TODO replace progress monitor with listener
@@ -97,7 +97,6 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 				androidMavenMonitor.onAndroidMavenBuild((new EventObject(this)));
 			}
 		}
-
 		return null;
 	}
 

@@ -19,7 +19,7 @@ public class UnpackCommand implements Command {
 	private File outputDirectory;
 	private List<File> relevantCompileArtifacts;
 	private boolean lazyLibraryUnpack = false;
-	
+
 	public void setSourceDirectory(File sourceDirectory) {
 		this.sourceDirectory = sourceDirectory;
 	}
@@ -44,7 +44,7 @@ public class UnpackCommand implements Command {
 			for (File artifact : relevantCompileArtifacts) {
 				if (artifact.isDirectory()) {
 					try {
-						FileUtils.copyDirectory(artifact, outputDirectory);
+						FileUtils.copyDirectoryStructure(artifact, outputDirectory);
 					} catch (IOException e) {
 						throw new ExecutionException("IOException while copying "
 										+ artifact.getAbsolutePath() + " into "
@@ -65,20 +65,21 @@ public class UnpackCommand implements Command {
 		}
 
 		try {
-			FileUtils.copyDirectory(sourceDirectory, outputDirectory, "**/*.class", null);
+			FileUtils.copyDirectoryStructure(sourceDirectory, outputDirectory);
 		} catch (IOException e) {
 			throw new ExecutionException("IOException while copying "
 					+ sourceDirectory.getAbsolutePath() + " into "
 					+ outputDirectory.getAbsolutePath(), e);
 		}
+		
+		deleteNonClassFiles();
 	}
 
 	private void unjar(JarFile jarFile, File outputDirectory) throws IOException {
 		for (Enumeration<JarEntry> en = jarFile.entries(); en.hasMoreElements();) {
 			JarEntry entry = (JarEntry) en.nextElement();
 			File entryFile = new File(outputDirectory, entry.getName());
-			if (!entryFile.getParentFile().exists()
-					&& !entry.getName().startsWith("META-INF")) {
+			if (!entryFile.getParentFile().exists() && !entry.getName().startsWith("META-INF")) {
 				entryFile.getParentFile().mkdirs();
 			}
 			if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
@@ -101,5 +102,16 @@ public class UnpackCommand implements Command {
 		}
 	}
 
+	private void deleteNonClassFiles() throws ExecutionException {
+		try {
+			for(Object o : FileUtils.getFiles(outputDirectory, "**/**", "**/*.class")) {
+				File file = (File) o;
+				file.delete();
+			}
+		} catch (IOException e) {
+			throw new ExecutionException("IOException while deleting non-class files from "
+					+ outputDirectory.getAbsolutePath(), e);
+		}
+	}
 
 }
