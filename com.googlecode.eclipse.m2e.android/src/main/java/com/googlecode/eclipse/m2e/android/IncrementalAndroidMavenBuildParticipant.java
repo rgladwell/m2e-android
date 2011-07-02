@@ -96,7 +96,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 
 			buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
 			dexService.convertClassFiles(apk, outputDirectory, apk);
-			updateClassesDexSignature(project);
+			buildService.resignPackage(apk);
 
 			// TODO replace progress monitor with listener
 			IAndroidMavenProgressMonitor androidMavenMonitor = findAndroidMavenProgressMonitor(monitor);
@@ -147,37 +147,4 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 		return null;
 	}
 
-	private void updateClassesDexSignature(final IProject project) throws JavaModelException, IOException, NoSuchAlgorithmException {
-		JarFile jar = new JarFile(AndroidMavenPluginUtil.getApkFile(project));
-		try {
-			for(Enumeration<JarEntry> entries = jar.entries(); entries.hasMoreElements(); ) {
-			    JarEntry entry = entries.nextElement();
-			    if("classes.dex".equals(entry.getName())) {
-			    	MessageDigest messageDigest = MessageDigest.getInstance(DIGEST_ALGORITHMN);
-			    	entry.getAttributes().putValue("SHA1-Digest", updateDigest(messageDigest, jar.getInputStream(entry)));
-			    	JarOutputStream jos = new JarOutputStream(new FileOutputStream(AndroidMavenPluginUtil.getApkFile(project)));
-			    	jos.putNextEntry(entry);
-			    	jos.close();
-			    }
-			}
-		} finally {
-			jar.close();
-		}
-	}
-
-	private static String updateDigest(MessageDigest digest, InputStream inputStream) throws IOException {
-		byte[] buffer = new byte[2048];
-		int read = 0;
-		try {
-			while ((read = inputStream.read(buffer)) > 0) {
-				digest.update(buffer, 0, read);
-			}
-		} catch (IOException e) {
-			throw e;
-		} finally {
-			inputStream.close();
-		}
-
-		return new String(Base64.encodeBase64(digest.digest()));
-	}
 }
