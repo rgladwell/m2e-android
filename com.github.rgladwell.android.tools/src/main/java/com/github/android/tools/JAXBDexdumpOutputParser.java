@@ -14,7 +14,7 @@ public class JAXBDexdumpOutputParser implements DexdumpOutputParser {
 
 	public DexInfo parse(String xml) throws AndroidToolsException {
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(DexInfo.class, PackageInfo.class, ClassDescriptor.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance("com.github.android.tools.model", Activator.class.getClassLoader());
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			DexInfo dex = (DexInfo) unmarshaller.unmarshal(new StringReader(xml));
 			for(PackageInfo packageInfo : dex.getPackages()) {
