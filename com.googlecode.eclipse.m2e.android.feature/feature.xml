@@ -244,24 +244,33 @@ to a jury trial in any resulting litigation.
    </url>
 
    <requires>
-      <import feature="org.maven.ide.eclipse.feature" version="0.12.0"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.jdt.core" version="3.5.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.maven.ide.eclipse" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="org.maven.ide.eclipse.jdt" version="0.12.0" match="greaterOrEqual"/>
-      <import plugin="org.maven.ide.eclipse.maven_embedder" version="0.12.0" match="greaterOrEqual"/>
       <import plugin="com.android.ide.eclipse.adt" version="0.9.9" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
-      <import feature="com.android.ide.eclipse.adt" version="0.9.9"/>
+      <import feature="com.android.ide.eclipse.adt" version="0.9.9" match="greaterOrEqual"/>
+      <import feature="org.eclipse.m2e.feature" version="1.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.m2e.sdk.feature" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.core" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.jdt" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.maven.runtime" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="com.github.rgladwell.android.tools" version="0.3.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
          id="com.googlecode.eclipse.m2e.android"
          download-size="0"
          install-size="0"
-         version="0.3.0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.github.rgladwell.android.tools"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
