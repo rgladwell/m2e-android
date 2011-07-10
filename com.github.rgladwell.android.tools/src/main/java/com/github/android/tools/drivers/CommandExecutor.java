@@ -3,6 +3,8 @@ package com.github.android.tools.drivers;
 import java.io.File;
 import java.util.List;
 
+import com.github.android.tools.ExecutionException;
+
 public interface CommandExecutor {
 
 	public abstract void executeCommand(String executable, List<String> commands)

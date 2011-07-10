@@ -9,25 +9,15 @@
 package com.googlecode.eclipse.m2e.android;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
 
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.Base64;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,6 +27,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
@@ -44,17 +35,22 @@ import com.github.android.tools.AndroidBuildService;
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
 import com.github.android.tools.MavenAndroidPluginBuildService;
+import com.github.android.tools.model.Jdk;
 import com.googlecode.eclipse.m2e.android.model.MavenArtifact;
 
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
-	private static final String DIGEST_ALGORITHMN = "SHA1";
 	private DexService dexService = new CommandLineAndroidTools();
 	private AndroidBuildService buildService = new MavenAndroidPluginBuildService();
 	private Map<String, Set<MavenArtifact>> lastMavenClasspaths = new HashMap<String, Set<MavenArtifact>>();
 
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
+		// TODO make this code thread-safe
+		Jdk jdk = new Jdk();
+		jdk.setPath(JavaRuntime.getDefaultVMInstall().getInstallLocation().getAbsoluteFile());
+		buildService.setJdk(jdk);
+		
 		final MavenProject pom = getMavenProjectFacade().getMavenProject();
 
 		if(AndroidMavenPluginUtil.getAndroidProjectType(pom) == null) {
@@ -96,7 +92,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 
 			buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
 			dexService.convertClassFiles(apk, outputDirectory, apk);
-			buildService.resignPackage(apk);
+			buildService.resign(apk);
 
 			// TODO replace progress monitor with listener
 			IAndroidMavenProgressMonitor androidMavenMonitor = findAndroidMavenProgressMonitor(monitor);

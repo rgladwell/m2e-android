@@ -13,6 +13,8 @@ import java.util.jar.JarFile;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 
+import com.github.android.tools.ExecutionException;
+
 public class UnpackCommand implements Command {
 
 	private File sourceDirectory;

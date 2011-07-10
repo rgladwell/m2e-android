@@ -33,6 +33,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
 import com.android.ide.eclipse.adt.AdtConstants;
+import com.github.android.tools.ExecutionException;
 import com.github.android.tools.model.ClassDescriptor;
 import com.github.android.tools.model.PackageInfo;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
@@ -229,39 +230,9 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	public void testBuildCreatesSignedApk() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		JarFile jar = new JarFile(AndroidMavenPluginUtil.getApkFile(project));
-
 		try {
-			Set<String> signed = new HashSet<String>();
-
-			Set<String> entries = new HashSet<String>();
-			for(Enumeration<JarEntry> entry = jar.entries(); entry.hasMoreElements(); ) {
-			    JarEntry je = entry.nextElement();
-			    if (!je.isDirectory()) {
-			    	CodeSigner[] codeSigners = je.getCodeSigners();
-			    	if(codeSigners != null) {
-			    		signed.add(je.getName());
-			    	}
-			        entries.add(je.getName());
-			        
-	                InputStream is = null;
-	                try {
-	                    is = jar.getInputStream(je);
-	                    while (is.read() != -1) {
-	                    }
-	                } finally {
-	                    if (is != null) {
-	                        is.close();
-	                    }
-	                }
-			    }
-			}
-
-			Set<String> unsigned = new HashSet<String>(entries);
-			unsigned.removeAll(signed);
-
-			assertTrue("error unsigned elements in APK=[" + unsigned + "]", unsigned.isEmpty());
-		} catch(SecurityException e) {
+			buildService.verify(AndroidMavenPluginUtil.getApkFile(project));
+		} catch(ExecutionException e) {
 			fail(e.getMessage());
 		}
 	}

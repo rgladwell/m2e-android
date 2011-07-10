@@ -1,10 +1,12 @@
 package com.github.android.tools.drivers;
 
+import com.github.android.tools.model.Jdk;
+
 public abstract class JavaDevelopmentCommand implements Command {
 
 	private Jdk jdk;
 
-	public Jdk getJdk() {
+	Jdk getJdk() {
 		return jdk;
 	}
 

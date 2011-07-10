@@ -12,6 +12,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
@@ -19,11 +20,14 @@ import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import com.github.android.tools.AndroidBuildService;
 import com.github.android.tools.AndroidToolsException;
 import com.github.android.tools.CommandLineAndroidTools;
 import com.github.android.tools.DexService;
+import com.github.android.tools.MavenAndroidPluginBuildService;
 import com.github.android.tools.model.ClassDescriptor;
 import com.github.android.tools.model.DexInfo;
+import com.github.android.tools.model.Jdk;
 import com.googlecode.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
@@ -31,10 +35,9 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 30;
 
 	protected AdtPlugin adtPlugin;
-
-	private DexService dexInfoService;
-
+	private CommandLineAndroidTools dexInfoService;
 	protected TestAndroidMavenProgressMonitor androidMavenMonitor;
+	protected AndroidBuildService buildService;
 
 	@Override
 	@SuppressWarnings("restriction")
@@ -53,6 +56,10 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	    dexInfoService = new CommandLineAndroidTools();
 	    androidMavenMonitor = new TestAndroidMavenProgressMonitor(monitor);
+	    buildService= new MavenAndroidPluginBuildService();
+		Jdk jdk = new Jdk();
+		jdk.setPath(JavaRuntime.getDefaultVMInstall().getInstallLocation().getAbsoluteFile());
+		buildService.setJdk(jdk);
     }
 
 	protected void waitForAdtToLoad() throws InterruptedException, Exception {

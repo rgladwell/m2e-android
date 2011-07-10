@@ -19,6 +19,8 @@ package com.github.android.tools.drivers;
 import org.apache.maven.plugin.logging.Log;
 import org.codehaus.plexus.util.cli.*;
 
+import com.github.android.tools.ExecutionException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,13 +94,15 @@ public class MavenCommandExecutor implements CommandExecutor {
             }
             if ((failsOnErrorOutput && stdErr.hasError()) || result != 0) {
                 throw new ExecutionException("ANDROID-040-001: Could not execute: Command = " +
-                        commandline.toString() + ", Result = " + result);
+                        commandline.toString() + ", Result = " + result +", Error = " + stdErr.toString());
             }
         } catch (CommandLineException e) {
             throw new ExecutionException(
                     "ANDROID-040-002: Could not execute: Command = " + commandline.toString() + ", Error message = " + e.getMessage());
         }
         setPid(commandline.getPid());
+
+        System.out.println("ANDROID-040-003: Output = " + stdOut.toString());
     }
 
 	public int getResult() {

@@ -51,7 +51,7 @@ public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator imp
 	public static final String ANDROID_GEN_PATH = "gen";
 
 	private static AbstractBuildParticipant incrementalAndroidMavenBuildParticipant = new IncrementalAndroidMavenBuildParticipant();
-	
+
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
 		super.configure(request, monitor);

@@ -4,7 +4,6 @@ import java.io.File;
 
 import com.github.android.tools.drivers.DexCommand;
 import com.github.android.tools.drivers.DexdumpCommand;
-import com.github.android.tools.drivers.ExecutionException;
 import com.github.android.tools.drivers.MavenCommandExecutor;
 import com.github.android.tools.model.DexInfo;
 
