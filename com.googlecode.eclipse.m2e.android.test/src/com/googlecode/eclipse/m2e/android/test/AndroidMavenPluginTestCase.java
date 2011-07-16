@@ -36,7 +36,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	protected AdtPlugin adtPlugin;
 	private CommandLineAndroidTools dexInfoService;
-	protected TestAndroidMavenProgressMonitor androidMavenMonitor;
+	protected DummyAndroidMavenProgressMonitor androidMavenMonitor;
 	protected AndroidBuildService buildService;
 
 	@Override
@@ -55,7 +55,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	    waitForAdtToLoad();
 
 	    dexInfoService = new CommandLineAndroidTools();
-	    androidMavenMonitor = new TestAndroidMavenProgressMonitor(monitor);
+	    androidMavenMonitor = new DummyAndroidMavenProgressMonitor(monitor);
 	    buildService= new MavenAndroidPluginBuildService();
 		Jdk jdk = new Jdk();
 		jdk.setPath(JavaRuntime.getDefaultVMInstall().getInstallLocation().getAbsoluteFile());

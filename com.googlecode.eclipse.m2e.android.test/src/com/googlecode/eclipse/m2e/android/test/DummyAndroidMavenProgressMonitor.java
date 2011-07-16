@@ -10,11 +10,11 @@ import org.eclipse.core.runtime.ProgressMonitorWrapper;
 
 import com.googlecode.eclipse.m2e.android.IAndroidMavenProgressMonitor;
 
-public class TestAndroidMavenProgressMonitor extends ProgressMonitorWrapper implements IAndroidMavenProgressMonitor {
+public class DummyAndroidMavenProgressMonitor extends ProgressMonitorWrapper implements IAndroidMavenProgressMonitor {
 
 	List<EventObject> androidMavenBuildEvents = new ArrayList<EventObject>();
 
-	protected TestAndroidMavenProgressMonitor(IProgressMonitor monitor) {
+	protected DummyAndroidMavenProgressMonitor(IProgressMonitor monitor) {
 		super(monitor);
 	}
 
