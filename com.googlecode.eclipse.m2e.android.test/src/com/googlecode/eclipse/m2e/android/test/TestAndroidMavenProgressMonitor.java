@@ -20,6 +20,7 @@ public class TestAndroidMavenProgressMonitor extends ProgressMonitorWrapper impl
 
 	public void onAndroidMavenBuild(EventObject event) {
 		androidMavenBuildEvents.add(event);
+      
 	}
 
 	public List<EventObject> getAndroidMavenBuildEvents() {
