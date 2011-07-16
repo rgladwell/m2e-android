@@ -243,11 +243,34 @@ to a jury trial in any resulting litigation.
       <update label="m2eclipse-android-integration Update Site" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jdt.core" version="3.5.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="com.android.ide.eclipse.adt" version="0.9.9" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.core" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.jdt" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.maven.runtime" version="0.13.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.persistence.moxy" version="2.3.0" match="greaterOrEqual"/>
+      <import plugin="javax.xml.bind"/>
+      <import plugin="org.eclipse.osgi"/>
+   </requires>
+
    <plugin
          id="com.googlecode.eclipse.m2e.android"
          download-size="0"
          install-size="0"
-         version="0.3.0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.github.rgladwell.android.tools"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
