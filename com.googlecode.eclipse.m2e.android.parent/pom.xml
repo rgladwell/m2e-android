@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.googlecode.eclipse.m2e.android</groupId>
+	<artifactId>parent</artifactId>
+	<name>Maven Integration for Android Development Tools</name>
+	<version>0.3.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<description>An Eclipse plug-in that adds support for M2Eclipse integration with the Android Developer Tools (ADT) and the Maven Android Plugin.</description>
+	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
+	<issueManagement>
+		<system>Eclipse Labs</system>
+		<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/issues/list</url>
+	</issueManagement>
+	<inceptionYear>2009</inceptionYear>
+	<developers>
+		<developer>
+			<id>ricardo.gladwell</id>
+			<name>Ricardo Gladwell</name>
+			<email>ricardo.gladwell@gmail.com</email>
+			<url>http://rgladwell.wordpress.com/</url>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:svn:http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</connection>
+		<developerConnection>scm:svn:https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</developerConnection>
+		<url>http://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/trunk/m2eclipse-android-integration</url>
+	</scm>
+	<organization>
+		<name>Eclipse Labs</name>
+		<url>https://code.google.com/a/eclipselabs.org/hosting/</url>
+	</organization>
+	<properties>
+		<tycho-version>0.12.0</tycho-version>
+		<target.platform>indigo</target.platform>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<target>
+						<artifact>
+							<groupId>com.googlecode.eclipse.m2e.android</groupId>
+							<artifactId>parent</artifactId>
+							<version>0.3.0-SNAPSHOT</version>
+							<classifier>${target.platform}</classifier>
+						</artifact>
+					</target>
+					<resolver>p2</resolver>
+					<pomDependencies>consider</pomDependencies>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

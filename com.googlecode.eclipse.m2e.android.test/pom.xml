@@ -4,18 +4,48 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>m2eclipse-android-integration</artifactId>
+		<artifactId>parent</artifactId>
 		<groupId>com.googlecode.eclipse.m2e.android</groupId>
 		<version>0.3.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>com.googlecode.eclipse.m2e.android.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-	<!-- dependencies>
-		<dependency>
-			<groupId>com.github</groupId>
-			<artifactId>com.github.android.tools</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-			<type>bundle</type>
-		</dependency>
-	</dependencies -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<argLine>-XX:MaxPermSize=256m -Xms40m -Xmx512m -Dosgi.console=5555 </argLine>
+					<useUIHarness>true</useUIHarness>
+					<dependencies>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.android.ide.eclipse.adt</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.android.ide.eclipse.ddms</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.android.ide.eclipse.hierarchyviewer</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>com.android.ide.eclipse.traceview</artifactId>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.persistence.moxy</artifactId>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- dependencies> <dependency> <groupId>com.github</groupId> <artifactId>com.github.android.tools</artifactId> 
+		<version>0.1.0-SNAPSHOT</version> <type>bundle</type> </dependency> </dependencies -->
 </project>
