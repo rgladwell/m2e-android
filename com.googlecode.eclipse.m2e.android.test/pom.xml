@@ -18,7 +18,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<argLine>-XX:MaxPermSize=256m -Xms40m -Xmx512m -Dosgi.console=5555 </argLine>
+					<argLine>-XX:MaxPermSize=256m -Xms40m -Xmx512m</argLine>
 					<useUIHarness>true</useUIHarness>
 					<dependencies>
 						<dependency>
