@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?>
+
+<target name="eclipse 3.6.0" sequenceNumber="6">
+<locations>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.0.0.201106061504"/>
+<repository location="https://repository.sonatype.org/content/sites/forge-sites/m2e/1.0.0/N/LATEST/"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="com.android.ide.eclipse.adt.feature.group" version="12.0.0.v201106281929-138431"/>
+<repository location="http://ci.dahanne.net/job/publish_adt_to_p2repo/ws/mirror/"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.pde.junit.runtime.standalone.feature.group" version="1.0.0.v20100831"/>
+<repository location="http://download.eclipse.org/releases/helios/"/>
+</location>
+</locations>
+</target>

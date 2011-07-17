@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
-	<artifactId>m2eclipse-android-integration</artifactId>
+	<artifactId>parent</artifactId>
 	<name>Maven Integration for Android Development Tools</name>
 	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -32,57 +32,30 @@
 		<url>https://code.google.com/a/eclipselabs.org/hosting/</url>
 	</organization>
 	<properties>
-		<tycho-version>0.10.0</tycho-version>
+		<tycho-version>0.12.0</tycho-version>
+		<target.platform>indigo</target.platform>
 	</properties>
-	<repositories>
-		<repository>
-			<id>helios</id>
-			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/helios</url>
-		</repository>
-		<repository>
-			<id>m2eclipse</id>
-			<layout>p2</layout>
-			<url>https://repository.sonatype.org/content/sites/forge-sites/m2e/0.13.0/N/LATEST/</url>
-		</repository>
-		<repository>
-			<id>android-developer-tools</id>
-			<layout>p2</layout>
-			<!-- this is too bad google android team does not export their features 
-				in a p2 repo http://code.google.com/p/android/issues/detail?id=12847 and 
-				tycho, 0.10.0 pretty much does not like some non p2 repo, see the partial 
-				IU bug : https://issues.sonatype.org/browse/TYCHO-455 so when tycho reaches 
-				0.11.0 or android team releases a p2 repo for adt, we should be good to go 
-				with the original URL -->
-			<!--url>http://dl-ssl.google.com/android/eclipse/</url -->
-			<url>http://g2.dahanne.net/android-p2repo/</url>
-		</repository>
-		<repository>
-			<id>m2eclipse-android-integration</id>
-			<layout>p2</layout>
-			<url>https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/m2eclipse-android-integration/</url>
-		</repository>
-	</repositories>
-	<modules>
-		<module>com.github.android.tools</module>
-		<module>com.googlecode.eclipse.m2e.android</module>
-		<module>com.googlecode.eclipse.m2e.android.feature</module>
-		<!-- module>com.googlecode.eclipse.m2e.android.test</module-->
-		<module>com.googlecode.eclipse.m2e.android.update</module>
-	</modules>
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
-				<groupId>org.sonatype.tycho</groupId>
+				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
+					<target>
+						<artifact>
+							<groupId>com.googlecode.eclipse.m2e.android</groupId>
+							<artifactId>parent</artifactId>
+							<version>0.3.0-SNAPSHOT</version>
+							<classifier>${target.platform}</classifier>
+						</artifact>
+					</target>
 					<resolver>p2</resolver>
 					<pomDependencies>consider</pomDependencies>
 					<environments>
