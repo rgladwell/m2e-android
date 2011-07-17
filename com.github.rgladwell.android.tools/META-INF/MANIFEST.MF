@@ -7,11 +7,11 @@ Bundle-Vendor: Github
 Export-Package: com.github.android.tools,
  com.github.android.tools.model
 Require-Bundle: org.eclipse.m2e.maven.runtime;bundle-version="0.13.0",
- org.eclipse.persistence.moxy;bundle-version="2.3.0"
+ org.eclipse.persistence.moxy;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.xml.bind,
  javax.xml.bind.annotation,
  javax.xml.bind.annotation.adapters,
- org.osgi.framework;version="1.6.0"
+ org.osgi.framework;version="1.5.0"
 Bundle-Activator: com.github.android.tools.Activator
