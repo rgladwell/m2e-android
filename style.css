@@ -1,0 +1,211 @@
+/* andreas03 - an open source xhtml/css website layout by Andreas Viklund - http://andreasviklund.com . Free to use for any purpose as long as the proper credits are given to the original author.
+
+Version: 1.2
+(Nov 28, 2005)
+
+Screen layout: */
+
+body{
+margin:0;
+padding:30px 0;
+font:76% tahoma,verdana,sans-serif;
+background:#047 url(img/bodybg.png) repeat-x fixed;
+color:#222;
+}
+
+#thetop{
+margin:0;
+}
+
+#container{
+width:720px;
+margin:0 auto;
+padding:20px 20px 0 20px;
+background:#fff url(img/contbg.png) no-repeat;
+color:#222;
+}
+
+a{
+text-decoration:none;
+background-color:inherit;
+color:#26c;
+}
+
+a:hover{
+text-decoration:underline;
+}
+
+a img{
+border:0;
+}
+
+p{
+margin:0 0 15px 0;
+line-height:1.5em;
+}
+
+#main p,#sidebar p{
+padding:0 0 0 10px;
+}
+
+#logo{
+float:left;
+width:240px;
+margin:0 20px 0 0;
+padding:0 0 25px 0;
+background:#eee;
+border:4px solid #dde;
+text-align:center;
+color:#555;
+overflow:auto;
+}
+
+#logo h1{
+margin:50px 5px 1px 5px;
+letter-spacing:-3px;
+}
+
+#logo a{
+background-color:inherit;
+color:#26a;
+text-decoration:none;
+}
+
+#logo a:hover{
+background-color:inherit;
+color:#69e;
+}
+
+#tagline{
+text-align:center;
+font-size:1.2em;
+}
+
+#intro p{
+line-height:1.5em;
+}
+
+#main{
+float:left;
+width:530px;
+margin-right:20px;
+padding:0;
+}
+
+.headerstyle{
+display:block;
+margin:30px 0 10px 0;
+padding:5px 0 5px 8px;
+background:#eee url(img/gradient2.png) repeat-x;
+color:#222;
+border-top:1px solid #ddd;
+border-right:1px solid #bbb;
+border-bottom:1px solid #bbb;
+border-left:1px solid #ddd;
+text-decoration:none;
+}
+
+#sidebar{
+width:155px;
+float:right;
+margin-top:20px;
+font-size:1em;
+line-height:1.3em;
+}
+
+#sidebar p{
+font-size:0.9em;
+}
+
+.sidelink{
+display:block;
+width:140px;
+margin:3px 10px 2px 0;
+padding:5px 0 5px 8px;
+font-size:1.1em;
+font-weight:bold;
+text-align:left;
+background:#eee url(img/gradient1.png) repeat-x;
+color:#26c;
+border-top:1px solid #ddd;
+border-right:1px solid #bbb;
+border-bottom:1px solid #bbb;
+border-left:1px solid #ddd;
+}
+
+.sidelink:hover,.menuheader{
+background:#fff url(img/gradient2.png) repeat-x;
+color:#222;
+border-top:1px solid #ddd;
+border-right:1px solid #888;
+border-bottom:1px solid #888;
+border-left:1px solid #ddd;
+text-decoration:none;
+}
+
+#footer{
+margin:0 auto 20px auto;
+width:760px;
+background:#fff url(img/footerbg.png) bottom left no-repeat;
+padding:0 0 5px 0;
+font-size:0.9em;
+color:#888;
+text-align:center;
+}
+
+h1,h2,h3,h4{
+margin:0 0 10px 0;
+font-weight:normal;
+}
+
+h1{
+font-size:2.8em;
+}
+
+h2{
+margin:0 0 4px 0;
+font-size:1.8em;
+}
+
+h3{
+margin:20px 0 8px 0;
+font-size:1.4em;
+}
+
+h4{
+margin:10px 0 5px 0;
+font-size:1.2em;
+}
+
+.clear{
+clear:both;
+margin:0;
+}
+
+.right{
+text-align:right;
+}
+
+.internallink{
+font-size:0.9em;
+text-align:center;
+}
+
+.block{
+padding:20px;
+background:#eee;
+color:#222;
+border:2px solid #ddd;
+}
+
+.credit{
+color:#888;
+background-color:inherit;
+}
+
+.hide{
+display:none;
+}
+
+/* Original open source design by Andreas Viklund - http://andreasviklund.com
+Released through OSWD.org */
