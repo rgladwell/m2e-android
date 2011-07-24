@@ -32,9 +32,23 @@
 		<url>https://code.google.com/a/eclipselabs.org/hosting/</url>
 	</organization>
 	<properties>
-		<tycho-version>0.12.0</tycho-version>
+		<tycho-version>0.13.0-SNAPSHOT</tycho-version>
 		<target.platform>indigo</target.platform>
 	</properties>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype-snapshots</id>
+			<name>Sonatype Snapshots Repository</name>
+			<url>https://repository.sonatype.org/content/repositories/snapshots/</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 	<build>
 		<plugins>
 			<plugin>
