@@ -110,4 +110,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	<ciManagement>
+		<url>https://rgladwell.ci.cloudbees.com/job/m2e-android/</url>
+		<system>Jenkins</system>
+	</ciManagement>
 </project>
