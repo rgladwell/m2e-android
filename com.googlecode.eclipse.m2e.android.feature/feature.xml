@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="com.googlecode.eclipse.m2e.android.feature"
-      label="Maven Integration for Android Development Tools"
+      label="Android Configurator for M2E"
       version="0.3.0.qualifier"
       provider-name="Google Code">
 
@@ -240,7 +240,7 @@ to a jury trial in any resulting litigation.
    </license>
 
    <url>
-      <update label="m2eclipse-android-integration Update Site" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/"/>
+      <update label="m2e-android Update Site" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/"/>
    </url>
 
    <requires>

@@ -3,5 +3,5 @@
    <feature url="features/com.googlecode.eclipse.m2e.android.feature_0.3.0.qualifier.jar" id="com.googlecode.eclipse.m2e.android.feature" version="0.3.0.qualifier">
       <category name="com.googlecode.eclipse.m2e.android.category"/>
    </feature>
-   <category-def name="com.googlecode.eclipse.m2e.android.category" label="Maven Integration for Android Development Tools"/>
+   <category-def name="com.googlecode.eclipse.m2e.android.category" label="Android Configurator for M2E"/>
 </site>

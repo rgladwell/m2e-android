@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
 	<artifactId>aggregator</artifactId>
-	<name>Maven Integration for Android Development Tools</name>
+	<name>Android Configurator for M2E</name>
 	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<description>An Eclipse plug-in that adds support for M2Eclipse integration with the Android Developer Tools (ADT) and the Maven Android Plugin.</description>
-	<url>https://code.google.com/a/eclipselabs.org/p/m2eclipse-android-integration/</url>
+	<description>Android Configurator for M2E Maven Integration for Eclipse and Maven Android Plugin</description>
+	<url>http://rgladwell.github.com/m2e-android</url>
 	
 		<modules>
 		<module>../com.googlecode.eclipse.m2e.android.parent</module>
