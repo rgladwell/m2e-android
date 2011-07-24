@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.googlecode.eclipse.m2e.android</groupId>
-	<artifactId>parent</artifactId>
+	<artifactId>m2e-android</artifactId>
 	<name>Android Configurator for M2E</name>
 	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -35,6 +35,13 @@
 		<tycho-version>0.13.0-SNAPSHOT</tycho-version>
 		<target.platform>indigo</target.platform>
 	</properties>
+	<modules>
+		<module>com.github.rgladwell.android.tools</module>
+		<module>com.googlecode.eclipse.m2e.android</module>
+		<module>com.googlecode.eclipse.m2e.android.feature</module>
+		<module>com.googlecode.eclipse.m2e.android.test</module>
+		<module>com.googlecode.eclipse.m2e.android.update</module>
+	</modules>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>sonatype-snapshots</id>
@@ -65,7 +72,7 @@
 					<target>
 						<artifact>
 							<groupId>com.googlecode.eclipse.m2e.android</groupId>
-							<artifactId>parent</artifactId>
+							<artifactId>m2e-android</artifactId>
 							<version>0.3.0-SNAPSHOT</version>
 							<classifier>${target.platform}</classifier>
 						</artifact>

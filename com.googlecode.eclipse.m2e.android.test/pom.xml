@@ -4,11 +4,11 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>parent</artifactId>
+		<artifactId>m2e-android</artifactId>
 		<groupId>com.googlecode.eclipse.m2e.android</groupId>
-		<relativePath>../com.googlecode.eclipse.m2e.android.parent</relativePath>
 		<version>0.3.0-SNAPSHOT</version>
 	</parent>
+	<name>Android Configurator for M2E Test Suite</name>
 	<artifactId>com.googlecode.eclipse.m2e.android.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<build>
@@ -46,8 +46,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<!-- dependencies> <dependency> <groupId>com.github</groupId> <artifactId>com.github.android.tools</artifactId> 
-		<version>0.1.0-SNAPSHOT</version> <type>bundle</type> </dependency> </dependencies -->
-	<name>Android Configurator for M2E Test Suite</name>
 </project>
