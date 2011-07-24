@@ -1,0 +1,7 @@
+#Eclipse
+.settings
+
+#Maven
+target
+release.properties
+pom.xml.*
