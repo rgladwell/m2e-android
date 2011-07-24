@@ -1,0 +1,10 @@
+#Eclipse
+.settings
+.project
+.classpath
+bin
+
+#Maven
+target
+release.properties
+pom.xml.*
