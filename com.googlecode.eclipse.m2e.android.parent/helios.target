@@ -13,7 +13,7 @@
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.android.ide.eclipse.adt.feature.group" version="12.0.0.v201106281929-138431"/>
-<repository location="http://ci.dahanne.net/job/publish_adt_to_p2repo/ws/mirror/"/>
+<repository location="http://rgladwell.github.com/publish_adt_to_p2repo/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.pde.junit.runtime.standalone.feature.group" version="1.0.0.v20100831"/>
