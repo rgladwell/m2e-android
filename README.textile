@@ -1,0 +1,63 @@
+h1. Android Configurator
+
+The Android Configurator (*m2e-android*) is an Maven Integration for Eclipse (m2e) plug-in that adds maven support for Android Developer Tools (ADT) and the Maven Android Plugin. It brings the power of Maven dependency management into the ADT.
+
+For instructions on how to get started using the m2e-android please see the "project web site.":http://rgladwell.github.com/m2e-android/
+
+_Copyright (c) 2009, 2010, 2011 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
+*License:* "Eclipse Public License 1.0":http://www.eclipse.org/legal
+
+h2. Hacking
+
+This section details how to set-up your environment to make code changes to the *Android Configurator* code base.
+
+h3. 1. Getting Started
+
+In addition to having Eclipse Indigo installed, you need to do the following steps:
+
+# Install the "Android SDK.":http://developer.android.com/sdk/index.html
+# Create ANDROID_HOME environment variable containing the Android SDK install path. 
+# Ensure you have the latest update on the Android SDK (execute @android update sdk --no-ui --obsolete --force@) 
+# Install latest "Android Development Tools.":http://developer.android.com/sdk/eclipse-adt.html
+# Install "Eclipse Plug-in Development Environment.":http://www.eclipse.org/pde/
+# Add "SWTBot update site":http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/ to available software sites.
+# Install "M2E Plugin 1.0.0.":http://www.eclipse.org/m2e/download/
+# Install "Maven 3":http://maven.apache.org/download.html for command line "Tycho":http://tycho.sonatype.org/ support.
+# Install "Egit":http://www.eclipse.org/egit/download/.
+# Install EclipseLink Target Components through Indigo release update site. 
+# Add "m2e release build repository":http://download.eclipse.org/technology/m2e/releases to available software sites.
+# In Eclipse select Help -> Install new software... and go to the m2eclipse update site.
+# Un-check the "Group items by category" check box.
+# You should now see the "m2e - Extensions Development Support (Optional)" plugin.
+# Select, install and restart Eclipse.
+
+h3. 2. Import Projects
+
+The m2e-android project is made up of six sub-modules: the parent POM project, the core plugin, a test suite, an Android tools plugin, the feature project and an update site project.
+
+To clone them into your Eclipse workspace follow these steps: 
+
+# Clone the git repository from git://github.com/rgladwell/m2e-android.git into your local workspace.
+# In Eclipse create a new project by selecting _File_ -> _New Project..._ in the menu and then selecting _General_ -> _Project_.
+# Enter "m2e-android", or whatever you folder you cloned the m2e-android project to, into the _Project name_ text box and click _Finish_.
+# Right-click on project in the _Package Explorer_ and select _Configure_ -> _Convert to Maven Project_.
+# Right-click on project in the _Package Explorer_ and select _Team_ -> _Share Project_.
+# Select _Git_ and click _Next_.
+# Check the _Use or create Repository in parent folder of project_ and click _Finish_.
+# For each of the sub-folders in the m2e-android project (com.*) do the following:
+## Create a new project by selecting _File_ -> _New Project..._ in the menu and then selecting _General_ -> _Project_.
+## Uncheck the _Use default location_ check box and click the _Browse..." location button.
+## Select the sub-folder of the m2e-android project and click _OK_.
+## From the Location text box, copy-and-paste the sub-folder name (com.*) in the _Project name_ text box and click _Finish_.
+## Right-click on project in the _Package Explorer_ and select _Configure_ -> _Convert to Maven Project_.
+## If you get a "Plugin exception not covered by lifecycle configuration" error in your POM click "Discover new m2e connectors" which should allow you to install the Tycho configurator.
+## Right-click on project in the _Package Explorer_ and select _Team_ -> _Share Project_.
+## Select _Git_ and click _Next_.
+## Check the _Use or create Repository in parent folder of project_ and click _Finish_.
+
+h3. Further reading
+
+For more information on developing the m2e-android plug-in please see the following wiki pages:
+
+* "Testing":https://github.com/rgladwell/m2e-android/wiki/Testing
+* "Guidelines":https://github.com/rgladwell/m2e-android/wiki/Guidelines
