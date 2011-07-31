@@ -13,7 +13,7 @@
 	<distributionManagement>
 		<site>
 			<id>github-project-site</id>
-			<url>gitsite:git@github.com/rgladwell/m2e-android.git/updates/latest</url>
+			<url>gitsite:git@github.com/rgladwell/m2e-android.git/updates/latest/m2e-android</url>
 		</site>
 	</distributionManagement>
 	<profiles>
@@ -26,7 +26,7 @@
 			<distributionManagement>
 				<site>
 					<id>github-project-site</id>
-					<url>gitsite:git@github.com/rgladwell/m2e-android.git/updates</url>
+					<url>gitsite:git@github.com/rgladwell/m2e-android.git/updates/m2e-android</url>
 				</site>
 			</distributionManagement>
 		</profile>
