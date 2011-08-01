@@ -44,7 +44,7 @@ To clone them into your Eclipse workspace follow these steps:
 # Right-click on project in the _Package Explorer_ and select _Team_ -> _Share Project_.
 # Select _Git_ and click _Next_.
 # Check the _Use or create Repository in parent folder of project_ and click _Finish_.
-# For each of the sub-folders in the m2e-android project (com.*) do the following:
+# For each of the sub-folders in the m2e-android project (me.gladwell.*) do the following:
 ## Create a new project by selecting _File_ -> _New Project..._ in the menu and then selecting _General_ -> _Project_.
 ## Uncheck the _Use default location_ check box and click the _Browse..." location button.
 ## Select the sub-folder of the m2e-android project and click _OK_.
