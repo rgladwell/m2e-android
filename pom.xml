@@ -134,7 +134,7 @@
 		</plugins>
 	</build>
 	<ciManagement>
-		<url>https://rgladwell.ci.cloudbees.com/job/m2e-android/</url>
+		<url>http://ci.dahanne.net/job/m2e-android_master/</url>
 		<system>Jenkins</system>
 	</ciManagement>
 </project>
