@@ -33,7 +33,7 @@ import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
-	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 30;
+	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 60;
 
 	protected AdtPlugin adtPlugin;
 	private CommandLineAndroidTools dexInfoService;
