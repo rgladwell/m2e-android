@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tools
 Bundle-SymbolicName: me.gladwell.android.tools
-Bundle-Version: 0.1.0.qualifier
+Bundle-Version: 0.1.0
 Bundle-Vendor: Github
 Export-Package: me.gladwell.android.tools,
  me.gladwell.android.tools.model
