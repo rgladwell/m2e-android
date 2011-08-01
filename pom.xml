@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>m2e-android</artifactId>
 	<groupId>me.gladwell.eclipse.m2e.android</groupId>
-	<version>0.3.0</version>
+	<version>0.3.1-SNAPSHOT</version>
 	<name>Android Configurator for M2E</name>
 	<packaging>pom</packaging>
 	<description>Android Configurator for M2E Maven Integration for Eclipse and Maven Android Plugin</description>
@@ -26,7 +26,6 @@
 		<connection>scm:git@github.com:rgladwell/m2e-android.git</connection>
 		<developerConnection>scm:git@github.com:rgladwell/m2e-android.git</developerConnection>
 		<url>https://github.com/rgladwell/m2e-android</url>
-		<tag>m2e-android-0.3.0</tag>
 	</scm>
 	<organization>
 		<name>Gladwell Consultants Ltd.</name>
@@ -74,7 +73,7 @@
 						<artifact>
 							<groupId>me.gladwell.eclipse.m2e.android</groupId>
 							<artifactId>m2e-android</artifactId>
-							<version>0.3.0-SNAPSHOT</version>
+							<version>0.3.1-SNAPSHOT</version>
 							<classifier>${target.platform}</classifier>
 						</artifact>
 					</target>

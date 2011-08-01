@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>m2e-android</artifactId>
 		<groupId>me.gladwell.eclipse.m2e.android</groupId>
-		<version>0.3.0</version>
+		<version>0.3.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>me.gladwell.eclipse.m2e.android</artifactId>
 	<name>Android Configurator for M2E Plug-in</name>

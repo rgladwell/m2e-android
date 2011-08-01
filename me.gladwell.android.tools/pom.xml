@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>m2e-android</artifactId>
 		<groupId>me.gladwell.eclipse.m2e.android</groupId>
-		<version>0.3.0</version>
+		<version>0.3.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>me.gladwell.android.tools</artifactId>
 	<name>Android Tools API</name>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	<build>
 	    <sourceDirectory>src/main/java</sourceDirectory>
