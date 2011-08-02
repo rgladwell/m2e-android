@@ -240,7 +240,7 @@ to a jury trial in any resulting litigation.
    </license>
 
    <url>
-      <update label="m2e-android Update Site" url="https://svn.codespot.com/a/eclipselabs.org/m2eclipse-android-integration/updates/"/>
+      <update label="m2e-android Update Site" url="http://rgladwell.github.com/m2e-android/updates/"/>
    </url>
 
    <requires>
