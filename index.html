@@ -18,16 +18,92 @@ subtitle: Android Configurator for M2E Maven Integration for Eclipse
 
 <h3 class="headerstyle">1. Before you start</h3>
 
-<p>Before you start you will need Eclipse Helios or Indigo
+<p>
+	Before you start you will need <a
+		href="http://www.eclipse.org/downloads/">Eclipse Helios or Indigo</a><br />
 	installed, as well as some additional Eclipse plug-ins. Instructions
-	for installing these components can be found here:</p>
+	for installing these components can be found here:
+</p>
 
 <p>
-	<a href="http://www.eclipse.org/downloads/">Eclipse 3.6+</a><br />
-	<a href="http://developer.android.com/sdk/eclipse-adt.html">Android Developer Tools 12.0.0+</a><br />
+	<a href="http://developer.android.com/sdk/installing.html">Android SDK and ADT 12.0.0+</a><br />
 	<a href="http://www.eclipse.org/m2e/download/">Maven Integration for Eclipse 1.0.0+</a><br />
-	<a href="http://code.google.com/p/maven-android-plugin/">Maven Android Plugin 3.0.0+</a><br />
 </p>
+
+<p>
+	<img src="img/warning.png" alt="warning" style="float: left;"> <em>Note:</em> If you have an old,
+	alpha 0.2.x version of m2elipse-android-integration installed you
+	should uninstall it before installing new 0.3.x beta versions.
+</p>
+
+<p class="internallink">
+	[ <a href="#top">Back to top</a> ]
+</p>
+
+<h3 class="headerstyle">2. Create Eclipse project</h3>
+
+<p>
+	<strong>If you already have an Android project</strong> please make
+	sure you have <a
+		href="http://code.google.com/p/maven-android-plugin/wiki/GettingStarted"
+		title="Maven Android Plugin Getting Started Guide">created a POM</a>
+	for your project using version 3.0.0-alpha-2 or greater of the <a
+		href="http://code.google.com/p/maven-android-plugin/"
+		title="Maven Android Plugin">maven-android-plugin.</a> Right-click on
+	your project and select
+	<em>Configuration -> Convert to Maven Project</em>.
+</p>
+
+<p>
+	<strong>If you are starting with a new project</strong> you can use the
+	Maven Android archetypes to create Android projects completely within
+	Eclipse:
+</p>
+
+<ol>
+	<li>Create a new Maven Project (<em>File -> New -> Project...</em>
+		then select <em>Maven -> Maven Project</em>).</li>
+	<li>When prompted to <em>Select Archetype</em> click <em>Add
+			Archetype...</em>
+	</li>
+	<li>In the dialog that appears enter
+		"de.akquinet.android.archetypes" for <em>Archetype Group Id</em>.</li>
+	<li>In <em>Archetype Artifact Id</em> enter "android-quickstart"</li>
+	<li>In <em>Archetype Version</em> enter "1.0.6" and contiune</li>
+	<li>When prompted enter your desired project group and artefact
+		ID, version and, optionally, set the "platform" property for the
+		Android version (defaults to '7')</li>
+	<li>Click Finish</li>
+	<li>Open newly created POM in editor and change the
+		maven-android-plugin version to 3.0.0-beta-2</li>
+	<li>Right-click on new project and select Maven -> Update Project
+		Configuration</li>
+</ol>
+
+<p>With either decision you should end up with a project looking
+	something like this:</p>
+
+<img src="img/step2-screenshot.png" title="Step 2: Screenshot of Android Project">
+
+<p class="internallink">
+	[ <a href="#top">Back to top</a> ]
+</p>
+
+<h3 class="headerstyle">3. Install Android Connector</h3>
+
+<p>
+	Your newly created project should have errors complaining that
+	"Plugin execution not covered by lifecycle configuration". To fix this
+	and install the Android Connector simply open your project POM and
+	click on the error. This should give you the option to <em>Discover
+	new m2e connectors</em>. Select this and you should be automatically
+	prompted to download and install the <strong>Android Connector</strong>.
+</p>
+
+<p>Once you have installed the Android Connector, your project
+	should look something like this:</p>
+
+<img src="img/step3-screenshot.png" title="Step 3: Screenshot of Android Project">
 
 <p class="internallink">
 	[ <a href="#top">Back to top</a> ]
@@ -42,6 +118,13 @@ subtitle: Android Configurator for M2E Maven Integration for Eclipse
 		<a href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License 1.0</a>
 	</p>
 
+	<h3>Contact</h3>
+
+	<p>
+		<a href="http://groups.google.com/group/maven-android-developers" title="Maven Android Developers Group">Mailing List</a> <br />
+		<a href="https://github.com/rgladwell/m2e-android/issues">Bugs</a>
+	</p>
+
 	<h3>Authors</h3>
 
 	<p>
@@ -50,5 +133,20 @@ subtitle: Android Configurator for M2E Maven Integration for Eclipse
 		<a href="http://blog.dahanne.net">Anthony Dahanne</a> <br />
 		<a href="http://ubercode.de">Felix Dahlke</a>
 	</p>
+
+	<h3>Related Projects</h3>
+
+	<p>
+		<a href="http://code.google.com/p/maven-android-plugin/">Maven Android Plugin</a> <br />
+		<a href="http://sourceforge.net/projects/android4maven/">Android4Maven</a> <br />
+		<a href="https://github.com/akquinet/android-archetypes">Maven Archetypes for Android</a> <br />
+		<a href="https://github.com/anthonydahanne/publish_adt_to_p2repo">Publish ADT to p2</a>
+	</p>
+
+	<script type="text/javascript" src="http://www.ohloh.net/p/481950/widgets/project_users.js"></script>
+	
+	<h3>News</h3>
+	
+	<script src="http://www.gmodules.com/ig/ifr?url=http://www.ajaxgaier.com/iGoogle/rss-reader%2B.xml&amp;up_title=News&amp;up_feed=http%3A%2F%2Fgroups.google.com%2Fgroup%2Fmaven-android-developers%2Ffeed%2Frss_v2_0_msgs.xml&amp;up_contentnr=9&amp;up_fontsize=14&amp;up_lineheight=70&amp;up_titlelink=&amp;up_bullet=0&amp;up_reload_feed=0&amp;up_reload_fqcy=0&amp;up_hl_background=FFFFFF&amp;up_show_summary=0&amp;up_inline_sum_background=F9F9F9&amp;up_feed2=&amp;up_feed3=&amp;up_feed4=&amp;synd=open&amp;w=156&amp;h=229&amp;title=&amp;border=%23ffffff%7C3px%2C1px+solid+%23999999&amp;output=js"></script>
 
 </div>
