@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Singleton;
+
 import me.gladwell.android.tools.AndroidBuildService;
 import me.gladwell.android.tools.CommandLineAndroidTools;
 import me.gladwell.android.tools.DexService;
@@ -38,7 +40,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
-
+@Singleton
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
 	private DexService dexService = new CommandLineAndroidTools();
