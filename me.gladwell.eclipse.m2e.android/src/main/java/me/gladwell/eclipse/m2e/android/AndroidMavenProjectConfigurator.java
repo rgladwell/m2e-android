@@ -18,7 +18,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import me.gladwell.eclipse.m2e.android.model.ProjectType;
+import me.gladwell.eclipse.m2e.inject.GuiceProjectConfigurator;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.ICommand;
@@ -36,26 +39,37 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
+import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
-import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
 import com.android.ide.eclipse.adt.AdtConstants;
 import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import com.google.inject.Module;
 
-public class AndroidMavenProjectConfigurator extends JavaProjectConfigurator implements IJavaProjectConfigurator {
+public class AndroidMavenProjectConfigurator extends GuiceProjectConfigurator implements IJavaProjectConfigurator {
 
 	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 	public static final String ANDROID_GEN_PATH = "gen";
+	
+	@Inject
+	private AbstractProjectConfigurator javaProjectConfigurator;
 
-	private static AbstractBuildParticipant incrementalAndroidMavenBuildParticipant = new IncrementalAndroidMavenBuildParticipant();
+	@Inject
+	private AbstractBuildParticipant incrementalAndroidMavenBuildParticipant;
+
+	@Override
+	protected void addModules(List<Module> modules) {
+		super.addModules(modules);
+		modules.add(new PluginModule());
+	}
 
 	@Override
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		super.configure(request, monitor);
+		javaProjectConfigurator.configure(request, monitor);
 
 		ProjectType type = AndroidMavenPluginUtil.getAndroidProjectType(request.getMavenProject());
 		
