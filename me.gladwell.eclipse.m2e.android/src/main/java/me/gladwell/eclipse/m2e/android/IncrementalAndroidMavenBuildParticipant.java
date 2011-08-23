@@ -17,20 +17,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.inject.Singleton;
-
 import me.gladwell.android.tools.AndroidBuildService;
-import me.gladwell.android.tools.CommandLineAndroidTools;
 import me.gladwell.android.tools.DexService;
-import me.gladwell.android.tools.MavenAndroidPluginBuildService;
 import me.gladwell.android.tools.model.Jdk;
 import me.gladwell.eclipse.m2e.android.model.MavenArtifact;
+import me.gladwell.eclipse.m2e.inject.Nullable;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.ProgressMonitorWrapper;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -40,11 +36,22 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 @Singleton
 public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
 
-	private DexService dexService = new CommandLineAndroidTools();
-	private AndroidBuildService buildService = new MavenAndroidPluginBuildService();
+	@Inject
+	private DexService dexService;
+	
+	@Inject
+	private AndroidBuildService buildService;
+	
+	@Inject
+	@Nullable
+	private AndroidBuildListener listener;
+
 	private Map<String, Set<MavenArtifact>> lastMavenClasspaths = new HashMap<String, Set<MavenArtifact>>();
 
 	@Override
@@ -97,10 +104,8 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			dexService.convertClassFiles(apk, outputDirectory, apk);
 			buildService.resign(apk);
 
-			// TODO replace progress monitor with listener
-			IAndroidMavenProgressMonitor androidMavenMonitor = findAndroidMavenProgressMonitor(monitor);
-			if(null != androidMavenMonitor) {
-				androidMavenMonitor.onAndroidMavenBuild((new EventObject(this)));
+			if(listener != null) {
+				listener.onBuild((new EventObject(this)));
 			}
 		}
 		return null;
@@ -134,16 +139,6 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			results.add(mavenArtifact);
 		}
 		return results;
-	}
-
-	private IAndroidMavenProgressMonitor findAndroidMavenProgressMonitor(IProgressMonitor monitor) {
-		if(monitor instanceof IAndroidMavenProgressMonitor) {
-			return (IAndroidMavenProgressMonitor) monitor;
-		} else if(monitor instanceof ProgressMonitorWrapper) {
-			ProgressMonitorWrapper wrapper = (ProgressMonitorWrapper) monitor;
-			return findAndroidMavenProgressMonitor(wrapper.getWrappedProgressMonitor());
-		}
-		return null;
 	}
 
 }

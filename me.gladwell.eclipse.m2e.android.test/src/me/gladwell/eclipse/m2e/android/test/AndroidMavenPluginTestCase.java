@@ -11,11 +11,11 @@ package me.gladwell.eclipse.m2e.android.test;
 import me.gladwell.android.tools.AndroidBuildService;
 import me.gladwell.android.tools.AndroidToolsException;
 import me.gladwell.android.tools.CommandLineAndroidTools;
-import me.gladwell.android.tools.DexService;
 import me.gladwell.android.tools.MavenAndroidPluginBuildService;
 import me.gladwell.android.tools.model.ClassDescriptor;
 import me.gladwell.android.tools.model.DexInfo;
 import me.gladwell.android.tools.model.Jdk;
+import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPluginUtil;
 
 import org.eclipse.core.resources.IProject;
@@ -30,15 +30,27 @@ import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
 import com.android.ide.eclipse.adt.AdtPlugin;
 import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import com.google.inject.Inject;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
 	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 60;
 
+	protected AndroidMavenPlugin plugin;
 	protected AdtPlugin adtPlugin;
 	private CommandLineAndroidTools dexInfoService;
-	protected DummyAndroidMavenProgressMonitor androidMavenMonitor;
+
+	@Inject
+	protected DummyAndroidBuildListener listener;
+
 	protected AndroidBuildService buildService;
+
+	public AndroidMavenPluginTestCase() {
+		super();
+	    plugin = AndroidMavenPlugin.getDefault();
+		plugin.registerModule(new ListenerModule());
+		plugin.getInjector().injectMembers(this);
+	}
 
 	@Override
 	@SuppressWarnings("restriction")
@@ -56,12 +68,17 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	    waitForAdtToLoad();
 
 	    dexInfoService = new CommandLineAndroidTools();
-	    androidMavenMonitor = new DummyAndroidMavenProgressMonitor(monitor);
 	    buildService= new MavenAndroidPluginBuildService();
 		Jdk jdk = new Jdk();
 		jdk.setPath(JavaRuntime.getDefaultVMInstall().getInstallLocation().getAbsoluteFile());
 		buildService.setJdk(jdk);
     }
+
+	@Override
+	protected void tearDown() throws Exception {
+		listener.clear();
+		super.tearDown();
+	}
 
 	protected void waitForAdtToLoad() throws InterruptedException, Exception {
 		JobHelpers.waitForJobs(new IJobMatcher() {
@@ -73,7 +90,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	}
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
-		project.build(kind, androidMavenMonitor);
+		project.build(kind, monitor);
 		waitForJobsToComplete();
     }
 

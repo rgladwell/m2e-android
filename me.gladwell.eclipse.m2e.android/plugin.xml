@@ -4,7 +4,7 @@
     <extension
           point="org.eclipse.m2e.core.projectConfigurators">
        <configurator
-             class="me.gladwell.eclipse.m2e.android.AndroidMavenProjectConfigurator"
+             class="me.gladwell.eclipse.m2e.inject.GuiceExtensionFactory:me.gladwell.eclipse.m2e.android.AndroidMavenProjectConfigurator"
              id="me.gladwell.eclipse.m2e.android.androidDevelopmentToolsProjectConfigurator"
              name="Android Development Tools Project Configurator">
        </configurator>
