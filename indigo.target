@@ -23,5 +23,9 @@
 <unit id="org.eclipse.persistence.sdk.feature.group" version="2.3.0.v20110604-r9504"/>
 <repository location="http://download.eclipse.org/rt/eclipselink/updates/"/>
 </location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.persistence.moxy.feature.group" version="2.3.0.v20110604-r9504"/>
+<repository location="http://download.eclipse.org/releases/indigo/"/>
+</location>
 </locations>
 </target>
