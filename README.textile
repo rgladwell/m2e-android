@@ -38,22 +38,12 @@ The m2e-android project is made up of six sub-modules: the parent POM project, t
 To clone them into your Eclipse workspace follow these steps: 
 
 # Clone the git repository from git://github.com/rgladwell/m2e-android.git into your local workspace.
-# In Eclipse create a new project by selecting _File_ -> _New Project..._ in the menu and then selecting _General_ -> _Project_.
-# Enter "m2e-android", or whatever you folder you cloned the m2e-android project to, into the _Project name_ text box and click _Finish_.
-# Right-click on project in the _Package Explorer_ and select _Configure_ -> _Convert to Maven Project_.
-# Right-click on project in the _Package Explorer_ and select _Team_ -> _Share Project_.
+# In Eclipse select _File_ -> _Import..._ in the menu and then select _Maven_ -> _Existing Maven Projects_.
+# Choose the parent folder you just cloned into your workspace (should be _m2e-android_), select all sub projects and click _Finish_
+# If you get a "Plugin exception not covered by lifecycle configuration" error in your POM click "Discover new m2e connectors" which should allow you to install the Tycho configurator.
+# Mark all new projects in the _Package Explorer_ and right-click on them to select _Team_ -> _Share Project_.
 # Select _Git_ and click _Next_.
 # Check the _Use or create Repository in parent folder of project_ and click _Finish_.
-# For each of the sub-folders in the m2e-android project (me.gladwell.*) do the following:
-## Create a new project by selecting _File_ -> _New Project..._ in the menu and then selecting _General_ -> _Project_.
-## Uncheck the _Use default location_ check box and click the _Browse..." location button.
-## Select the sub-folder of the m2e-android project and click _OK_.
-## From the Location text box, copy-and-paste the sub-folder name (com.*) in the _Project name_ text box and click _Finish_.
-## Right-click on project in the _Package Explorer_ and select _Configure_ -> _Convert to Maven Project_.
-## If you get a "Plugin exception not covered by lifecycle configuration" error in your POM click "Discover new m2e connectors" which should allow you to install the Tycho configurator.
-## Right-click on project in the _Package Explorer_ and select _Team_ -> _Share Project_.
-## Select _Git_ and click _Next_.
-## Check the _Use or create Repository in parent folder of project_ and click _Finish_.
 
 h3. Further reading
 
