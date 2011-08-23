@@ -8,8 +8,17 @@
 
 package me.gladwell.eclipse.m2e.android;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
+import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.osgi.framework.BundleContext;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -21,6 +30,10 @@ public class AndroidMavenPlugin extends Plugin {
 
 	// The shared instance
 	private static AndroidMavenPlugin plugin;
+
+	private Injector injector;
+
+	private List<Module> modules;
 
 	/**
 	 * The constructor
@@ -34,6 +47,8 @@ public class AndroidMavenPlugin extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		modules = new ArrayList<Module>();
+		registerModule(new PluginModule());
 	}
 
 	/**
@@ -51,6 +66,17 @@ public class AndroidMavenPlugin extends Plugin {
 	 */
 	public static AndroidMavenPlugin getDefault() {
 		return plugin;
+	}
+
+	public void registerModule(Module module) {
+		modules.add(module);
+	}
+
+	public Injector getInjector() {
+		if(injector == null) {
+			injector = Guice.createInjector(modules);
+		}
+		return injector;
 	}
 
 }

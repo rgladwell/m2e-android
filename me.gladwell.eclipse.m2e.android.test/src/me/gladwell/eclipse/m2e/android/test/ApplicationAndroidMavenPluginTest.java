@@ -82,7 +82,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	public void testConfigureApkBuilderBeforeMavenBuilder() throws Exception {
 		boolean foundApkBuilder = false;
 		for(ICommand command : project.getDescription().getBuildSpec()) {
-			if(AndroidMavenProjectConfigurator.APK_BUILDER_COMMAND_NAME.equals(command.getBuilderName())) {
+			if("com.android.ide.eclipse.adt.ApkBuilder".equals(command.getBuilderName())) {
 				foundApkBuilder = true;
 			} else if(IMavenConstants.BUILDER_ID.equals(command.getBuilderName())) {
 				assertTrue("project APKBuilder not configured before maven builder", foundApkBuilder);
@@ -138,10 +138,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	public void testIncrementalBuildWithoutChangesDoesNotUpdateApk() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
-		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
+		assertFalse("overwrite existing APK", listener.getAndroidMavenBuildEvents().size() > 1);
 	}
 
 	public void testIncrementalBuildUpdatesDependencies() throws Exception {
@@ -158,10 +158,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		MavenXpp3Writer writer = new MavenXpp3Writer();
 		writer.write(new FileWriter(pom), model);
 
-		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
-		assertTrue("failed to overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
+		assertTrue("failed to overwrite existing APK", listener.getAndroidMavenBuildEvents().size() > 1);
 
 		PackageInfo packageInfo = new PackageInfo();
 		packageInfo.setName("org.apache.commons.io");
@@ -189,7 +189,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
-		assertTrue("failed to overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
+		assertTrue("failed to overwrite existing APK", listener.getAndroidMavenBuildEvents().size() > 1);
 	}
 
 	public void testIncrementalBuildWithoutChangesToClasspathDoesNotUpdateApk() throws Exception {
@@ -205,10 +205,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		MavenXpp3Writer writer = new MavenXpp3Writer();
 		writer.write(new FileWriter(pom), model);
 
-		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
-		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 1);
+		assertFalse("overwrite existing APK", listener.getAndroidMavenBuildEvents().size() > 1);
 	}
 
 	public void testSimultaneousIncrementalBuildWithoutChangesDoesNotUpdateApk() throws Exception {
@@ -220,10 +220,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 		buildAndroidProject(secondProject, IncrementalProjectBuilder.FULL_BUILD);
 
-		project.refreshLocal(IProject.DEPTH_INFINITE, androidMavenMonitor);
+		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
-		assertFalse("overwrite existing APK", androidMavenMonitor.getAndroidMavenBuildEvents().size() > 2);
+		assertFalse("overwrite existing APK", listener.getAndroidMavenBuildEvents().size() > 2);
 
 		deleteProject(secondProject);
 	}
