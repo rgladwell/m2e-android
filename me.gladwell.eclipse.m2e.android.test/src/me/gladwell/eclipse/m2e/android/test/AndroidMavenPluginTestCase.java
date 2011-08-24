@@ -17,6 +17,7 @@ import me.gladwell.android.tools.model.DexInfo;
 import me.gladwell.android.tools.model.Jdk;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPluginUtil;
+import me.gladwell.eclipse.m2e.android.BuildListenerRegistry;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -39,25 +40,22 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	protected AndroidMavenPlugin plugin;
 	protected AdtPlugin adtPlugin;
 	private CommandLineAndroidTools dexInfoService;
-
-	@Inject
 	protected DummyAndroidBuildListener listener;
+	
+	@Inject
+	private BuildListenerRegistry registry;
 
 	protected AndroidBuildService buildService;
-
-	public AndroidMavenPluginTestCase() {
-		super();
-	    plugin = AndroidMavenPlugin.getDefault();
-		plugin.registerModule(new ListenerModule());
-		plugin.getInjector().injectMembers(this);
-	}
 
 	@Override
 	@SuppressWarnings("restriction")
     protected void setUp() throws Exception {
 	    super.setUp();
 
-	    adtPlugin = AdtPlugin.getDefault();
+	    plugin = AndroidMavenPlugin.getDefault();
+		plugin.getInjector().injectMembers(this);
+
+		adtPlugin = AdtPlugin.getDefault();
 	    String androidHome = System.getenv("ANDROID_HOME");
 	    
 	    if(androidHome != null && !androidHome.equals(adtPlugin.getOsSdkFolder())) {
@@ -72,6 +70,10 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		Jdk jdk = new Jdk();
 		jdk.setPath(JavaRuntime.getDefaultVMInstall().getInstallLocation().getAbsoluteFile());
 		buildService.setJdk(jdk);
+		
+		listener = new DummyAndroidBuildListener();
+
+		registry.registerBuildListener(listener);
     }
 
 	@Override

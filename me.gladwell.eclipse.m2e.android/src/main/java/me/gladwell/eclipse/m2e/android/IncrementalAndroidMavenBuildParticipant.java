@@ -10,6 +10,7 @@ package me.gladwell.eclipse.m2e.android;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,7 +22,6 @@ import me.gladwell.android.tools.AndroidBuildService;
 import me.gladwell.android.tools.DexService;
 import me.gladwell.android.tools.model.Jdk;
 import me.gladwell.eclipse.m2e.android.model.MavenArtifact;
-import me.gladwell.eclipse.m2e.inject.Nullable;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
@@ -40,17 +40,15 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant {
+public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant implements BuildListenerRegistry {
 
 	@Inject
 	private DexService dexService;
 	
 	@Inject
 	private AndroidBuildService buildService;
-	
-	@Inject
-	@Nullable
-	private AndroidBuildListener listener;
+
+	private List<AndroidBuildListener> listeners = Collections.synchronizedList(new ArrayList<AndroidBuildListener>());
 
 	private Map<String, Set<MavenArtifact>> lastMavenClasspaths = new HashMap<String, Set<MavenArtifact>>();
 
@@ -104,7 +102,7 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			dexService.convertClassFiles(apk, outputDirectory, apk);
 			buildService.resign(apk);
 
-			if(listener != null) {
+			for(AndroidBuildListener listener : listeners) {
 				listener.onBuild((new EventObject(this)));
 			}
 		}
@@ -139,6 +137,10 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			results.add(mavenArtifact);
 		}
 		return results;
+	}
+
+	public void registerBuildListener(AndroidBuildListener listener) {
+		listeners.add(listener);		
 	}
 
 }
