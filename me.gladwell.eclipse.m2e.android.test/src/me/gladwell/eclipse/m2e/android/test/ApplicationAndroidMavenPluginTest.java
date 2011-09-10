@@ -9,8 +9,10 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.security.CodeSigner;
 import java.util.Enumeration;
@@ -19,6 +21,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import me.gladwell.android.tools.AndroidToolsException;
 import me.gladwell.android.tools.ExecutionException;
 import me.gladwell.android.tools.model.ClassDescriptor;
 import me.gladwell.android.tools.model.PackageInfo;
@@ -30,12 +33,14 @@ import org.apache.maven.model.Developer;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
 import com.android.ide.eclipse.adt.AdtConstants;
@@ -147,28 +152,14 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	public void testIncrementalBuildUpdatesDependencies() throws Exception {
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		File pom = new File(project.getLocation().toFile(), "pom.xml");
-		MavenXpp3Reader reader = new MavenXpp3Reader();
-		Model model = reader.read(new FileReader(pom));
-		Dependency dependency = new Dependency();
-		dependency.setArtifactId("commons-io");
-		dependency.setGroupId("commons-io");
-		dependency.setVersion("2.0.1");
-		model.getDependencies().add(dependency);
-		MavenXpp3Writer writer = new MavenXpp3Writer();
-		writer.write(new FileWriter(pom), model);
+		addDependency(project, "commons-io", "commons-io", "2.0.1");
 
 		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
 		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 
 		assertTrue("failed to overwrite existing APK", listener.getAndroidMavenBuildEvents().size() > 1);
 
-		PackageInfo packageInfo = new PackageInfo();
-		packageInfo.setName("org.apache.commons.io");
-		ClassDescriptor ioUtils = new ClassDescriptor();
-		ioUtils.setName("IOUtils");
-		ioUtils.setPackageInfo(packageInfo);
-		assertApkContains(ioUtils, project);
+		assertApkContainsDependency(project, "IOUtils", "org.apache.commons.io");
 	}
 
 	public void testIncrementalBuildUpdatesLatestDependencies() throws Exception {
