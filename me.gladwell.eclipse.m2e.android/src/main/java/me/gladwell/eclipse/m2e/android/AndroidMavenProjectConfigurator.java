@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android;
 
+import java.util.Arrays;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathConfigurer;
@@ -69,6 +70,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 				throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project", e));
 			}
 		}
+		
 	}
 
 	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
