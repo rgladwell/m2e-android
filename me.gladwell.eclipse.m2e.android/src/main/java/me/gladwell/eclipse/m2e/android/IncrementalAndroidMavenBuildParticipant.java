@@ -12,10 +12,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import me.gladwell.android.tools.AndroidBuildService;
@@ -25,7 +23,6 @@ import me.gladwell.eclipse.m2e.android.model.MavenArtifact;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -50,8 +47,6 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 
 	private List<AndroidBuildListener> listeners = Collections.synchronizedList(new ArrayList<AndroidBuildListener>());
 
-	private Map<String, Set<MavenArtifact>> lastMavenClasspaths = new HashMap<String, Set<MavenArtifact>>();
-
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		// TODO make this code thread-safe
@@ -75,37 +70,25 @@ public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildPartic
 			return null;
 		}
 
-		Set<MavenArtifact> mavenClasspath = convertToMavenArtifacts(project);
-		boolean modifiedDependencies = false;
+		// create new classes.dex in existing APK
+		List<File> artifacts = new ArrayList<File>();
 
-		synchronized(this) {
-			Set<MavenArtifact> lastMavenClasspath = lastMavenClasspaths.get(project.getName());
-			if(!mavenClasspath.equals(lastMavenClasspath)) {
-				modifiedDependencies = true;
-			}
-			lastMavenClasspaths.put(project.getName(), mavenClasspath);
+		for(String path : pom.getRuntimeClasspathElements()) {
+			File artifact = new File(path);
+			artifacts.add(artifact);
 		}
 
-		if(modifiedDependencies || IncrementalProjectBuilder.FULL_BUILD == kind || IncrementalProjectBuilder.CLEAN_BUILD == kind) {
-			// create new classes.dex in existing APK
-			List<File> artifacts = new ArrayList<File>();
+		File outputDirectory = new File(getMavenProjectFacade().getMavenProject().getBuild().getDirectory(), "android-classes");
+		File sourceDirectory = project.getWorkspace().getRoot().getFolder(JavaCore.create(project).getOutputLocation()).getLocation().toFile();
 
-			for(String path : pom.getRuntimeClasspathElements()) {
-				File artifact = new File(path);
-				artifacts.add(artifact);
-			}
+		buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
+		dexService.convertClassFiles(apk, outputDirectory, apk);
+		buildService.resign(apk);
 
-			File outputDirectory = new File(getMavenProjectFacade().getMavenProject().getBuild().getDirectory(), "android-classes");
-			File sourceDirectory = project.getWorkspace().getRoot().getFolder(JavaCore.create(project).getOutputLocation()).getLocation().toFile();
-
-			buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
-			dexService.convertClassFiles(apk, outputDirectory, apk);
-			buildService.resign(apk);
-
-			for(AndroidBuildListener listener : listeners) {
-				listener.onBuild((new EventObject(this)));
-			}
+		for(AndroidBuildListener listener : listeners) {
+			listener.onBuild((new EventObject(this)));
 		}
+
 		return null;
 	}
 
