@@ -30,8 +30,8 @@ public class PluginModule extends AbstractModule {
 	protected void configure() {
 		this.bind(IJavaProjectConfigurator.class).to(AndroidMavenProjectConfigurator.class);
 		this.bind(AbstractProjectConfigurator.class).to(JavaProjectConfigurator.class);
-		this.bind(AbstractBuildParticipant.class).to(IncrementalAndroidMavenBuildParticipant.class);
-		this.bind(BuildListenerRegistry.class).to(IncrementalAndroidMavenBuildParticipant.class);
+		this.bind(AbstractBuildParticipant.class).to(AndroidMavenBuildParticipant.class);
+		this.bind(BuildListenerRegistry.class).to(AndroidMavenBuildParticipant.class);
 		this.bind(DexService.class).to(CommandLineAndroidTools.class);
 		this.bind(AndroidBuildService.class).to(MavenAndroidPluginBuildService.class);
 	}

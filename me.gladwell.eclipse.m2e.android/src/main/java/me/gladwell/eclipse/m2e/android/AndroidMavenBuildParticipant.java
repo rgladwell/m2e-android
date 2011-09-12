@@ -37,7 +37,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class IncrementalAndroidMavenBuildParticipant extends AbstractBuildParticipant implements BuildListenerRegistry {
+public class AndroidMavenBuildParticipant extends AbstractBuildParticipant implements BuildListenerRegistry {
 
 	@Inject
 	private DexService dexService;
