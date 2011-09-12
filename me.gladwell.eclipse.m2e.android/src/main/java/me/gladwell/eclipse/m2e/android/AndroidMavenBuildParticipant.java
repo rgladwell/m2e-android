@@ -23,7 +23,10 @@ import me.gladwell.eclipse.m2e.android.model.MavenArtifact;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -50,46 +53,50 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant imple
 	@Override
 	public Set<IProject> build(int kind, IProgressMonitor monitor) throws Exception {
 		// TODO make this code thread-safe
-		Jdk jdk = new Jdk();
-		jdk.setPath(JavaRuntime.getDefaultVMInstall().getInstallLocation().getAbsoluteFile());
-		buildService.setJdk(jdk);
-		
-		final MavenProject pom = getMavenProjectFacade().getMavenProject();
-
-		if(AndroidMavenPluginUtil.getAndroidProjectType(pom) == null) {
-			// TODO should never reach here, throw meaningful exception
+		try {
+			Jdk jdk = new Jdk();
+			jdk.setPath(JavaRuntime.getDefaultVMInstall().getInstallLocation().getAbsoluteFile());
+			buildService.setJdk(jdk);
+	
+			final MavenProject pom = getMavenProjectFacade().getMavenProject();
+	
+			if(AndroidMavenPluginUtil.getAndroidProjectType(pom) == null) {
+				// TODO should never reach here, throw meaningful exception
+				return null;
+			}
+	
+			final IProject project = getMavenProjectFacade().getProject();
+			
+			final File apk = AndroidMavenPluginUtil.getApkFile(project);
+	
+			if(!apk.exists()) {
+				// TODO should never reach here, throw meaningful exception
+				return null;
+			}
+	
+			// create new classes.dex in existing APK
+			List<File> artifacts = new ArrayList<File>();
+	
+			for(String path : pom.getRuntimeClasspathElements()) {
+				File artifact = new File(path);
+				artifacts.add(artifact);
+			}
+	
+			File outputDirectory = new File(getMavenProjectFacade().getMavenProject().getBuild().getDirectory(), "android-classes");
+			File sourceDirectory = project.getWorkspace().getRoot().getFolder(JavaCore.create(project).getOutputLocation()).getLocation().toFile();
+	
+			buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
+			dexService.convertClassFiles(apk, outputDirectory, apk);
+			buildService.resign(apk);
+	
+			for(AndroidBuildListener listener : listeners) {
+				listener.onBuild((new EventObject(this)));
+			}
+	
 			return null;
+		} catch (Exception e) {
+			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error buildiing android project", e));
 		}
-
-		final IProject project = getMavenProjectFacade().getProject();
-		
-		final File apk = AndroidMavenPluginUtil.getApkFile(project);
-
-		if(!apk.exists()) {
-			// TODO should never reach here, throw meaningful exception
-			return null;
-		}
-
-		// create new classes.dex in existing APK
-		List<File> artifacts = new ArrayList<File>();
-
-		for(String path : pom.getRuntimeClasspathElements()) {
-			File artifact = new File(path);
-			artifacts.add(artifact);
-		}
-
-		File outputDirectory = new File(getMavenProjectFacade().getMavenProject().getBuild().getDirectory(), "android-classes");
-		File sourceDirectory = project.getWorkspace().getRoot().getFolder(JavaCore.create(project).getOutputLocation()).getLocation().toFile();
-
-		buildService.unpack(outputDirectory, sourceDirectory, artifacts, false);
-		dexService.convertClassFiles(apk, outputDirectory, apk);
-		buildService.resign(apk);
-
-		for(AndroidBuildListener listener : listeners) {
-			listener.onBuild((new EventObject(this)));
-		}
-
-		return null;
 	}
 
 	private Set<MavenArtifact> convertToMavenArtifacts(IProject project) throws JavaModelException {
