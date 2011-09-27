@@ -12,14 +12,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventObject;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import me.gladwell.android.tools.AndroidBuildService;
 import me.gladwell.android.tools.DexService;
 import me.gladwell.android.tools.model.Jdk;
-import me.gladwell.eclipse.m2e.android.model.MavenArtifact;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
@@ -27,14 +25,9 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathContainer;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
-import org.eclipse.m2e.jdt.IClasspathManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -97,36 +90,6 @@ public class AndroidMavenBuildParticipant extends AbstractBuildParticipant imple
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error buildiing android project", e));
 		}
-	}
-
-	private Set<MavenArtifact> convertToMavenArtifacts(IProject project) throws JavaModelException {
-		IJavaProject javaProject = JavaCore.create(project);
-		IClasspathContainer container = null;
-		IClasspathEntry[] entries = javaProject.getRawClasspath();
-
-		for (int i = 0; i < entries.length; i++) {
-			IClasspathEntry entry = entries[i];
-			if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER && entry.getPath() != null && entry.getPath().segmentCount() > 0
-			        && IClasspathManager.CONTAINER_ID.equals(entry.getPath().segment(0))) {
-				container = JavaCore.getClasspathContainer(entry.getPath(),	javaProject);
-			}
-		}
-
-		IClasspathEntry[] classpathEntries = container.getClasspathEntries();
-		Set<File> artifacts = new HashSet<File>();
-
-		for(IClasspathEntry entry : classpathEntries) {
-			artifacts.add(entry.getPath().toFile());
-		}
-		
-		Set<MavenArtifact> results = new HashSet<MavenArtifact>();
-		for(File artifact : artifacts) {
-			MavenArtifact mavenArtifact = new MavenArtifact();
-			mavenArtifact.setLastModified(artifact.lastModified());
-			mavenArtifact.setPath(artifact.getAbsolutePath());
-			results.add(mavenArtifact);
-		}
-		return results;
 	}
 
 	public void registerBuildListener(AndroidBuildListener listener) {
