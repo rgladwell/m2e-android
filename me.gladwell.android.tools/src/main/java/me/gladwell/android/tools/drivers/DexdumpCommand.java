@@ -8,7 +8,6 @@ import me.gladwell.android.tools.ExecutionException;
 
 import org.apache.maven.plugin.MojoExecutionException;
 
-
 public class DexdumpCommand extends AndroidCommand implements Command {
 
 	private static final String DEXDUMP_COMMAND = "dexdump";

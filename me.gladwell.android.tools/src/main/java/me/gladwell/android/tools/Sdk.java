@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.gladwell.android.tools.drivers;
+package me.gladwell.android.tools;
 
 import java.io.File;
+
+import me.gladwell.android.tools.drivers.AndroidSdk;
 
 /**
  * Configuration for an Android SDK. Only receives config parameter values, and there is no logic in here. Logic is in
@@ -50,4 +52,13 @@ public class Sdk {
     public String getPlatform() {
         return platform;
     }
+
+	public void setPath(File path) {
+		this.path = path;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
+
 }

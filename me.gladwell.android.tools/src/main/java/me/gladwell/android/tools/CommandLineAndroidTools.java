@@ -2,20 +2,23 @@ package me.gladwell.android.tools;
 
 import java.io.File;
 
+import com.google.inject.Inject;
+
 import me.gladwell.android.tools.drivers.DexCommand;
 import me.gladwell.android.tools.drivers.DexdumpCommand;
 import me.gladwell.android.tools.drivers.MavenCommandExecutor;
 import me.gladwell.android.tools.model.DexInfo;
 
-
 public class CommandLineAndroidTools implements DexService {
 
-	DexdumpOutputParser outputParser = new JAXBDexdumpOutputParser();
+	private DexdumpOutputParser outputParser = new JAXBDexdumpOutputParser();
+	@Inject private Sdk sdk;
 
 	public DexInfo getDexInfo(File dexfile) throws AndroidToolsException {
 	    DexdumpCommand command = new DexdumpCommand();
 	    command.setPathToDex(dexfile);
 	    command.setOutputLayout(DexdumpCommand.OutputLayout.Xml);
+	    command.setSdk(sdk);
 
 	    MavenCommandExecutor executor = new MavenCommandExecutor();
 	    try {
@@ -33,6 +36,7 @@ public class CommandLineAndroidTools implements DexService {
 	    DexCommand command = new DexCommand();
 	    command.setOutput(output);
 	    command.setClassFiles(files);
+	    command.setSdk(sdk);
 	    MavenCommandExecutor executor = new MavenCommandExecutor();
 	    try {
 			command.execute(executor);

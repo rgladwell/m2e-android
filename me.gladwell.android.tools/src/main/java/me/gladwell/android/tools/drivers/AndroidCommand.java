@@ -20,6 +20,8 @@ import static org.codehaus.plexus.util.StringUtils.isBlank;
 
 import java.io.File;
 
+import me.gladwell.android.tools.Sdk;
+
 import org.apache.maven.plugin.MojoExecutionException;
 
 public abstract class AndroidCommand implements Command {
@@ -73,7 +75,12 @@ public abstract class AndroidCommand implements Command {
      */
     private String sdkPlatform;
 
-    protected AndroidSdk getAndroidSdk() throws MojoExecutionException {
+	public void setSdk(Sdk sdk) {
+		this.sdk = sdk;
+		this.sdkPath = sdk.getPath();
+	}
+
+	protected AndroidSdk getAndroidSdk() throws MojoExecutionException {
         File chosenSdkPath;
         String chosenSdkPlatform;
 
