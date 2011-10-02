@@ -1,6 +1,6 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.model.ProjectType;
+import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -11,7 +11,7 @@ import com.android.ide.eclipse.adt.AdtConstants;
 
 public class AddAndroidNatureProjectConfigurer implements ProjectConfigurer {
 
-	public boolean canHandle(ProjectType type, IProject project) throws CoreException {
+	public boolean canHandle(AndroidProject.Type type, IProject project) throws CoreException {
 		return !project.hasNature(AdtConstants.NATURE_DEFAULT);
 	}
 

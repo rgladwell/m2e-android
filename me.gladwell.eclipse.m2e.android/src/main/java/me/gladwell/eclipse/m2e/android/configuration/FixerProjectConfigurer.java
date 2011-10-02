@@ -1,6 +1,6 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.model.ProjectType;
+import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -10,7 +10,7 @@ import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 
 public class FixerProjectConfigurer implements ProjectConfigurer {
 
-	public boolean canHandle(ProjectType type, IProject project) {
+	public boolean canHandle(AndroidProject.Type type, IProject project) {
 		return true;
 	}
 

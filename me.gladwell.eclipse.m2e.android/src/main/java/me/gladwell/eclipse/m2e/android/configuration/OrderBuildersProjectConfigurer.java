@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.model.ProjectType;
+import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -18,7 +18,7 @@ public class OrderBuildersProjectConfigurer implements ProjectConfigurer {
 
 	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 
-	public boolean canHandle(ProjectType type, IProject project) {
+	public boolean canHandle(AndroidProject.Type type, IProject project) {
 		return true;
 	}
 

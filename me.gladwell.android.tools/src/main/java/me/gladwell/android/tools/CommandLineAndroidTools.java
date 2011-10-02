@@ -12,13 +12,11 @@ import me.gladwell.android.tools.model.DexInfo;
 public class CommandLineAndroidTools implements DexService {
 
 	private DexdumpOutputParser outputParser = new JAXBDexdumpOutputParser();
-	@Inject private Sdk sdk;
 
 	public DexInfo getDexInfo(File dexfile) throws AndroidToolsException {
 	    DexdumpCommand command = new DexdumpCommand();
 	    command.setPathToDex(dexfile);
 	    command.setOutputLayout(DexdumpCommand.OutputLayout.Xml);
-	    command.setSdk(sdk);
 
 	    MavenCommandExecutor executor = new MavenCommandExecutor();
 	    try {
@@ -32,11 +30,14 @@ public class CommandLineAndroidTools implements DexService {
 	    return dexInfo;
     }
 
-	public void convertClassFiles(File output, File... files) throws AndroidToolsException {
+	public void convertClassFiles(Sdk sdk, File output, File... files) throws AndroidToolsException {
 	    DexCommand command = new DexCommand();
 	    command.setOutput(output);
 	    command.setClassFiles(files);
-	    command.setSdk(sdk);
+	    if(sdk != null) {
+	    	command.setSdk(sdk);
+	    }
+
 	    MavenCommandExecutor executor = new MavenCommandExecutor();
 	    try {
 			command.execute(executor);

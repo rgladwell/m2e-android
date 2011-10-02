@@ -1,6 +1,5 @@
 package me.gladwell.eclipse.m2e.android;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,7 +8,6 @@ import me.gladwell.android.tools.AndroidBuildService;
 import me.gladwell.android.tools.CommandLineAndroidTools;
 import me.gladwell.android.tools.DexService;
 import me.gladwell.android.tools.MavenAndroidPluginBuildService;
-import me.gladwell.android.tools.Sdk;
 import me.gladwell.eclipse.m2e.android.configuration.AddAndroidNatureProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ConvertLibraryProjectConfigurer;
@@ -23,7 +21,6 @@ import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
-import com.android.ide.eclipse.adt.AdtPlugin;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
@@ -37,6 +34,7 @@ public class PluginModule extends AbstractModule {
 		this.bind(BuildListenerRegistry.class).to(AndroidMavenBuildParticipant.class);
 		this.bind(DexService.class).to(CommandLineAndroidTools.class);
 		this.bind(AndroidBuildService.class).to(MavenAndroidPluginBuildService.class);
+		this.bind(AndroidProjectFactory.class).to(MavenAndroidProjectFactory.class);
 	}
 
 	@Provides
@@ -58,10 +56,4 @@ public class PluginModule extends AbstractModule {
 		return Collections.unmodifiableList(classpathConfigurer);
 	}
 
-	@Provides
-	Sdk provideAndroidSdk() {
-		Sdk sdk = new Sdk();
-		sdk.setPath(new File(AdtPlugin.getDefault().getOsSdkFolder()));
-		return sdk;
-	}
 }

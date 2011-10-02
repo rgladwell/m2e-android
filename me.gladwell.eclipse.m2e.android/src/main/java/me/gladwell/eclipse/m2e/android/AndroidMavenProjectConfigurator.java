@@ -8,12 +8,11 @@
 
 package me.gladwell.eclipse.m2e.android;
 
-import java.util.Arrays;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
-import me.gladwell.eclipse.m2e.android.model.ProjectType;
+import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.eclipse.core.resources.IProject;
@@ -53,16 +52,19 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 	@Inject
 	private List<ClasspathConfigurer> classpathConfigurers;
 
-	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		ProjectType type = AndroidMavenPluginUtil.getAndroidProjectType(request.getMavenProject());
+	@Inject
+	private AndroidProjectFactory androidProjectFactory;
 
-		if (type != null) {
+	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
+		AndroidProject androidProject = androidProjectFactory.createAndroidProject(request.getMavenProject());
+
+		if(androidProject != null) {
 			javaProjectConfigurator.configure(request, monitor);
 			IProject project = request.getProject();
-
+	
 			try {
 				for (ProjectConfigurer configurer : projectConfigurers) {
-					if (configurer.canHandle(type, project)) {
+					if (configurer.canHandle(androidProject.getType(), project)) {
 						configurer.configure(project, monitor);
 					}
 				}
@@ -70,7 +72,6 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 				throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project", e));
 			}
 		}
-		
 	}
 
 	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {

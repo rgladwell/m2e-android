@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-import me.gladwell.eclipse.m2e.android.model.ProjectType;
+import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -15,9 +15,9 @@ import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 
 public class ConvertLibraryProjectConfigurer implements ProjectConfigurer {
 
-	public boolean canHandle(ProjectType type, IProject project) {
+	public boolean canHandle(AndroidProject.Type type, IProject project) {
 		ProjectState state = Sdk.getProjectState(project);
-		return type == ProjectType.Library && !state.isLibrary();
+		return type == AndroidProject.Type.Library && !state.isLibrary();
 	}
 
 	public void configure(IProject project, IProgressMonitor monitor) throws Exception {
