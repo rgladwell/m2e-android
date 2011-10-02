@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Plugin;
-import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
-import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.osgi.framework.BundleContext;
 
 import com.google.inject.Guice;
