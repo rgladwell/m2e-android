@@ -6,7 +6,7 @@
     <property name='p2.timestamp' value='1243822502440'/>
   </properties>
   <children size='3'>
-    <child location='http://ci.dahanne.net/job/m2e-android_master/ws/me.gladwell.eclipse.m2e.android.update/target/repository/'/>
+    <child location='m2e-android'/>
     <child location='http://download.eclipse.org/technology/m2e/releases'/>
     <child location='https://dl-ssl.google.com/android/eclipse/'/>
   </children>
