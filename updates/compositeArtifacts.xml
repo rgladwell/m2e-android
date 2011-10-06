@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeArtifactRepository version='1.0.0'?>
+<repository name='Maven Integration for Android Development Tools Dependency Sites Artifacts'
+    type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
+  <properties size='1'>
+    <property name='p2.timestamp' value='1243822502440'/>
+  </properties>
+  <children size='3'>
+    <child location='m2e-android'/>
+    <child location='http://download.eclipse.org/technology/m2e/releases'/>
+    <child location='https://dl-ssl.google.com/android/eclipse/'/>
+  </children>
+</repository>
