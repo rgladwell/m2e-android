@@ -10,4 +10,19 @@
 	</parent>
 	<artifactId>me.gladwell.eclipse.m2e.android.update</artifactId>
 	<packaging>eclipse-repository</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.2</version>
+				<configuration>
+					<message>Updating update site for ${project.version}</message>
+					<outputDirectory>${project.build.directory}/repository</outputDirectory>
+					<path>updates/master/m2e-android</path>
+					<merge>true</merge>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

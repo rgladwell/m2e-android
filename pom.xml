@@ -8,7 +8,7 @@
 	<name>Android Configurator for M2E</name>
 	<packaging>pom</packaging>
 	<description>Android Configurator for M2E Maven Integration for Eclipse and Maven Android Plugin</description>
-	<url>http://rgladwell.github.com/m2e-android</url>
+	<url>https://github.com/rgladwell/m2e-android</url>
 	<issueManagement>
 		<system>Github</system>
 		<url>https://github.com/rgladwell/m2e-android/issues</url>
