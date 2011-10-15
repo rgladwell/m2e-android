@@ -2,7 +2,7 @@
 <feature
       id="me.gladwell.eclipse.m2e.android.feature"
       label="Android Configurator for M2E"
-      version="0.3.1.qualifier"
+      version="0.4.0.qualifier"
       provider-name="Google Code">
 
    <description url="http://rgladwell.github.com/m2e-android/">

@@ -40,7 +40,7 @@ public class MavenAndroidProject implements AndroidProject {
 	private Plugin findAndroidPlugin(List<Plugin> buildPlugins) {
 		for(Plugin plugin : buildPlugins) {
 			if("com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId()) &&
-					"maven-android-plugin".equals(plugin.getArtifactId())) {
+					"android-maven-plugin".equals(plugin.getArtifactId())) {
 				return plugin;
 			}
 		}
