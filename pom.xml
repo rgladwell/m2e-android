@@ -39,7 +39,7 @@
 		<module>me.gladwell.android.tools</module>
 		<module>me.gladwell.eclipse.m2e.android</module>
 		<module>me.gladwell.eclipse.m2e.android.feature</module>
-		<!--module>me.gladwell.eclipse.m2e.android.test</module-->
+		<module>me.gladwell.eclipse.m2e.android.test</module>
 		<module>me.gladwell.eclipse.m2e.android.update</module>
 	</modules>
 	<build>
