@@ -4,8 +4,8 @@
 		<pluginExecution>
 			<pluginExecutionFilter>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>maven-android-plugin</artifactId>
-				<versionRange>[2.6.0,)</versionRange>
+				<artifactId>android-maven-plugin</artifactId>
+				<versionRange>[2.0.0,4.0.0)</versionRange>
 				<goals>
 					<goal>generate-sources</goal>
 					<goal>unpack</goal>
