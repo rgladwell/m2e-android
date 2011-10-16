@@ -44,10 +44,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
+		project = importAndroidProject(ANDROID_15_PROJECT_NAME);
 		javaProject = JavaCore.create(project);
-		waitForJobsToComplete();
-	    waitForAdtToLoad();
 	}
 
 	@Override

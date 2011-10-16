@@ -129,6 +129,13 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		}, MAXIMUM_SECONDS_TO_LOAD_ADT * 1000);
 	}
 
+	protected IProject importAndroidProject(String name) throws Exception {
+		IProject project = importProject("projects/"+name+"/pom.xml");
+		waitForJobsToComplete();
+	    waitForAdtToLoad();
+	    return project;
+	}
+
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
 		project.build(kind, monitor);
 		waitForJobsToComplete();
@@ -215,4 +222,5 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		type.setPackageInfo(packageInfo);
 		assertApkContains(type, project);
 	}
+
 }

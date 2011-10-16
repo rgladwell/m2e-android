@@ -23,8 +23,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	public void testConfigureNonAndroidProject() throws Exception {
 		deleteProject(SIMPLE_PROJECT_NAME);
-		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml");
-		waitForJobsToComplete();
+		IProject project = importAndroidProject(SIMPLE_PROJECT_NAME);
 
 	    assertFalse("configurer added android nature", project.hasNature(AdtConstants.NATURE_DEFAULT));
 		IJavaProject javaProject = JavaCore.create(project);
@@ -42,8 +41,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	 */
 	public void testBuildNonAndroidProject() throws Exception {
 		deleteProject(SIMPLE_PROJECT_NAME);
-		IProject project = importProject("projects/"+SIMPLE_PROJECT_NAME+"/pom.xml");
-		waitForJobsToComplete();
+		IProject project = importAndroidProject(SIMPLE_PROJECT_NAME);
 		File file = new File(project.getLocation().toFile(), "/target/simple-project-1.0-SNAPSHOT.jar");		
 
 		buildAndroidProject(project, IncrementalProjectBuilder.CLEAN_BUILD);
@@ -63,8 +61,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	    workspace.setDescription(description);
 
 		deleteProject(ISSUE_6_PROJECT_NAME);
-		IProject project = importProject("projects/"+ISSUE_6_PROJECT_NAME+"/pom.xml");
-		waitForJobsToComplete();
+		IProject project = importAndroidProject(ISSUE_6_PROJECT_NAME);
 
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 

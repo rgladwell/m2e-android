@@ -15,9 +15,7 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		super.setUp();
 
 		deleteProject(ANDROID_LIB_PROJECT_NAME);
-		project = importProject("projects/"+ANDROID_LIB_PROJECT_NAME+"/pom.xml");
-		waitForJobsToComplete();
-		waitForAdtToLoad();
+		project = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 	}
 
 	public void testConfigure() throws Exception {
