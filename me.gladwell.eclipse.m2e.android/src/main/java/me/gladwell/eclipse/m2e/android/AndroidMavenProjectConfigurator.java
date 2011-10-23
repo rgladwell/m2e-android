@@ -31,9 +31,6 @@ import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 
-import com.android.ide.eclipse.adt.AdtConstants;
-import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
-import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -42,9 +39,6 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 
 	@Inject
 	private AbstractProjectConfigurator javaProjectConfigurator;
-
-	@Inject
-	private AbstractBuildParticipant incrementalAndroidMavenBuildParticipant;
 
 	@Inject
 	private List<ProjectConfigurer> projectConfigurers;
@@ -75,9 +69,6 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 	}
 
 	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
-		if(execution.getGoal().equals("generate-sources")) {
-			return incrementalAndroidMavenBuildParticipant;
-		}
 		return null;
 	}
 
