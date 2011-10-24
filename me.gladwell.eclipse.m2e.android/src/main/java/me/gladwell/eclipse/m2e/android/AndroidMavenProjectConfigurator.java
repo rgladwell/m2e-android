@@ -50,7 +50,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 	private AndroidProjectFactory androidProjectFactory;
 
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		AndroidProject androidProject = androidProjectFactory.createAndroidProject(request.getMavenProject());
+		AndroidProject androidProject = androidProjectFactory.createAndroidProject(request.getMavenProject(), request.getProject());
 
 		if(androidProject != null) {
 			javaProjectConfigurator.configure(request, monitor);
@@ -76,10 +76,10 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
     }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
-		final IJavaProject javaProject = JavaCore.create(request.getProject());
+		final AndroidProject project = androidProjectFactory.createAndroidProject(request.getMavenProject(), request.getProject());
 		try {
 			for(ClasspathConfigurer configurer : classpathConfigurers) {
-				configurer.configure(javaProject, classpath);
+				configurer.configure(project, classpath);
 			}
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));

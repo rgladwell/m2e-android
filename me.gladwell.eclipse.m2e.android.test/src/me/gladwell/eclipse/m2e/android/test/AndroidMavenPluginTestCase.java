@@ -12,6 +12,11 @@ import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IClasspathContainer;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.project.IProjectConfigurationManager;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
@@ -66,6 +71,34 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		waitForJobsToComplete();
 	    waitForAdtToLoad();
 	    return project;
+	}
+
+	protected void assertClasspathContains(IJavaProject javaProject, String path) throws JavaModelException {
+		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+			if(entry.getPath().toOSString().contains(path)) {
+				return;
+			} else if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+				IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
+                for (IClasspathEntry e : container.getClasspathEntries()) {
+                	if(e.getPath().toOSString().contains(path)) {
+        				return;
+        			}
+                }
+			}
+		}
+		fail(path + " not added to classpath");
+	}
+
+	protected void assertClasspathDoesNotContain(IJavaProject javaProject, String path) throws JavaModelException {
+		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+			assertFalse(entry.getPath().toOSString().contains(path));
+			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+				IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
+                for (IClasspathEntry e : container.getClasspathEntries()) {
+        			assertFalse(e.getPath().toOSString().contains(path));
+                }
+			}
+		}
 	}
 
 }

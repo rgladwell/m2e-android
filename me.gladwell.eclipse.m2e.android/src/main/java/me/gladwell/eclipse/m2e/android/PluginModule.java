@@ -11,7 +11,10 @@ import me.gladwell.eclipse.m2e.android.configuration.FixerProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.GenFolderClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
+import me.gladwell.eclipse.m2e.android.configuration.RemoveNonCompileDependenciesConfigurer;
 
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
@@ -26,6 +29,7 @@ public class PluginModule extends AbstractModule {
 		this.bind(IJavaProjectConfigurator.class).to(AndroidMavenProjectConfigurator.class);
 		this.bind(AbstractProjectConfigurator.class).to(JavaProjectConfigurator.class);
 		this.bind(AndroidProjectFactory.class).to(MavenAndroidProjectFactory.class);
+		this.bind(IWorkspace.class).toInstance(ResourcesPlugin.getWorkspace());
 	}
 
 	@Provides
@@ -44,6 +48,7 @@ public class PluginModule extends AbstractModule {
 	List<ClasspathConfigurer> provideClasspathConfigurers() {
 		final List<ClasspathConfigurer> classpathConfigurer = new ArrayList<ClasspathConfigurer>();
 		classpathConfigurer.add(new GenFolderClasspathConfigurer());
+		classpathConfigurer.add(new RemoveNonCompileDependenciesConfigurer());
 		return Collections.unmodifiableList(classpathConfigurer);
 	}
 

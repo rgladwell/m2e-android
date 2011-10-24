@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
 import com.android.ide.eclipse.adt.AdtConstants;
@@ -75,12 +76,19 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
 	public void testConfigureGeneratedResourcesFolderInRawClasspath() throws Exception {
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-			if(entry.getPath().toOSString().contains("gen")) {
-				return;
-			}
-		}
-		fail("gen not added to classpath");
+		assertClasspathContains(javaProject, "gen");
+	}
+
+	public void testConfigureAddsCompileDependenciesToClasspath() throws Exception {
+		assertClasspathContains(javaProject, "commons-lang-2.4.jar");
+	}
+
+	public void testConfigureDoesNotAddNonCompileDependenciesToClasspath() throws Exception {
+		assertClasspathDoesNotContain(javaProject, "android-1.5_r4.jar");
+	}
+
+	public void testConfigureDoesNotAddNonCompileTransitiveDependenciesToClasspath() throws Exception {
+		assertClasspathDoesNotContain(javaProject, "commons-logging-1.1.1.jar");
 	}
 
 }
