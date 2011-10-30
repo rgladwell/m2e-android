@@ -86,7 +86,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
                 }
 			}
 		}
-		fail(path + " not added to classpath");
+		fail(path + " should be in classpath");
 	}
 
 	protected void assertClasspathDoesNotContain(IJavaProject javaProject, String path) throws JavaModelException {
@@ -95,7 +95,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
 				IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
                 for (IClasspathEntry e : container.getClasspathEntries()) {
-        			assertFalse(e.getPath().toOSString().contains(path));
+        			assertFalse(path + " should not be in classpath", e.getPath().toOSString().contains(path));
                 }
 			}
 		}

@@ -10,7 +10,7 @@ package me.gladwell.eclipse.m2e.android;
 
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.configuration.ClasspathConfigurer;
+import me.gladwell.eclipse.m2e.android.configuration.AndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
@@ -20,14 +20,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
+import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 
@@ -35,7 +33,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
+public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigurator implements IJavaProjectConfigurator {
 
 	@Inject
 	private AbstractProjectConfigurator javaProjectConfigurator;
@@ -44,7 +42,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 	private List<ProjectConfigurer> projectConfigurers;
 
 	@Inject
-	private List<ClasspathConfigurer> classpathConfigurers;
+	private AndroidClasspathConfigurer classpathConfigurer;
 
 	@Inject
 	private AndroidProjectFactory androidProjectFactory;
@@ -73,14 +71,19 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 	}
 
 	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
+		super.configureClasspath(facade, classpath, monitor);
+		final AndroidProject project = androidProjectFactory.createAndroidProject(facade.getMavenProject(), facade.getProject());
+		try {
+			classpathConfigurer.removeNonRuntimeDependencies(project, classpath);
+		} catch (Exception e) {
+			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
+		}
     }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
 		final AndroidProject project = androidProjectFactory.createAndroidProject(request.getMavenProject(), request.getProject());
 		try {
-			for(ClasspathConfigurer configurer : classpathConfigurers) {
-				configurer.configure(project, classpath);
-			}
+			classpathConfigurer.addGenFolder(project, classpath);
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}
