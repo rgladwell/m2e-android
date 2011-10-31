@@ -18,6 +18,6 @@ public interface AndroidProject {
 	String getPlatform();
 	IPath getClassesOutputFolder();
 	IPath getGenFolder();
-	List<String> getRuntimeDependencies();
+	List<String> getProvidedDependencies();
 
 }

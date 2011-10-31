@@ -18,11 +18,11 @@ public class MavenAndroidClasspathConfigurer implements
 	}
 
 	public void removeNonRuntimeDependencies(AndroidProject project, IClasspathDescriptor classpath) {
-		final List<String> compileDependencies = project.getRuntimeDependencies();
+		final List<String> providedDependencies = project.getProvidedDependencies();
 
 		classpath.removeEntry(new EntryFilter() {
 			public boolean accept(IClasspathEntryDescriptor descriptor) {
-				return !compileDependencies.contains(descriptor.getPath().toOSString());
+				return providedDependencies.contains(descriptor.getPath().toOSString());
 			}
 		});
 	}

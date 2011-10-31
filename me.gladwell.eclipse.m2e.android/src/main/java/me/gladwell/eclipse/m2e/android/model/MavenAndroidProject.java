@@ -1,9 +1,11 @@
 package me.gladwell.eclipse.m2e.android.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenException;
 
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
@@ -45,12 +47,19 @@ public class MavenAndroidProject implements AndroidProject {
 		throw new IllegalStateException("Unknown android project type");
 	}
 
-	public List<String> getRuntimeDependencies() {
-		try {
-			return mavenProject.getRuntimeClasspathElements();
-		} catch (DependencyResolutionRequiredException e) {
-			throw new AndroidMavenException(e);
-		}
+	public List<String> getProvidedDependencies() {
+	    List<String> list = new ArrayList<String>( mavenProject.getArtifacts().size() + 1 );
+	    list.add( mavenProject.getBuild().getOutputDirectory() );
+	
+	    for ( Artifact a : mavenProject.getArtifacts() ) {
+	        if ( a.getArtifactHandler().isAddedToClasspath() ) {
+	            if ( Artifact.SCOPE_PROVIDED.equals( a.getScope() ) ) {
+	            	list.add(a.getFile().getAbsolutePath());
+	            }
+	        }
+	    }
+	
+	    return list;
 	}
 
 	public String getPlatform() {

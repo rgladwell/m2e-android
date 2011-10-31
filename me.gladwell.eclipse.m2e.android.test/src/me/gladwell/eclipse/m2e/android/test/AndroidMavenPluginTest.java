@@ -25,4 +25,9 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		}
 	}
 
+	public void testConfigureAddsWorkspaceProjectDepsToClasspath() throws Exception {
+		importAndroidProject(SIMPLE_PROJECT_NAME);
+		IProject project = importAndroidProject("test-project-workspace-deps");
+		assertClasspathContains(JavaCore.create(project), SIMPLE_PROJECT_NAME);
+	}
 }
