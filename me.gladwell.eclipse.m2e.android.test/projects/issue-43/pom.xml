@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.test.issue43</groupId>
+  <artifactId>issue-43</artifactId>
+  <packaging>pom</packaging>
+  <name>Issue 43</name>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <properties>
+    <platform.android>8</platform.android>
+    <version.android>2.2.1</version.android>
+    <version.plugin.android>3.0.0-alpha-13</version.plugin.android>
+  </properties>
+
+  <modules>
+    <module>issue-43-application</module>
+    <module>issue-43-library</module>
+  </modules>
+  
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.android</groupId>
+        <artifactId>android</artifactId>
+        <version>${version.android}</version>
+        <scope>provided</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+          <artifactId>maven-android-plugin</artifactId>
+          <version>${version.plugin.android}</version>
+          <configuration>
+            <extractDuplicates>true</extractDuplicates>
+            <sdk>
+              <platform>${platform.android}</platform>
+            </sdk>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
