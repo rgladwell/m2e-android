@@ -3,10 +3,7 @@ package me.gladwell.eclipse.m2e.android.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.AndroidMavenException;
-
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
@@ -19,8 +16,8 @@ public class MavenAndroidProject implements AndroidProject {
 
 	private static final String ANDROID_PACKAGE_TYPE = "apk";
 	private static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
-	private static final String ANDROID_CLASSES_FOLDER = "android-classes";
 	private static final String ANDROID_GEN_PATH = "gen";
+	private static final String ANDROID_CLASSES_FOLDER = "bin/classes";
 
 	private MavenProject mavenProject;
 	private IJavaProject javaProject;
@@ -81,7 +78,7 @@ public class MavenAndroidProject implements AndroidProject {
 	}
 
 	public IPath getClassesOutputFolder() {
-		return javaProject.getPath().append("target").append(ANDROID_CLASSES_FOLDER);
+		return javaProject.getPath().append(ANDROID_CLASSES_FOLDER);
 	}
 
 	public IPath getGenFolder() {

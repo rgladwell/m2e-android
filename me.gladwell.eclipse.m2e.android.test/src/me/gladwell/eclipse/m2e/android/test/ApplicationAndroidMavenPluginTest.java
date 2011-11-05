@@ -8,15 +8,19 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import java.io.File;
+
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
 import com.android.ide.eclipse.adt.AdtConstants;
+import com.android.ide.eclipse.adt.AdtPlugin;
 
 /**
  * Test suite for configuring and building Android applications.
@@ -89,6 +93,15 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 	public void testConfigureDoesNotAddNonCompileTransitiveDependenciesToClasspath() throws Exception {
 		assertClasspathDoesNotContain(javaProject, "commons-logging-1.1.1.jar");
+	}
+
+	public void testBuildDirectoryContainsCompiledClasses() throws Exception {
+		File outputLocation = new File(ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString(), javaProject.getPath().toOSString());
+		File apiDemosApplication  = new File(outputLocation, "bin/classes/com/example/android/apis/ApiDemos.class");
+		
+		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+
+		assertTrue(apiDemosApplication.exists());
 	}
 
 }

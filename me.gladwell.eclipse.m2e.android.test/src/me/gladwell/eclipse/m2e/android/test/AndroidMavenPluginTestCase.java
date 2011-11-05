@@ -11,6 +11,7 @@ package me.gladwell.eclipse.m2e.android.test;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -71,6 +72,11 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		waitForJobsToComplete();
 	    waitForAdtToLoad();
 	    return project;
+	}
+
+	protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
+		project.build(kind, monitor);
+		waitForJobsToComplete();
 	}
 
 	protected void assertClasspathContains(IJavaProject javaProject, String path) throws JavaModelException {

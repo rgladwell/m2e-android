@@ -8,5 +8,6 @@ public interface AndroidClasspathConfigurer {
 
 	public void addGenFolder(AndroidProject project, IClasspathDescriptor classpath);
 	public void removeNonRuntimeDependencies(AndroidProject project, IClasspathDescriptor classpath);
+	public void modifySourceFolderOutput(AndroidProject project, IClasspathDescriptor classpath);
 
 }
