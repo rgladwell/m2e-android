@@ -5,7 +5,7 @@
 <locations>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="com.android.ide.eclipse.adt.feature.group" version="15.0.0.v201110251216-213216"/>
-<repository location="http://ci.dahanne.net/view/m2e-android_jobs/job/publish_adt_to_p2repo/ws/p2/"/>
+<repository location="http://anthonydahanne.github.com/publish_adt_to_p2repo/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
