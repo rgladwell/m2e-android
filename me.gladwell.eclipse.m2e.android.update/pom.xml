@@ -10,14 +10,39 @@
 	</parent>
 	<artifactId>me.gladwell.eclipse.m2e.android.update</artifactId>
 	<packaging>eclipse-repository</packaging>
+	<profiles>
+		<profile>
+			<id>release</id>
+			<activation>
+				<property>
+					<name>release</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.github</groupId>
+						<artifactId>site-maven-plugin</artifactId>
+						<version>0.3</version>
+						<configuration>
+							<message>Updating release update site for ${project.version}</message>
+							<outputDirectory>${project.build.directory}/repository</outputDirectory>
+							<path>updates/m2e-android</path>
+							<merge>true</merge>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.2</version>
+				<version>0.3</version>
 				<configuration>
-					<message>Updating update site for ${project.version}</message>
+					<message>Updating master/snapshot update site for ${project.version}</message>
 					<outputDirectory>${project.build.directory}/repository</outputDirectory>
 					<path>updates/master/m2e-android</path>
 					<merge>true</merge>
