@@ -14,7 +14,12 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
+import com.google.inject.Inject;
+
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
+	
+	@Inject 
+	private IWorkspaceRoot workspaceRoot;
 
 	public void addGenFolder(AndroidProject project, IClasspathDescriptor classpath) {
 		if (!classpath.containsPath(project.getGenFolder())) {
@@ -44,7 +49,7 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 
 	public void addClassFoldersForProjectDependencies(AndroidProject project, IClasspathDescriptor classpath) {
 		final List<String> providedDependencies = project.getProvidedDependencies();
-		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
+		workspaceRoot = ResourcesPlugin.getWorkspace().getRoot();
 		
 		for (IClasspathEntry entry : classpath.getEntries()) {
 			if (entry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
@@ -60,7 +65,7 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 				// classpath, which Dex will understand and include in the APK.
 				
 				String potentialPathToProject = path.append("target/classes").toOSString();
-				IResource projectWithTargetClasses = wsRoot.findMember(potentialPathToProject);
+				IResource projectWithTargetClasses = workspaceRoot.findMember(potentialPathToProject);
 
 				if (projectWithTargetClasses != null) {
 					String fullPath = projectWithTargetClasses.getRawLocation().toOSString();
@@ -70,7 +75,7 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 				}
 				
 				path = path.append(new Path("bin/classes"));
-				IResource resource = wsRoot.findMember(path);
+				IResource resource = workspaceRoot.findMember(path);
 				if (resource != null) {
 					classpath.addLibraryEntry(path);
 				}

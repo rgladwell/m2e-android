@@ -12,6 +12,8 @@ import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfig
 import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
 
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
@@ -38,6 +40,11 @@ public class PluginModule extends AbstractModule {
 		projectConfigurers.add(new ConvertLibraryProjectConfigurer());
 
 		return Collections.unmodifiableList(projectConfigurers);
+	}
+	
+	@Provides
+	IWorkspaceRoot provideWorkspaceRoot() {
+		return ResourcesPlugin.getWorkspace().getRoot();
 	}
 
 }
