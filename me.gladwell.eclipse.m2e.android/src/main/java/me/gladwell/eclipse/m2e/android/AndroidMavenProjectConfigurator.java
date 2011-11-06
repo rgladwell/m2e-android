@@ -75,6 +75,7 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 		final AndroidProject project = androidProjectFactory.createAndroidProject(facade.getMavenProject(), facade.getProject());
 		try {
 			classpathConfigurer.removeNonRuntimeDependencies(project, classpath);
+			classpathConfigurer.addClassFoldersForProjectDependencies(project, classpath);
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}
