@@ -6,8 +6,6 @@
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<versionRange>[2.0.0,4.0.0)</versionRange>
-<<<<<<< HEAD
-=======
 				<goals>
 					<goal>generate-sources</goal>
 					<goal>unpack</goal>
@@ -24,7 +22,6 @@
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>maven-android-plugin</artifactId>
 				<versionRange>[2.0.0,4.0.0)</versionRange>
->>>>>>> upstream/master
 				<goals>
 					<goal>generate-sources</goal>
 					<goal>unpack</goal>
