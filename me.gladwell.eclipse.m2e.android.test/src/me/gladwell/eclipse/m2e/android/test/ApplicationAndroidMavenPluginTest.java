@@ -8,25 +8,19 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
-import java.util.Enumeration;
-
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
-import me.gladwell.android.tools.ExecutionException;
-import me.gladwell.android.tools.model.ClassDescriptor;
-import me.gladwell.android.tools.model.PackageInfo;
-import me.gladwell.eclipse.m2e.android.AndroidMavenPluginUtil;
+import java.io.File;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
 import com.android.ide.eclipse.adt.AdtConstants;
+import com.android.ide.eclipse.adt.AdtPlugin;
 
 /**
  * Test suite for configuring and building Android applications.
@@ -44,10 +38,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		project = importProject("projects/"+ANDROID_15_PROJECT_NAME+"/pom.xml");
+		project = importAndroidProject(ANDROID_15_PROJECT_NAME);
 		javaProject = JavaCore.create(project);
-		waitForJobsToComplete();
-	    waitForAdtToLoad();
 	}
 
 	@Override
@@ -88,81 +80,28 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
 	public void testConfigureGeneratedResourcesFolderInRawClasspath() throws Exception {
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-			if(entry.getPath().toOSString().contains("gen")) {
-				return;
-			}
-		}
-		fail("gen not added to classpath");
+		assertClasspathContains(javaProject, "gen");
 	}
 
-	public void testBuild() throws Exception {
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-		assertTrue("destination apk not successfully built and copied", AndroidMavenPluginUtil.getApkFile(project).exists());
+	public void testConfigureAddsCompileDependenciesToClasspath() throws Exception {
+		assertClasspathContains(javaProject, "commons-lang-2.4.jar");
 	}
 
-	public void testBuildAddedClassFileToApk() throws Exception {
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-
-		PackageInfo packageInfo = new PackageInfo();
-		packageInfo.setName("com.example.android.apis");
-		ClassDescriptor apiDemos = new ClassDescriptor();
-		apiDemos.setName("ApiDemos");
-		apiDemos.setPackageInfo(packageInfo);
-		assertApkContains(apiDemos, project);
+	public void testConfigureDoesNotAddNonCompileDependenciesToClasspath() throws Exception {
+		assertClasspathDoesNotContain(javaProject, "android-1.5_r4.jar");
 	}
 
-	public void testBuildAddedDependenciesToApk() throws Exception {
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-
-		PackageInfo packageInfo = new PackageInfo();
-		packageInfo.setName("org.apache.commons.lang");
-		ClassDescriptor stringUtils = new ClassDescriptor();
-		stringUtils.setName("StringUtils");
-		stringUtils.setPackageInfo(packageInfo);
-		assertApkContains(stringUtils, project);
+	public void testConfigureDoesNotAddNonCompileTransitiveDependenciesToClasspath() throws Exception {
+		assertClasspathDoesNotContain(javaProject, "commons-logging-1.1.1.jar");
 	}
 
-	public void testBuildCreatesSignedApk() throws Exception {
+	public void testBuildDirectoryContainsCompiledClasses() throws Exception {
+		File outputLocation = new File(ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString(), javaProject.getPath().toOSString());
+		File apiDemosApplication  = new File(outputLocation, "bin/classes/com/example/android/apis/ApiDemos.class");
+		
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		try {
-			buildService.verify(AndroidMavenPluginUtil.getApkFile(project));
-		} catch(ExecutionException e) {
-			fail(e.getMessage());
-		}
-	}
-
-	public void testBuildUpdatesDependencies() throws Exception {
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-
-		addDependency(project, "commons-io", "commons-io", "2.0.1");
-
-		project.refreshLocal(IProject.DEPTH_INFINITE, monitor);
-		buildAndroidProject(project, IncrementalProjectBuilder.INCREMENTAL_BUILD);
-
-		assertTrue("failed to overwrite existing APK", listener.getAndroidMavenBuildEvents().size() > 1);
-
-		assertApkContainsDependency(project, "IOUtils", "org.apache.commons.io");
-	}
-
-	public void testBuildOnlyAddsRequiredResourcesToApk() throws Exception {
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
-
-		JarFile jar = new JarFile(AndroidMavenPluginUtil.getApkFile(project));
-		for(Enumeration<JarEntry> entry = jar.entries(); entry.hasMoreElements(); ) {
-		    JarEntry je = entry.nextElement();
-		    if (!je.isDirectory()) {
-		    	String name = je.getName();
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith(".ap_"));
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith(".apk"));
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("LICENSE.txt"));
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("NOTICE.txt"));
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.contains("maven"));
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("pom.xml"));
-		    	assertFalse("error unwanted resource=[" + name + "] added to APK", name.endsWith("pom.properties"));
-		    }
-		}
+		assertTrue(apiDemosApplication.exists());
 	}
 
 }

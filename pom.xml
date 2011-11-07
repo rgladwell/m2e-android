@@ -36,7 +36,6 @@
 		<target.platform>indigo</target.platform>
 	</properties>
 	<modules>
-		<module>me.gladwell.android.tools</module>
 		<module>me.gladwell.eclipse.m2e.android</module>
 		<module>me.gladwell.eclipse.m2e.android.feature</module>
 		<module>me.gladwell.eclipse.m2e.android.test</module>
