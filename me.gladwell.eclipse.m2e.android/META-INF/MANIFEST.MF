@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Android Configurator for M2E
 Bundle-SymbolicName: me.gladwell.eclipse.m2e.android;singleton:=true
-Bundle-Version: 0.4.0.qualifier
+Bundle-Version: 0.4.0
 Bundle-Activator: me.gladwell.eclipse.m2e.android.AndroidMavenPlugin
 Bundle-Vendor: Google Code
 Require-Bundle: org.eclipse.core.runtime,
