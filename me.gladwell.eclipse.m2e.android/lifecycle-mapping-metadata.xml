@@ -9,6 +9,7 @@
 				<goals>
 					<goal>generate-sources</goal>
 					<goal>unpack</goal>
+					<goal>proguard</goal>
 				</goals>
 			</pluginExecutionFilter>
 			<action>
@@ -25,6 +26,7 @@
 				<goals>
 					<goal>generate-sources</goal>
 					<goal>unpack</goal>
+					<goal>proguard</goal>
 				</goals>
 			</pluginExecutionFilter>
 			<action>
