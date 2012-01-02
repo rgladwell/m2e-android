@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.m2e.maven.runtime;bundle-version="1.0.0",
  com.android.ide.eclipse.adt;bundle-version="15.0.0",
  org.junit;bundle-version="3.8.2",
- me.gladwell.eclipse.m2e.android;bundle-version="0.4.0",
+ me.gladwell.eclipse.m2e.android;bundle-version="0.4.1",
  org.eclipse.jdt.launching;bundle-version="3.5.0",
  org.eclipse.m2e.archetype.common
 Bundle-ActivationPolicy: lazy
