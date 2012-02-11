@@ -20,6 +20,9 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	public void testConfigure() throws Exception {
 		assertNoErrors(project);
+	}
+
+	public void testConfigureAppliesLibraryState() throws Exception {
 		assertTrue(Sdk.getProjectState(project).isLibrary());
 	}
 
