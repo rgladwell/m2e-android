@@ -13,5 +13,6 @@ public interface AndroidProject {
 	Type getType();
 	String getPlatform();
 	List<String> getProvidedDependencies();
+	List<String> getLibraryDependencies();
 
 }

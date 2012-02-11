@@ -7,10 +7,6 @@ import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 
 public class MavenAndroidProject implements AndroidProject {
 
@@ -67,6 +63,18 @@ public class MavenAndroidProject implements AndroidProject {
 			}
 		}
 		return null;
+	}
+
+	public List<String> getLibraryDependencies() {
+	    List<String> list = new ArrayList<String>();
+	
+	    for ( Artifact a : mavenProject.getArtifacts() ) {
+	        if ( a.getType().equals(ANDROID_LIBRARY_PACKAGE_TYPE) ) {
+	            list.add(a.getArtifactId());
+	        }
+	    }
+	
+	    return list;
 	}
 
 }

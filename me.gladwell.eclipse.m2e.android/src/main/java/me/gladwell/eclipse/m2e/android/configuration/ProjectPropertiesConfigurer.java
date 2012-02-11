@@ -19,7 +19,7 @@ public  abstract class ProjectPropertiesConfigurer implements ProjectConfigurer 
 		try {
 			ProjectState state = Sdk.getProjectState(project);
 			ProjectPropertiesWorkingCopy workingCopy = state.getProperties().makeWorkingCopy();
-			configureProperties(workingCopy);
+			configureProperties(project, androidProject, workingCopy);
 			workingCopy.save();
 			state.reloadProperties();
 		} catch (IOException e) {
@@ -30,6 +30,6 @@ public  abstract class ProjectPropertiesConfigurer implements ProjectConfigurer 
 		
 	}
 
-	protected abstract void configureProperties(ProjectPropertiesWorkingCopy workingCopy);
+	protected abstract void configureProperties(IProject project, AndroidProject androidProject, ProjectPropertiesWorkingCopy workingCopy);
 
 }

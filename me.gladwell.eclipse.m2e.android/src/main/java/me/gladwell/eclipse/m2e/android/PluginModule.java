@@ -8,6 +8,7 @@ import me.gladwell.eclipse.m2e.android.configuration.AddAndroidNatureProjectConf
 import me.gladwell.eclipse.m2e.android.configuration.AndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ConvertLibraryProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.FixerProjectConfigurer;
+import me.gladwell.eclipse.m2e.android.configuration.LibraryDependenciesProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
@@ -36,6 +37,7 @@ public class PluginModule extends AbstractModule {
 		projectConfigurers.add(new AddAndroidNatureProjectConfigurer());
 		projectConfigurers.add(new OrderBuildersProjectConfigurer());
 		projectConfigurers.add(new ConvertLibraryProjectConfigurer());
+		projectConfigurers.add(new LibraryDependenciesProjectConfigurer());
 
 		return Collections.unmodifiableList(projectConfigurers);
 	}
