@@ -1,7 +1,5 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import java.util.List;
-
 import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
 import org.eclipse.core.resources.IProject;
