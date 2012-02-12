@@ -16,19 +16,11 @@ public class MavenAndroidProject implements AndroidProject {
 
 	private static final String ANDROID_PACKAGE_TYPE = "apk";
 	private static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
-	private static final String ANDROID_GEN_PATH = "gen";
-	private static final String ANDROID_CLASSES_FOLDER = "bin/classes";
 
 	private MavenProject mavenProject;
-	private IJavaProject javaProject;
 
-	public MavenAndroidProject(MavenProject mavenProject, IProject project) {
+	public MavenAndroidProject(MavenProject mavenProject) {
 		this.mavenProject = mavenProject;
-		this.javaProject = JavaCore.create(project);
-	}
-
-	public IJavaProject getJavaProject() {
-		return javaProject;
 	}
 
 	public Type getType() {
@@ -75,14 +67,6 @@ public class MavenAndroidProject implements AndroidProject {
 			}
 		}
 		return null;
-	}
-
-	public IPath getClassesOutputFolder() {
-		return javaProject.getPath().append(ANDROID_CLASSES_FOLDER);
-	}
-
-	public IPath getGenFolder() {
-		return javaProject.getPath().append(ANDROID_GEN_PATH);
 	}
 
 }

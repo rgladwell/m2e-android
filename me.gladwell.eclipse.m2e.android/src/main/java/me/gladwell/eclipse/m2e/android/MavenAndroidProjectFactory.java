@@ -8,8 +8,8 @@ import org.eclipse.core.resources.IProject;
 
 public class MavenAndroidProjectFactory implements AndroidProjectFactory {
 
-	public AndroidProject createAndroidProject(MavenProject mavenProject, IProject project) {
-		return new MavenAndroidProject(mavenProject, project);
+	public AndroidProject createAndroidProject(MavenProject mavenProject) {
+		return new MavenAndroidProject(mavenProject);
 	}
 
 }

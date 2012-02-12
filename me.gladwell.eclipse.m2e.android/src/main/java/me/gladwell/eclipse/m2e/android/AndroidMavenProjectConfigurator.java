@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
@@ -48,7 +50,7 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 	private AndroidProjectFactory androidProjectFactory;
 
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		AndroidProject androidProject = androidProjectFactory.createAndroidProject(request.getMavenProject(), request.getProject());
+		AndroidProject androidProject = androidProjectFactory.createAndroidProject(request.getMavenProject());
 
 		if(androidProject != null) {
 			javaProjectConfigurator.configure(request, monitor);
@@ -56,8 +58,8 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 	
 			try {
 				for (ProjectConfigurer configurer : projectConfigurers) {
-					if (configurer.canHandle(androidProject.getType(), project)) {
-						configurer.configure(project, monitor);
+					if (configurer.isValid(androidProject) && !configurer.isConfigured(project)) {
+						configurer.configure(project,  androidProject, monitor);
 					}
 				}
 			} catch (Exception e) {
@@ -72,7 +74,7 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 
 	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		super.configureClasspath(facade, classpath, monitor);
-		final AndroidProject project = androidProjectFactory.createAndroidProject(facade.getMavenProject(), facade.getProject());
+		final AndroidProject project = androidProjectFactory.createAndroidProject(facade.getMavenProject());
 		try {
 			classpathConfigurer.removeNonRuntimeDependencies(project, classpath);
 		} catch (Exception e) {
@@ -81,10 +83,11 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
     }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
-		final AndroidProject project = androidProjectFactory.createAndroidProject(request.getMavenProject(), request.getProject());
+		final AndroidProject project = androidProjectFactory.createAndroidProject(request.getMavenProject());
+		final IJavaProject javaProject = JavaCore.create(request.getProject());
 		try {
-			classpathConfigurer.addGenFolder(project, classpath);
-			classpathConfigurer.modifySourceFolderOutput(project, classpath);
+			classpathConfigurer.addGenFolder(javaProject, project, classpath);
+			classpathConfigurer.modifySourceFolderOutput(javaProject, project, classpath);
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}

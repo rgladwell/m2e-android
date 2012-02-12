@@ -4,16 +4,23 @@ import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.model.AndroidProject;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
 
-	public void addGenFolder(AndroidProject project, IClasspathDescriptor classpath) {
-		if (!classpath.containsPath(project.getGenFolder())) {
-			classpath.addSourceEntry(project.getGenFolder(), project.getClassesOutputFolder(), true);
+	private static final String ANDROID_GEN_PATH = "gen";
+	private static final String ANDROID_CLASSES_FOLDER = "bin/classes";
+
+	public void addGenFolder(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
+		IPath gen = javaProject.getPath().append(ANDROID_GEN_PATH);
+		if (!classpath.containsPath(gen)) {
+			IPath classesOutput = javaProject.getPath().append(ANDROID_CLASSES_FOLDER);
+			classpath.addSourceEntry(gen, classesOutput, true);
 		}
 	}
 
@@ -27,12 +34,12 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 		});
 	}
 
-	public void modifySourceFolderOutput(AndroidProject project, IClasspathDescriptor classpath) {
+	public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
 		for(IClasspathEntry entry : classpath.getEntries()) {
 			if(entry.getOutputLocation() != null && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
-					&& !entry.getOutputLocation().equals(project.getClassesOutputFolder())) {
+					&& !entry.getOutputLocation().equals(javaProject.getPath().append(ANDROID_CLASSES_FOLDER))) {
 				classpath.removeEntry(entry.getPath());
-				classpath.addSourceEntry(entry.getPath(), project.getClassesOutputFolder(), false);
+				classpath.addSourceEntry(entry.getPath(), javaProject.getPath().append(ANDROID_CLASSES_FOLDER), false);
 			}
 		}
 	}

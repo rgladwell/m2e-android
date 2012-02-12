@@ -11,12 +11,24 @@ import com.android.ide.eclipse.adt.AdtConstants;
 
 public class AddAndroidNatureProjectConfigurer implements ProjectConfigurer {
 
-	public boolean canHandle(AndroidProject.Type type, IProject project) throws CoreException {
-		return !project.hasNature(AdtConstants.NATURE_DEFAULT);
+	public boolean isConfigured(IProject project) {
+		try {
+			return project.hasNature(AdtConstants.NATURE_DEFAULT);
+		} catch (CoreException e) {
+			throw new ProjectConfigurationException(e);
+		}
 	}
 
-	public void configure(IProject project, IProgressMonitor monitor) throws CoreException {
-		AbstractProjectConfigurator.addNature(project, AdtConstants.NATURE_DEFAULT, monitor);
+	public boolean isValid(AndroidProject androidProject) {
+		return true;
+	}
+
+	public void configure(IProject project, AndroidProject androidProject, IProgressMonitor monitor) {
+		try {
+			AbstractProjectConfigurator.addNature(project, AdtConstants.NATURE_DEFAULT, monitor);
+		} catch (CoreException e) {
+			throw new ProjectConfigurationException(e);
+		}
 	}
 
 }
