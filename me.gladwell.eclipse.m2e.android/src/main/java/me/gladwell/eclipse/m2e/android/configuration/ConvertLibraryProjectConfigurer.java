@@ -1,29 +1,20 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
 
-import me.gladwell.eclipse.m2e.android.model.AndroidProject;
+public class ConvertLibraryProjectConfigurer implements ProjectConfigurer {
 
-import org.eclipse.core.resources.IProject;
-
-import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
-import com.android.ide.eclipse.adt.internal.sdk.Sdk;
-import com.android.sdklib.internal.project.ProjectProperties;
-import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
-
-public class ConvertLibraryProjectConfigurer extends ProjectPropertiesConfigurer {
-
-	public boolean isConfigured(IProject project) {
-		ProjectState state = Sdk.getProjectState(project);
-		return state.isLibrary();
+	public boolean isConfigured(EclipseAndroidProject project) {
+		return project.isLibrary();
 	}
 
-	public boolean isValid(AndroidProject androidProject) {
-		return androidProject.getType().equals(AndroidProject.Type.Library);
+	public boolean isValid(MavenAndroidProject project) {
+		return project.isLibrary();
 	}
 
-	@Override
-	protected void configureProperties(IProject project, AndroidProject androidProject, ProjectPropertiesWorkingCopy workingCopy) {
-		workingCopy.setProperty(ProjectProperties.PROPERTY_LIBRARY, "true");
+	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
+		eclipseProject.setLibrary(mavenProject.isLibrary());
 	}
 
 }

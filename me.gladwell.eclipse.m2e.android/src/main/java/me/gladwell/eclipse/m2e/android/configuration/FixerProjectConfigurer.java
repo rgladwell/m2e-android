@@ -1,29 +1,20 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.model.AndroidProject;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.JavaModelException;
-
-import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
+import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
 
 public class FixerProjectConfigurer implements ProjectConfigurer {
 
-	public boolean isConfigured(IProject project) {
+	public boolean isConfigured(EclipseAndroidProject project) {
 		return false;
 	}
 
-	public boolean isValid(AndroidProject androidProject) {
+	public boolean isValid(MavenAndroidProject project) {
 		return true;
 	}
 
-	public void configure(IProject project, AndroidProject androidProject, IProgressMonitor monitor) {
-		try {
-			ProjectHelper.fixProject(project);
-		} catch (JavaModelException e) {
-			throw new ProjectConfigurationException(e);
-		}
+	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
+		eclipseProject.fixProject();
 	}
 
 }

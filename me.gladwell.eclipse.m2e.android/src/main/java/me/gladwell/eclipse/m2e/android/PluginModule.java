@@ -12,20 +12,26 @@ import me.gladwell.eclipse.m2e.android.configuration.LibraryDependenciesProjectC
 import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
+import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
 
+import org.apache.maven.project.MavenProject;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.TypeLiteral;
 
 public class PluginModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		this.bind(AbstractProjectConfigurator.class).to(JavaProjectConfigurator.class);
-		this.bind(AndroidProjectFactory.class).to(MavenAndroidProjectFactory.class);
-		this.bind(AndroidClasspathConfigurer.class).to(MavenAndroidClasspathConfigurer.class);
+		bind(AbstractProjectConfigurator.class).to(JavaProjectConfigurator.class);
+		bind(AndroidClasspathConfigurer.class).to(MavenAndroidClasspathConfigurer.class);
+		bind(new TypeLiteral<AndroidProjectFactory<MavenAndroidProject, MavenProject>>(){}).to(MavenAndroidProjectFactory.class);
+		bind(new TypeLiteral<AndroidProjectFactory<EclipseAndroidProject, IProject>>(){}).to(EclipseAndroidProjectFactory.class);
 	}
 
 	@Provides

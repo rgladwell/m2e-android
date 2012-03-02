@@ -4,15 +4,12 @@ import java.util.List;
 
 public interface AndroidProject {
 
-	public enum Type {
+	public boolean isAndroidProject();
 
-		Application, Library;
+	public boolean isLibrary();
 
-	}
+	public List<String> getProvidedDependencies();
 
-	Type getType();
-	String getPlatform();
-	List<String> getProvidedDependencies();
-	List<String> getLibraryDependencies();
+	public List<String> getLibraryDependencies();
 
 }

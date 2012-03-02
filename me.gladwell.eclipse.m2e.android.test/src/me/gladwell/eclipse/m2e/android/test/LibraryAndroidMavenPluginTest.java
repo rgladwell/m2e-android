@@ -28,7 +28,7 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	public void testConfigureAddsWorkspaceLibraryProjectToProjectProperties() throws Exception {
 		IProject project = importAndroidProject("test-project-apklib-deps");
-		
+
 		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
 	}
 

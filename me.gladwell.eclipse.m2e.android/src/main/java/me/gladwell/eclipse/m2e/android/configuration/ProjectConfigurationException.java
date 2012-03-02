@@ -1,6 +1,8 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-public class ProjectConfigurationException extends RuntimeException {
+import me.gladwell.eclipse.m2e.android.AndroidMavenException;
+
+public class ProjectConfigurationException extends AndroidMavenException {
 
 	private static final long serialVersionUID = -4510508504367403748L;
 

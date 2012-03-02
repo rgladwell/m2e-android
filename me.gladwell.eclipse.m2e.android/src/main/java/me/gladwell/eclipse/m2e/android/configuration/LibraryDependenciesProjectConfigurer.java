@@ -1,28 +1,20 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.model.AndroidProject;
+import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
 
-import org.eclipse.core.resources.IProject;
+public class LibraryDependenciesProjectConfigurer implements ProjectConfigurer {
 
-import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
-
-public class LibraryDependenciesProjectConfigurer extends ProjectPropertiesConfigurer {
-
-	public boolean isConfigured(IProject project) {
+	public boolean isConfigured(EclipseAndroidProject project) {
 		return false;
 	}
 
-	public boolean isValid(AndroidProject androidProject) {
-		return !androidProject.getLibraryDependencies().isEmpty();
+	public boolean isValid(MavenAndroidProject project) {
+		return !project.getLibraryDependencies().isEmpty();
 	}
 
-	@Override
-	protected void configureProperties(IProject project, AndroidProject androidProject, ProjectPropertiesWorkingCopy workingCopy) {
-		int i = 0;
-		for (String library : androidProject.getLibraryDependencies()) {
-			i++;
-			workingCopy.setProperty(ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, "../" + library);
-		}
+	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
+		eclipseProject.setLibraryDependencies(mavenProject.getLibraryDependencies());
 	}
 
 }

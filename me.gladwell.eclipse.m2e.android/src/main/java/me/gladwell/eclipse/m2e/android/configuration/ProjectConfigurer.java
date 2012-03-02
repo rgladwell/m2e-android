@@ -1,14 +1,12 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IProgressMonitor;
-
-import me.gladwell.eclipse.m2e.android.model.AndroidProject;
+import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
 
 public interface ProjectConfigurer {
 
-	boolean isConfigured(IProject project);
-	boolean isValid(AndroidProject androidProject);
-	void configure(IProject project, AndroidProject androidProject, IProgressMonitor monitor);
+	boolean isConfigured(EclipseAndroidProject project);
+	boolean isValid(MavenAndroidProject project);
+	void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject);
 	
 }
