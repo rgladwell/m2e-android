@@ -14,7 +14,6 @@ import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigu
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
 
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
-import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
 import com.google.inject.AbstractModule;

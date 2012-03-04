@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static com.android.ide.eclipse.adt.AdtPlugin.getOsSdkFolder;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.eclipse.core.resources.IProject;
@@ -18,8 +19,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.m2e.core.MavenPlugin;
-import org.eclipse.m2e.core.project.IProjectConfigurationManager;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
@@ -35,8 +34,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	protected AndroidMavenPlugin plugin;
 	protected AdtPlugin adtPlugin;
 
-	private IProjectConfigurationManager projectConfigurationManager;
-
 	@Override
 	@SuppressWarnings("restriction")
     protected void setUp() throws Exception {
@@ -48,14 +45,12 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		adtPlugin = AdtPlugin.getDefault();
 	    String androidHome = System.getenv("ANDROID_HOME");
 	    
-	    if(androidHome != null && !androidHome.equals(adtPlugin.getOsSdkFolder())) {
+	    if(androidHome != null && !androidHome.equals(getOsSdkFolder())) {
 		    adtPlugin.getPreferenceStore().setValue(AdtPrefs.PREFS_SDK_DIR, androidHome);
 		    adtPlugin.savePluginPreferences();
 	    }
 
 	    waitForAdtToLoad();
-
-		projectConfigurationManager = MavenPlugin.getProjectConfigurationManager();
     }
 
 	protected void waitForAdtToLoad() throws InterruptedException, Exception {

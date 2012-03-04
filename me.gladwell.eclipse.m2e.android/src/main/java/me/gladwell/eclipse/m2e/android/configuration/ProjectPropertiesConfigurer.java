@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.android.io.StreamException;
-import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
 
 public  abstract class ProjectPropertiesConfigurer implements ProjectConfigurer {

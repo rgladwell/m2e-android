@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
 import com.android.ide.eclipse.adt.AdtConstants;
-import com.android.ide.eclipse.adt.AdtPlugin;
 
 /**
  * Test suite for configuring and building Android applications.

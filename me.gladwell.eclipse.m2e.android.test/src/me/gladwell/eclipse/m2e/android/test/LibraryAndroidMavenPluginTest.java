@@ -4,8 +4,6 @@ import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
 
 import org.eclipse.core.resources.IProject;
 
-import com.android.ide.eclipse.adt.internal.sdk.Sdk;
-
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
