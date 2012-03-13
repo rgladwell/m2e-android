@@ -1,6 +1,6 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.model.AndroidProject;
+import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;

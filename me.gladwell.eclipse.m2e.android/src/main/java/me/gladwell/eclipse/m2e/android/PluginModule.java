@@ -12,8 +12,11 @@ import me.gladwell.eclipse.m2e.android.configuration.LibraryDependenciesProjectC
 import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
-import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
-import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.MavenAndroidProjectFactory;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;

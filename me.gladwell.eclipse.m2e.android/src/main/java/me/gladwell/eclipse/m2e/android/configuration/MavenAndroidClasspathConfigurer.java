@@ -2,7 +2,7 @@ package me.gladwell.eclipse.m2e.android.configuration;
 
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.model.AndroidProject;
+import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;

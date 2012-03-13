@@ -1,7 +1,7 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
-import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public interface ProjectConfigurer {
 

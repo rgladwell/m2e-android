@@ -1,9 +1,8 @@
-package me.gladwell.eclipse.m2e.android;
+package me.gladwell.eclipse.m2e.android.project;
 
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.model.JaywayMavenAndroidProject;
-import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
+import me.gladwell.eclipse.m2e.android.AndroidMavenException;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;

@@ -1,4 +1,4 @@
-package me.gladwell.eclipse.m2e.android.model;
+package me.gladwell.eclipse.m2e.android.project;
 
 import java.util.List;
 

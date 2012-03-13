@@ -12,9 +12,10 @@ import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.AndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
-import me.gladwell.eclipse.m2e.android.model.AndroidProject;
-import me.gladwell.eclipse.m2e.android.model.EclipseAndroidProject;
-import me.gladwell.eclipse.m2e.android.model.MavenAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.AndroidProject;
+import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
@@ -62,7 +63,7 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 
 			if(mavenProject.isAndroidProject()) {
 				javaProjectConfigurator.configure(request, monitor);
-	
+
 				for (ProjectConfigurer configurer : projectConfigurers) {
 					if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
 						configurer.configure(eclipseProject,  mavenProject);
