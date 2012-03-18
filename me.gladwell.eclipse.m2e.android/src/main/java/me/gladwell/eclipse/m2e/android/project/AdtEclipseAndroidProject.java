@@ -32,6 +32,10 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 
 	private IProject project;
 
+	public String getName() {
+		return project.getName();
+	}
+
 	public AdtEclipseAndroidProject(IProject project) {
 		this.project = project;
 	}

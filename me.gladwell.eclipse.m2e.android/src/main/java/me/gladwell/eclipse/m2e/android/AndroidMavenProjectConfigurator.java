@@ -11,6 +11,7 @@ package me.gladwell.eclipse.m2e.android;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.AndroidClasspathConfigurer;
+import me.gladwell.eclipse.m2e.android.configuration.LibraryDependencyNotFoundInWorkspace;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
@@ -57,19 +58,25 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 	private AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseProjectFactory;
 
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
+		markerManager.deleteMarkers(request.getPom(), AndroidMavenPlugin.APKLIB_ERROR_TYPE);
+
 		try {
 			final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
 			final EclipseAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request.getProject());
 
-			if(mavenProject.isAndroidProject()) {
-				javaProjectConfigurator.configure(request, monitor);
-
-				for (ProjectConfigurer configurer : projectConfigurers) {
-					if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
-						configurer.configure(eclipseProject,  mavenProject);
+				if(mavenProject.isAndroidProject()) {
+					javaProjectConfigurator.configure(request, monitor);
+	
+					for (ProjectConfigurer configurer : projectConfigurers) {
+						try {
+							if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
+								configurer.configure(eclipseProject,  mavenProject);
+							}
+						} catch (LibraryDependencyNotFoundInWorkspace e) {
+							markerManager.addErrorMarkers(request.getPom(), e.getType(), e);
+						}
 					}
 				}
-			}
 		} catch (AndroidMavenException e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project", e));
 		}

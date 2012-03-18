@@ -20,7 +20,9 @@ import me.gladwell.eclipse.m2e.android.configuration.LibraryDependenciesProjectC
 import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
+import me.gladwell.eclipse.m2e.android.project.AdtEclipseAndroidWorkspace;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.AndroidWorkspace;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
@@ -28,6 +30,8 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProjectFactory;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
@@ -43,17 +47,21 @@ public class PluginModule extends AbstractModule {
 		bind(AndroidClasspathConfigurer.class).to(MavenAndroidClasspathConfigurer.class);
 		bind(new TypeLiteral<AndroidProjectFactory<MavenAndroidProject, MavenProject>>(){}).to(MavenAndroidProjectFactory.class);
 		bind(new TypeLiteral<AndroidProjectFactory<EclipseAndroidProject, IProject>>(){}).to(EclipseAndroidProjectFactory.class);
+		bind(IWorkspace.class).toInstance(ResourcesPlugin.getWorkspace());
+		bind(AndroidWorkspace.class).to(AdtEclipseAndroidWorkspace.class);
+
+		bind(LibraryDependenciesProjectConfigurer.class);
 	}
 
 	@Provides
-	List<ProjectConfigurer> provideProjectConfigurers() {
+	List<ProjectConfigurer> provideProjectConfigurers(LibraryDependenciesProjectConfigurer configurer) {
 		final List<ProjectConfigurer> projectConfigurers = new ArrayList<ProjectConfigurer>();
 
 		projectConfigurers.add(new FixerProjectConfigurer());
 		projectConfigurers.add(new AddAndroidNatureProjectConfigurer());
 		projectConfigurers.add(new OrderBuildersProjectConfigurer());
 		projectConfigurers.add(new ConvertLibraryProjectConfigurer());
-		projectConfigurers.add(new LibraryDependenciesProjectConfigurer());
+		projectConfigurers.add(configurer);
 
 		return Collections.unmodifiableList(projectConfigurers);
 	}

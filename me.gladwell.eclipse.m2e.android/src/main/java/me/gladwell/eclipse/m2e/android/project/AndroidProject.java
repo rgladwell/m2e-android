@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface AndroidProject {
 
+	public String getName();
+
 	public boolean isAndroidProject();
 
 	public boolean isLibrary();

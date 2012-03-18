@@ -21,6 +21,10 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	private MavenProject mavenProject;
 
+	public String getName() {
+		return mavenProject.getArtifactId();
+	}
+
 	public JaywayMavenAndroidProject(MavenProject mavenProject) {
 		this.mavenProject = mavenProject;
 	}

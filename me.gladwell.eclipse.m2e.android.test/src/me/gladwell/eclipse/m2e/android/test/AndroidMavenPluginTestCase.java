@@ -9,8 +9,13 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static com.android.ide.eclipse.adt.AdtPlugin.getOsSdkFolder;
+
+import java.util.List;
+
+import junit.framework.Assert;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
@@ -100,6 +105,19 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
                 }
 			}
 		}
+	}
+
+	protected void assertErrorMarker(IProject project, String type) throws CoreException {
+	    List<IMarker> markers = findMarkers(project, IMarker.SEVERITY_ERROR);
+	    for(IMarker marker : markers) {
+	    	if(type.equals(marker.getType())) {
+	    	    Assert.assertTrue("Marker type " + type + " is not a subtype of " + IMarker.PROBLEM,
+	    	        marker.isSubtypeOf(IMarker.PROBLEM));
+	    	    return;
+	    	}
+	    }
+
+	    Assert.fail("Marker not found. Found markers:" + toString(markers));
 	}
 
 }
