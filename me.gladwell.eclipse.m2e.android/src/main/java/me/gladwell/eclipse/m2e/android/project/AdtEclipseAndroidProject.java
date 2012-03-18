@@ -87,7 +87,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	}
 
 	public void setLibraryDependencies(List<String> libraryDependencies) {
-		int i = 0;
+		int i = 1;
 		for (String library : libraryDependencies) {
 			setAndroidProperty(ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, "../" + library);
 			i++;
