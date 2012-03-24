@@ -95,6 +95,7 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 		try {
 			classpathConfigurer.addGenFolder(javaProject, project, classpath);
 			classpathConfigurer.modifySourceFolderOutput(javaProject, project, classpath);
+			classpathConfigurer.markMavenContainerExported(classpath);
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}

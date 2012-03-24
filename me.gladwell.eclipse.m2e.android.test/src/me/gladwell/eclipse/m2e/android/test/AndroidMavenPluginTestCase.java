@@ -102,4 +102,14 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		}
 	}
 
+	protected IClasspathEntry getClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
+		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+            	if(entry.getPath().toOSString().equals(id)) {
+    				return entry;
+    			}
+			}
+		}
+		return null;
+	}
 }

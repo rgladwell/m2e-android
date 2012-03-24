@@ -14,10 +14,12 @@ import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.internal.IMavenConstants;
+import org.eclipse.m2e.jdt.IClasspathManager;
 
 import com.android.ide.eclipse.adt.AdtConstants;
 
@@ -101,6 +103,11 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
 		assertTrue(apiDemosApplication.exists());
+	}
+
+	public void testConfigureMarksMavenContainerExported() throws Exception {
+		IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
+		assertTrue(mavenContainer.isExported());
 	}
 
 }

@@ -18,5 +18,6 @@ public interface AndroidClasspathConfigurer {
 	public void addGenFolder(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath);
 	public void removeNonRuntimeDependencies(AndroidProject project, IClasspathDescriptor classpath);
 	public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath);
+	public void markMavenContainerExported(IClasspathDescriptor classpath);
 
 }

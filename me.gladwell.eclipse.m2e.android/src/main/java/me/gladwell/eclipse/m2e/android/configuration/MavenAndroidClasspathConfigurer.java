@@ -15,9 +15,11 @@ import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
+import org.eclipse.m2e.jdt.IClasspathManager;
 
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
 
@@ -48,6 +50,18 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 					&& !entry.getOutputLocation().equals(javaProject.getPath().append(ANDROID_CLASSES_FOLDER))) {
 				classpath.removeEntry(entry.getPath());
 				classpath.addSourceEntry(entry.getPath(), javaProject.getPath().append(ANDROID_CLASSES_FOLDER), false);
+			}
+		}
+	}
+
+	public void markMavenContainerExported(IClasspathDescriptor classpath) {
+		for(IClasspathEntry entry : classpath.getEntries()) {
+			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+            	if(entry.getPath().toOSString().equals(IClasspathManager.CONTAINER_ID)) {
+            		IClasspathEntry newEntry = JavaCore.newContainerEntry(entry.getPath(), true);
+            		classpath.removeEntry(entry.getPath());
+            		classpath.addEntry(newEntry);
+    			}
 			}
 		}
 	}
