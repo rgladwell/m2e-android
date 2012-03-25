@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
@@ -42,6 +43,16 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 				return providedDependencies.contains(descriptor.getPath().toOSString());
 			}
 		});
+	}
+
+	public void removeJreClasspathContainer(IClasspathDescriptor classpath) {
+		for(IClasspathEntry entry : classpath.getEntries()) {
+			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+            	if(entry.getPath().toOSString().contains(JavaRuntime.JRE_CONTAINER)) {
+            		classpath.removeEntry(entry.getPath());
+    			}
+			}
+		}
 	}
 
 	public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {

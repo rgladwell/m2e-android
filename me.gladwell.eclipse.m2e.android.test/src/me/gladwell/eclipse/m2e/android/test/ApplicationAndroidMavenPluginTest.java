@@ -14,10 +14,10 @@ import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
@@ -94,6 +94,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 	public void testConfigureDoesNotAddNonCompileTransitiveDependenciesToClasspath() throws Exception {
 		assertClasspathDoesNotContain(javaProject, "commons-logging-1.1.1.jar");
+	}
+
+	public void testConfigureDoesNotRemoveJreClasspathContainer() throws Exception {
+		assertClasspathDoesNotContain(javaProject, JavaRuntime.JRE_CONTAINER);
 	}
 
 	public void testBuildDirectoryContainsCompiledClasses() throws Exception {
