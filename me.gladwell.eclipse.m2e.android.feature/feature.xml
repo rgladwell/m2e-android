@@ -254,7 +254,7 @@ to a jury trial in any resulting litigation.
       <import plugin="javax.xml.bind"/>
       <import plugin="org.eclipse.osgi"/>
       <import feature="org.eclipse.m2e.feature" version="1.0.200.20111228-1245"/>
-      <import feature="com.android.ide.eclipse.adt" version="16.0.0.v201203161636-291853"/>
+      <import feature="com.android.ide.eclipse.adt" version="17.0.0.v201203161636-291853"/>
    </requires>
 
    <plugin
