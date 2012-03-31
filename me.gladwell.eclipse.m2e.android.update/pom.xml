@@ -9,6 +9,7 @@
 		<version>0.4.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>me.gladwell.eclipse.m2e.android.update</artifactId>
+	<name>Android Configurator for M2E Repository</name>
 	<packaging>eclipse-repository</packaging>
 	<profiles>
 		<profile>
