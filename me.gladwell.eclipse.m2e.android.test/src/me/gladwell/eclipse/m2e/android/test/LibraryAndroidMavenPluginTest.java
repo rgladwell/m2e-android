@@ -14,6 +14,7 @@ import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 

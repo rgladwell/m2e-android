@@ -13,16 +13,25 @@ import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.util.StringUtils;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	private static final String ANDROID_PACKAGE_TYPE = "apk";
-	private static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
+	static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
 
 	private MavenProject mavenProject;
 
 	public String getName() {
 		return mavenProject.getArtifactId();
+	}
+
+	public String getGroup() {
+		return mavenProject.getGroupId();
+	}
+
+	public String getVersion() {
+		return mavenProject.getVersion();
 	}
 
 	public JaywayMavenAndroidProject(MavenProject mavenProject) {
@@ -54,16 +63,23 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	    return list;
 	}
 
-	public List<String> getLibraryDependencies() {
-	    List<String> list = new ArrayList<String>();
+	public List<Dependency> getLibraryDependencies() {
+	    List<Dependency> results = new ArrayList<Dependency>(mavenProject.getArtifacts().size());
 	
-	    for ( Artifact a : mavenProject.getArtifacts() ) {
-	        if ( a.getType().equals(ANDROID_LIBRARY_PACKAGE_TYPE) ) {
-	            list.add(a.getArtifactId());
+	    for(Artifact a : mavenProject.getArtifacts()) {
+	    	Dependency dependency = new MavenDependency(a);
+	        if(dependency.isLibrary()) {
+	        	results.add(new MavenDependency(a));
 	        }
 	    }
-	
-	    return list;
+
+	    return results;
+	}
+
+	public boolean matchesDependency(Dependency dependency) {
+		return StringUtils.equals(dependency.getName(), getName())
+				&& StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
+				&& StringUtils.equals(dependency.getVersion(), mavenProject.getVersion());
 	}
 
 }

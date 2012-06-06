@@ -8,18 +8,11 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import java.util.List;
-
-public interface AndroidProject {
+public interface Dependency {
 
 	public String getName();
-
-	public boolean isAndroidProject();
-
+	public String getGroup();
+	public String getVersion();
 	public boolean isLibrary();
-
-	public List<String> getProvidedDependencies();
-
-	public List<Dependency> getLibraryDependencies();
 
 }

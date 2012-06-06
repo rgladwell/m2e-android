@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -22,8 +23,12 @@ public interface EclipseAndroidProject extends AndroidProject {
 
 	public void setProvidedDependencies(List<String> providedDependencies);
 
-	public void setLibraryDependencies(List<String> libraryDependencies);
+	public void setLibraryDependencies(List<EclipseAndroidProject> dependencies);
 
 	public void fixProject();
+
+	public boolean isMavenised();
+
+	public File getPom();
 
 }

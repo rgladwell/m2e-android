@@ -8,12 +8,13 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.inject.Inject;
 
-import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 import me.gladwell.eclipse.m2e.android.project.AndroidWorkspace;
+import me.gladwell.eclipse.m2e.android.project.Dependency;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
@@ -36,28 +37,15 @@ public class LibraryDependenciesProjectConfigurer implements ProjectConfigurer {
 	}
 
 	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
-		List<AndroidProject> libraryProjects = workspace.getAndroidLibraryProjects();
-		List<String> libraryDependencies = mavenProject.getLibraryDependencies();
+		List<Dependency> libraryDependencies = mavenProject.getLibraryDependencies();
+		List<EclipseAndroidProject> workspaceDependencies = new ArrayList<EclipseAndroidProject>();
 
-		for(String dependency : libraryDependencies) {
-			checkContainsDependency(dependency, libraryProjects);
+		for(Dependency dependency : libraryDependencies) {
+			EclipseAndroidProject workspaceDependency = workspace.findWorkspaceDependency(dependency);
+			workspaceDependencies.add(workspaceDependency);
 		}
-
-		eclipseProject.setLibraryDependencies(libraryDependencies);
-	}
-
-	private void checkContainsDependency(String dependency, List<AndroidProject> libraryProjects) {
-		boolean found = false;
-
-		for(AndroidProject library : libraryProjects) {
-			if(library.getName().equals(dependency)) {
-				found = true;
-			}
-		}
-
-		if(!found) {
-			throw new LibraryDependencyNotFoundInWorkspace(dependency);
-		}
+		
+		eclipseProject.setLibraryDependencies(workspaceDependencies);
 	}
 
 }

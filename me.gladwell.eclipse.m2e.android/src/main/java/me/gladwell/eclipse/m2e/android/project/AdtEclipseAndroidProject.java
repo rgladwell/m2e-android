@@ -1,25 +1,3 @@
-package me.gladwell.eclipse.m2e.android.project;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
-
-import com.android.ide.eclipse.adt.AdtConstants;
-import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
-import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
-import com.android.ide.eclipse.adt.internal.sdk.ProjectState.LibraryState;
-import com.android.ide.eclipse.adt.internal.sdk.Sdk;
-import com.android.io.StreamException;
-import com.android.sdklib.internal.project.ProjectProperties;
-import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
-
 /*******************************************************************************
  * Copyright (c) 2012 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
@@ -27,6 +5,28 @@ import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
+
+package me.gladwell.eclipse.m2e.android.project;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.m2e.core.internal.IMavenConstants;
+import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
+
+import com.android.ide.eclipse.adt.AdtConstants;
+import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
+import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
+import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import com.android.io.StreamException;
+import com.android.sdklib.internal.project.ProjectProperties;
+import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
 
 public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidProject {
 
@@ -81,19 +81,14 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 		throw new UnsupportedOperationException();
 	}
 
-	public List<String> getLibraryDependencies() {
-		ProjectState state = getProjectState();
-		List<String> libraries = new ArrayList<String>();
-		for(LibraryState library : state.getLibraries()) {
-			libraries.add(library.getRelativePath());
-		}
-		return libraries;
+	public List<Dependency> getLibraryDependencies() {
+		throw new UnsupportedOperationException();
 	}
 
-	public void setLibraryDependencies(List<String> libraryDependencies) {
+	public void setLibraryDependencies(List<EclipseAndroidProject> libraryDependencies) {
 		int i = 1;
-		for (String library : libraryDependencies) {
-			setAndroidProperty(ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, "../" + library);
+		for (EclipseAndroidProject library : libraryDependencies) {
+			setAndroidProperty(ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, "../" + library.getName());
 			i++;
 		}
 	}
@@ -122,6 +117,18 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 		} catch (JavaModelException e) {
 			throw new ProjectConfigurationException(e);
 		}
+	}
+
+	public boolean isMavenised() {
+		try {
+			return project.getProject().hasNature(IMavenConstants.NATURE_ID);
+		} catch (CoreException e) {
+			throw new ProjectConfigurationException(e);
+		}
+	}
+
+	public File getPom() {
+		return this.project.getFile("pom.xml").getRawLocation().makeAbsolute().toFile();
 	}
 
 }

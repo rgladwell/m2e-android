@@ -27,11 +27,14 @@ import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.MavenToEclipseAndroidProjectConverter;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 
@@ -47,9 +50,10 @@ public class PluginModule extends AbstractModule {
 		bind(AndroidClasspathConfigurer.class).to(MavenAndroidClasspathConfigurer.class);
 		bind(new TypeLiteral<AndroidProjectFactory<MavenAndroidProject, MavenProject>>(){}).to(MavenAndroidProjectFactory.class);
 		bind(new TypeLiteral<AndroidProjectFactory<EclipseAndroidProject, IProject>>(){}).to(EclipseAndroidProjectFactory.class);
+		bind(new TypeLiteral<AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject>>(){}).to(MavenToEclipseAndroidProjectConverter.class);
 		bind(IWorkspace.class).toInstance(ResourcesPlugin.getWorkspace());
 		bind(AndroidWorkspace.class).to(AdtEclipseAndroidWorkspace.class);
-
+		bind(MavenModelManager.class).toInstance(MavenPlugin.getMavenModelManager());
 		bind(LibraryDependenciesProjectConfigurer.class);
 	}
 

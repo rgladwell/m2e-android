@@ -11,7 +11,7 @@ package me.gladwell.eclipse.m2e.android;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.AndroidClasspathConfigurer;
-import me.gladwell.eclipse.m2e.android.configuration.LibraryDependencyNotFoundInWorkspace;
+import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
@@ -72,7 +72,7 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 							if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
 								configurer.configure(eclipseProject,  mavenProject);
 							}
-						} catch (LibraryDependencyNotFoundInWorkspace e) {
+						} catch (DependencyNotFoundInWorkspace e) {
 							markerManager.addErrorMarkers(request.getPom(), e.getType(), e);
 						}
 					}
