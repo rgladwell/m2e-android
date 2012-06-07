@@ -9,6 +9,7 @@
 package me.gladwell.eclipse.m2e.android.project;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
@@ -52,10 +53,28 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	public List<String> getLibraryDependencies() {
 	    List<String> list = new ArrayList<String>();
+	    HashMap<String, ArrayList<String>> idMap = new HashMap<String, ArrayList<String>>();
 	
 	    for ( Artifact a : mavenProject.getArtifacts() ) {
 	        if ( a.getType().equals(ANDROID_LIBRARY_PACKAGE_TYPE) ) {
-	            list.add(a.getArtifactId());
+	            final String groupId = a.getGroupId();
+	            final String artifactId = a.getArtifactId();
+
+	            ArrayList<String> apklibs = idMap.get(artifactId);
+	            if ( apklibs == null ) {
+	            	apklibs = new ArrayList<String>(2);
+	            	idMap.put(artifactId, apklibs);
+	            }
+	            apklibs.add( groupId + "." + artifactId );
+	        }
+	    }
+
+	    for ( String artifactId : idMap.keySet() ) {
+	        final ArrayList<String> apklibs = idMap.get( artifactId );
+	        if ( apklibs.size() > 1 ) {
+	            list.addAll(apklibs);
+	        } else {
+	            list.add(artifactId);
 	        }
 	    }
 	
