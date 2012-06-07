@@ -19,6 +19,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
@@ -67,6 +68,13 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		waitForJobsToComplete();
 	    waitForAdtToLoad();
 	    return project;
+	}
+
+	protected IProject importAndroidProject(String name, String location) throws Exception {
+		IProject project = importProject(name, "projects/"+location, new ResolverConfiguration());
+		waitForJobsToComplete();
+		waitForAdtToLoad();
+		return project;
 	}
 
 	protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
