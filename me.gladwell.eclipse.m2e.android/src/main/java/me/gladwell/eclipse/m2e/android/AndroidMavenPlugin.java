@@ -23,10 +23,9 @@ import com.google.inject.Module;
  */
 public class AndroidMavenPlugin extends Plugin {
 
-	// The plug-in ID
 	public static final String PLUGIN_ID = "me.gladwell.eclipse.m2e.android";
+	public static final String APKLIB_ERROR_TYPE = "me.gladwell.eclipse.m2e.android.markers.dependency.apklib";
 
-	// The shared instance
 	private static AndroidMavenPlugin plugin;
 
 	private Injector injector;

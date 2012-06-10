@@ -8,10 +8,25 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.inject.Inject;
+
+import me.gladwell.eclipse.m2e.android.project.AndroidWorkspace;
+import me.gladwell.eclipse.m2e.android.project.Dependency;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class LibraryDependenciesProjectConfigurer implements ProjectConfigurer {
+
+	private AndroidWorkspace workspace;
+
+	@Inject
+	public LibraryDependenciesProjectConfigurer(AndroidWorkspace workspace) {
+		super();
+		this.workspace = workspace;
+	}
 
 	public boolean isConfigured(EclipseAndroidProject project) {
 		return false;
@@ -22,7 +37,15 @@ public class LibraryDependenciesProjectConfigurer implements ProjectConfigurer {
 	}
 
 	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
-		eclipseProject.setLibraryDependencies(mavenProject.getLibraryDependencies());
+		List<Dependency> libraryDependencies = mavenProject.getLibraryDependencies();
+		List<EclipseAndroidProject> workspaceDependencies = new ArrayList<EclipseAndroidProject>();
+
+		for(Dependency dependency : libraryDependencies) {
+			EclipseAndroidProject workspaceDependency = workspace.findWorkspaceDependency(dependency);
+			workspaceDependencies.add(workspaceDependency);
+		}
+		
+		eclipseProject.setLibraryDependencies(workspaceDependencies);
 	}
 
 }

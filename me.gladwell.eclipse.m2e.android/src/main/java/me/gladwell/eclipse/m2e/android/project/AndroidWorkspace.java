@@ -8,18 +8,8 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import java.util.List;
+public interface AndroidWorkspace {
 
-public interface AndroidProject {
-
-	public String getName();
-
-	public boolean isAndroidProject();
-
-	public boolean isLibrary();
-
-	public List<String> getProvidedDependencies();
-
-	public List<Dependency> getLibraryDependencies();
+	EclipseAndroidProject findWorkspaceDependency(Dependency dependency);
 
 }

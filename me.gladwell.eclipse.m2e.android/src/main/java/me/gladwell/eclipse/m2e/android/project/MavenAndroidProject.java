@@ -10,4 +10,10 @@ package me.gladwell.eclipse.m2e.android.project;
 
 public interface MavenAndroidProject extends AndroidProject {
 
+	public String getGroup();
+
+	public String getVersion();
+
+	public boolean matchesDependency(Dependency dependency);
+
 }

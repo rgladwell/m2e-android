@@ -9,8 +9,12 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
+import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
+
+import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
@@ -38,6 +42,28 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		IProject project = importAndroidProject("test-project-apklib-deps");
 
 		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+	}
+
+	public void testConfigureAddsErrorForNonExistentLibraryProject() throws Exception {
+		deleteProject(ANDROID_LIB_PROJECT_NAME);
+		IProject project = importAndroidProject("test-project-apklib-deps");
+
+		assertErrorMarker(project, AndroidMavenPlugin.APKLIB_ERROR_TYPE);
+	}
+
+	public void testConfigureAddsWorkspaceLibraryProjectWithDifferentArtifactId() throws Exception {
+		IProject project = importAndroidProject("test-project-apklib-deps-diff-artifact-id");
+
+		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+	}
+
+	public void testConfigureClearsOldErrors() throws Exception {
+		deleteProject(ANDROID_LIB_PROJECT_NAME);
+		IProject project = importAndroidProject("test-project-apklib-deps");
+		importAndroidProject(ANDROID_LIB_PROJECT_NAME);
+		getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
+
+		assertNoErrors(project);
 	}
 
 }

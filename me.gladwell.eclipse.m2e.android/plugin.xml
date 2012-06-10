@@ -12,4 +12,21 @@
     <extension
           point="org.eclipse.m2e.core.lifecycleMappingMetadataSource">
     </extension>
+   <extension
+          id="me.gladwell.eclipse.m2e.android.markers"
+          point="org.eclipse.core.resources.markers" />
+   <extension
+          id="me.gladwell.eclipse.m2e.android.markers.dependency"
+          point="org.eclipse.core.resources.markers">
+          <super type="org.eclipse.core.resources.problemmarker"/>
+          <super type="me.gladwell.eclipse.m2e.android.markers"/>
+          <persistent value="true" />
+   </extension>
+   <extension
+          id="me.gladwell.eclipse.m2e.android.markers.dependency.apklib"
+          point="org.eclipse.core.resources.markers">
+          <super type="org.eclipse.core.resources.problemmarker"/>
+          <super type="me.gladwell.eclipse.m2e.android.markers.dependency"/>
+          <persistent value="true" />
+   </extension>
 </plugin>
