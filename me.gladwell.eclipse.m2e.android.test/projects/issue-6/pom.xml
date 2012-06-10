@@ -23,8 +23,8 @@
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<version>3.0.0</version>
-				<artifactId>android-maven-plugin</artifactId>
+                <artifactId>android-maven-plugin</artifactId>
+				<version>3.2.0</version>
 				<configuration>
 					<sdk>
 						<path>${env.ANDROID_HOME}</path>
