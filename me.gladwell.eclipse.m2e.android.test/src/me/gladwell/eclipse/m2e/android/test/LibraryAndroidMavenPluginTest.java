@@ -10,6 +10,10 @@ package me.gladwell.eclipse.m2e.android.test;
 
 import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
 import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
+
+import java.io.File;
+import java.io.IOException;
+
 import junit.framework.Assert;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
@@ -32,7 +36,6 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		super.setUp();
 
 		deleteProject(ANDROID_LIB_PROJECT_NAME);
-		libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 	}
 
     @Override
@@ -51,14 +54,17 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     }
 
 	public void testConfigure() throws Exception {
+		IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 		assertNoErrors(libraryProject);
 	}
 
 	public void testConfigureAppliesLibraryState() throws Exception {
+		IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 		assertTrue(getProjectState(libraryProject).isLibrary());
 	}
 
 	public void testConfigureAddsWorkspaceLibraryProjectToProjectProperties() throws Exception {
+		IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 		IProject project = importAndroidProject("test-project-apklib-deps");
 
 		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
@@ -71,7 +77,6 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	}
 
 	public void testConfigureAddsErrorForNonExistentLibraryProject() throws Exception {
-		deleteProject(ANDROID_LIB_PROJECT_NAME);
 		IProject project = importAndroidProject("test-project-apklib-deps");
 
 		assertErrorMarker(project, AndroidMavenPlugin.APKLIB_ERROR_TYPE);
@@ -111,6 +116,7 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	}
 
 	public void testConfigureAddsWorkspaceLibraryProjectWithDifferentArtifactId() throws Exception {
+		IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 		IProject project = importAndroidProject("test-project-apklib-deps-diff-artifact-id");
 
 		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
@@ -123,7 +129,6 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	}
 
 	public void testConfigureClearsOldErrors() throws Exception {
-		deleteProject(ANDROID_LIB_PROJECT_NAME);
 		IProject project = importAndroidProject("test-project-apklib-deps");
 		importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 		getProjectConfigurationManager().updateProjectConfiguration(project, monitor);
@@ -137,4 +142,31 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         }
 	}
 
+    public void testConfigureAddsWorkspaceLibraryInSubfdoler() throws Exception {
+        File subfolder = new File(workspace.getRoot().getLocation().toFile(), "subfolder");
+        IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME, subfolder);
+        IProject project = importAndroidProject("test-project-apklib-deps");
+
+        assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+
+        try {
+            deleteProject("test-project-apklib-deps");
+        } catch(Throwable t) {
+            
+        }
+    }
+
+    public void testConfigureAddsWorkspaceLibraryOutsideWorkspaceFolder() throws Exception {
+        File temp = createTempFolder();
+        IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME, temp);
+        IProject project = importAndroidProject("test-project-apklib-deps");
+
+        assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+
+        try {
+            deleteProject("test-project-apklib-deps");
+        } catch(Throwable t) {
+            
+        }
+    }
 }
