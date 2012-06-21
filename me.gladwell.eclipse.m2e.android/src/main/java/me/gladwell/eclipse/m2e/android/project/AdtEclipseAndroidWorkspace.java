@@ -36,6 +36,9 @@ public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
 
 	public EclipseAndroidProject findWorkspaceDependency(Dependency dependency) {
 		for(IProject project : workspace.getRoot().getProjects()) {
+			if (!project.isOpen()) {
+				continue;
+			}
 			EclipseAndroidProject androidProject = projectFactory.createAndroidProject(project);
 			if(androidProject.isAndroidProject() && androidProject.isMavenised()) {
 				MavenAndroidProject mavenProject = projectConverter.createAndroidProject(androidProject);
