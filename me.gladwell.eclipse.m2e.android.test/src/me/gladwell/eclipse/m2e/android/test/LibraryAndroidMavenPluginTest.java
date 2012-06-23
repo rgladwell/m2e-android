@@ -56,6 +56,18 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
 	}
+	
+	public void testConfigureAddsWorkspaceLibraryProjectCheckOpenProjectsOnly() throws Exception {
+		IProject project = importAndroidProject("test-project-apklib-deps");
+		
+		assertTrue(project.isOpen());
+	}
+	
+	public void testConfigureAddsWorkspaceLibraryProjectCheckClosedProject() throws Exception {
+		IProject project = importAndroidProject("test-project-apklib-deps");
+		
+		assertFalse(!project.isOpen());
+	}
 
 	public void testConfigureClearsOldErrors() throws Exception {
 		deleteProject(ANDROID_LIB_PROJECT_NAME);
