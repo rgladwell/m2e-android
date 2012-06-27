@@ -11,16 +11,23 @@ package me.gladwell.eclipse.m2e.android.test;
 import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
 import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
 
+import me.gladwell.eclipse.m2e.android.AndroidMavenException;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
+import org.eclipse.core.internal.resources.ResourceException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
 
-    private IProject libraryProject;
+    private IProject libraryProject, javaProject;
+    private IJavaProject closedJavaProject;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -28,6 +35,10 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 		deleteProject(ANDROID_LIB_PROJECT_NAME);
 		libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
+		javaProject = importAndroidProject("closed-java-project");
+		closedJavaProject = JavaCore.create(javaProject);
+		closedJavaProject.close();
+		javaProject.close(null);
 	}
 
 	public void testConfigure() throws Exception {
@@ -51,22 +62,27 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		assertErrorMarker(project, AndroidMavenPlugin.APKLIB_ERROR_TYPE);
 	}
 
+	public void testConfigureWithAClosedProjectInTheWorkspace() throws Exception {
+		deleteProject(ANDROID_LIB_PROJECT_NAME);
+		try{
+			IProject project = importAndroidProject("test-project-apklib-deps");
+
+			assertErrorMarker(project, AndroidMavenPlugin.APKLIB_ERROR_TYPE);
+		} catch (CoreException ex){  //ProjectConfigurationException
+			if (ex.getCause() instanceof ProjectConfigurationException){//ResourceException
+				assertTrue("Closed project", false);
+			} else {
+				assertTrue(ex.getClass()+": "+ex.getMessage(), false);//What if there's another exception?
+			}
+		}
+	//me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException: org.eclipse.core.internal.resources.ResourceException: Resource '/closedproject' is not open.
+		//at me.gladwell.eclipse.m2e.android.project.AdtEclipseAndroidProject.isAndroidProject(AdtEclipseAndroidProject.java:51)
+	}
+
 	public void testConfigureAddsWorkspaceLibraryProjectWithDifferentArtifactId() throws Exception {
 		IProject project = importAndroidProject("test-project-apklib-deps-diff-artifact-id");
 
 		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
-	}
-	
-	public void testConfigureAddsWorkspaceLibraryProjectCheckOpenProjectsOnly() throws Exception {
-		IProject project = importAndroidProject("test-project-apklib-deps");
-		
-		assertTrue(project.isOpen());
-	}
-	
-	public void testConfigureAddsWorkspaceLibraryProjectCheckClosedProject() throws Exception {
-		IProject project = importAndroidProject("test-project-apklib-deps");
-		
-		assertFalse(!project.isOpen());
 	}
 
 	public void testConfigureClearsOldErrors() throws Exception {
