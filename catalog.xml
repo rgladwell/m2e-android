@@ -1,0 +1,44 @@
+<catalog>
+  <catalogItems>
+    <!-- 
+      initial https://bugs.eclipse.org/bugs/show_bug.cgi?id=353529
+      version 0.4.0 https://bugs.eclipse.org/bugs/show_bug.cgi?id=363574 
+    -->
+    <catalogItem>
+      <categoryId>org.eclipse.m2e.discovery.category.lifecycles</categoryId>
+      <m2e-versions>1.0,1.1</m2e-versions>
+      <description>Android Configurator for M2E Maven Integration for Eclipse</description>
+      <groupId>lifecycles</groupId>
+      <id>me.gladwell.eclipse.m2e.android</id>
+      <kind>lifecycles</kind>
+      <license>EPL</license>
+      <name>Android Connector</name>
+      <provider>Gladwell Consultants Ltd.</provider>
+      <p2>
+        <repositoryUrl>http://rgladwell.github.com/m2e-android/updates/</repositoryUrl>
+        <iuId>me.gladwell.eclipse.m2e.android.feature.feature.group</iuId>
+        <iuVersion>0.4.0</iuVersion>
+        <lifecycleMappingIU>
+          <iuId>me.gladwell.eclipse.m2e.android</iuId>
+        </lifecycleMappingIU>
+    
+        <rootIU>
+          <iuId>com.android.ide.eclipse.adt.feature.group</iuId>
+        </rootIU>
+        <rootIU>
+          <iuId>com.android.ide.eclipse.ddms.feature.group</iuId>
+        </rootIU>
+        <rootIU>
+          <iuId>com.android.ide.eclipse.ddms.feature.group</iuId>
+        </rootIU>
+        <rootIU>
+          <iuId>com.android.ide.eclipse.traceview.feature.group</iuId>
+        </rootIU>
+      </p2>
+      <overview>
+        <summary>Android Configurator for M2E Maven Integration for Eclipse</summary>
+        <url>http://rgladwell.github.com/m2e-android</url>
+      </overview>
+    </catalogItem>  
+  </catalogItems>
+</catalog>
