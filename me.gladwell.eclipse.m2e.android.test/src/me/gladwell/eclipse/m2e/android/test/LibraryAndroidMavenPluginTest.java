@@ -10,17 +10,23 @@ package me.gladwell.eclipse.m2e.android.test;
 
 import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
 import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
+import junit.framework.Assert;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
 
-    private IProject libraryProject;
+    private IProject libraryProject, javaProject;
+    private IJavaProject closedJavaProject;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -28,6 +34,10 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 		deleteProject(ANDROID_LIB_PROJECT_NAME);
 		libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
+		javaProject = importAndroidProject("closed-java-project");
+		closedJavaProject = JavaCore.create(javaProject);
+		closedJavaProject.close();
+		javaProject.close(null);
 	}
 
 	public void testConfigure() throws Exception {
@@ -49,6 +59,17 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		IProject project = importAndroidProject("test-project-apklib-deps");
 
 		assertErrorMarker(project, AndroidMavenPlugin.APKLIB_ERROR_TYPE);
+	}
+
+	public void testConfigureWithAClosedProjectInTheWorkspace() throws Exception {
+		try{
+			IProject project = importAndroidProject("test-project-apklib-deps");
+			
+		} catch (CoreException ex){
+			if (ex.getCause() instanceof ProjectConfigurationException){
+				Assert.fail("Closed project");
+			}
+		}
 	}
 
 	public void testConfigureAddsWorkspaceLibraryProjectWithDifferentArtifactId() throws Exception {
