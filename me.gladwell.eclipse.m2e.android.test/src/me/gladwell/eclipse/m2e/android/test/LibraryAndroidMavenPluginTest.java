@@ -10,6 +10,7 @@ package me.gladwell.eclipse.m2e.android.test;
 
 import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
 import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
+import junit.framework.Assert;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenException;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
@@ -21,7 +22,6 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.junit.Assert;
 
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
@@ -64,7 +64,6 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	}
 
 	public void testConfigureWithAClosedProjectInTheWorkspace() throws Exception {
-		//deleteProject(ANDROID_LIB_PROJECT_NAME);
 		try{
 			IProject project = importAndroidProject("test-project-apklib-deps");
 			
