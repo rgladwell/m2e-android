@@ -59,7 +59,7 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	public void testConfigureWithAClosedProjectInTheWorkspace() throws Exception {
 		
 		IProject javaProject = importAndroidProject("closed-java-project");
-	    IJavaProject closedJavaProject = JavaCore.create(javaProject);
+		IJavaProject closedJavaProject = JavaCore.create(javaProject);
 		closedJavaProject.close();
 		javaProject.close(null);
 		try{
