@@ -251,6 +251,7 @@ to a jury trial in any resulting litigation.
       <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.persistence.moxy" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.io" version="2.0.1" match="greaterOrEqual"/>
       <import plugin="javax.xml.bind"/>
       <import plugin="org.eclipse.osgi"/>
       <import feature="org.eclipse.m2e.feature" version="1.0.200.20111228-1245"/>
