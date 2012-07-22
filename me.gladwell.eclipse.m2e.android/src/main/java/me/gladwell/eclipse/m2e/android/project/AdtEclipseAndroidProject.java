@@ -90,7 +90,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	public void setLibraryDependencies(List<EclipseAndroidProject> libraryDependencies) {
 		int i = 1;
 		for (EclipseAndroidProject library : libraryDependencies) {
-			setAndroidProperty(ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, relativizePath(library, getProject()));
+			setAndroidProperty(library, ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, relativizePath(library, getProject()));
 			i++;
 		}
 	}
@@ -102,12 +102,19 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	}
 
 	private void setAndroidProperty(String property, String value) {
+		setAndroidProperty(null, property, value);
+	}
+
+	private void setAndroidProperty(EclipseAndroidProject library, String property, String value) {
 		try {
 			ProjectState state = getProjectState();
 			ProjectPropertiesWorkingCopy workingCopy = state.getProperties().makeWorkingCopy();
 			workingCopy.setProperty(property, value);
 			workingCopy.save();
 			state.reloadProperties();
+			if (library != null) {
+				state.needs(Sdk.getProjectState(library.getProject()));
+			}
 		} catch (IOException e) {
 			throw new ProjectConfigurationException(e);
 		} catch (StreamException e) {
