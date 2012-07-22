@@ -25,8 +25,7 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     private static final String ANDROID_LIB_PROJECT_NAME = "apklib-project";
 
-    private IProject libraryProject, javaProject;
-    private IJavaProject closedJavaProject;
+    private IProject libraryProject;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -34,10 +33,7 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 		deleteProject(ANDROID_LIB_PROJECT_NAME);
 		libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
-		javaProject = importAndroidProject("closed-java-project");
-		closedJavaProject = JavaCore.create(javaProject);
-		closedJavaProject.close();
-		javaProject.close(null);
+		
 	}
 
 	public void testConfigure() throws Exception {
@@ -62,12 +58,17 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 	}
 
 	public void testConfigureWithAClosedProjectInTheWorkspace() throws Exception {
+		
+	    IProject javaProject = importAndroidProject("closed-java-project");
+	    IJavaProject closedJavaProject = JavaCore.create(javaProject);
+		closedJavaProject.close();
+		javaProject.close(null);
 		try{
 			IProject project = importAndroidProject("test-project-apklib-deps");
 			
 		} catch (CoreException ex){
 			if (ex.getCause() instanceof ProjectConfigurationException){
-				Assert.fail("Closed project");
+				Assert.fail("Access denied: M2E is trying to access a closed project");
 			}
 		}
 	}

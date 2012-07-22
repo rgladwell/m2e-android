@@ -34,7 +34,7 @@ public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
 		this.projectConverter = projectConverter;
 	}
 
-	public EclipseAndroidProject findWorkspaceDependency(Dependency dependency) {
+	public EclipseAndroidProject findOpenWorkspaceDependency(Dependency dependency) {
 		for(IProject project : workspace.getRoot().getProjects()) {
 			if (!project.isOpen()) {
 				continue;
