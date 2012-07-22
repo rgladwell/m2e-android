@@ -41,7 +41,7 @@ public class LibraryDependenciesProjectConfigurer implements ProjectConfigurer {
 		List<EclipseAndroidProject> workspaceDependencies = new ArrayList<EclipseAndroidProject>();
 
 		for(Dependency dependency : libraryDependencies) {
-			EclipseAndroidProject workspaceDependency = workspace.findWorkspaceDependency(dependency);
+			EclipseAndroidProject workspaceDependency = workspace.findOpenWorkspaceDependency(dependency);
 			workspaceDependencies.add(workspaceDependency);
 		}
 		

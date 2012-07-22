@@ -19,4 +19,5 @@ Require-Bundle: org.eclipse.core.runtime,
  com.android.ide.eclipse.base;bundle-version="20.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Export-Package: me.gladwell.eclipse.m2e.android
+Export-Package: me.gladwell.eclipse.m2e.android,
+ me.gladwell.eclipse.m2e.android.configuration
