@@ -8,6 +8,8 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import static me.gladwell.eclipse.m2e.android.project.ResourceUtils.UNIX_SEPARATOR;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -54,7 +56,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 
 	public void setAndroidProject(boolean androidProject) {
 		try {
-			if(androidProject) {
+			if (androidProject) {
 				AbstractProjectConfigurator.addNature(project, AdtConstants.NATURE_DEFAULT, null);
 			} else {
 				throw new UnsupportedOperationException();
@@ -70,7 +72,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	}
 
 	public void setLibrary(boolean isLibrary) {
-		setAndroidProperty(ProjectProperties.PROPERTY_LIBRARY,  Boolean.toString(isLibrary));
+		setAndroidProperty(ProjectProperties.PROPERTY_LIBRARY, Boolean.toString(isLibrary));
 	}
 
 	public List<String> getProvidedDependencies() {
@@ -88,9 +90,15 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	public void setLibraryDependencies(List<EclipseAndroidProject> libraryDependencies) {
 		int i = 1;
 		for (EclipseAndroidProject library : libraryDependencies) {
-			setAndroidProperty(ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, "../" + library.getName());
+			setAndroidProperty(ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i, relativizePath(library, getProject()));
 			i++;
 		}
+	}
+
+	private String relativizePath(EclipseAndroidProject library, IProject baseProject) {
+		String libraryPath = library.getProject().getRawLocation().toPortableString();
+		String baseProjectPath = baseProject.getRawLocation().toPortableString();
+		return ResourceUtils.getRelativePath(libraryPath, baseProjectPath, UNIX_SEPARATOR);
 	}
 
 	private void setAndroidProperty(String property, String value) {
