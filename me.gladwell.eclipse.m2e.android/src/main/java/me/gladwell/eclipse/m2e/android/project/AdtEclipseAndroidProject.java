@@ -8,8 +8,6 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import static me.gladwell.eclipse.m2e.android.project.ResourceUtils.UNIX_SEPARATOR;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +16,7 @@ import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationExcepti
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
@@ -95,10 +94,10 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 		}
 	}
 
-	private String relativizePath(EclipseAndroidProject library, IProject baseProject) {
-		String libraryPath = library.getProject().getRawLocation().toPortableString();
-		String baseProjectPath = baseProject.getRawLocation().toPortableString();
-		return ResourceUtils.getRelativePath(libraryPath, baseProjectPath, UNIX_SEPARATOR);
+	private String relativizePath(EclipseAndroidProject libraryProject, IProject baseProject) {
+		IPath libraryProjectLocation = libraryProject.getProject().getLocation();
+		IPath targetProjectLocation = baseProject.getLocation();
+		return libraryProjectLocation.makeRelativeTo(targetProjectLocation).toPortableString();
 	}
 
 	private void setAndroidProperty(String property, String value) {
