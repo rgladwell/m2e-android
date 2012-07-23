@@ -17,6 +17,7 @@ import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathContainer;
@@ -69,17 +70,51 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	protected IProject importAndroidProject(String name) throws Exception {
 		IProject project = importProject("projects/"+name+"/pom.xml");
-		waitForJobsToComplete();
+		waitForAndroidJobsToComplete();
 	    waitForAdtToLoad();
 	    return project;
 	}
 
 	protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
 		project.build(kind, monitor);
-		waitForJobsToComplete();
+		waitForAndroidJobsToComplete();
 	}
 
-	protected void assertClasspathContains(IJavaProject javaProject, String path) throws JavaModelException {
+	private void waitForAndroidJobsToComplete() {
+        try {
+            waitForJobsToComplete();
+        } catch (Throwable t) {
+            throw new RuntimeException("error waiting for jobs to complete: " + getWorkspaceState(), t);
+        }
+	}
+
+	private String getWorkspaceState() {
+        StringBuffer buffer = new StringBuffer("workspace state=[\n");
+
+        buffer.append("\trunning jobs=[\n");
+        for(Job job : Job.getJobManager().find(null)) {
+            buffer.append("\t\t");
+            buffer.append(job.toString());
+            buffer.append("[");
+            buffer.append(job.getClass().getName());
+            buffer.append("]");
+            buffer.append(",\n");
+        }
+        buffer.append("\t]\n");
+
+        buffer.append("\tprojects=[\n");
+        for(IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
+            buffer.append("\t\t");
+            buffer.append(project.toString());
+            buffer.append(",\n");
+        }
+        buffer.append("\t]\n");
+        
+        buffer.append("]\n");
+        return buffer.toString();
+    }
+
+    protected void assertClasspathContains(IJavaProject javaProject, String path) throws JavaModelException {
 		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
 			if(entry.getPath().toOSString().contains(path)) {
 				return;
