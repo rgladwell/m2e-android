@@ -4,10 +4,10 @@
 <target name="eclipse 3.7.0" sequenceNumber="13">
 <locations>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.android.ide.eclipse.adt.feature.group" version="20.0.0.v201206242043-391819"/>
-<unit id="com.android.ide.eclipse.ddms.feature.group" version="20.0.0.v201206242043-391819"/>
-<unit id="com.android.ide.eclipse.hierarchyviewer.feature.group" version="20.0.0.v201206242043-391819"/>
-<unit id="com.android.ide.eclipse.traceview.feature.group" version="20.0.0.v201206242043-391819"/>
+<unit id="com.android.ide.eclipse.adt.feature.group" version="20.0.1.v201207132230-403220"/>
+<unit id="com.android.ide.eclipse.ddms.feature.group" version="20.0.1.v201207132230-403220"/>
+<unit id="com.android.ide.eclipse.hierarchyviewer.feature.group" version="20.0.1.v201207132230-403220"/>
+<unit id="com.android.ide.eclipse.traceview.feature.group" version="20.0.1.v201207132230-403220"/>
 <repository location="http://anthonydahanne.github.com/publish_adt_to_p2repo/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
