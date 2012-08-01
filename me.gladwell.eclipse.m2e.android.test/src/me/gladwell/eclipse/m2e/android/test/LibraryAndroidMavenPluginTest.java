@@ -35,6 +35,21 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
 	}
 
+    @Override
+    protected void tearDown() throws Exception {
+        try {
+            deleteProject(ANDROID_LIB_PROJECT_NAME);
+        } catch(Throwable t) {
+            
+        } finally {
+            try {
+                super.tearDown();
+            } catch(Throwable t) {
+                t.printStackTrace();
+            }
+        }
+    }
+
 	public void testConfigure() throws Exception {
 		assertNoErrors(libraryProject);
 	}

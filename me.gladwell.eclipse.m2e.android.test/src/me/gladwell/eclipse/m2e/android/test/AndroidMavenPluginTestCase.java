@@ -71,7 +71,11 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	protected IProject importAndroidProject(String name) throws Exception {
 		IProject project = importProject("projects/"+name+"/pom.xml");
 		waitForAndroidJobsToComplete();
-	    waitForAdtToLoad();
+		try {
+		    waitForAdtToLoad();
+		} catch(Throwable t) {
+		    t.printStackTrace();
+		}
 	    return project;
 	}
 
@@ -84,7 +88,8 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         try {
             waitForJobsToComplete();
         } catch (Throwable t) {
-            throw new RuntimeException("error waiting for jobs to complete: " + getWorkspaceState(), t);
+            System.err.println("error waiting for jobs to complete: " + getWorkspaceState());
+            t.printStackTrace();
         }
 	}
 

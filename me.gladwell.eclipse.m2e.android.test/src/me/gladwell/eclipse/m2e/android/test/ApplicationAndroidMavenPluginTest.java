@@ -45,11 +45,20 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 	@Override
 	protected void tearDown() throws Exception {
-		deleteProject(ANDROID_15_PROJECT_NAME);
-		project = null;
+	    try {
+	        deleteProject(ANDROID_15_PROJECT_NAME);
+	    } catch(Throwable t) {
+	        t.printStackTrace();
+	    }
+
+	    project = null;
 		javaProject = null;
 
-		super.tearDown();
+		try {
+		    super.tearDown();
+        } catch(Throwable t) {
+            t.printStackTrace();
+        }
 	}
 
 	public void testConfigure() throws Exception {
