@@ -17,7 +17,7 @@
       <p2>
         <repositoryUrl>http://rgladwell.github.com/m2e-android/updates/</repositoryUrl>
         <iuId>me.gladwell.eclipse.m2e.android.feature.feature.group</iuId>
-        <iuVersion>0.4.0</iuVersion>
+        <iuVersion>0.4.2</iuVersion>
         <lifecycleMappingIU>
           <iuId>me.gladwell.eclipse.m2e.android</iuId>
         </lifecycleMappingIU>
