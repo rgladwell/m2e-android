@@ -2,7 +2,7 @@
 <feature
       id="me.gladwell.eclipse.m2e.android.feature"
       label="Android Configurator for M2E"
-      version="0.4.2"
+      version="0.4.3.qualifier"
       provider-name="Gladwell.me">
 
    <description url="http://rgladwell.github.com/m2e-android/">
