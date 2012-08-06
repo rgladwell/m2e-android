@@ -115,7 +115,11 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
 
-        deleteProject("test-project-apklib-deps-diff-artifact-id");
+		try {
+		    deleteProject("test-project-apklib-deps-diff-artifact-id");
+		} catch(Throwable t) {
+		    t.printStackTrace();
+		}
 	}
 
 	public void testConfigureClearsOldErrors() throws Exception {
