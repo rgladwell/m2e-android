@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/me.gladwell.eclipse.m2e.android.feature_0.4.2.qualifier.jar" id="me.gladwell.eclipse.m2e.android.feature" version="0.4.2.qualifier">
+   <feature url="features/me.gladwell.eclipse.m2e.android.feature_0.4.3.qualifier.jar" id="me.gladwell.eclipse.m2e.android.feature" version="0.4.3.qualifier">
       <category name="me.gladwell.eclipse.m2e.android.category"/>
    </feature>
    <category-def name="me.gladwell.eclipse.m2e.android.category" label="Android Connector for M2E"/>
