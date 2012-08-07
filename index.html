@@ -24,21 +24,28 @@ subtitle: Android Configurator for M2E Maven Integration for Eclipse
 	installed.
 </p>
 
-<ul>
-	<li><a href="http://developer.android.com/sdk/installing.html">Android SDK and ADT 20.0.0+</a></li>
-	<li><a href="http://www.eclipse.org/m2e/download/">Maven Integration for Eclipse 1.0.0+</a><sup>*</sup></li>
-</ul>
-
-<p><em><sup>*</sup>Maven Integration for Eclipse should already be installed in
-	you're using Indigo.</em></p>
+<h3 class="headerstyle">2. Install Android Connector</h3>
 
 <p>
-	<strong>Please Note:</strong> If you have an old, alpha 0.2.x version of
-	the Android Connector installed you should un-install it before
-	installing the latest 0.3.x beta versions.
+	You can install the Android Connector for Maven via the Eclipse
+	Marketplace. Select <em>Help -> Eclipse Marketplace...</em> and search for
+	"android m2e".
 </p>
 
-<h3 class="headerstyle">2. Create Eclipse project</h3>
+<p>
+	Click the <em>Install</em> button next to the Android Connector for Maven
+	that appears and follow the path through the wizard dialog to install the
+	plug-in and its dependencies (including the Android Development Toolkit and
+	the Maven for Eclipse m2e plug-in). Accept the terms-and-conditions and
+	click <em>Finish</em>.
+</p>
+
+<p>
+	Once you restart your Eclipse workspace you should be ready to start using
+	the Android Connector.
+</p>
+
+<h3 class="headerstyle">3. Create Eclipse project</h3>
 
 <p>
 	<strong>If you already have an Android project</strong> please make
@@ -75,34 +82,19 @@ subtitle: Android Configurator for M2E Maven Integration for Eclipse
 		ID, version and, optionally, set the "platform" property for the
 		Android version (defaults to '10').</li>
 	<li>Click Finish</li>
-	<li>Right-click on new project and select Maven -> Update Project
-		Configuration.</li>
 </ol>
+
+<p>
+	<strong>Note:</strong> The new 1.1 version of the m2e plug-in requires the
+	presence of a <pre>src/test/java</pre> folder in your workspace but the
+	Android archetypes do not support this yet so you may have to manually add
+	this folder to your project.
+</p>
 
 <p>Either way you should end up with an Eclipse project looking
 	something like this:</p>
 
-<img src="images/step2-screenshot.png" title="Step 2: Screenshot of Android Project">
-
-<h3 class="headerstyle">3. Install Android Connector</h3>
-
-<p>
-	Open your POM and click on the "Plugin execution not covered by
-	lifecycle configuration" error. This will give you the option to <em>Discover
-		new m2e connectors</em>.
-</p>
-
-<p>
-	Select this and you should be automatically prompted to download and
-	install the <strong>Android Connector</strong>.
-</p>
-
-<p>Once you have installed the Android Connector, your project
-	should look something like this:</p>
-
 <img src="images/step3-screenshot.png" title="Step 3: Screenshot of Android Project">
-
-</div>
 
 <div id="sidebar">
 
