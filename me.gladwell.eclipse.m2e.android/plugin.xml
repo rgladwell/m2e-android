@@ -29,4 +29,11 @@
           <super type="me.gladwell.eclipse.m2e.android.markers.dependency"/>
           <persistent value="true" />
    </extension>
+   <extension
+         point="org.eclipse.m2e.core.archetypeCatalogs">
+         <remote
+               url="http://rgladwell.github.com/m2e-android/android-archetype-catalog.xml"
+               description="Android">
+         </remote>
+   </extension>
 </plugin>
