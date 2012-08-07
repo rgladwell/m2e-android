@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-catalog>
+  <archetypes>
+    <archetype>
+      <groupId>de.akquinet.android.archetype</groupId>
+      <artifactId>android-quickstart</artifactId>
+      <version>1.0.8</version>
+    </archetype>
+    <archetype>
+      <groupId>de.akquinet.android.archetype</groupId>
+      <artifactId>android-with-test</artifactId>
+      <version>1.0.8</version>
+    </archetype>
+    <archetype>
+      <groupId>de.akquinet.android.archetype</groupId>
+      <artifactId>android-release</artifactId>
+      <version>1.0.8</version>
+    </archetype>
+  </archetypes>
+</archetype-catalog>
