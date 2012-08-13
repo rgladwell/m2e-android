@@ -2,17 +2,17 @@
 <archetype-catalog>
   <archetypes>
     <archetype>
-      <groupId>de.akquinet.android.archetype</groupId>
+      <groupId>de.akquinet.android.archetypes</groupId>
       <artifactId>android-quickstart</artifactId>
       <version>1.0.8</version>
     </archetype>
     <archetype>
-      <groupId>de.akquinet.android.archetype</groupId>
+      <groupId>de.akquinet.android.archetypes</groupId>
       <artifactId>android-with-test</artifactId>
       <version>1.0.8</version>
     </archetype>
     <archetype>
-      <groupId>de.akquinet.android.archetype</groupId>
+      <groupId>de.akquinet.android.archetypes</groupId>
       <artifactId>android-release</artifactId>
       <version>1.0.8</version>
     </archetype>
