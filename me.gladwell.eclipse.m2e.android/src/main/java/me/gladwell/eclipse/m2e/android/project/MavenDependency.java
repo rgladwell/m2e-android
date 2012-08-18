@@ -14,32 +14,56 @@ import org.apache.maven.artifact.Artifact;
 
 public class MavenDependency implements Dependency {
 
-	private Artifact artifact;
+	private String groupId;
+	private String artifactId;
+	private String type;
+	private String version;
 
 	public MavenDependency(Artifact artifact) {
+		groupId = artifact.getGroupId();
+		artifactId = artifact.getArtifactId();
+		version = artifact.getVersion();
+		type = artifact.getType();
+	}
+	
+	public MavenDependency(org.apache.maven.model.Dependency dependency) {
+		groupId = dependency.getGroupId();
+		artifactId = dependency.getArtifactId();
+		type = dependency.getType();
+		version = dependency.getVersion();
+	}
+
+	public MavenDependency(String groupId, String artifactId, String type, String version) {
 		super();
-		this.artifact = artifact;
+		this.groupId = groupId;
+		this.artifactId = artifactId;
+		this.type = type;
+		this.version = version;
 	}
 
-	public String getName() {
-		return artifact.getArtifactId();
+	public String getArtifactId() {
+		return artifactId;
 	}
 
-	public String getGroup() {
-		return artifact.getGroupId();
+	public String getGroupId() {
+		return groupId;
+	}
+	
+	public String getType() {
+		return type;
 	}
 
 	public String getVersion() {
-		return artifact.getVersion();
+		return version;
 	}
 
 	public boolean isLibrary() {
-		return artifact.getType().equals(ANDROID_LIBRARY_PACKAGE_TYPE);
+		return type.equals(ANDROID_LIBRARY_PACKAGE_TYPE);
 	}
 
 	@Override
 	public String toString() {
-		return artifact.toString();
+		return groupId + ":" + artifactId + ":" + type + ":" + version;
 	}
 
 }

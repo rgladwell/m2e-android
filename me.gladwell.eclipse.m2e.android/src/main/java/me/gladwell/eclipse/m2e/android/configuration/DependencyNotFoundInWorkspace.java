@@ -14,14 +14,21 @@ import me.gladwell.eclipse.m2e.android.project.Dependency;
 public class DependencyNotFoundInWorkspace extends ProjectConfigurationError {
 
 	private static final long serialVersionUID = -3959048624226951719L;
+	
+	private Dependency dependency;
 
 	public DependencyNotFoundInWorkspace(Dependency dependency) {
 		super("dependency=[" + dependency + "] not found in workspace");
+		this.dependency = dependency;
 	}
-
+	
 	@Override
 	public String getType() {
 		return AndroidMavenPlugin.APKLIB_ERROR_TYPE;
+	}
+
+	public Dependency getDependency() {
+		return dependency;
 	}
 
 }

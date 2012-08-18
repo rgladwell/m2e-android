@@ -15,11 +15,13 @@ import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspa
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.Dependency;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -64,19 +66,36 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 			final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
 			final EclipseAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request.getProject());
 
-				if(mavenProject.isAndroidProject()) {
-					javaProjectConfigurator.configure(request, monitor);
-	
-					for (ProjectConfigurer configurer : projectConfigurers) {
-						try {
-							if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
-								configurer.configure(eclipseProject,  mavenProject);
-							}
-						} catch (DependencyNotFoundInWorkspace e) {
-							markerManager.addErrorMarkers(request.getPom(), e.getType(), e);
+			if (mavenProject.isAndroidProject()) {
+				javaProjectConfigurator.configure(request, monitor);
+
+				for (ProjectConfigurer configurer : projectConfigurers) {
+					try {
+						if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
+							configurer.configure(eclipseProject, mavenProject);
 						}
+					} catch (DependencyNotFoundInWorkspace e) {
+						// TODO: problem of this solution that it mark only one missing deppendeny :-(
+						// looking for line number of missing dependency
+						int line = 0;
+						List<org.apache.maven.model.Dependency> deps = request.getMavenProject().getModel().getDependencies();
+						for (org.apache.maven.model.Dependency d : deps) {
+							if (d.getGroupId().equals(e.getDependency().getGroupId()) &&
+								d.getArtifactId().equals(e.getDependency().getArtifactId()) &&
+								d.getVersion().equals(e.getDependency().getVersion())) {
+								
+								line = d.getLocation("groupId").getLineNumber();
+							}
+						}
+
+						IMarker marker = markerManager.addMarker(request.getPom(), e.getType(), e.getMessage(), line, IMarker.SEVERITY_ERROR);
+						marker.setAttribute("group", e.getDependency().getGroupId());
+						marker.setAttribute("name", e.getDependency().getArtifactId());
+						marker.setAttribute("type", e.getDependency().getType());
+						marker.setAttribute("version", e.getDependency().getVersion());
 					}
 				}
+			}
 		} catch (AndroidMavenException e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project", e));
 		}
@@ -94,9 +113,9 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}
-    }
+	}
 
-	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
+	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
 		final AndroidProject project = mavenProjectFactory.createAndroidProject(request.getMavenProject());
 		final IJavaProject javaProject = JavaCore.create(request.getProject());
 		try {
@@ -107,6 +126,6 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}
-    }
+	}
 
 }

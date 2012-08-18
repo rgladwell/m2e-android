@@ -10,9 +10,10 @@ package me.gladwell.eclipse.m2e.android.project;
 
 public interface Dependency {
 
-	public String getName();
-	public String getGroup();
+	public String getArtifactId();
+	public String getGroupId();
 	public String getVersion();
+	public String getType();
 	public boolean isLibrary();
 
 }

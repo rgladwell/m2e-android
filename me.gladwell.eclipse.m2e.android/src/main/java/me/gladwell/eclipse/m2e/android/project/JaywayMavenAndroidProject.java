@@ -17,8 +17,8 @@ import org.codehaus.plexus.util.StringUtils;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
-	private static final String ANDROID_PACKAGE_TYPE = "apk";
-	static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
+	public static final String ANDROID_PACKAGE_TYPE = "apk";
+	public static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
 
 	private MavenProject mavenProject;
 
@@ -65,7 +65,7 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	public List<Dependency> getLibraryDependencies() {
 	    List<Dependency> results = new ArrayList<Dependency>(mavenProject.getArtifacts().size());
-	
+	    
 	    for(Artifact a : mavenProject.getArtifacts()) {
 	    	Dependency dependency = new MavenDependency(a);
 	        if(dependency.isLibrary()) {
@@ -77,8 +77,8 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	}
 
 	public boolean matchesDependency(Dependency dependency) {
-		return StringUtils.equals(dependency.getName(), getName())
-				&& StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
+		return StringUtils.equals(dependency.getArtifactId(), getName())
+				&& StringUtils.equals(dependency.getGroupId(), mavenProject.getGroupId())
 				&& StringUtils.equals(dependency.getVersion(), mavenProject.getVersion());
 	}
 

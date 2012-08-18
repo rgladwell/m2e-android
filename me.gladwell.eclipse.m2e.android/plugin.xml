@@ -30,6 +30,12 @@
           <persistent value="true" />
    </extension>
    <extension
+           point="org.eclipse.ui.ide.markerResolution">
+           <markerResolutionGenerator
+                  markerType="me.gladwell.eclipse.m2e.android.markers.dependency.apklib"
+                  class="me.gladwell.eclipse.m2e.android.quickfix.ImportApklibResolutionGenerator"/>
+   </extension>   
+   <extension
          point="org.eclipse.m2e.core.archetypeCatalogs">
          <remote
                url="http://rgladwell.github.com/m2e-android/android-archetype-catalog.xml"

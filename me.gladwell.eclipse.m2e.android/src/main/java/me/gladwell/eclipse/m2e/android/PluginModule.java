@@ -28,6 +28,7 @@ import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenToEclipseAndroidProjectConverter;
+import me.gladwell.eclipse.m2e.android.quickfix.UnzipApkLibsDependciesSupport;
 
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IProject;
@@ -55,6 +56,7 @@ public class PluginModule extends AbstractModule {
 		bind(AndroidWorkspace.class).to(AdtEclipseAndroidWorkspace.class);
 		bind(MavenModelManager.class).toInstance(MavenPlugin.getMavenModelManager());
 		bind(LibraryDependenciesProjectConfigurer.class);
+		bind(UnzipApkLibsDependciesSupport.class);
 	}
 
 	@Provides
