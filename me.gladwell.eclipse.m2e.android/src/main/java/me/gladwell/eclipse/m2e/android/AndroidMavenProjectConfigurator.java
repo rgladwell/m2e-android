@@ -15,7 +15,6 @@ import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspa
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
-import me.gladwell.eclipse.m2e.android.project.Dependency;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
@@ -60,39 +59,16 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 	private AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseProjectFactory;
 
 	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		markerManager.deleteMarkers(request.getPom(), AndroidMavenPlugin.APKLIB_ERROR_TYPE);
-
 		try {
 			final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
 			final EclipseAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request.getProject());
 
 			if (mavenProject.isAndroidProject()) {
 				javaProjectConfigurator.configure(request, monitor);
-
 				for (ProjectConfigurer configurer : projectConfigurers) {
-					try {
-						if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
-							configurer.configure(eclipseProject, mavenProject);
-						}
-					} catch (DependencyNotFoundInWorkspace e) {
-						// TODO: problem of this solution that it mark only one missing deppendeny :-(
-						// looking for line number of missing dependency
-						int line = 0;
-						List<org.apache.maven.model.Dependency> deps = request.getMavenProject().getModel().getDependencies();
-						for (org.apache.maven.model.Dependency d : deps) {
-							if (d.getGroupId().equals(e.getDependency().getGroupId()) &&
-								d.getArtifactId().equals(e.getDependency().getArtifactId()) &&
-								d.getVersion().equals(e.getDependency().getVersion())) {
-								
-								line = d.getLocation("groupId").getLineNumber();
-							}
-						}
-
-						IMarker marker = markerManager.addMarker(request.getPom(), e.getType(), e.getMessage(), line, IMarker.SEVERITY_ERROR);
-						marker.setAttribute("group", e.getDependency().getGroupId());
-						marker.setAttribute("name", e.getDependency().getArtifactId());
-						marker.setAttribute("type", e.getDependency().getType());
-						marker.setAttribute("version", e.getDependency().getVersion());
+					if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
+						configurer.setupEnvironment(request, markerManager);
+						configurer.configure(eclipseProject, mavenProject);
 					}
 				}
 			}

@@ -8,6 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import org.eclipse.m2e.core.internal.markers.IMavenMarkerManager;
+import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
+
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
@@ -25,4 +28,8 @@ public class FixerProjectConfigurer implements ProjectConfigurer {
 		eclipseProject.fixProject();
 	}
 
+	public void setupEnvironment(ProjectConfigurationRequest request, IMavenMarkerManager markerManager) {
+		// not required here
+	}
+	
 }
