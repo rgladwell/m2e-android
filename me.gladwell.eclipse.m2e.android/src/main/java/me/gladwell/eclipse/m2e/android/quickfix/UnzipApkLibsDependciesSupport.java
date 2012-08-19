@@ -8,17 +8,11 @@
 
 package me.gladwell.eclipse.m2e.android.quickfix;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarFile;
-
-import javax.swing.ProgressMonitor;
 
 import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
@@ -28,12 +22,12 @@ import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.JaywayMavenAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenDependency;
+import me.gladwell.eclipse.m2e.android.util.JarHelper;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.StringInputStream;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
@@ -42,8 +36,6 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.internal.progress.ProgressManagerUtil;
 
 import com.google.inject.Inject;
 
@@ -57,9 +49,7 @@ public class UnzipApkLibsDependciesSupport {
 
 	private IWorkspace workspace;
 	private MavenModelManager mavenModelManager;
-	private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
 	private AndroidProjectFactory<EclipseAndroidProject, IProject> projectFactory;
-	private AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> projectConverter;
 	private AndroidWorkspace androidWorkspace;
 
 	private File targetFolder;
@@ -77,9 +67,7 @@ public class UnzipApkLibsDependciesSupport {
 		super();
 		this.workspace = workspace;
 		this.mavenModelManager = mavenModelManager;
-		this.mavenProjectFactory = mavenProjectFactory;
 		this.projectFactory = projectFactory;
-		this.projectConverter = projectConverter;
 		this.androidWorkspace = androidWorkspace;
 		
 		mavenProjectsInfo = new ArrayList<MavenProjectInfo>();
@@ -133,7 +121,7 @@ public class UnzipApkLibsDependciesSupport {
 		// add pom.xml
 		FileUtils.copyFile(pomFile, targetPomFile);
 		// create project.properties file
-		// TODO: Detect right androd API version
+		// TODO: Detect right android API version
 		int apiVersion = 16;
 		FileUtils.fileWrite(new File(targetFolder, "project.properties"), "android.library=true\n# Project target.\ntarget=android-" + apiVersion);
 		

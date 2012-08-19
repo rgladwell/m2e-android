@@ -1,4 +1,4 @@
-package me.gladwell.eclipse.m2e.android.quickfix;
+package me.gladwell.eclipse.m2e.android.util;
 
 import org.codehaus.plexus.util.IOUtil;
 
