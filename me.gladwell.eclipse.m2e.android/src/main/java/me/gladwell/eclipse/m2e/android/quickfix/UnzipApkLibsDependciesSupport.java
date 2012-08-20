@@ -125,7 +125,15 @@ public class UnzipApkLibsDependciesSupport {
 		int apiVersion = 16;
 		FileUtils.fileWrite(new File(targetFolder, "project.properties"), "android.library=true\n# Project target.\ntarget=android-" + apiVersion);
 		
-		MavenProjectInfo i = new MavenProjectInfo("project", targetPomFile, mavenModelManager.readMavenModel(targetPomFile), null);
+		Model model = mavenModelManager.readMavenModel(targetPomFile);
+		
+		// check if pom require test folder
+		String testSource = model.getBuild().getTestSourceDirectory();
+		if (testSource != null && !testSource.isEmpty()) {
+			new File(targetFolder, testSource).mkdirs();
+		}
+		
+		MavenProjectInfo i = new MavenProjectInfo("project", targetPomFile, model, null);
 		mavenProjectsInfo.add(i);
 	}
 
