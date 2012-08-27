@@ -22,8 +22,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.jdt.IClasspathManager;
 
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
@@ -164,6 +166,13 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         } catch(Throwable t) {
             t.printStackTrace();
         }
+    }
+
+    public void testConfigureDoesNotMarkMavenContainerExported() throws Exception {
+        IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
+        IJavaProject javaProject = JavaCore.create(libraryProject);
+        IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
+        assertTrue(!mavenContainer.isExported());
     }
 
 }
