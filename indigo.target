@@ -15,12 +15,12 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.m2e.feature.feature.group" version="1.0.0.20110607-2117"/>
-<repository location="http://download.eclipse.org/releases/indigo/"/>
+<unit id="org.eclipse.m2e.feature.feature.group" version="1.1.0.20120530-0009"/>
+<repository location="http://download.eclipse.org/technology/m2e/releases"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.0.0.201106061504"/>
-<repository location="https://repository.sonatype.org/content/sites/forge-sites/m2e/1.0.0/N/LATEST/"/>
+<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.1.0.20120530-0009"/>
+<repository location="http://download.eclipse.org/technology/m2e/releases"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.persistence.sdk.feature.group" version="2.3.0.v20110604-r9504"/>
