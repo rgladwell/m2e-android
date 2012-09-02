@@ -55,16 +55,6 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 		}
 	}
 
-	public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
-		for(IClasspathEntry entry : classpath.getEntries()) {
-			if(entry.getOutputLocation() != null && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
-					&& !entry.getOutputLocation().equals(javaProject.getPath().append(ANDROID_CLASSES_FOLDER))) {
-				classpath.removeEntry(entry.getPath());
-				classpath.addSourceEntry(entry.getPath(), javaProject.getPath().append(ANDROID_CLASSES_FOLDER), false);
-			}
-		}
-	}
-
 	public void markMavenContainerExported(IClasspathDescriptor classpath) {
 		for(IClasspathEntry entry : classpath.getEntries()) {
 			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
