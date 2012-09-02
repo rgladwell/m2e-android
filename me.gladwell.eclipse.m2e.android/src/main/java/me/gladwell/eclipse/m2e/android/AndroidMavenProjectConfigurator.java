@@ -32,7 +32,6 @@ import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
-import org.eclipse.m2e.jdt.AbstractJavaProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
 
@@ -40,7 +39,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigurator implements IJavaProjectConfigurator {
+public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
 	@Inject
 	private AbstractProjectConfigurator javaProjectConfigurator;
@@ -87,7 +86,6 @@ public class AndroidMavenProjectConfigurator extends AbstractJavaProjectConfigur
 	}
 
 	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		super.configureClasspath(facade, classpath, monitor);
 		final AndroidProject project = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
 		try {
 			classpathConfigurer.removeNonRuntimeDependencies(project, classpath);
