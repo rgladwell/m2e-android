@@ -8,11 +8,15 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import java.io.File;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -22,16 +26,22 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
+import com.android.sdklib.SdkConstants;
+
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
 
-	private static final String ANDROID_GEN_PATH = "gen";
-	private static final String ANDROID_CLASSES_FOLDER = "bin/classes";
-
 	public void addGenFolder(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
-		IPath gen = javaProject.getPath().append(ANDROID_GEN_PATH);
-		if (!classpath.containsPath(gen)) {
-			IPath classesOutput = javaProject.getPath().append(ANDROID_CLASSES_FOLDER);
-			classpath.addSourceEntry(gen, classesOutput, true);
+        IFolder gen = javaProject.getProject().getFolder(SdkConstants.FD_GEN_SOURCES + File.separator);
+        if (!gen.exists()) {
+            try {
+                gen.create(true, true, new NullProgressMonitor());
+            } catch (CoreException e) {
+                throw new ProjectConfigurationException(e);
+            }
+        }
+
+        if (!classpath.containsPath(new Path(SdkConstants.FD_GEN_SOURCES))) {
+			classpath.addSourceEntry(gen.getFullPath(), null, false);
 		}
 	}
 
