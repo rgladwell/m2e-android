@@ -26,12 +26,12 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
-import com.android.sdklib.SdkConstants;
-
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
 
-	public void addGenFolder(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
-        IFolder gen = javaProject.getProject().getFolder(SdkConstants.FD_GEN_SOURCES + File.separator);
+	private static final String ANDROID_GEN_FOLDER = "gen";
+
+    public void addGenFolder(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
+        IFolder gen = javaProject.getProject().getFolder(ANDROID_GEN_FOLDER + File.separator);
         if (!gen.exists()) {
             try {
                 gen.create(true, true, new NullProgressMonitor());
@@ -40,7 +40,7 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
             }
         }
 
-        if (!classpath.containsPath(new Path(SdkConstants.FD_GEN_SOURCES))) {
+        if (!classpath.containsPath(new Path(ANDROID_GEN_FOLDER))) {
 			classpath.addSourceEntry(gen.getFullPath(), null, false);
 		}
 	}
