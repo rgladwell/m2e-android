@@ -8,7 +8,11 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer.ANDROID_CLASSES_FOLDER;
+
 import java.io.File;
+
+import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -123,5 +127,13 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
 		assertTrue(mavenContainer.isExported());
 	}
+
+    public void testConfigureSetsCorrectSourceOutputFolder() throws Exception {
+        for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+            if(entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getOutputLocation() != null) {
+                assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
+            }
+        }
+    }
 
 }

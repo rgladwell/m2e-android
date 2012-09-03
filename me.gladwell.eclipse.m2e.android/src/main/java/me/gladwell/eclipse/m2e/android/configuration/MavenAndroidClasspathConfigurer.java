@@ -29,6 +29,7 @@ import org.eclipse.m2e.jdt.IClasspathManager;
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
 
 	private static final String ANDROID_GEN_FOLDER = "gen";
+    public static final String ANDROID_CLASSES_FOLDER = "bin/classes";
 
     public void addGenFolder(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
         IFolder gen = javaProject.getProject().getFolder(ANDROID_GEN_FOLDER + File.separator);
@@ -64,6 +65,16 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 			}
 		}
 	}
+
+    public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
+        for(IClasspathEntry entry : classpath.getEntries()) {
+            if(entry.getOutputLocation() != null && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE
+                    && !entry.getOutputLocation().equals(javaProject.getPath().append(ANDROID_CLASSES_FOLDER))) {
+                classpath.removeEntry(entry.getPath());
+                classpath.addSourceEntry(entry.getPath(), javaProject.getPath().append(ANDROID_CLASSES_FOLDER), true);
+            }
+        }
+    }
 
 	public void markMavenContainerExported(IClasspathDescriptor classpath) {
 		for(IClasspathEntry entry : classpath.getEntries()) {
