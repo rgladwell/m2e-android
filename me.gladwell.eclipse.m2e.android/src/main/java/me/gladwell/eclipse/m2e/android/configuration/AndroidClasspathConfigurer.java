@@ -20,6 +20,7 @@ public interface AndroidClasspathConfigurer {
 	public void markMavenContainerExported(IClasspathDescriptor classpath);
 	public void removeJreClasspathContainer(IClasspathDescriptor classpath);
     public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath);
+    public void markAndroidContainerNotExported(IClasspathDescriptor classpath);
 
 
 }

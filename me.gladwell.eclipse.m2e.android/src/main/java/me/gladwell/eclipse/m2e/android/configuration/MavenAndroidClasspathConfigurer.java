@@ -28,6 +28,8 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
+import com.android.ide.eclipse.adt.AdtConstants;
+
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
 
 	private static final String ANDROID_GEN_FOLDER = "gen";
@@ -90,4 +92,17 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 		}
 	}
 
+    public void markAndroidContainerNotExported(IClasspathDescriptor classpath) {
+        for(IClasspathEntry entry : classpath.getEntries()) {
+            if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+                if(entry.getPath().toOSString().equals(AdtConstants.CONTAINER_PRIVATE_LIBRARIES)) {
+                    IClasspathEntry newEntry = JavaCore.newContainerEntry(entry.getPath(), false);
+                    classpath.removeEntry(entry.getPath());
+                    classpath.addEntry(newEntry);
+                }
+            }
+        }
+    }
+
 }
+

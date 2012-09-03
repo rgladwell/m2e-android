@@ -136,7 +136,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
     public void testConfigureMarksAndroidLibrariesContainerNotExported() throws Exception {
         IClasspathEntry androidContainer = getClasspathContainer(javaProject, AdtConstants.CONTAINER_PRIVATE_LIBRARIES);
-        assertTrue(!androidContainer.isExported());
+        assertFalse(androidContainer.isExported());
     }
 
 	protected String getAndroidProjectName() {
