@@ -37,10 +37,6 @@
 							<type>p2-installable-unit</type>
 							<artifactId>com.android.ide.eclipse.traceview</artifactId>
 						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.persistence.moxy</artifactId>
-						</dependency>
 					</dependencies>
 				</configuration>
 			</plugin>

@@ -250,11 +250,13 @@ to a jury trial in any resulting litigation.
       <import plugin="org.eclipse.jdt.launching" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem" version="1.2.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.console" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.persistence.moxy" version="2.1.0" match="greaterOrEqual"/>
-      <import plugin="javax.xml.bind"/>
-      <import plugin="org.eclipse.osgi"/>
       <import feature="org.eclipse.m2e.feature" version="1.0.200.20111228-1245"/>
-      <import feature="com.android.ide.eclipse.adt" version="17.0.0.v201203161636-291853"/>
+      <import plugin="org.eclipse.m2e.core" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.jdt" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2e.maven.runtime" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="com.android.ide.eclipse.adt" version="20.0.0" match="greaterOrEqual"/>
+      <import plugin="com.android.ide.eclipse.base" version="20.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
