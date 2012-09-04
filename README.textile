@@ -24,7 +24,6 @@ In addition to having Eclipse Indigo installed, you need to do the following ste
 # Install "M2E Plugin 1.0.0.":http://www.eclipse.org/m2e/download/
 # Install "Maven 3":http://maven.apache.org/download.html for command line "Tycho":http://tycho.sonatype.org/ support.
 # Install "Egit":http://www.eclipse.org/egit/download/.
-# Install "Dali Java Persistence Tools - EclipseLink JAXB Support" through Indigo release update site.
 # In Eclipse select Help -> Install new software... and go to the m2eclipse update site.
 # Un-check the "Group items by category" check box.
 # You should now see the "m2e - Extensions Development Support (Optional)" plugin.
