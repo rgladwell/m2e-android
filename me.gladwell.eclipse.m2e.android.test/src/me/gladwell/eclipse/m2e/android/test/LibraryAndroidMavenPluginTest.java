@@ -123,7 +123,35 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		    t.printStackTrace();
 		}
 	}
+	
+	public void testConfigureAddsWorkspaceLibraryProjectWithDifferentMinorVersion() throws Exception {
+		IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
+	
+		IProject project = importAndroidProject("test-project-apklib-deps-diff-minor-version");
 
+		assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+
+		try {
+		    deleteProject("test-project-apklib-deps-diff-minor-version");
+		} catch(Throwable t) {
+		    t.printStackTrace();
+		}
+	}
+	
+	public void testConfigureAddsWorkspaceLibraryProjectWithDifferentMajorVersion() throws Exception {
+		IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
+	
+		IProject project = importAndroidProject("test-project-apklib-deps-diff-major-version");
+
+		assertFalse(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+
+		try {
+		    deleteProject("test-project-apklib-deps-diff-major-version");
+		} catch(Throwable t) {
+		    t.printStackTrace();
+		}
+	}
+	
 	public void testConfigureClearsOldErrors() throws Exception {
 		IProject project = importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS);
 		importAndroidProject(ANDROID_LIB_PROJECT_NAME);

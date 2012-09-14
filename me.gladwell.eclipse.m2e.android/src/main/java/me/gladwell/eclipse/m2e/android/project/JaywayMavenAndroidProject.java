@@ -10,6 +10,8 @@ package me.gladwell.eclipse.m2e.android.project;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.project.MavenProject;
@@ -79,7 +81,25 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	public boolean matchesDependency(Dependency dependency) {
 		return StringUtils.equals(dependency.getName(), getName())
 				&& StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
-				&& StringUtils.equals(dependency.getVersion(), mavenProject.getVersion());
+				&& matchesVersionCompatibility(dependency.getVersion(), mavenProject.getVersion());
+	}
+	
+	private boolean matchesVersionCompatibility(String versionDependency, String versionMavenProject){
+		String majorVersionDep = versionDependency;
+		String majorVersionMvn = versionMavenProject;
+		
+		Pattern p = Pattern.compile("\\d+");
+	    Matcher m = p.matcher(versionDependency);
+	    if (m.find()) {
+	    	majorVersionDep = m.group(0);
+	    }
+		
+	    m = p.matcher(versionMavenProject);
+	    if (m.find()) {
+	    	majorVersionMvn = m.group(0);
+	    }
+		
+		return majorVersionDep == majorVersionMvn;
 	}
 
 }
