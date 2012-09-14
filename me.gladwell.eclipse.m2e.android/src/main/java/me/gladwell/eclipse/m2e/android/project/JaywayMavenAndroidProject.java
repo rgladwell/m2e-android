@@ -99,7 +99,7 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	    	majorVersionMvn = m.group(0);
 	    }
 		
-		return majorVersionDep == majorVersionMvn;
+	    return majorVersionDep.equals(majorVersionMvn);
 	}
 
 }
