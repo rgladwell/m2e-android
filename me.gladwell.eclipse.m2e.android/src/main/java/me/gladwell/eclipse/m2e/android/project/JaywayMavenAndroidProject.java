@@ -85,21 +85,22 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	}
 	
 	private boolean matchesVersionCompatibility(String versionDependency, String versionMavenProject){
-		String majorVersionDep = versionDependency;
-		String majorVersionMvn = versionMavenProject;
-		
-		Pattern p = Pattern.compile("\\d+");
-	    Matcher m = p.matcher(versionDependency);
-	    if (m.find()) {
-	    	majorVersionDep = m.group(0);
+		String majorVersionDep, minorVersionDep;
+		String majorVersionMvn, minorVersionMvn;
+		Pattern p = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)$");
+	    Matcher mDep = p.matcher(versionDependency);
+        Matcher mMvn = p.matcher(versionMavenProject);
+	    if (mDep.find() && mMvn.find()) {
+	    	majorVersionDep = mDep.group(1);
+            minorVersionDep = mDep.group(2);
+            
+    		majorVersionMvn = mMvn.group(1);
+            minorVersionMvn = mMvn.group(2);
+            
+    	    return majorVersionDep.equals(majorVersionMvn) && minorVersionDep.compareTo(minorVersionMvn) <= 0;
 	    }
 		
-	    m = p.matcher(versionMavenProject);
-	    if (m.find()) {
-	    	majorVersionMvn = m.group(0);
-	    }
-		
-	    return majorVersionDep.equals(majorVersionMvn);
+	    return StringUtils.equals(versionDependency, versionMavenProject); 
 	}
 
 }
