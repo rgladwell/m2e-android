@@ -58,7 +58,7 @@
 						<artifact>
 							<groupId>me.gladwell.eclipse.m2e.android</groupId>
 							<artifactId>m2e-android</artifactId>
-							<version>0.4.3-SNAPSHOT</version>
+							<version>${project.version}</version>
 							<classifier>${target.platform}</classifier>
 						</artifact>
 					</target>
