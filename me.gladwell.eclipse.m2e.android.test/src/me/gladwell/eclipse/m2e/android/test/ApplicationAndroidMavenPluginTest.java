@@ -34,8 +34,6 @@ import com.android.ide.eclipse.adt.AdtConstants;
  */
 public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
-	private static final String ANDROID_PROJECT_NAME = "android-application";
-
 	private IProject project;
 	private IJavaProject javaProject;
 
@@ -43,14 +41,14 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		project = importAndroidProject(ANDROID_PROJECT_NAME);
+		project = importAndroidProject(getAndroidProjectName());
 		javaProject = JavaCore.create(project);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
 	    try {
-	        deleteProject(ANDROID_PROJECT_NAME);
+	        deleteProject(getAndroidProjectName());
 	    } catch(Throwable t) {
 	        t.printStackTrace();
 	    }
@@ -135,5 +133,9 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
             }
         }
     }
+
+	protected String getAndroidProjectName() {
+		return "android-application";
+	}
 
 }
