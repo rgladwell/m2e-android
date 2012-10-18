@@ -21,6 +21,8 @@ import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
+import org.eclipse.m2e.core.internal.markers.IMavenMarkerManager;
+import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 
 public class OrderBuildersProjectConfigurer implements ProjectConfigurer {
 
@@ -57,6 +59,10 @@ public class OrderBuildersProjectConfigurer implements ProjectConfigurer {
 		} catch (CoreException e) {
 			throw new ProjectConfigurationException(e);
 		}
+	}
+
+	public void setupEnvironment(ProjectConfigurationRequest request, IMavenMarkerManager markerManager) {
+		// not required here
 	}
 
 }

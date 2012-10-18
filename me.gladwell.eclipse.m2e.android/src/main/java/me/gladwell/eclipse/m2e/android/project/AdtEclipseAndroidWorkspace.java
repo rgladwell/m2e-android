@@ -10,6 +10,7 @@ package me.gladwell.eclipse.m2e.android.project;
 
 import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 
+import org.eclipse.core.internal.resources.MarkerManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 
@@ -47,7 +48,7 @@ public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
 				}
 			}
 		}
-
+		
 		throw new DependencyNotFoundInWorkspace(dependency);
 	}
 

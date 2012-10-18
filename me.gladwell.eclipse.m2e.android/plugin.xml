@@ -19,6 +19,7 @@
           id="me.gladwell.eclipse.m2e.android.markers.dependency"
           point="org.eclipse.core.resources.markers">
           <super type="org.eclipse.core.resources.problemmarker"/>
+          <super type="org.eclipse.core.resources.textmarker"/>
           <super type="me.gladwell.eclipse.m2e.android.markers"/>
           <persistent value="true" />
    </extension>
@@ -26,9 +27,25 @@
           id="me.gladwell.eclipse.m2e.android.markers.dependency.apklib"
           point="org.eclipse.core.resources.markers">
           <super type="org.eclipse.core.resources.problemmarker"/>
+          <super type="org.eclipse.core.resources.textmarker"/>
           <super type="me.gladwell.eclipse.m2e.android.markers.dependency"/>
           <persistent value="true" />
    </extension>
+   <extension
+           point="org.eclipse.ui.ide.markerResolution">
+           <markerResolutionGenerator
+                  markerType="me.gladwell.eclipse.m2e.android.markers.dependency.apklib"
+                  class="me.gladwell.eclipse.m2e.android.quickfix.ImportApklibResolutionGenerator"/>
+   </extension>   
+   <extension
+           point="org.eclipse.ui.editors.annotationTypes">
+           <type
+               name="me.gladwell.eclipse.m2e.android.annotations"
+               super="org.eclipse.ui.workbench.texteditor.error"
+               markerType="me.gladwell.eclipse.m2e.android.markers.dependency.apklib"
+               markerSeverity="2">
+         </type>
+   </extension>   
    <extension
          point="org.eclipse.m2e.core.archetypeCatalogs">
          <remote
