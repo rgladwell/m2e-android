@@ -31,4 +31,6 @@ public interface EclipseAndroidProject extends AndroidProject {
 
 	public IFile getPom();
 
+	void configureAssetsDirectory(String assetsDir);
+
 }

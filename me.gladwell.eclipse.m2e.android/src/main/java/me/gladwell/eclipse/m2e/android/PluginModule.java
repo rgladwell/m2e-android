@@ -17,6 +17,7 @@ import me.gladwell.eclipse.m2e.android.configuration.AndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ConvertLibraryProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.FixerProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.LibraryDependenciesProjectConfigurer;
+import me.gladwell.eclipse.m2e.android.configuration.LinkAssetsFolderConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.OrderBuildersProjectConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
@@ -58,14 +59,16 @@ public class PluginModule extends AbstractModule {
 	}
 
 	@Provides
-	List<ProjectConfigurer> provideProjectConfigurers(LibraryDependenciesProjectConfigurer configurer) {
+	List<ProjectConfigurer> provideProjectConfigurers(LibraryDependenciesProjectConfigurer libraryDependenciesProjectConfigurer, LinkAssetsFolderConfigurer linkAssetsFolderConfigurer) {
 		final List<ProjectConfigurer> projectConfigurers = new ArrayList<ProjectConfigurer>();
 
 		projectConfigurers.add(new FixerProjectConfigurer());
 		projectConfigurers.add(new AddAndroidNatureProjectConfigurer());
 		projectConfigurers.add(new OrderBuildersProjectConfigurer());
 		projectConfigurers.add(new ConvertLibraryProjectConfigurer());
-		projectConfigurers.add(configurer);
+		projectConfigurers.add(new ConvertLibraryProjectConfigurer());
+		projectConfigurers.add(libraryDependenciesProjectConfigurer);
+		projectConfigurers.add(linkAssetsFolderConfigurer);
 
 		return Collections.unmodifiableList(projectConfigurers);
 	}
