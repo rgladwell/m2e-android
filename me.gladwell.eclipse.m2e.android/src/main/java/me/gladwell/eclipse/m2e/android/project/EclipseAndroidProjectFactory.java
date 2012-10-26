@@ -10,11 +10,19 @@ package me.gladwell.eclipse.m2e.android.project;
 
 import org.eclipse.core.resources.IProject;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 
 public class EclipseAndroidProjectFactory implements AndroidProjectFactory<EclipseAndroidProject, IProject> {
 
+	@Inject
+	Injector injector;
+	
 	public EclipseAndroidProject createAndroidProject(IProject target) {
-		return new AdtEclipseAndroidProject(target);
+		EclipseAndroidProject project = new AdtEclipseAndroidProject(target);
+		injector.injectMembers(project);
+		return project;
 	}
 
 }

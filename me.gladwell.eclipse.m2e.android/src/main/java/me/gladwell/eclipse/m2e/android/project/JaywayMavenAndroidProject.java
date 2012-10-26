@@ -12,13 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	private static final String ANDROID_PACKAGE_TYPE = "apk";
 	static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
+	static final String DEFAULT_ASSETS_DIRECTORY = "assets";
 
 	private MavenProject mavenProject;
 
@@ -80,6 +83,33 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 		return StringUtils.equals(dependency.getName(), getName())
 				&& StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
 				&& StringUtils.equals(dependency.getVersion(), mavenProject.getVersion());
+	}
+	
+	public String getAssetsDirectory() {
+		Plugin jaywayAndroidPlugin = findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
+		Object configuration = jaywayAndroidPlugin.getConfiguration();
+		if (configuration instanceof Xpp3Dom) {
+			Xpp3Dom confDom = (Xpp3Dom) configuration;
+			Xpp3Dom assetsDirectoryDom = confDom.getChild("assetsDirectory");
+			if (assetsDirectoryDom != null) {
+				String assetsDirectory = assetsDirectoryDom.getValue();
+				if (assetsDirectory != null && !assetsDirectory.equals("")) {
+					return assetsDirectory;
+				}
+			}
+		}
+		return DEFAULT_ASSETS_DIRECTORY;
+	}
+	
+	public static Plugin findJaywayAndroidPlugin(List<Plugin> buildPlugins) {
+		for(Plugin plugin : buildPlugins) {
+			if("com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId()) &&
+					("android-maven-plugin".equals(plugin.getArtifactId()) ||
+							"maven-android-plugin".equals(plugin.getArtifactId()))) {
+				return plugin;
+			}
+		}
+		return null;
 	}
 
 }

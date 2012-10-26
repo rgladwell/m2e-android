@@ -14,9 +14,15 @@ import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
@@ -28,10 +34,14 @@ import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.android.io.StreamException;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
+import com.google.inject.Inject;
 
 public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidProject {
 
 	private IProject project;
+	
+	@Inject
+	IWorkspace workspace;
 
 	public String getName() {
 		return project.getName();
@@ -143,6 +153,28 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 
 	public File getPom() {
 		return this.project.getFile("pom.xml").getRawLocation().makeAbsolute().toFile();
+	}
+	
+	public void configureAssetsDirectory(String assetsDir){
+
+		System.out.println("AssetsDir: " + assetsDir);
+
+		if (assetsDir != null) {
+			IFolder link = project.getFolder("assets");
+			IPath location = new Path(assetsDir);
+
+			IStatus status = workspace.validateLinkLocation(link, location);
+			if (!status.matches(Status.ERROR)) {
+				try {
+					link.createLink(location, IResource.NONE, null);
+				} catch (CoreException e) {
+					throw new RuntimeException(e);
+				}
+			} else {
+				// invalid location, throw an exception or warn user
+				System.out.println("LinkDir not valid");
+			}
+		}
 	}
 
 }
