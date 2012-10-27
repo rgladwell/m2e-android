@@ -15,6 +15,7 @@ import java.util.List;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -155,25 +156,71 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 		return this.project.getFile("pom.xml").getRawLocation().makeAbsolute().toFile();
 	}
 	
-	public void configureAssetsDirectory(String assetsDir){
+	public void configureAssetsDirectory(String assetsDir) {
 
-		System.out.println("AssetsDir: " + assetsDir);
-
-		if (assetsDir != null) {
-			IFolder link = project.getFolder("assets");
-			IPath location = new Path(assetsDir);
-
-			IStatus status = workspace.validateLinkLocation(link, location);
-			if (!status.matches(Status.ERROR)) {
+		IFolder link = project.getFolder("assets");
+		
+		try {
+			if(link.exists())
+				link.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ONE);
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+		
+		if ("assets".equals(assetsDir)) {
+			if (link.exists() && link.isLinked()) {
 				try {
-					link.createLink(location, IResource.NONE, null);
+					link.delete(true, false, null);
 				} catch (CoreException e) {
 					throw new RuntimeException(e);
 				}
-			} else {
-				// invalid location, throw an exception or warn user
-				System.out.println("LinkDir not valid");
 			}
+			return;
+
+		}
+
+		
+
+		if (link.exists() && !link.isLinked()) {
+			try {
+				IMarker marker = link.createMarker(IMarker.PROBLEM);
+				marker.setAttribute(
+						IMarker.MESSAGE,
+						"The asset folder is a physical folder but the maven plugin has a different one configured: "
+								+ assetsDir);
+				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+				return;
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		System.out.println("AssetsDir: " + assetsDir + " - "
+				+ project.getFile(assetsDir).getFullPath());
+
+		IPath assetsPath = new Path(assetsDir);
+
+		if (!assetsPath.isAbsolute()) {
+			assetsPath = project.getRawLocation().append(assetsPath)
+					.makeAbsolute();
+		}
+
+		System.out.println("AssetsPath: " + assetsPath);
+
+		IStatus status = workspace.validateLinkLocation(link, assetsPath);
+		if (!status.matches(Status.ERROR)) {
+			try {
+				link.createLink(assetsPath, IResource.ALLOW_MISSING_LOCAL
+						| IResource.REPLACE, null);
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
+
+		} else {
+			// invalid location, throw an exception or warn user
+			System.out.println("LinkDir not valid");
 		}
 	}
 
