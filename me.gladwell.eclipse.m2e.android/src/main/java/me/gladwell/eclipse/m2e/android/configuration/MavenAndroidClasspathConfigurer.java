@@ -9,10 +9,10 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
 import java.io.File;
-import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 
+import org.apache.maven.project.MavenProject;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -22,8 +22,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
-import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
-import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
@@ -46,15 +44,13 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 		}
 	}
 
-	public void removeNonRuntimeDependencies(AndroidProject project, IClasspathDescriptor classpath) {
-		final List<String> providedDependencies = project.getProvidedDependencies();
-
-		classpath.removeEntry(new EntryFilter() {
-			public boolean accept(IClasspathEntryDescriptor descriptor) {
-				return providedDependencies.contains(descriptor.getPath().toOSString());
-			}
-		});
-	}
+    public void addCompilationOutputDirectoryToClasspath(MavenProject project, IClasspathDescriptor classpath) {
+		final String projectRoot = project.getBasedir().getAbsolutePath();
+		final Path outputDir = new Path(projectRoot + "/" + ANDROID_CLASSES_FOLDER);
+		if (!classpath.containsPath(outputDir)) {
+			classpath.addLibraryEntry(outputDir);
+		}
+    }
 
 	public void removeJreClasspathContainer(IClasspathDescriptor classpath) {
 		for(IClasspathEntry entry : classpath.getEntries()) {
