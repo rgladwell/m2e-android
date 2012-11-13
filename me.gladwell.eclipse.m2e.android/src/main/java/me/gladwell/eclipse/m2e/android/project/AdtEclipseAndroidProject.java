@@ -198,8 +198,6 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 
 		IPath assetsPath = new Path(assetsDir);
 
-		System.out.println("AssetsPath: " + assetsPath);
-
 		IStatus status = workspace.validateLinkLocation(link, assetsPath);
 		if (!status.matches(Status.ERROR)) {
 			try {
