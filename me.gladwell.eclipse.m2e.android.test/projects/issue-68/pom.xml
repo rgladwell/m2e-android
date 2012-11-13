@@ -10,6 +10,7 @@
     <modules>
       <module>android-relativeoutside</module>
       <module>android-internaldirassets</module>
+      <module>android-defaultassets</module>
     </modules>
 
     <properties>

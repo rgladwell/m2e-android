@@ -2,10 +2,11 @@ package me.gladwell.eclipse.m2e.android.test.issue68;
 
 import me.gladwell.eclipse.m2e.android.test.AndroidMavenPluginTestCase;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.m2e.core.project.ResolverConfiguration;
+import org.junit.Assert;
 
-public class OutsideProjectClasspath extends AndroidMavenPluginTestCase {
+public class DefaultAssetsTest extends AndroidMavenPluginTestCase {
 
 	
 	
@@ -18,9 +19,7 @@ public class OutsideProjectClasspath extends AndroidMavenPluginTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-//        IProject[] projects = importAndroidProjects(PROJECT_ROOT_FOLDER, new String[]{"pom.xml","android-app-parentassets/pom.xml"} );
-        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[]{"pom.xml","android-relativeoutside/pom.xml"} );
-        
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[]{"pom.xml","android-defaultassets/pom.xml"} );
         
         rootProject = projects[0];
         project = projects[1];
@@ -28,16 +27,18 @@ public class OutsideProjectClasspath extends AndroidMavenPluginTestCase {
 
     public void testAssetLinkExists() throws Exception {
     	assertNoErrors(project);
-    	assertLinkedFolderExists(project, "assets");
-    	assertFileExists(project,"assets/outsideassets.data");
+    	IFolder assetsDir = project.getFolder("assets");
+    	Assert.assertTrue(assetsDir.exists());
+    	Assert.assertFalse(assetsDir.isLinked());
+    	assertFileExists(project,"assets/defaultassets.data");
     }
     
    
     
     @Override
     protected void tearDown() throws Exception {
+    	deleteAndroidProject(project);
         deleteAndroidProject(rootProject);
-        deleteAndroidProject(project);
 
         project = null;
         rootProject = null;
