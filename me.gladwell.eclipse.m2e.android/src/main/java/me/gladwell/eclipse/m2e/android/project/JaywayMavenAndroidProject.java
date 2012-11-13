@@ -8,6 +8,8 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +88,23 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	}
 	
 	public String getAssetsDirectory() {
+		String configuredAssetsDirectory = getConfiguredAssetsDirectory();
+
+		File assetsDirectory = new File(configuredAssetsDirectory);
+		if (!assetsDirectory.isAbsolute()) {
+			assetsDirectory = new File(mavenProject.getBasedir(),
+					configuredAssetsDirectory);
+		}
+
+		try {
+			assetsDirectory = assetsDirectory.getCanonicalFile();
+		} catch (IOException e) {
+			System.out.println("Problem trying to make " + assetsDirectory + " a canonical path");
+		}
+		return assetsDirectory.getPath();
+	}
+
+	private String getConfiguredAssetsDirectory() {
 		Plugin jaywayAndroidPlugin = findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
 		Object configuration = jaywayAndroidPlugin.getConfiguration();
 		if (configuration instanceof Xpp3Dom) {

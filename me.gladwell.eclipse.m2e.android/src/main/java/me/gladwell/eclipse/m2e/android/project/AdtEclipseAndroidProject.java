@@ -167,7 +167,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 			throw new RuntimeException(e);
 		}
 		
-		if ("assets".equals(assetsDir)) {
+		if(link.getLocation().toFile().equals(new File(assetsDir))){
 			if (link.exists() && link.isLinked()) {
 				try {
 					link.delete(true, false, null);
@@ -176,10 +176,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 				}
 			}
 			return;
-
 		}
-
-		
 
 		if (link.exists() && !link.isLinked()) {
 			try {
@@ -196,16 +193,10 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 				throw new RuntimeException(e);
 			}
 		}
-
-		System.out.println("AssetsDir: " + assetsDir + " - "
-				+ project.getFile(assetsDir).getFullPath());
+		
+		System.out.println("AssetsDir: " + assetsDir);
 
 		IPath assetsPath = new Path(assetsDir);
-
-		if (!assetsPath.isAbsolute()) {
-			assetsPath = project.getRawLocation().append(assetsPath)
-					.makeAbsolute();
-		}
 
 		System.out.println("AssetsPath: " + assetsPath);
 
