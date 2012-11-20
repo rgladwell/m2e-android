@@ -1,10 +1,10 @@
 h1. Android Configurator
 
-The Android Configurator (*m2e-android*) is an Maven Integration for Eclipse (m2e) plug-in that adds maven support for Android Developer Tools (ADT) and the Maven Android Plugin. It brings the power of Maven dependency management into the ADT.
+The Android Configurator (*m2e-android*) is an Maven Integration for Eclipse (m2e) plug-in that adds Maven support for Android Developer Tools (ADT) and the Maven Android Plugin. It brings the power of Maven dependency management into the ADT.
 
 For instructions on how to get started using the m2e-android please see the "project web site.":http://rgladwell.github.com/m2e-android/
 
-_Copyright (c) 2009, 2010, 2011 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
+_Copyright (c) 2009, 2010, 2011, 2012 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
 *License:* "Eclipse Public License 1.0":http://www.eclipse.org/legal
 
 h2. Hacking
@@ -13,15 +13,14 @@ This section details how to set-up your environment to make code changes to the 
 
 h3. 1. Getting Started
 
-In addition to having Eclipse Indigo installed, you need to do the following steps:
+In addition to having Eclipse Juno installed, you need to do the following steps:
 
 # Install the "Android SDK.":http://developer.android.com/sdk/index.html
 # Create ANDROID_HOME environment variable containing the Android SDK install path. 
 # Ensure you have the latest update on the Android SDK (execute @android update sdk --no-ui --obsolete --force@) 
 # Install latest "Android Development Tools.":http://developer.android.com/sdk/eclipse-adt.html
 # Install "Eclipse Plug-in Development Environment.":http://www.eclipse.org/pde/
-# Add "SWTBot update site":http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/ to available software sites.
-# Install "M2E Plugin 1.0.0.":http://www.eclipse.org/m2e/download/
+# Install "M2E Plugin 1.2+.":http://www.eclipse.org/m2e/download/
 # Install "Maven 3":http://maven.apache.org/download.html for command line "Tycho":http://tycho.sonatype.org/ support.
 # Install "Egit":http://www.eclipse.org/egit/download/.
 # In Eclipse select Help -> Install new software... and go to the m2eclipse update site.
@@ -35,7 +34,7 @@ The m2e-android project is made up of six sub-modules: the parent POM project, t
 
 To clone them into your Eclipse workspace follow these steps: 
 
-# Clone the git repository from git://github.com/rgladwell/m2e-android.git into your local workspace.
+# Clone this git repository into your local workspace.
 # In Eclipse select _File_ -> _Import..._ in the menu and then select _Maven_ -> _Existing Maven Projects_.
 # Choose the parent folder you just cloned into your workspace (should be _m2e-android_), select all sub projects and click _Finish_
 # If you get a "Plugin exception not covered by lifecycle configuration" error in your POM click "Discover new m2e connectors" which should allow you to install the Tycho configurator.
