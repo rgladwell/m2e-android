@@ -8,6 +8,8 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import static java.io.File.separator;
+
 import java.io.File;
 import java.util.List;
 
@@ -29,7 +31,7 @@ import org.eclipse.m2e.jdt.IClasspathManager;
 public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigurer {
 
 	private static final String ANDROID_GEN_FOLDER = "gen";
-    public static final String ANDROID_CLASSES_FOLDER = "bin/classes";
+    public static final String ANDROID_CLASSES_FOLDER = "bin" + separator + "classes";
 
     public void addGenFolder(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
         IFolder gen = javaProject.getProject().getFolder(ANDROID_GEN_FOLDER + File.separator);
