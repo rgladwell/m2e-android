@@ -8,6 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static junit.framework.Assert.assertTrue;
+import junit.framework.Assert;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -18,7 +21,7 @@ import com.android.ide.eclipse.adt.AdtConstants;
 public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	private static final String SIMPLE_PROJECT_NAME = "simple-project";
-	static final String ISSUE_6_PROJECT_NAME = "issue-6";
+    private static final String MULTIMODULE_ROOT = "projects/issue-68";
 
 	public void testConfigureNonAndroidProject() throws Exception {
 		deleteProject(SIMPLE_PROJECT_NAME);
@@ -38,4 +41,49 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		IProject project = importAndroidProject("test-project-workspace-deps");
 		assertClasspathContains(JavaCore.create(project), SIMPLE_PROJECT_NAME);
 	}
+
+	public void testNonDefaultInternalAssetsFolderCompiles() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-internaldirassets/pom.xml" });
+        IProject rootProject = projects[0];
+        IProject project = projects[1];
+
+        assertNoErrors(project);
+
+        deleteAndroidProject(project);
+        deleteAndroidProject(rootProject);
+    }
+
+    public void testNonDefaultInternalAssetsLinkCreated() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-internaldirassets/pom.xml" });
+        IProject rootProject = projects[0];
+        IProject project = projects[1];
+
+        assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
+
+        deleteAndroidProject(project);
+        deleteAndroidProject(rootProject);
+    }
+
+    public void testNonDefaultExternalAssetsFolderCompiles() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-relativeoutside/pom.xml" });
+        IProject rootProject = projects[0];
+        IProject project = projects[1];
+
+        assertNoErrors(project);
+
+        deleteAndroidProject(project);
+        deleteAndroidProject(rootProject);
+    }
+
+    public void testNonDefaultExternalAssetsLinkCreated() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-relativeoutside/pom.xml" });
+        IProject rootProject = projects[0];
+        IProject project = projects[1];
+
+        assertTrue("external assets folder isn't linked", project.getFolder("assets").isLinked());
+
+        deleteAndroidProject(project);
+        deleteAndroidProject(rootProject);
+    }
+
 }

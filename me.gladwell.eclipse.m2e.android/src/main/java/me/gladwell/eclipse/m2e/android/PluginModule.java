@@ -59,7 +59,7 @@ public class PluginModule extends AbstractModule {
 	}
 
 	@Provides
-	List<ProjectConfigurer> provideProjectConfigurers(LibraryDependenciesProjectConfigurer libraryDependenciesProjectConfigurer, LinkAssetsFolderConfigurer linkAssetsFolderConfigurer) {
+	List<ProjectConfigurer> provideProjectConfigurers(LibraryDependenciesProjectConfigurer configurer) {
 		final List<ProjectConfigurer> projectConfigurers = new ArrayList<ProjectConfigurer>();
 
 		projectConfigurers.add(new FixerProjectConfigurer());
@@ -67,8 +67,8 @@ public class PluginModule extends AbstractModule {
 		projectConfigurers.add(new OrderBuildersProjectConfigurer());
 		projectConfigurers.add(new ConvertLibraryProjectConfigurer());
 		projectConfigurers.add(new ConvertLibraryProjectConfigurer());
-		projectConfigurers.add(libraryDependenciesProjectConfigurer);
-		projectConfigurers.add(linkAssetsFolderConfigurer);
+		projectConfigurers.add(configurer);
+		projectConfigurers.add(new LinkAssetsFolderConfigurer());
 
 		return Collections.unmodifiableList(projectConfigurers);
 	}

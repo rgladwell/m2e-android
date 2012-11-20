@@ -9,19 +9,22 @@
 package me.gladwell.eclipse.m2e.android.project;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-
 
 public class EclipseAndroidProjectFactory implements AndroidProjectFactory<EclipseAndroidProject, IProject> {
 
-	@Inject
-	Injector injector;
-	
-	public EclipseAndroidProject createAndroidProject(IProject target) {
-		EclipseAndroidProject project = new AdtEclipseAndroidProject(target);
-		injector.injectMembers(project);
+	private final IWorkspace workspace;
+
+    @Inject
+	public EclipseAndroidProjectFactory(IWorkspace workspace) {
+        super();
+        this.workspace = workspace;
+    }
+
+    public EclipseAndroidProject createAndroidProject(IProject target) {
+		EclipseAndroidProject project = new AdtEclipseAndroidProject(workspace, target);
 		return project;
 	}
 

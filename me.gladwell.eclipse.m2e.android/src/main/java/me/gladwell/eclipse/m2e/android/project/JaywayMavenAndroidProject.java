@@ -8,8 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import static org.codehaus.plexus.util.StringUtils.isEmpty;
+
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,9 +26,15 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
 	static final String DEFAULT_ASSETS_DIRECTORY = "assets";
 
-	private MavenProject mavenProject;
+	private final MavenProject mavenProject;
+    private final Plugin jaywayPlugin;
 
-	public String getName() {
+    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin) {
+        this.mavenProject = mavenProject;
+        this.jaywayPlugin = jaywayPlugin;
+    }
+
+    public String getName() {
 		return mavenProject.getArtifactId();
 	}
 
@@ -37,10 +44,6 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	public String getVersion() {
 		return mavenProject.getVersion();
-	}
-
-	public JaywayMavenAndroidProject(MavenProject mavenProject) {
-		this.mavenProject = mavenProject;
 	}
 
 	public boolean isAndroidProject() {
@@ -86,49 +89,31 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 				&& StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
 				&& StringUtils.equals(dependency.getVersion(), mavenProject.getVersion());
 	}
-	
-	public String getAssetsDirectory() {
+
+	public File getAssetsDirectory() {
 		String configuredAssetsDirectory = getConfiguredAssetsDirectory();
-
 		File assetsDirectory = new File(configuredAssetsDirectory);
+
 		if (!assetsDirectory.isAbsolute()) {
-			assetsDirectory = new File(mavenProject.getBasedir(),
-					configuredAssetsDirectory);
+			assetsDirectory = new File(mavenProject.getBasedir(), configuredAssetsDirectory);
 		}
 
-		try {
-			assetsDirectory = assetsDirectory.getCanonicalFile();
-		} catch (IOException e) {
-			System.out.println("Problem trying to make " + assetsDirectory + " a canonical path");
-		}
-		return assetsDirectory.getPath();
+		return assetsDirectory;
 	}
 
 	private String getConfiguredAssetsDirectory() {
-		Plugin jaywayAndroidPlugin = findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
-		Object configuration = jaywayAndroidPlugin.getConfiguration();
+		Object configuration = jaywayPlugin.getConfiguration();
 		if (configuration instanceof Xpp3Dom) {
 			Xpp3Dom confDom = (Xpp3Dom) configuration;
 			Xpp3Dom assetsDirectoryDom = confDom.getChild("assetsDirectory");
 			if (assetsDirectoryDom != null) {
 				String assetsDirectory = assetsDirectoryDom.getValue();
-				if (assetsDirectory != null && !assetsDirectory.equals("")) {
+				if (!isEmpty(assetsDirectory)) {
 					return assetsDirectory;
 				}
 			}
 		}
 		return DEFAULT_ASSETS_DIRECTORY;
-	}
-	
-	public static Plugin findJaywayAndroidPlugin(List<Plugin> buildPlugins) {
-		for(Plugin plugin : buildPlugins) {
-			if("com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId()) &&
-					("android-maven-plugin".equals(plugin.getArtifactId()) ||
-							"maven-android-plugin".equals(plugin.getArtifactId()))) {
-				return plugin;
-			}
-		}
-		return null;
 	}
 
 }

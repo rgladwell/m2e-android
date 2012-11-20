@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -31,6 +32,6 @@ public interface EclipseAndroidProject extends AndroidProject {
 
 	public IFile getPom();
 
-	void configureAssetsDirectory(String assetsDir);
+	void setAssetsDirectory(File file);
 
 }

@@ -15,7 +15,6 @@ import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationExcepti
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
@@ -35,20 +34,19 @@ import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.android.io.StreamException;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
-import com.google.inject.Inject;
 
 public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidProject {
 
 	private IProject project;
-	
-	@Inject
-	IWorkspace workspace;
+
+	private final IWorkspace workspace;
 
 	public String getName() {
 		return project.getName();
 	}
 
-	public AdtEclipseAndroidProject(IProject project) {
+	public AdtEclipseAndroidProject(IWorkspace workspace, IProject project) {
+	    this.workspace = workspace;
 		this.project = project;
 	}
 
@@ -153,11 +151,10 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	}
 
 	public IFile getPom() {
-		return this.project.getFile("pom.xml");
+		return project.getFile("pom.xml");
 	}
-	
-	public void configureAssetsDirectory(String assetsDir) {
 
+	public void setAssetsDirectory(File assets) {
 		IFolder link = project.getFolder("assets");
 		
 		try {
@@ -167,7 +164,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 			throw new RuntimeException(e);
 		}
 		
-		if(link.getLocation().toFile().equals(new File(assetsDir))){
+		if(link.getLocation().toFile().equals(assets)){
 			if (link.exists() && link.isLinked()) {
 				try {
 					link.delete(true, false, null);
@@ -184,7 +181,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 				marker.setAttribute(
 						IMarker.MESSAGE,
 						"The asset folder is a physical folder but the maven plugin has a different one configured: "
-								+ assetsDir);
+								+ assets);
 				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
 				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
 				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
@@ -194,9 +191,9 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 			}
 		}
 		
-		System.out.println("AssetsDir: " + assetsDir);
+		System.out.println("AssetsDir: " + assets);
 
-		IPath assetsPath = new Path(assetsDir);
+		IPath assetsPath = new Path(assets.getPath());
 
 		IStatus status = workspace.validateLinkLocation(link, assetsPath);
 		if (!status.matches(Status.ERROR)) {

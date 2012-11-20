@@ -9,8 +9,7 @@
     <name>my-android-application</name>
 
     <properties>
-        <platform.version> 2.3.3
-            </platform.version>
+        <platform.version>2.3.3</platform.version>
     </properties>
 
     <dependencies>

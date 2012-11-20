@@ -12,8 +12,6 @@ import static me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspat
 
 import java.io.File;
 
-import me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer;
-
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
@@ -37,7 +35,11 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	private IProject project;
 	private IJavaProject javaProject;
 
-	@Override
+    protected String getAndroidProjectName() {
+        return "android-application";
+    }
+
+    @Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
@@ -139,7 +141,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         assertFalse(androidContainer.isExported());
     }
 
-	protected String getAndroidProjectName() {
-		return "android-application";
-	}
+    public void testDoesNotLinkAssetFolder() throws Exception {
+        assertFalse("default assets folder is linked", project.getFolder("assets").isLinked());
+    }
+
 }

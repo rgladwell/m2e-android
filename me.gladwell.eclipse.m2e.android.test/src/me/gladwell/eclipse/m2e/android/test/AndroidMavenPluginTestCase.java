@@ -161,7 +161,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		waitForAdtToLoad();
 		return projects;
     }
-    
 
     protected void deleteAndroidProject(String name) {
         try {
@@ -277,20 +276,5 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         temp.mkdirs();
         return temp;
     }
-
-	public void assertLinkedFolderExists(IProject project, String path)
-			throws Exception {
-		IFolder folder = project.getFolder(path);
-		Assert.assertTrue("The folder " + path + " doesn't exist",
-				folder.exists());
-		Assert.assertTrue("The folder " + path + " Isn't a link",
-				folder.isLinked());
-	}
-
-	public void assertFileExists(IProject project, String path)
-			throws Exception {
-		IFile file = project.getFile(path);
-		Assert.assertTrue("The file " + path + " doesn't exist", file.exists());
-	}
 
 }
