@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -156,57 +157,19 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 
 	public void setAssetsDirectory(File assets) {
 		IFolder link = project.getFolder("assets");
-		
-		try {
-			if(link.exists())
-				link.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ONE);
-		} catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
-		
-		if(link.getLocation().toFile().equals(assets)){
-			if (link.exists() && link.isLinked()) {
-				try {
-					link.delete(true, false, null);
-				} catch (CoreException e) {
-					throw new RuntimeException(e);
-				}
-			}
-			return;
-		}
-
-		if (link.exists() && !link.isLinked()) {
-			try {
-				IMarker marker = link.createMarker(IMarker.PROBLEM);
-				marker.setAttribute(
-						IMarker.MESSAGE,
-						"The asset folder is a physical folder but the maven plugin has a different one configured: "
-								+ assets);
-				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
-				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
-				return;
-			} catch (CoreException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		
-		System.out.println("AssetsDir: " + assets);
 
 		IPath assetsPath = new Path(assets.getPath());
 
 		IStatus status = workspace.validateLinkLocation(link, assetsPath);
 		if (!status.matches(Status.ERROR)) {
 			try {
-				link.createLink(assetsPath, IResource.ALLOW_MISSING_LOCAL
-						| IResource.REPLACE, null);
+				link.createLink(assetsPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
 			} catch (CoreException e) {
-				throw new RuntimeException(e);
+				throw new ProjectConfigurationException(e);
 			}
 
 		} else {
-			// invalid location, throw an exception or warn user
-			System.out.println("LinkDir not valid");
+		    throw new ProjectConfigurationException("invalid location for link=[" + link + "]");
 		}
 	}
 
