@@ -58,6 +58,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IProject rootProject = projects[0];
         IProject project = projects[1];
 
+        // TODO insufficient test, should verify linked location
         assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
 
         deleteAndroidProject(project);
@@ -80,6 +81,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IProject rootProject = projects[0];
         IProject project = projects[1];
 
+        // TODO insufficient test, should verify linked location
         assertTrue("external assets folder isn't linked", project.getFolder("assets").isLinked());
 
         deleteAndroidProject(project);

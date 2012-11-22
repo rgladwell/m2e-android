@@ -38,7 +38,7 @@ import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
 
 public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidProject {
 
-	private IProject project;
+    private IProject project;
 
 	private final IWorkspace workspace;
 
@@ -156,20 +156,23 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	}
 
 	public void setAssetsDirectory(File assets) {
-		IFolder link = project.getFolder("assets");
+		IFolder link = project.getFolder(AdtConstants.WS_ASSETS);
 
-		IPath assetsPath = new Path(assets.getPath());
+		if(!link.getLocation().toFile().equals(assets)){
+    		IPath assetsPath = new Path(assets.getPath());
+    
+    		IStatus status = workspace.validateLinkLocation(link, assetsPath);
+    		if (!status.matches(Status.ERROR)) {
 
-		IStatus status = workspace.validateLinkLocation(link, assetsPath);
-		if (!status.matches(Status.ERROR)) {
-			try {
-				link.createLink(assetsPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
-			} catch (CoreException e) {
-				throw new ProjectConfigurationException(e);
-			}
-
-		} else {
-		    throw new ProjectConfigurationException("invalid location for link=[" + link + "]");
+    		    try {
+    				link.createLink(assetsPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
+    			} catch (CoreException e) {
+    				throw new ProjectConfigurationException(e);
+    			}
+    
+    		} else {
+    		    throw new ProjectConfigurationException("invalid location for link=[" + link + "]");
+    		}
 		}
 	}
 

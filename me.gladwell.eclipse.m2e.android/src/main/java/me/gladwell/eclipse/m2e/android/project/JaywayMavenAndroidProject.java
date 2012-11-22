@@ -24,7 +24,6 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	private static final String ANDROID_PACKAGE_TYPE = "apk";
 	static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
-	static final String DEFAULT_ASSETS_DIRECTORY = "assets";
 
 	private final MavenProject mavenProject;
     private final Plugin jaywayPlugin;
@@ -92,6 +91,7 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	public File getAssetsDirectory() {
 		String configuredAssetsDirectory = getConfiguredAssetsDirectory();
+		if(configuredAssetsDirectory == null) return null;
 		File assetsDirectory = new File(configuredAssetsDirectory);
 
 		if (!assetsDirectory.isAbsolute()) {
@@ -113,7 +113,7 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 				}
 			}
 		}
-		return DEFAULT_ASSETS_DIRECTORY;
+		return null;
 	}
 
 }
