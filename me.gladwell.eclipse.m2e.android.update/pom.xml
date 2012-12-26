@@ -11,6 +11,19 @@
 	<artifactId>me.gladwell.eclipse.m2e.android.update</artifactId>
 	<name>Android Configurator for M2E Repository</name>
 	<packaging>eclipse-repository</packaging>
+	<properties>
+    		<github.global.server>github</github.global.server>
+<!--
+   We are using a github.global.server, to be able to authenticate against github during publishing of the site.
+   That means, we have to configure in ~/.m2/settings.xml, the following info :
+   <server>
+    <id>github</id>
+    <username></username>
+    <password>An OAuth token generated following the instructions at : http://developer.github.com/v3/oauth/</password>
+  </server>
+-->
+    		<github-site-plugin-version>0.7</github-site-plugin-version>
+  	</properties>
 	<profiles>
 		<profile>
 			<id>release</id>
@@ -24,7 +37,7 @@
 					<plugin>
 						<groupId>com.github.github</groupId>
 						<artifactId>site-maven-plugin</artifactId>
-						<version>0.3</version>
+						<version>${github-site-plugin-version}</version>
 						<configuration>
 							<message>Updating release update site for ${project.version}</message>
 							<outputDirectory>${project.build.directory}/repository</outputDirectory>
@@ -41,7 +54,7 @@
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.3</version>
+				<version>${github-site-plugin-version}</version>
 				<configuration>
 					<message>Updating master/snapshot update site for ${project.version}</message>
 					<outputDirectory>${project.build.directory}/repository</outputDirectory>
