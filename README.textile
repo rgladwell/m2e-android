@@ -1,50 +1,17 @@
-h1. Android Configurator
+h1. do you see "Un-recognised maven project type"?
 
-The Android Configurator (*m2e-android*) is an Maven Integration for Eclipse (m2e) plug-in that adds Maven support for Android Developer Tools (ADT) and the Maven Android Plugin. It brings the power of Maven dependency management into the ADT.
+this is a proposal for "issue#127 of m2e-android project":https://github.com/rgladwell/m2e-android/issues/127
+the issue occurs when:
 
-For instructions on how to get started using the m2e-android please see the "project web site.":http://rgladwell.github.com/m2e-android/
+* a maven project is structured in "multi-module":http://www.sonatype.com/books/mvnex-book/reference/multimodule.html
+* any module of the project has one or more apklib type project as a dependency
 
-_Copyright (c) 2009, 2010, 2011, 2012 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
-*License:* "Eclipse Public License 1.0":http://www.eclipse.org/legal
+h1. Installation
 
-h2. Hacking
-
-This section details how to set-up your environment to make code changes to the *Android Configurator* code base.
-
-h3. 1. Getting Started
-
-In addition to having Eclipse Juno installed, you need to do the following steps:
-
-# Install the "Android SDK.":http://developer.android.com/sdk/index.html
-# Create ANDROID_HOME environment variable containing the Android SDK install path. 
-# Ensure you have the latest update on the Android SDK (execute @android update sdk --no-ui --obsolete --force@) 
-# Install latest "Android Development Tools.":http://developer.android.com/sdk/eclipse-adt.html
-# Install "Eclipse Plug-in Development Environment.":http://www.eclipse.org/pde/
-# Install "M2E Plugin 1.2+.":http://www.eclipse.org/m2e/download/
-# Install "Maven 3":http://maven.apache.org/download.html for command line "Tycho":http://tycho.sonatype.org/ support.
-# Install "Egit":http://www.eclipse.org/egit/download/.
-# In Eclipse select Help -> Install new software... and go to the m2eclipse update site.
-# Un-check the "Group items by category" check box.
-# You should now see the "m2e - Extensions Development Support (Optional)" plugin.
-# Select, install and restart Eclipse.
-
-h3. 2. Import Projects
-
-The m2e-android project is made up of six sub-modules: the parent POM project, the core plugin, a test suite, an Android tools plugin, the feature project and an update site project.
-
-To clone them into your Eclipse workspace follow these steps: 
-
-# Clone this git repository into your local workspace.
-# In Eclipse select _File_ -> _Import..._ in the menu and then select _Maven_ -> _Existing Maven Projects_.
-# Choose the parent folder you just cloned into your workspace (should be _m2e-android_), select all sub projects and click _Finish_
-# If you get a "Plugin exception not covered by lifecycle configuration" error in your POM click "Discover new m2e connectors" which should allow you to install the Tycho configurator.
-# Mark all new projects in the _Package Explorer_ and right-click on them to select _Team_ -> _Share Project_.
-# Select _Git_ and click _Next_.
-# Check the _Use or create Repository in parent folder of project_ and click _Finish_.
-
-h3. Further reading
-
-For more information on developing the m2e-android plug-in please see the following wiki pages:
-
-* "Testing":https://github.com/rgladwell/m2e-android/wiki/Testing
-* "Guidelines":https://github.com/rgladwell/m2e-android/wiki/Guidelines
+# Uninstall existing m2e-connector (About>Installation Details)
+!https://lh5.googleusercontent.com/-ARGhBlgDG-8/UThJTPvcnII/AAAAAAAA0qI/QIgBHipcp50/s637/photo.jpg!
+# exit Eclipse
+# put both "plugin and feature JARs":https://docs.google.com/folder/d/0B9pSd2goVCGWR29MS3RFRDVvS0U/edit?usp=sharing to $ECLIPSE_HOME/dropins
+# start Eclipse
+# check the plugin version (should start with 4.0.3.201303)
+!https://lh6.googleusercontent.com/-T5Rj9-Z2RQc/UThK0iOVohI/AAAAAAAA0qg/gwpB_kL2wcU/s637/ADT+Installation+Details+_020.png!
