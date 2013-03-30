@@ -12,6 +12,7 @@ import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationExcepti
 
 import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 
@@ -35,14 +36,13 @@ public class MavenToEclipseAndroidProjectConverter implements AndroidProjectFact
 	}
 
 	public MavenAndroidProject createAndroidProject(EclipseAndroidProject androidProject) {
-		Model model;
 		try {
-			model = mavenModelManager.readMavenModel(androidProject.getPom());
+			IFile iPomFile = androidProject.getProject().getFile("pom.xml");
+			MavenProject project = mavenModelManager.readMavenProject(iPomFile, null);
+			return mavenProjectFactory.createAndroidProject(project);
 		} catch (CoreException e) {
 			throw new ProjectConfigurationException(e);
 		}
-		MavenProject project = new MavenProject(model);
-		return mavenProjectFactory.createAndroidProject(project);
 	}
 
 }
