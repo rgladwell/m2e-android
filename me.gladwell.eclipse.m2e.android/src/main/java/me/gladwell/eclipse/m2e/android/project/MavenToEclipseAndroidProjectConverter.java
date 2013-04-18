@@ -10,7 +10,6 @@ package me.gladwell.eclipse.m2e.android.project;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
-import org.apache.maven.model.Model;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
@@ -30,18 +29,17 @@ public class MavenToEclipseAndroidProjectConverter implements AndroidProjectFact
 			MavenModelManager mavenModelManager
 	) {
 		super();
-		this.mavenProjectFactory = mavenProjectFactory;
+		this.mavenProjectFactory = mavenProjectFactory;	
 		this.mavenModelManager = mavenModelManager;
 	}
 
 	public MavenAndroidProject createAndroidProject(EclipseAndroidProject androidProject) {
-		Model model;
+		MavenProject project;
 		try {
-			model = mavenModelManager.readMavenModel(androidProject.getPom());
+			project = mavenModelManager.readMavenProject(androidProject.getPom(), null);
 		} catch (CoreException e) {
 			throw new ProjectConfigurationException(e);
 		}
-		MavenProject project = new MavenProject(model);
 		return mavenProjectFactory.createAndroidProject(project);
 	}
 

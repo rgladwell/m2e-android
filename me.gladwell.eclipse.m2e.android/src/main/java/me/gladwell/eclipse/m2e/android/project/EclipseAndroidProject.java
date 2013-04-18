@@ -8,9 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import java.io.File;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 
 public interface EclipseAndroidProject extends AndroidProject {
@@ -29,6 +29,6 @@ public interface EclipseAndroidProject extends AndroidProject {
 
 	public boolean isMavenised();
 
-	public File getPom();
+	public IFile getPom();
 
 }
