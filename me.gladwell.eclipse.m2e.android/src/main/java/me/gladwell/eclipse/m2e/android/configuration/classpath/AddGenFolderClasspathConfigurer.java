@@ -8,8 +8,11 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
+import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.ANDROID_GEN_FOLDER;
+
 import java.io.File;
 
+import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
@@ -19,8 +22,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 public class AddGenFolderClasspathConfigurer implements ClasspathConfigurer {
-
-    private static final String ANDROID_GEN_FOLDER = "gen";
 
     public boolean shouldApplyTo(MavenAndroidProject project) {
         return true;
@@ -36,7 +37,7 @@ public class AddGenFolderClasspathConfigurer implements ClasspathConfigurer {
             }
         }
 
-        eclipseProject.getClasspath().addSourceEntry(ANDROID_GEN_FOLDER);
+        eclipseProject.getClasspath().addSourceEntry(AndroidMavenPlugin.ANDROID_GEN_FOLDER);
     }
 
 }

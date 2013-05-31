@@ -35,6 +35,7 @@ public class ClasspathModule extends AbstractModule {
         classpathConfigurers.add(new RemoveJREClasspathContainerConfigurer());
         classpathConfigurers.add(new MarkMavenClasspathContianerExportedConfigurer());
         classpathConfigurers.add(new MarkAndroidClasspathContainerNotExportedConfigurer());
+        classpathConfigurers.add(new IgnoreOptionalWarningsConfigurer());
 
         return Collections.unmodifiableList(classpathConfigurers);
     }

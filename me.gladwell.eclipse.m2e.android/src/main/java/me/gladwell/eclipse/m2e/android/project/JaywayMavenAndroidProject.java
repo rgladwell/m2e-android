@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import static java.lang.Boolean.parseBoolean;
 import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
 import java.io.File;
@@ -28,7 +29,8 @@ import org.sonatype.aether.RepositorySystemSession;
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	private static final String ANDROID_PACKAGE_TYPE = "apk";
-	static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
+	        static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
+    private static final String IGNORE_WARNING_CONFIGURATION_NAME = "ignoreOptionalWarningsInGenFolder";
 
 	private final MavenProject mavenProject;
     private final Plugin jaywayPlugin;
@@ -139,19 +141,27 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	}
 
 	private String getConfiguredAssetsDirectory() {
-		Object configuration = jaywayPlugin.getConfiguration();
-		if (configuration instanceof Xpp3Dom) {
-			Xpp3Dom confDom = (Xpp3Dom) configuration;
-			Xpp3Dom assetsDirectoryDom = confDom.getChild("assetsDirectory");
-			if (assetsDirectoryDom != null) {
-				String assetsDirectory = assetsDirectoryDom.getValue();
-				if (!isEmpty(assetsDirectory)) {
-					return assetsDirectory;
-				}
-			}
-		}
-		return null;
+		return getConfigurationParameter("assetsDirectory");
 	}
+
+    public boolean isIgnoreOptionalWarningsInGenFolder() {
+        return parseBoolean(getConfigurationParameter(IGNORE_WARNING_CONFIGURATION_NAME));
+    }
+
+    private String getConfigurationParameter(String name) {
+        Object configuration = jaywayPlugin.getConfiguration();
+        if (configuration instanceof Xpp3Dom) {
+            Xpp3Dom confDom = (Xpp3Dom) configuration;
+            Xpp3Dom assetsDirectoryDom = confDom.getChild(name);
+            if (assetsDirectoryDom != null) {
+                String assetsDirectory = assetsDirectoryDom.getValue();
+                if (!isEmpty(assetsDirectory)) {
+                    return assetsDirectory;
+                }
+            }
+        }
+        return null;
+    }
 
     public List<String> getSourcePaths() {
         return mavenProject.getCompileSourceRoots();

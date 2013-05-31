@@ -8,6 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathSourceEntry;
+import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -67,6 +70,13 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
         // TODO insufficient test, should verify linked location
         assertTrue("external assets folder isn't linked", project.getFolder("assets").isLinked());
+    }
+
+    public void testConfigureSetsIgnoreWarningsForGenFolder() throws Exception {
+        IJavaProject project = JavaCore.create(importAndroidProject("ignore-gen-warnings"));
+        IClasspathEntry gen = findClasspathSourceEntry(project.getRawClasspath(), "gen");
+
+        assertTrue("external assets folder isn't linked", booleanAttribute(IGNORE_OPTIONAL_PROBLEMS, gen));
     }
 
 }

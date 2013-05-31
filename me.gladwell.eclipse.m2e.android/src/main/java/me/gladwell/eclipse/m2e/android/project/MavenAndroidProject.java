@@ -35,4 +35,6 @@ public interface MavenAndroidProject {
 
     public List<String> getSourcePaths();
 
+    public boolean isIgnoreOptionalWarningsInGenFolder();
+
 }

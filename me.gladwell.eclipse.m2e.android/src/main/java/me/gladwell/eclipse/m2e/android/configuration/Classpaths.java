@@ -12,6 +12,7 @@ import static com.google.common.base.Predicates.and;
 
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
+import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
 import com.google.common.base.Predicate;
 
@@ -36,10 +37,10 @@ public class Classpaths {
         });
     }
 
-    public static IClasspathEntry findClasspathEntry(IClasspathEntry[] classpath, final String path) {
+    public static IClasspathEntry findClasspathSourceEntry(IClasspathEntry[] classpath, final String path) {
         return matchClasspathEntry(classpath, and(classpathEntryOfType(IClasspathEntry.CPE_SOURCE), new Predicate<IClasspathEntry>() {
             public boolean apply(IClasspathEntry entry) {
-                return entry.getPath().toOSString().endsWith(path) && entry.getOutputLocation() != null;
+                return entry.getPath().toOSString().endsWith(path);
             }
         }));
     }
@@ -64,4 +65,14 @@ public class Classpaths {
         }
         return null;
     }
+
+    public static IClasspathEntryDescriptor findClasspathSourceEntryDescriptor(IClasspathDescriptor classpath, String path) {
+        for(IClasspathEntryDescriptor entry : classpath.getEntryDescriptors()) {
+            if(entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toString().endsWith(path)) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
 }

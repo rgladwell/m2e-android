@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -240,6 +241,15 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         temp.delete();
         temp.mkdirs();
         return temp;
+    }
+
+    static boolean booleanAttribute(String attributeName, IClasspathEntry entry) {
+        for(IClasspathAttribute attribute : entry.getExtraAttributes()) {
+            if(attribute.getName().equals(attributeName) && attribute.getValue().equals("true")) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

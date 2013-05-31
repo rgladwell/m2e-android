@@ -9,9 +9,10 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static java.io.File.separator;
+import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
 import static org.junit.Assert.assertThat;
-import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathEntry;
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathSourceEntry;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
 
 import java.io.File;
@@ -132,12 +133,12 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
     public void testConfigureSetsCorrectSourceOutputFolder() throws Exception {
-        IClasspathEntry entry = findClasspathEntry(javaProject.getRawClasspath(), "src/main/java");
+        IClasspathEntry entry = findClasspathSourceEntry(javaProject.getRawClasspath(), "src/main/java");
         assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
     }
 
     public void testConfigureSetsCorrectTestOutputFolder() throws Exception {
-        IClasspathEntry entry = findClasspathEntry(javaProject.getRawClasspath(), "src/test/java");
+        IClasspathEntry entry = findClasspathSourceEntry(javaProject.getRawClasspath(), "src/test/java");
         assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_TEST_CLASSES_FOLDER));
     }
 
@@ -230,4 +231,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         assertThat(resolvedClasspath, containsEntry("bin/classes"));
     }
 
+    public void testConfigureDoesNotSetIgnoreWarnings() throws Exception {
+        IClasspathEntry gen = findClasspathSourceEntry(javaProject.getRawClasspath(), "gen");
+        assertFalse("external assets folder isn't linked", booleanAttribute(IGNORE_OPTIONAL_PROBLEMS, gen));
+    }
 }

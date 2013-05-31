@@ -24,4 +24,6 @@ public interface Classpath {
 
     void markNotExported(String path);
 
+    SourceEntry getSourceEntry(String path);
+
 }

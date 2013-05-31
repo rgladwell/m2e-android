@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathSourceEntryDescriptor;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findContainerContaining;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findContainerMatching;
 import static org.eclipse.jdt.core.JavaCore.newContainerEntry;
@@ -28,6 +29,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
+import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
 public class MavenEclipseClasspath implements Classpath {
 
@@ -42,7 +44,7 @@ public class MavenEclipseClasspath implements Classpath {
 
     public Iterable<SourceEntry> getSourceEntries() {
         List<SourceEntry> entries = new ArrayList<SourceEntry>();
-        for(IClasspathEntry entry : classpath.getEntries()) {
+        for(IClasspathEntryDescriptor entry : classpath.getEntryDescriptors()) {
             if(entry.getOutputLocation() != null && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
                 entries.add(new EclipseSourceEntry(project, classpath, entry));
             }
@@ -97,6 +99,10 @@ public class MavenEclipseClasspath implements Classpath {
         } else {
             // TODO log warning here
         }
+    }
+
+    public SourceEntry getSourceEntry(String path) {
+        return new EclipseSourceEntry(project, classpath, findClasspathSourceEntryDescriptor(classpath, path));
     }
 
 }
