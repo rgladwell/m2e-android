@@ -237,7 +237,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     			}
 			}
 		}
-		return null;
+		throw new RuntimeException("classpath container=[" + id + "] not found");
 	}
 
 	protected void assertErrorMarker(IProject project, String type) throws CoreException {
