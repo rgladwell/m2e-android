@@ -4,8 +4,8 @@ before_install:
   - tar -zxf android-sdk_r21.0.1-linux.tgz
   - export ANDROID_HOME=~/builds/square/otto/android-sdk-linux
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-  - android update sdk --no-ui --force
   - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch
+  - android update sdk --no-ui --force
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 install: /bin/true # install is handled by Maven itself
