@@ -32,8 +32,13 @@
 		<url>https://gladwell.me/</url>
 	</organization>
 	<properties>
+<<<<<<< HEAD
 		<tycho-version>0.18.0</tycho-version>
 		<target.platform>juno</target.platform>
+=======
+		<tycho-version>0.13.0</tycho-version>
+		<target.platform>indigo</target.platform>
+>>>>>>> 6e2890f55e9e7217c72605b758f3dc0bed18c691
 	</properties>
 	<modules>
 		<module>me.gladwell.eclipse.m2e.android</module>
