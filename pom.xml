@@ -33,7 +33,7 @@
 	</organization>
 	<properties>
 		<tycho-version>0.18.0</tycho-version>
-		<target.platform>indigo</target.platform>
+		<target.platform>juno</target.platform>
 	</properties>
 	<modules>
 		<module>me.gladwell.eclipse.m2e.android</module>
@@ -107,9 +107,9 @@
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>indigo.target</file>
+									<file>juno.target</file>
 									<type>target</type>
-									<classifier>indigo</classifier>
+									<classifier>juno</classifier>
 								</artifact>
 							</artifacts>
 						</configuration>
