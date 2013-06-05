@@ -19,6 +19,8 @@ import junit.framework.Assert;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.apache.maven.model.Model;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -152,10 +154,26 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
         return projects[0];
     }
+    
+    public IProject[] importAndroidProjects(String basedir, String[] pomNames) throws Exception{
+    	IProject[] projects = importProjects(basedir, pomNames, new ResolverConfiguration());
+    	waitForAndroidJobsToComplete();
+		waitForAdtToLoad();
+		return projects;
+    }
+    
 
     protected void deleteAndroidProject(String name) {
         try {
             deleteProject(name);
+        } catch(Throwable t) {
+            t.printStackTrace();
+        }
+    }
+    
+    protected void deleteAndroidProject(IProject project) {
+        try {
+            deleteProject(project);
         } catch(Throwable t) {
             t.printStackTrace();
         }
@@ -259,5 +277,20 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         temp.mkdirs();
         return temp;
     }
+
+	public void assertLinkedFolderExists(IProject project, String path)
+			throws Exception {
+		IFolder folder = project.getFolder(path);
+		Assert.assertTrue("The folder " + path + " doesn't exist",
+				folder.exists());
+		Assert.assertTrue("The folder " + path + " Isn't a link",
+				folder.isLinked());
+	}
+
+	public void assertFileExists(IProject project, String path)
+			throws Exception {
+		IFile file = project.getFile(path);
+		Assert.assertTrue("The file " + path + " doesn't exist", file.exists());
+	}
 
 }

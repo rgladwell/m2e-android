@@ -15,5 +15,7 @@ public interface MavenAndroidProject extends AndroidProject {
 	public String getVersion();
 
 	public boolean matchesDependency(Dependency dependency);
+	
+	String getAssetsDirectory();
 
 }

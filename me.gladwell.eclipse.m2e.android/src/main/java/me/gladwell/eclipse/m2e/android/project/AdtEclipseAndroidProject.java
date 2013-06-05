@@ -14,9 +14,16 @@ import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
@@ -28,10 +35,14 @@ import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.android.io.StreamException;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
+import com.google.inject.Inject;
 
 public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidProject {
 
 	private IProject project;
+	
+	@Inject
+	IWorkspace workspace;
 
 	public String getName() {
 		return project.getName();
@@ -143,6 +154,63 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 
 	public File getPom() {
 		return this.project.getFile("pom.xml").getRawLocation().makeAbsolute().toFile();
+	}
+	
+	public void configureAssetsDirectory(String assetsDir) {
+
+		IFolder link = project.getFolder("assets");
+		
+		try {
+			if(link.exists())
+				link.deleteMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ONE);
+		} catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
+		
+		if(link.getLocation().toFile().equals(new File(assetsDir))){
+			if (link.exists() && link.isLinked()) {
+				try {
+					link.delete(true, false, null);
+				} catch (CoreException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			return;
+		}
+
+		if (link.exists() && !link.isLinked()) {
+			try {
+				IMarker marker = link.createMarker(IMarker.PROBLEM);
+				marker.setAttribute(
+						IMarker.MESSAGE,
+						"The asset folder is a physical folder but the maven plugin has a different one configured: "
+								+ assetsDir);
+				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+				marker.setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_HIGH);
+				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+				return;
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		System.out.println("AssetsDir: " + assetsDir);
+
+		IPath assetsPath = new Path(assetsDir);
+
+		IStatus status = workspace.validateLinkLocation(link, assetsPath);
+		if (!status.matches(Status.ERROR)) {
+			try {
+				link.createLink(assetsPath, IResource.ALLOW_MISSING_LOCAL
+						| IResource.REPLACE, null);
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
+
+		} else {
+			// invalid location, throw an exception or warn user
+			System.out.println("LinkDir not valid");
+		}
 	}
 
 }
