@@ -32,7 +32,7 @@
    <extension
          point="org.eclipse.m2e.core.archetypeCatalogs">
          <remote
-               url="http://rgladwell.github.com/m2e-android/android-archetype-catalog.xml"
+               url="http://rgladwell.github.io/m2e-android/android-archetype-catalog.xml"
                description="Android">
          </remote>
    </extension>
