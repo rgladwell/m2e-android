@@ -82,4 +82,8 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 				&& StringUtils.equals(dependency.getVersion(), mavenProject.getVersion());
 	}
 
+	public MavenProject getMavenProject() {
+		return this.mavenProject;
+	}
+	
 }
