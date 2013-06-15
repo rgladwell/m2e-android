@@ -8,7 +8,8 @@
     <packaging>pom</packaging>
 
     <modules>
-      <module>android-child</module>
+        <module>android-child</module>
+        <module>android-child-library</module>
     </modules>
 
     <properties>

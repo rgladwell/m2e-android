@@ -10,20 +10,25 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
 
     private static final String PARENT_PROJECT_NAME = "android-multi-module";
     private static final String CHILD_PROJECT_NAME = "android-child";
+    private static final String CHILD_LIBRARY_PROJECT_NAME = "android-child-library";
 
-    private IProject parentProject;
+    @SuppressWarnings("unused")
+	private IProject parentProject;
     private IProject childProject;
+    private IProject childLibraryProject;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
         parentProject = importAndroidProject(PARENT_PROJECT_NAME);
+        childLibraryProject = importAndroidProject(PARENT_PROJECT_NAME + File.separator + CHILD_LIBRARY_PROJECT_NAME);
         childProject = importAndroidProject(PARENT_PROJECT_NAME + File.separator + CHILD_PROJECT_NAME);
     }
 
     public void testConfigure() throws Exception {
-        assertNoErrors(childProject);
+    	assertNoErrors(childLibraryProject);
+    	assertNoErrors(childProject);
     }
 
     public void testConfigureAddsAndroidNature() throws Exception {
