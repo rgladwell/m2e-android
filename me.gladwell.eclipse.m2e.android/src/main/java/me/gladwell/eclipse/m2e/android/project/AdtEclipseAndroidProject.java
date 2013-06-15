@@ -8,12 +8,12 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -141,8 +141,8 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 		}
 	}
 
-	public File getPom() {
-		return this.project.getFile("pom.xml").getRawLocation().makeAbsolute().toFile();
+	public IFile getPom() {
+		return this.project.getFile("pom.xml");
 	}
 
 }
