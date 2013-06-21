@@ -68,6 +68,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 		adtPlugin = AdtPlugin.getDefault();
 	    String androidHome = System.getenv("ANDROID_HOME");
+        System.out.println("Setting ADT SDK folder=[" + androidHome + "]");
 
 	    if(androidHome != null && !androidHome.equals(getOsSdkFolder())) {
 		    adtPlugin.getPreferenceStore().setValue(AdtPrefs.PREFS_SDK_DIR, androidHome);
