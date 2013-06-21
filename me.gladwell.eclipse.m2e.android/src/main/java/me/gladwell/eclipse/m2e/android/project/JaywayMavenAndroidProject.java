@@ -13,8 +13,6 @@ import static org.codehaus.plexus.util.StringUtils.isEmpty;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
@@ -88,26 +86,7 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	public boolean matchesDependency(Dependency dependency) {
 		return StringUtils.equals(dependency.getName(), getName())
 				&& StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
-				&& matchesVersionCompatibility(dependency.getVersion(), mavenProject.getVersion());
-	}
-	
-	private boolean matchesVersionCompatibility(String versionDependency, String versionMavenProject){
-		String majorVersionDep, minorVersionDep;
-		String majorVersionMvn, minorVersionMvn;
-		Pattern p = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)$");
-	    Matcher mDep = p.matcher(versionDependency);
-        Matcher mMvn = p.matcher(versionMavenProject);
-	    if (mDep.find() && mMvn.find()) {
-	    	majorVersionDep = mDep.group(1);
-            minorVersionDep = mDep.group(2);
-            
-    		majorVersionMvn = mMvn.group(1);
-            minorVersionMvn = mMvn.group(2);
-            
-    	    return majorVersionDep.equals(majorVersionMvn) && minorVersionDep.compareTo(minorVersionMvn) <= 0;
-	    }
-		
-	    return StringUtils.equals(versionDependency, versionMavenProject); 
+				&& dependency.getVersion().equals(mavenProject.getVersion());
 	}
 
 	public File getAssetsDirectory() {
