@@ -8,8 +8,6 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
-import static com.android.ide.eclipse.adt.AdtPlugin.getOsSdkFolder;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +17,6 @@ import junit.framework.Assert;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.apache.maven.model.Model;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -47,8 +43,6 @@ import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.WorkspaceHelpers;
 import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
 
-import com.android.ide.eclipse.adt.AdtPlugin;
-import com.android.ide.eclipse.adt.internal.preferences.AdtPrefs;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
@@ -56,7 +50,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 120;
 
 	protected AndroidMavenPlugin plugin;
-	private AdtPlugin adtPlugin;
 
 	@Override
 	@SuppressWarnings("restriction")
@@ -65,15 +58,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	    plugin = AndroidMavenPlugin.getDefault();
 		plugin.getInjector().injectMembers(this);
-
-		adtPlugin = AdtPlugin.getDefault();
-	    String androidHome = System.getenv("ANDROID_HOME");
-        System.out.println("Setting ADT SDK folder=[" + androidHome + "]");
-
-	    if(androidHome != null && !androidHome.equals(getOsSdkFolder())) {
-		    adtPlugin.getPreferenceStore().setValue(AdtPrefs.PREFS_SDK_DIR, androidHome);
-		    adtPlugin.savePluginPreferences();
-	    }
 
 	    waitForAdtToLoad();
     }

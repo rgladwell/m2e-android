@@ -34,7 +34,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
-					<argLine>${vmargs}</argLine>
+					<argLine>${vmargs} -Declipse.pluginCustomization=${project.build.directory}/plugin_customisation.ini</argLine>
 					<useUIHarness>true</useUIHarness>
 					<dependencies>
 						<dependency>
@@ -56,6 +56,28 @@
 					</dependencies>
 				</configuration>
 			</plugin>
+       <plugin>
+            <groupId>com.google.code.maven-replacer-plugin</groupId>
+            <artifactId>replacer</artifactId>
+            <version>1.5.2</version>
+            <executions>
+                <execution>
+                    <phase>prepare-package</phase>
+                    <goals>
+                        <goal>replace</goal>
+                    </goals>                    
+                </execution>
+            </executions>
+            <configuration>
+                <file>me.gladwell.eclipse.m2e.android.test/plugin_customisation.ini</file>
+                <outputFile>
+                    me.gladwell.eclipse.m2e.android.test/target/plugin_customisation.ini
+                </outputFile>
+                <regex>false</regex>
+                <token>$ANDROID_HOME$</token>
+                <value>${env.ANDROID_HOME}</value>
+            </configuration>
+        </plugin>
 		</plugins>
 	</build>
 </project>
