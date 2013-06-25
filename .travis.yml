@@ -1,7 +1,6 @@
 language: java
 env:
   matrix:
-    - TARGET_PLATFORM=helios
     - TARGET_PLATFORM=indigo
     - TARGET_PLATFORM=juno
 before_install:
