@@ -111,6 +111,11 @@
 									<type>target</type>
 									<classifier>juno</classifier>
 								</artifact>
+								<artifact>
+									<file>indigo.target</file>
+									<type>target</type>
+									<classifier>indigo</classifier>
+								</artifact>
 							</artifacts>
 						</configuration>
 					</execution>
