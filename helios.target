@@ -12,7 +12,7 @@
 <repository location="https://repository.sonatype.org/content/sites/forge-sites/m2e/1.0.0/N/LATEST/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.android.ide.eclipse.adt.feature.group" version="12.0.0.v201106281929-138431"/>
+<unit id="com.android.ide.eclipse.adt.feature.group" version="22.0.1.v201305230001--685705"/>
 <repository location="http://anthonydahanne.github.com/publish_adt_to_p2repo/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
