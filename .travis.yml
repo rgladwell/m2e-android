@@ -7,7 +7,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch
   - echo yes |android update sdk --filter platform-tools,build-tools-17.0.0,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force > /dev/null
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 install: /bin/true # install is handled by Maven itself
 script: mvn clean install
