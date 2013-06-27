@@ -16,11 +16,11 @@
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.m2e.feature.feature.group" version="1.1.0.20120530-0009"/>
-<repository location="http://download.eclipse.org/technology/m2e/releases"/>
+<repository location="http://download.eclipse.org/technology/m2e/releases/1.1/1.1.0.20120530-0009"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.1.0.20120530-0009"/>
-<repository location="http://download.eclipse.org/technology/m2e/releases"/>
+<repository location="http://download.eclipse.org/technology/m2e/releases/1.1/1.1.0.20120530-0009"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <repository location="http://download.eclipse.org/releases/indigo/"/>
