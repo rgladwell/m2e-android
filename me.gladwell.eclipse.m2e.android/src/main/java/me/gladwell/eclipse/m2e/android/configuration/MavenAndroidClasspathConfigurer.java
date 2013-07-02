@@ -9,6 +9,8 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
 import static java.io.File.separator;
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findContainerContaining;
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findContainerMatching;
 
 import java.io.File;
 import java.util.List;
@@ -61,13 +63,8 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
 	}
 
 	public void removeJreClasspathContainer(IClasspathDescriptor classpath) {
-		for(IClasspathEntry entry : classpath.getEntries()) {
-			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-            	if(entry.getPath().toOSString().contains(JavaRuntime.JRE_CONTAINER)) {
-            		classpath.removeEntry(entry.getPath());
-    			}
-			}
-		}
+        IClasspathEntry entry = findContainerContaining(classpath, JavaRuntime.JRE_CONTAINER);
+        classpath.removeEntry(entry.getPath());
 	}
 
     public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath) {
@@ -81,26 +78,20 @@ public class MavenAndroidClasspathConfigurer implements AndroidClasspathConfigur
     }
 
 	public void markMavenContainerExported(IClasspathDescriptor classpath) {
-		for(IClasspathEntry entry : classpath.getEntries()) {
-			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-            	if(entry.getPath().toOSString().equals(IClasspathManager.CONTAINER_ID)) {
-            		IClasspathEntry newEntry = JavaCore.newContainerEntry(entry.getPath(), true);
-            		classpath.removeEntry(entry.getPath());
-            		classpath.addEntry(newEntry);
-    			}
-			}
-		}
+        IClasspathEntry oldEntry = findContainerMatching(classpath, IClasspathManager.CONTAINER_ID);
+        IClasspathEntry newEntry = JavaCore.newContainerEntry(oldEntry.getPath(), true);
+        classpath.removeEntry(oldEntry.getPath());
+        classpath.addEntry(newEntry);
 	}
 
     public void markAndroidContainerNotExported(IClasspathDescriptor classpath) {
-        for(IClasspathEntry entry : classpath.getEntries()) {
-            if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-                if(entry.getPath().toOSString().equals(AdtConstants.CONTAINER_PRIVATE_LIBRARIES)) {
-                    IClasspathEntry newEntry = JavaCore.newContainerEntry(entry.getPath(), false);
-                    classpath.removeEntry(entry.getPath());
-                    classpath.addEntry(newEntry);
-                }
-            }
+        IClasspathEntry oldEntry = findContainerMatching(classpath, AdtConstants.CONTAINER_PRIVATE_LIBRARIES);
+        if(oldEntry != null) {
+            IClasspathEntry newEntry = JavaCore.newContainerEntry(oldEntry.getPath(), false);
+            classpath.removeEntry(oldEntry.getPath());
+            classpath.addEntry(newEntry);
+        } else {
+            // TODO log warning here
         }
     }
 
