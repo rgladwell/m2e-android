@@ -22,5 +22,4 @@ public interface AndroidClasspathConfigurer {
     public void modifySourceFolderOutput(IJavaProject javaProject, AndroidProject project, IClasspathDescriptor classpath);
     public void markAndroidContainerNotExported(IClasspathDescriptor classpath);
 
-
 }

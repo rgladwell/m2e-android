@@ -58,7 +58,7 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	public List<String> getProvidedDependencies() {
 	    List<String> list = new ArrayList<String>( mavenProject.getArtifacts().size() + 1 );
 	    list.add( mavenProject.getBuild().getOutputDirectory() );
-	
+
 	    for ( Artifact a : mavenProject.getArtifacts() ) {
 	        if ( a.getArtifactHandler().isAddedToClasspath() ) {
 	            if ( Artifact.SCOPE_PROVIDED.equals( a.getScope() ) ) {
@@ -66,7 +66,7 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	            }
 	        }
 	    }
-	
+
 	    return list;
 	}
 
