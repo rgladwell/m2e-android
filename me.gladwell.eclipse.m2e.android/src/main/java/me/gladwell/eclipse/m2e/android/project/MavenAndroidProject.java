@@ -9,6 +9,7 @@
 package me.gladwell.eclipse.m2e.android.project;
 
 import java.io.File;
+import java.util.List;
 
 public interface MavenAndroidProject extends AndroidProject {
 
@@ -19,5 +20,7 @@ public interface MavenAndroidProject extends AndroidProject {
 	public boolean matchesDependency(Dependency dependency);
 	
 	File getAssetsDirectory();
+
+    public Dependency getAndroidDependency();
 
 }

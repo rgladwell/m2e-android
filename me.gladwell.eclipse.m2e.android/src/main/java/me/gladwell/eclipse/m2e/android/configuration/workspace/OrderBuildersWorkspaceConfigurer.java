@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package me.gladwell.eclipse.m2e.android.configuration;
+package me.gladwell.eclipse.m2e.android.configuration.workspace;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenException;
+import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
@@ -22,7 +23,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 
-public class OrderBuildersProjectConfigurer implements ProjectConfigurer {
+public class OrderBuildersWorkspaceConfigurer implements WorkspaceConfigurer {
 
 	public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 

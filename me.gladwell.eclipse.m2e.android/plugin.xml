@@ -36,4 +36,10 @@
                description="Android">
          </remote>
    </extension>
+   <extension
+         point="org.eclipse.jdt.core.classpathContainerInitializer">
+            <classpathContainerInitializer
+               id="me.gladwell.eclipse.m2e.android.classpath.NONRUNTIME_DEPENDENCIES"
+               class="me.gladwell.eclipse.m2e.inject.GuiceExtensionFactory:me.gladwell.eclipse.m2e.android.NonRuntimeDependenciesContainerInitializer"/>
+   </extension>
 </plugin>

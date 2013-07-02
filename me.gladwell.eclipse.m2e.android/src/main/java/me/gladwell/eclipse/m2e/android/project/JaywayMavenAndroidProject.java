@@ -14,6 +14,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
@@ -55,13 +57,13 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 		return ANDROID_LIBRARY_PACKAGE_TYPE.equals(packaging);
 	}
 
-	public List<String> getProvidedDependencies() {
+	public List<String> getNonRuntimeDependencies() {
 	    List<String> list = new ArrayList<String>( mavenProject.getArtifacts().size() + 1 );
 	    list.add( mavenProject.getBuild().getOutputDirectory() );
 
 	    for ( Artifact a : mavenProject.getArtifacts() ) {
 	        if ( a.getArtifactHandler().isAddedToClasspath() ) {
-	            if ( Artifact.SCOPE_PROVIDED.equals( a.getScope() ) ) {
+	            if ( !Artifact.SCOPE_COMPILE.equals( a.getScope() ) && !Artifact.SCOPE_RUNTIME.equals( a.getScope() )) {
 	            	list.add(a.getFile().getAbsolutePath());
 	            }
 	        }
@@ -69,6 +71,15 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	    return list;
 	}
+
+    public Dependency getAndroidDependency() {
+        for(Artifact artifact : mavenProject.getArtifacts()) {
+            if(artifact.getGroupId().equals("com.google.android") && artifact.getArtifactId().equals("android")) {
+                return new MavenDependency(artifact);
+            }
+        }
+        throw new ProjectConfigurationException("cannot find android dependency for project=[" + getName() + "]");
+    }
 
 	public List<Dependency> getLibraryDependencies() {
 	    List<Dependency> results = new ArrayList<Dependency>(mavenProject.getArtifacts().size());

@@ -84,7 +84,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 		setAndroidProperty(ProjectProperties.PROPERTY_LIBRARY, Boolean.toString(isLibrary));
 	}
 
-	public List<String> getProvidedDependencies() {
+	public List<String> getNonRuntimeDependencies() {
 		throw new UnsupportedOperationException();
 	}
 

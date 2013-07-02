@@ -8,21 +8,14 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
-public abstract class ProjectConfigurationError extends ProjectConfigurationException {
+import java.util.List;
 
-	private static final long serialVersionUID = 4104424860840533651L;
+import me.gladwell.eclipse.m2e.android.project.AndroidProject;
 
-	public ProjectConfigurationError(String message, Throwable cause) {
-		super(message, cause);
-	}
+import org.eclipse.jdt.core.IClasspathEntry;
 
-	public ProjectConfigurationError(String message) {
-		super(message);
-	}
+public interface ClasspathPersister {
 
-	public ProjectConfigurationError(Throwable cause) {
-		super(cause);
-	}
+    void save(AndroidProject project, List<IClasspathEntry> classpath);
 
-	public abstract String getType();
 }

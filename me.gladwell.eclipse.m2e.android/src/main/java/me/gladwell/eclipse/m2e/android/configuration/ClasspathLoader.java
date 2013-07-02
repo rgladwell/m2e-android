@@ -8,21 +8,14 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
-public abstract class ProjectConfigurationError extends ProjectConfigurationException {
+import java.io.FileNotFoundException;
+import java.util.List;
 
-	private static final long serialVersionUID = 4104424860840533651L;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
 
-	public ProjectConfigurationError(String message, Throwable cause) {
-		super(message, cause);
-	}
+public interface ClasspathLoader {
 
-	public ProjectConfigurationError(String message) {
-		super(message);
-	}
+    List<IClasspathEntry> load(IJavaProject project) throws FileNotFoundException;
 
-	public ProjectConfigurationError(Throwable cause) {
-		super(cause);
-	}
-
-	public abstract String getType();
 }

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package me.gladwell.eclipse.m2e.android.configuration;
+package me.gladwell.eclipse.m2e.android.configuration.workspace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +18,12 @@ import me.gladwell.eclipse.m2e.android.project.Dependency;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
-public class LibraryDependenciesProjectConfigurer implements ProjectConfigurer {
+public class LibraryDependenciesWorkspaceConfigurer implements WorkspaceConfigurer {
 
 	private AndroidWorkspace workspace;
 
 	@Inject
-	public LibraryDependenciesProjectConfigurer(AndroidWorkspace workspace) {
+	public LibraryDependenciesWorkspaceConfigurer(AndroidWorkspace workspace) {
 		super();
 		this.workspace = workspace;
 	}
