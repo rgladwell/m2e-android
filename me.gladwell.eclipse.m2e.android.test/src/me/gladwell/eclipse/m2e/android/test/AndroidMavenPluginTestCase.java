@@ -67,7 +67,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     			public boolean matches(Job job) {
     				return job.getClass().getName().contains(Sdk.class.getName());
     			}
-    			
+
     		}, MAXIMUM_SECONDS_TO_LOAD_ADT * 1000);
         } catch(Throwable t) {
             t.printStackTrace();
@@ -76,14 +76,14 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	protected IProject importAndroidProject(String name) throws Exception {
 		IProject project = importProject("projects/"+name+"/pom.xml");
-		waitForAndroidJobsToComplete();
+		waitForJobsToComplete();
 		waitForAdtToLoad();
 	    return project;
 	}
 
 	protected IProject importAndroidProject(String name, File folder) throws Exception {
         IProject project = importProject("projects/"+name+"/pom.xml", folder);
-        waitForAndroidJobsToComplete();
+        waitForJobsToComplete();
         waitForAdtToLoad();
         return project;
 	}
@@ -137,27 +137,19 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
         return projects[0];
     }
-    
+
     public IProject[] importAndroidProjects(String basedir, String[] pomNames) throws Exception{
     	IProject[] projects = importProjects(basedir, pomNames, new ResolverConfiguration());
-    	waitForAndroidJobsToComplete();
-		waitForAdtToLoad();
-		return projects;
+	waitForJobsToComplete();
+	waitForAdtToLoad();
+	return projects;
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
 		project.build(kind, monitor);
-		waitForAndroidJobsToComplete();
+		waitForJobsToComplete();
 	}
 
-	private void waitForAndroidJobsToComplete() {
-        try {
-            waitForJobsToComplete();
-        } catch (Throwable t) {
-            System.err.println("error waiting for jobs to complete: " + getWorkspaceState());
-            t.printStackTrace();
-        }
-	}
 
 	private String getWorkspaceState() {
         StringBuffer buffer = new StringBuffer("workspace state=[\n");
