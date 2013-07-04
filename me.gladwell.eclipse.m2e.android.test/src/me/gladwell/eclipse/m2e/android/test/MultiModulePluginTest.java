@@ -27,6 +27,7 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
     }
 
     public void testConfigure() throws Exception {
+    	assertNoErrors(parentProject);
     	assertNoErrors(childLibraryProject);
     	assertNoErrors(childProject);
     }
