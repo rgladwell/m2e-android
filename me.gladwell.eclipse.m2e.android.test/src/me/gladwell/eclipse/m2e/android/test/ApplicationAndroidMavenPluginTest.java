@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010, 2011 Ricardo Gladwell and Hugo Josefson
+ * Copyright (c) 2009-2013 Ricardo Gladwell and Hugo Josefson
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import com.android.ide.eclipse.adt.AdtConstants;
 
 /**
  * Test suite for configuring and building Android applications.
- * 
+ *
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
 public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
@@ -45,24 +45,6 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
 		project = importAndroidProject(getAndroidProjectName());
 		javaProject = JavaCore.create(project);
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-	    try {
-	        deleteProject(getAndroidProjectName());
-	    } catch(Throwable t) {
-	        t.printStackTrace();
-	    }
-
-	    project = null;
-		javaProject = null;
-
-		try {
-		    super.tearDown();
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
 	}
 
 	public void testConfigure() throws Exception {

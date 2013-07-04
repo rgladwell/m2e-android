@@ -12,7 +12,6 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
     private static final String CHILD_PROJECT_NAME = "android-child";
     private static final String CHILD_LIBRARY_PROJECT_NAME = "android-child-library";
 
-    @SuppressWarnings("unused")
 	private IProject parentProject;
     private IProject childProject;
     private IProject childLibraryProject;
