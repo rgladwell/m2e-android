@@ -147,20 +147,12 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		return projects;
     }
 
-    protected void deleteAndroidProject(String name) {
-        try {
+    final protected void deleteAndroidProject(String name) throws CoreException, InterruptedException {
             deleteProject(name);
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
     }
     
-    protected void deleteAndroidProject(IProject project) {
-        try {
+    final protected void deleteAndroidProject(IProject project) throws InterruptedException, CoreException {
             deleteProject(project);
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
