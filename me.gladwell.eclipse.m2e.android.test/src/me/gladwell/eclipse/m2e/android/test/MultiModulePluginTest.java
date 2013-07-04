@@ -36,17 +36,4 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
         assertTrue("failed to add android nature to child module", childProject.hasNature(AdtConstants.NATURE_DEFAULT));
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        deleteAndroidProject(PARENT_PROJECT_NAME);
-
-        parentProject = null;
-
-        try {
-            super.tearDown();
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
-    }
-
 }
