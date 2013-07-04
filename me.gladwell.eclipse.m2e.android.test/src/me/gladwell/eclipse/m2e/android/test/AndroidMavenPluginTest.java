@@ -49,8 +49,8 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
         assertNoErrors(project);
 
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
+        deleteProject(project);
+        deleteProject(rootProject);
     }
 
     public void testNonDefaultInternalAssetsLinkCreated() throws Exception {
@@ -61,8 +61,8 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         // TODO insufficient test, should verify linked location
         assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
 
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
+        deleteProject(project);
+        deleteProject(rootProject);
     }
 
     public void testNonDefaultExternalAssetsFolderCompiles() throws Exception {
@@ -72,8 +72,8 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
         assertNoErrors(project);
 
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
+        deleteProject(project);
+        deleteProject(rootProject);
     }
 
     public void testNonDefaultExternalAssetsLinkCreated() throws Exception {
@@ -84,8 +84,8 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         // TODO insufficient test, should verify linked location
         assertTrue("external assets folder isn't linked", project.getFolder("assets").isLinked());
 
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
+        deleteProject(project);
+        deleteProject(rootProject);
     }
 
 }
