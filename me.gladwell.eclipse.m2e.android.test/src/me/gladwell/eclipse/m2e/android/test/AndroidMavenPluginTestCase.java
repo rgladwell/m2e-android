@@ -20,7 +20,6 @@ import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -91,7 +90,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
     private IProject importProject(String pomLocation, File parent) throws Exception {
         MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
-        IWorkspaceRoot root = workspace.getRoot();
 
         File pomFile = new File(pomLocation);
         File src = new File(pomFile.getParentFile().getCanonicalPath());
