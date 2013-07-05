@@ -85,7 +85,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
 	public void testConfigureDoesNotAddNonCompileDependenciesToClasspath() throws Exception {
-		assertClasspathDoesNotContain(javaProject, "android-2.1.2.jar");
+		assertClasspathDoesNotContain(javaProject, "android-2.3.3.jar");
 	}
 
 	public void testConfigureDoesNotAddNonCompileTransitiveDependenciesToClasspath() throws Exception {
