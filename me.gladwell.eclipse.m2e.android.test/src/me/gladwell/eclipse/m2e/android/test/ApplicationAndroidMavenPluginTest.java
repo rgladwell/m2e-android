@@ -92,7 +92,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		assertClasspathDoesNotContain(javaProject, "commons-logging-1.1.1.jar");
 	}
 
-	public void testConfigureDoesNotRemoveJreClasspathContainer() throws Exception {
+	public void testConfigureDoesRemoveJreClasspathContainer() throws Exception {
 		assertClasspathDoesNotContain(javaProject, JavaRuntime.JRE_CONTAINER);
 	}
 
