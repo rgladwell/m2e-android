@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010, 2011 Ricardo Gladwell and Hugo Josefson
+ * Copyright (c) 2009-2013 Ricardo Gladwell and Hugo Josefson
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -68,7 +67,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     			public boolean matches(Job job) {
     				return job.getClass().getName().contains(Sdk.class.getName());
     			}
-    			
+
     		}, MAXIMUM_SECONDS_TO_LOAD_ADT * 1000);
         } catch(Throwable t) {
             t.printStackTrace();
@@ -77,21 +76,20 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
 	protected IProject importAndroidProject(String name) throws Exception {
 		IProject project = importProject("projects/"+name+"/pom.xml");
-		waitForAndroidJobsToComplete();
+		waitForJobsToComplete();
 		waitForAdtToLoad();
 	    return project;
 	}
 
 	protected IProject importAndroidProject(String name, File folder) throws Exception {
         IProject project = importProject("projects/"+name+"/pom.xml", folder);
-        waitForAndroidJobsToComplete();
+        waitForJobsToComplete();
         waitForAdtToLoad();
         return project;
 	}
 
     private IProject importProject(String pomLocation, File parent) throws Exception {
         MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
-        IWorkspaceRoot root = workspace.getRoot();
 
         File pomFile = new File(pomLocation);
         File src = new File(pomFile.getParentFile().getCanonicalPath());
@@ -139,43 +137,19 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
         return projects[0];
     }
-    
+
     public IProject[] importAndroidProjects(String basedir, String[] pomNames) throws Exception{
     	IProject[] projects = importProjects(basedir, pomNames, new ResolverConfiguration());
-    	waitForAndroidJobsToComplete();
-		waitForAdtToLoad();
-		return projects;
-    }
-
-    protected void deleteAndroidProject(String name) {
-        try {
-            deleteProject(name);
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
-    }
-    
-    protected void deleteAndroidProject(IProject project) {
-        try {
-            deleteProject(project);
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
+	waitForJobsToComplete();
+	waitForAdtToLoad();
+	return projects;
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
 		project.build(kind, monitor);
-		waitForAndroidJobsToComplete();
+		waitForJobsToComplete();
 	}
 
-	private void waitForAndroidJobsToComplete() {
-        try {
-            waitForJobsToComplete();
-        } catch (Throwable t) {
-            System.err.println("error waiting for jobs to complete: " + getWorkspaceState());
-            t.printStackTrace();
-        }
-	}
 
 	private String getWorkspaceState() {
         StringBuffer buffer = new StringBuffer("workspace state=[\n");

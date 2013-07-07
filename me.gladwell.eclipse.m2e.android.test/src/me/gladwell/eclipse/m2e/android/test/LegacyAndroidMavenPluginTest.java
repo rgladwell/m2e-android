@@ -26,12 +26,4 @@ public class LegacyAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 		assertNoErrors(project);
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
-		deleteProject(LEGACY_ANDROID_PROJECT_NAME);
-		project = null;
-
-		super.tearDown();
-	}
-
 }
