@@ -12,7 +12,6 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
     private static final String CHILD_PROJECT_NAME = "android-child";
     private static final String CHILD_LIBRARY_PROJECT_NAME = "android-child-library";
 
-    @SuppressWarnings("unused")
 	private IProject parentProject;
     private IProject childProject;
     private IProject childLibraryProject;
@@ -27,25 +26,13 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
     }
 
     public void testConfigure() throws Exception {
+    	assertNoErrors(parentProject);
     	assertNoErrors(childLibraryProject);
     	assertNoErrors(childProject);
     }
 
     public void testConfigureAddsAndroidNature() throws Exception {
         assertTrue("failed to add android nature to child module", childProject.hasNature(AdtConstants.NATURE_DEFAULT));
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        deleteAndroidProject(PARENT_PROJECT_NAME);
-
-        parentProject = null;
-
-        try {
-            super.tearDown();
-        } catch(Throwable t) {
-            t.printStackTrace();
-        }
     }
 
 }

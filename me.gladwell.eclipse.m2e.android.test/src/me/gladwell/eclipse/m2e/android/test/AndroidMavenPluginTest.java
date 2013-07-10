@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Ricardo Gladwell
+ * Copyright (c) 2012, 2013 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,9 +7,6 @@
  *******************************************************************************/
 
 package me.gladwell.eclipse.m2e.android.test;
-
-import static junit.framework.Assert.assertTrue;
-import junit.framework.Assert;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -24,7 +21,6 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     private static final String MULTIMODULE_ROOT = "projects/issue-68";
 
 	public void testConfigureNonAndroidProject() throws Exception {
-		deleteProject(SIMPLE_PROJECT_NAME);
 		IProject project = importAndroidProject(SIMPLE_PROJECT_NAME);
 
 	    assertFalse("configurer added android nature", project.hasNature(AdtConstants.NATURE_DEFAULT));
@@ -44,48 +40,32 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	public void testNonDefaultInternalAssetsFolderCompiles() throws Exception {
         IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-internaldirassets/pom.xml" });
-        IProject rootProject = projects[0];
         IProject project = projects[1];
 
         assertNoErrors(project);
-
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
     }
 
     public void testNonDefaultInternalAssetsLinkCreated() throws Exception {
         IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-internaldirassets/pom.xml" });
-        IProject rootProject = projects[0];
         IProject project = projects[1];
 
         // TODO insufficient test, should verify linked location
         assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
-
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
     }
 
     public void testNonDefaultExternalAssetsFolderCompiles() throws Exception {
         IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-relativeoutside/pom.xml" });
-        IProject rootProject = projects[0];
         IProject project = projects[1];
 
         assertNoErrors(project);
-
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
     }
 
     public void testNonDefaultExternalAssetsLinkCreated() throws Exception {
         IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml", "android-relativeoutside/pom.xml" });
-        IProject rootProject = projects[0];
         IProject project = projects[1];
 
         // TODO insufficient test, should verify linked location
         assertTrue("external assets folder isn't linked", project.getFolder("assets").isLinked());
-
-        deleteAndroidProject(project);
-        deleteAndroidProject(rootProject);
     }
 
 }
