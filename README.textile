@@ -1,4 +1,4 @@
-h1. Android Configurator
+h1. Android Configurator "!http://badge.waffle.io/rgladwell/m2e-android.png(Stories in Ready)!":http://waffle.io/rgladwell/m2e-android
 
 The Android Configurator (*m2e-android*) is an Maven Integration for Eclipse (m2e) plug-in that adds Maven support for Android Developer Tools (ADT) and the Maven Android Plugin. It brings the power of Maven dependency management into the ADT.
 
