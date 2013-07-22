@@ -21,7 +21,6 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.jobs.Job;
@@ -150,32 +149,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		waitForJobsToComplete();
 	}
 
-
-	private String getWorkspaceState() {
-        StringBuffer buffer = new StringBuffer("workspace state=[\n");
-
-        buffer.append("\trunning jobs=[\n");
-        for(Job job : Job.getJobManager().find(null)) {
-            buffer.append("\t\t");
-            buffer.append(job.toString());
-            buffer.append("[");
-            buffer.append(job.getClass().getName());
-            buffer.append("]");
-            buffer.append(",\n");
-        }
-        buffer.append("\t]\n");
-
-        buffer.append("\tprojects=[\n");
-        for(IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
-            buffer.append("\t\t");
-            buffer.append(project.toString());
-            buffer.append(",\n");
-        }
-        buffer.append("\t]\n");
-        
-        buffer.append("]\n");
-        return buffer.toString();
-    }
 
     protected void assertClasspathContains(IJavaProject javaProject, String path) throws JavaModelException {
 		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
