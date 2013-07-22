@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.JavaCore;
 
 import com.android.ide.eclipse.adt.AdtConstants;
 
+@SuppressWarnings("restriction")
 public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	private static final String SIMPLE_PROJECT_NAME = "simple-project";

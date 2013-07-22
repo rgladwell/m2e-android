@@ -44,6 +44,7 @@ import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
 
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 
+@SuppressWarnings("restriction")
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
 	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 120;
@@ -51,7 +52,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	protected AndroidMavenPlugin plugin;
 
 	@Override
-	@SuppressWarnings("restriction")
     protected void setUp() throws Exception {
 	    super.setUp();
 
