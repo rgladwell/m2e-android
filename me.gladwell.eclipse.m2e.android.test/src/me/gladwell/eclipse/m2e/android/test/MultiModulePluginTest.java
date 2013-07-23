@@ -6,6 +6,7 @@ import org.eclipse.core.resources.IProject;
 
 import com.android.ide.eclipse.adt.AdtConstants;
 
+@SuppressWarnings("restriction")
 public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
 
     private static final String PARENT_PROJECT_NAME = "android-multi-module";

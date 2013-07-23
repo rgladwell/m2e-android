@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
+@SuppressWarnings("restriction")
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     private static final String ANDROID_LIB_PROJECT_NAME = "android-library";

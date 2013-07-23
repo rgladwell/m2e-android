@@ -30,6 +30,7 @@ import com.android.ide.eclipse.adt.AdtConstants;
  *
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
+@SuppressWarnings("restriction")
 public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	private IProject project;
