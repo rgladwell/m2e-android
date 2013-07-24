@@ -10,6 +10,7 @@ package me.gladwell.eclipse.m2e.android.test;
 
 import org.eclipse.core.resources.IProject;
 
+@SuppressWarnings("restriction")
 public class LegacyAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
 	private static final String LEGACY_ANDROID_PROJECT_NAME = "legacy-project";
