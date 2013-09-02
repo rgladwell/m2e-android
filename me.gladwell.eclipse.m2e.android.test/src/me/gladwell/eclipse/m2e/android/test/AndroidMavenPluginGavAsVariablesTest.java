@@ -9,9 +9,23 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
-public class AndroidMavenPluginGavAsVariablesTest extends ApplicationAndroidMavenPluginTest {
-	@Override
-	protected String getAndroidProjectName() {
-		return "issue-114";
-	}
+import org.eclipse.core.resources.IProject;
+
+public class AndroidMavenPluginGavAsVariablesTest extends AndroidMavenPluginTestCase {
+
+    private static final String PROJECT_NAME = "issue-114";
+
+    private IProject project;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        project = importAndroidProject(PROJECT_NAME);
+    }
+
+    public void testConfigure() throws Exception {
+        assertNoErrors(project);
+    }
+
+
 }

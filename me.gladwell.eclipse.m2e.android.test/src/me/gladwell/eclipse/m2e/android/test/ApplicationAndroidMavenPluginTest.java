@@ -33,18 +33,16 @@ import com.android.ide.eclipse.adt.AdtConstants;
 @SuppressWarnings("restriction")
 public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
+    private static final String PROJECT_NAME = "android-application";
+
 	private IProject project;
 	private IJavaProject javaProject;
-
-    protected String getAndroidProjectName() {
-        return "android-application";
-    }
 
     @Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		project = importAndroidProject(getAndroidProjectName());
+		project = importAndroidProject(PROJECT_NAME);
 		javaProject = JavaCore.create(project);
 	}
 
