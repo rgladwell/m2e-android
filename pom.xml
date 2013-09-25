@@ -40,6 +40,9 @@
 		<module>me.gladwell.eclipse.m2e.android.feature</module>
 		<module>me.gladwell.eclipse.m2e.android.test</module>
 		<module>me.gladwell.eclipse.m2e.android.update</module>
+		<module>kepler</module>
+		<module>juno</module>
+		<module>indigo</module>
 	</modules>
 	<build>
 		<plugins>
@@ -57,9 +60,8 @@
 					<target>
 						<artifact>
 							<groupId>me.gladwell.eclipse.m2e.android</groupId>
-							<artifactId>m2e-android</artifactId>
+							<artifactId>${target.platform}</artifactId>
 							<version>${project.version}</version>
-							<classifier>${target.platform}</classifier>
 						</artifact>
 					</target>
 					<resolver>p2</resolver>
@@ -92,39 +94,6 @@
 						</environment>
 					</environments>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.3</version>
-				<executions>
-					<execution>
-						<id>attach-artifacts</id>
-						<phase>package</phase>
-						<goals>
-							<goal>attach-artifact</goal>
-						</goals>
-						<configuration>
-							<artifacts>
-								<artifact>
-									<file>kepler.target</file>
-									<type>target</type>
-									<classifier>kepler</classifier>
-								</artifact>
-								<artifact>
-									<file>juno.target</file>
-									<type>target</type>
-									<classifier>juno</classifier>
-								</artifact>
-								<artifact>
-									<file>indigo.target</file>
-									<type>target</type>
-									<classifier>indigo</classifier>
-								</artifact>
-							</artifacts>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 		<pluginManagement>
