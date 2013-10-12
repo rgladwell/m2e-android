@@ -22,7 +22,7 @@
     <password>An OAuth token generated following the instructions at : http://developer.github.com/v3/oauth/</password>
   </server>
 -->
-    		<github-site-plugin-version>0.8</github-site-plugin-version>
+    		<github-site-plugin-version>0.9</github-site-plugin-version>
   	</properties>
 	<profiles>
 		<profile>
