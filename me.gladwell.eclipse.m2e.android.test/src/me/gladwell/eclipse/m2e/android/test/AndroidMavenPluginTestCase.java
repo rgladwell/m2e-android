@@ -15,6 +15,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.configuration.Classpaths;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IMarker;
@@ -23,6 +24,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -36,6 +38,7 @@ import org.eclipse.m2e.core.project.IMavenProjectImportResult;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
+import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.WorkspaceHelpers;
@@ -179,15 +182,35 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 	}
 
 	protected IClasspathEntry getClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+	    IClasspathEntry entry = findClasspathContainer(javaProject, id);
+		if(entry == null) throw new RuntimeException("classpath container=[" + id + "] not found");
+		return entry;
+	}
+
+    private IClasspathEntry findClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
+        for(IClasspathEntry entry : javaProject.getRawClasspath()) {
 			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
             	if(entry.getPath().toOSString().equals(id)) {
     				return entry;
     			}
 			}
 		}
-		throw new RuntimeException("classpath container=[" + id + "] not found");
-	}
+        return null;
+    }
+
+    protected boolean hasClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
+        return findClasspathContainer(javaProject, id) != null;
+    }
+
+    protected boolean classpathContainerContains(IJavaProject project, String id, String path) throws JavaModelException {
+        IClasspathContainer container = JavaCore.getClasspathContainer(new Path(id), project);
+        for(IClasspathEntry entry : container.getClasspathEntries()) {
+            if(entry.getPath().toOSString().contains(path)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	protected void assertErrorMarker(IProject project, String type) throws CoreException {
 	    List<IMarker> markers = findMarkers(project, IMarker.SEVERITY_ERROR);

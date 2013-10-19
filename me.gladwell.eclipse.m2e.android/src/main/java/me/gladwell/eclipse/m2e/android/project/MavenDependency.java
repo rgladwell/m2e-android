@@ -1,9 +1,3 @@
-package me.gladwell.eclipse.m2e.android.project;
-
-import static me.gladwell.eclipse.m2e.android.project.JaywayMavenAndroidProject.ANDROID_LIBRARY_PACKAGE_TYPE;
-
-import org.apache.maven.artifact.Artifact;
-
 /*******************************************************************************
  * Copyright (c) 2012 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
@@ -11,6 +5,12 @@ import org.apache.maven.artifact.Artifact;
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
+
+package me.gladwell.eclipse.m2e.android.project;
+
+import static me.gladwell.eclipse.m2e.android.project.JaywayMavenAndroidProject.ANDROID_LIBRARY_PACKAGE_TYPE;
+
+import org.apache.maven.artifact.Artifact;
 
 public class MavenDependency implements Dependency {
 

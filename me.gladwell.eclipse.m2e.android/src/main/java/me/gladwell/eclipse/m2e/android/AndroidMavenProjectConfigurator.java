@@ -10,10 +10,11 @@ package me.gladwell.eclipse.m2e.android;
 
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.configuration.AndroidClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
-import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurer;
-import me.gladwell.eclipse.m2e.android.project.AndroidProject;
+import me.gladwell.eclipse.m2e.android.configuration.classpath.Project;
+import me.gladwell.eclipse.m2e.android.configuration.classpath.ClasspathConfigurer;
+import me.gladwell.eclipse.m2e.android.configuration.classpath.RawClasspathConfigurer;
+import me.gladwell.eclipse.m2e.android.configuration.workspace.WorkspaceConfigurer;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
@@ -45,10 +46,13 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 	private AbstractProjectConfigurator javaProjectConfigurator;
 
 	@Inject
-	private List<ProjectConfigurer> projectConfigurers;
+	private List<WorkspaceConfigurer> workspaceConfigurers;
 
-	@Inject
-	private AndroidClasspathConfigurer classpathConfigurer;
+    @Inject
+    private List<RawClasspathConfigurer> rawClasspathConfigurers;
+
+    @Inject
+    private List<ClasspathConfigurer> classpathConfigurers;
 
 	@Inject
 	private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
@@ -66,7 +70,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 				if(mavenProject.isAndroidProject()) {
 					javaProjectConfigurator.configure(request, monitor);
 	
-					for (ProjectConfigurer configurer : projectConfigurers) {
+					for (WorkspaceConfigurer configurer : workspaceConfigurers) {
 						try {
 							if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
 								configurer.configure(eclipseProject,  mavenProject);
@@ -86,25 +90,26 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 	}
 
 	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		final AndroidProject project = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
+		final MavenAndroidProject project = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
 		try {
-			classpathConfigurer.removeNonRuntimeDependencies(project, classpath);
+		    for(RawClasspathConfigurer configurer : rawClasspathConfigurers) {
+		        configurer.configure(project, classpath);
+		    }
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}
     }
 
-	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {	 
-		final AndroidProject project = mavenProjectFactory.createAndroidProject(request.getMavenProject());
+	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
+	    final MavenAndroidProject androidProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
 		final IJavaProject javaProject = JavaCore.create(request.getProject());
+        final Project project = new Project(classpath, javaProject, androidProject);
 		try {
-			classpathConfigurer.addGenFolder(javaProject, project, classpath);
-			classpathConfigurer.modifySourceFolderOutput(javaProject, project, classpath);
-			classpathConfigurer.removeJreClasspathContainer(classpath);
-			if(!project.isLibrary()) {
-			    classpathConfigurer.markMavenContainerExported(classpath);
-			}
-            classpathConfigurer.markAndroidContainerNotExported(classpath);
+		    for(ClasspathConfigurer classpathConfigurer : classpathConfigurers) {
+		        if(classpathConfigurer.shouldApplyTo(androidProject)) {
+                    classpathConfigurer.configure(project);
+		        }
+		    }
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
 		}

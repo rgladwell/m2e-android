@@ -8,9 +8,11 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
-import static me.gladwell.eclipse.m2e.android.configuration.MavenAndroidClasspathConfigurer.ANDROID_CLASSES_FOLDER;
+import static java.io.File.separator;
 
 import java.io.File;
+
+import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -33,18 +35,17 @@ import com.android.ide.eclipse.adt.AdtConstants;
 @SuppressWarnings("restriction")
 public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
+    private static final String ANDROID_CLASSES_FOLDER = "bin" + separator + "classes";
+    private static final String PROJECT_NAME = "android-application";
+
 	private IProject project;
 	private IJavaProject javaProject;
-
-    protected String getAndroidProjectName() {
-        return "android-application";
-    }
 
     @Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		project = importAndroidProject(getAndroidProjectName());
+		project = importAndroidProject(PROJECT_NAME);
 		javaProject = JavaCore.create(project);
 	}
 
@@ -84,15 +85,19 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		assertClasspathContains(javaProject, "commons-lang-2.4.jar");
 	}
 
-	public void testConfigureDoesNotAddNonCompileDependenciesToClasspath() throws Exception {
-		assertClasspathDoesNotContain(javaProject, "android-2.1.2.jar");
+	public void testConfigureDoesNotAddPlatformDependencytToClasspath() throws Exception {
+		assertClasspathDoesNotContain(javaProject, "android-2.3.3.jar");
 	}
 
-	public void testConfigureDoesNotAddNonCompileTransitiveDependenciesToClasspath() throws Exception {
+	public void testConfigureDoesNotAddPlatformProvidedDependenciesToClasspath() throws Exception {
 		assertClasspathDoesNotContain(javaProject, "commons-logging-1.1.1.jar");
 	}
 
-	public void testConfigureDoesNotRemoveJreClasspathContainer() throws Exception {
+    public void testConfigureDoesNotAddTransitivePlatformProvidedDependenciesToClasspath() throws Exception {
+        assertClasspathDoesNotContain(javaProject, "httpcore-4.0.1.jar");
+    }
+
+	public void testConfigureDoesRemoveJreClasspathContainer() throws Exception {
 		assertClasspathDoesNotContain(javaProject, JavaRuntime.JRE_CONTAINER);
 	}
 
@@ -126,6 +131,23 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
     public void testDoesNotLinkAssetFolder() throws Exception {
         assertFalse("default assets folder is linked", project.getFolder("assets").isLinked());
+    }
+
+    public void testConfigureAddsNonRuntimeContainer() throws Exception {
+        assertTrue(hasClasspathContainer(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES));
+    }
+
+    public void testConfigureMarksNonRuntimeContainerNotExported() throws Exception {
+        IClasspathEntry androidContainer = getClasspathContainer(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES);
+        assertFalse(androidContainer.isExported());
+    }
+
+    public void testConfigureRemovesNonRuntimeDependenciesFromMavenClasspathContainer() throws Exception {
+        assertFalse(classpathContainerContains(javaProject, IClasspathManager.CONTAINER_ID, "mockito-core-1.9.5.jar"));
+    }
+
+    public void testConfigureAddsNonRuntimeDependenciesToNonRuntimeContainer() throws Exception {
+        assertTrue(classpathContainerContains(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar"));
     }
 
 }

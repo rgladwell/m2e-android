@@ -25,6 +25,7 @@ public class AndroidMavenPlugin extends Plugin {
 
 	public static final String PLUGIN_ID = "me.gladwell.eclipse.m2e.android";
 	public static final String APKLIB_ERROR_TYPE = "me.gladwell.eclipse.m2e.android.markers.dependency.apklib";
+    public static final String CONTAINER_NONRUNTIME_DEPENDENCIES = "me.gladwell.eclipse.m2e.android.classpath.NONRUNTIME_DEPENDENCIES";
 
 	private static AndroidMavenPlugin plugin;
 
