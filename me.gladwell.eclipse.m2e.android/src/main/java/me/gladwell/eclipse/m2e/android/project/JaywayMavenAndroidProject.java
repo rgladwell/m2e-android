@@ -15,12 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
+import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.sonatype.aether.RepositorySystemSession;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
@@ -29,10 +32,14 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
 	private final MavenProject mavenProject;
     private final Plugin jaywayPlugin;
+    private final RepositorySystemSession session;
+    private final DependencyResolver dependencyResolver;
 
-    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin) {
+    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin, RepositorySystemSession session, DependencyResolver dependencyResolver) {
         this.mavenProject = mavenProject;
         this.jaywayPlugin = jaywayPlugin;
+        this.session = session;
+        this.dependencyResolver = dependencyResolver;
     }
 
     public String getName() {
@@ -72,7 +79,21 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 	    return list;
 	}
 
-    public Dependency getAndroidDependency() {
+    public List<String> getPlatformProvidedDependencies() {
+        final Dependency android = getAndroidDependency();
+        final List<String> platformProvidedDependencies = new ArrayList<String>();
+        final DefaultProjectBuildingRequest projectBuildingRequest = new DefaultProjectBuildingRequest();
+        projectBuildingRequest.setRepositorySession(session);
+
+        final List<org.sonatype.aether.artifact.Artifact> dependencies = dependencyResolver.resolveDependencies(android, "jar");
+        for(org.sonatype.aether.artifact.Artifact dependency : dependencies) {
+            platformProvidedDependencies.add(dependency.getFile().getAbsolutePath());
+        }
+
+        return platformProvidedDependencies;
+    }
+
+    private Dependency getAndroidDependency() {
         for(Artifact artifact : mavenProject.getArtifacts()) {
             if(artifact.getGroupId().equals("com.google.android") && artifact.getArtifactId().equals("android")) {
                 return new MavenDependency(artifact);

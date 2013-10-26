@@ -28,20 +28,16 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfigurer {
 
     final private ClasspathLoader loader;
-    final private RepositorySystem repository;
     final private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
-    final private RepositorySystemSession session;
     final private IMavenProjectRegistry projectRegistry;
 
     @Inject
-    public AddNonRuntimeClasspathContainerConfigurer(ClasspathLoader loader, RepositorySystem repository,
+    public AddNonRuntimeClasspathContainerConfigurer(ClasspathLoader loader,
             AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory,
-            RepositorySystemSession session, IWorkspace workspace, IMavenProjectRegistry projectRegistry) {
+            IWorkspace workspace, IMavenProjectRegistry projectRegistry) {
         super();
         this.loader = loader;
-        this.repository = repository;
         this.mavenProjectFactory = mavenProjectFactory;
-        this.session = session;
         this.projectRegistry = projectRegistry;
     }
 
@@ -50,7 +46,7 @@ public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfi
     }
 
     public void configure(Project project) {
-        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, repository, mavenProjectFactory, project.getJavaProject(), session, projectRegistry);
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, mavenProjectFactory, project.getJavaProject(), projectRegistry);
         try {
             setClasspathContainer(new Path(CONTAINER_NONRUNTIME_DEPENDENCIES),
                     new IJavaProject[] { project.getJavaProject() }, new IClasspathContainer[] { nonRuntimeContainer },

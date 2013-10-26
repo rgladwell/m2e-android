@@ -17,20 +17,16 @@ import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.core.project.IMavenProjectRegistry;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
 
 public class NonRuntimeDependenciesContainerInitializer extends ClasspathContainerInitializer {
 
     @Inject private ClasspathLoader loader;
-    @Inject private RepositorySystem repository;
     @Inject private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
-    @Inject private RepositorySystemSession session;
     @Inject private IMavenProjectRegistry projectRegistry;
 
     @Override
     public void initialize(IPath path, IJavaProject project) throws CoreException {
-        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, repository, mavenProjectFactory, project, session, projectRegistry);
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, mavenProjectFactory, project, projectRegistry);
         setClasspathContainer(path, new IJavaProject[] { project }, new IClasspathContainer[] { nonRuntimeContainer }, new NullProgressMonitor());
     }
 

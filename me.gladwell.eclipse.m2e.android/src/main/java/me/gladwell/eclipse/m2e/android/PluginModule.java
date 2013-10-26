@@ -41,6 +41,10 @@ import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenToEclipseAndroidProjectConverter;
+import me.gladwell.eclipse.m2e.android.resolve.AetherArtifactResolver;
+import me.gladwell.eclipse.m2e.android.resolve.AetherDependencyResolver;
+import me.gladwell.eclipse.m2e.android.resolve.ArtifactResolver;
+import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
 
 import org.apache.maven.cli.ConsoleMavenTransferListener;
 import org.apache.maven.project.MavenProject;
@@ -82,6 +86,8 @@ public class PluginModule extends AbstractModule {
         bind(PersistNonRuntimeClasspathConfigurer.class);
         bind(AddNonRuntimeClasspathContainerConfigurer.class);
         bind(IMavenProjectRegistry.class).toInstance(MavenPlugin.getMavenProjectRegistry());
+        bind(ArtifactResolver.class).to(AetherArtifactResolver.class);
+        bind(DependencyResolver.class).to(AetherDependencyResolver.class);
 	}
 
 	@Provides
