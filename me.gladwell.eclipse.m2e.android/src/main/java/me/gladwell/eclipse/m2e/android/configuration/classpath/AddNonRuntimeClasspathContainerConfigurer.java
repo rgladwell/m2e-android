@@ -6,39 +6,26 @@ import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
 
 import javax.inject.Inject;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.m2e.core.project.IMavenProjectRegistry;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
-import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.configuration.PrunePlatformProvidedDependencies;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfigurer {
 
     final private ClasspathLoader loader;
-    final private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
-    final private IMavenProjectRegistry projectRegistry;
 
     @Inject
-    public AddNonRuntimeClasspathContainerConfigurer(ClasspathLoader loader,
-            AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory,
-            IWorkspace workspace, IMavenProjectRegistry projectRegistry) {
+    public AddNonRuntimeClasspathContainerConfigurer(@PrunePlatformProvidedDependencies ClasspathLoader loader) {
         super();
         this.loader = loader;
-        this.mavenProjectFactory = mavenProjectFactory;
-        this.projectRegistry = projectRegistry;
     }
 
     public boolean shouldApplyTo(MavenAndroidProject project) {
@@ -46,7 +33,7 @@ public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfi
     }
 
     public void configure(Project project) {
-        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, mavenProjectFactory, project.getJavaProject(), projectRegistry);
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, project.getJavaProject());
         try {
             setClasspathContainer(new Path(CONTAINER_NONRUNTIME_DEPENDENCIES),
                     new IJavaProject[] { project.getJavaProject() }, new IClasspathContainer[] { nonRuntimeContainer },

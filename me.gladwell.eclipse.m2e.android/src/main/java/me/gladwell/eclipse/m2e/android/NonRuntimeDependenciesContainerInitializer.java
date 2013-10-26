@@ -6,27 +6,22 @@ import javax.inject.Inject;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
-import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
-import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
+import me.gladwell.eclipse.m2e.android.configuration.PrunePlatformProvidedDependencies;
 
-import org.apache.maven.project.MavenProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 
 public class NonRuntimeDependenciesContainerInitializer extends ClasspathContainerInitializer {
 
-    @Inject private ClasspathLoader loader;
-    @Inject private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
-    @Inject private IMavenProjectRegistry projectRegistry;
+    @Inject @PrunePlatformProvidedDependencies private ClasspathLoader loader;
 
     @Override
     public void initialize(IPath path, IJavaProject project) throws CoreException {
-        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, mavenProjectFactory, project, projectRegistry);
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, project);
         setClasspathContainer(path, new IJavaProject[] { project }, new IClasspathContainer[] { nonRuntimeContainer }, new NullProgressMonitor());
     }
 

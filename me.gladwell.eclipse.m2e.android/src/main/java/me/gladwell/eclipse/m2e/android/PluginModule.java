@@ -16,6 +16,8 @@ import java.util.List;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathPersister;
 import me.gladwell.eclipse.m2e.android.configuration.ObjectSerializationClasspathPersister;
+import me.gladwell.eclipse.m2e.android.configuration.PrunePlatformProvidedDependencies;
+import me.gladwell.eclipse.m2e.android.configuration.PrunePlatformProvidedDependenciesClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.AddGenFolderClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.AddNonRuntimeClasspathContainerConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.ClasspathConfigurer;
@@ -81,7 +83,12 @@ public class PluginModule extends AbstractModule {
 		bind(MavenModelManager.class).toInstance(MavenPlugin.getMavenModelManager());
 		bind(LibraryDependenciesWorkspaceConfigurer.class);
         bind(ClasspathPersister.class).to(ObjectSerializationClasspathPersister.class);
+
         bind(ClasspathLoader.class).to(ObjectSerializationClasspathPersister.class);
+        bind(ClasspathLoader.class)
+            .annotatedWith(PrunePlatformProvidedDependencies.class)
+            .to(PrunePlatformProvidedDependenciesClasspathLoader.class);
+
         bind(File.class).toInstance(AndroidMavenPlugin.getDefault().getStateLocation().toFile());
         bind(PersistNonRuntimeClasspathConfigurer.class);
         bind(AddNonRuntimeClasspathContainerConfigurer.class);

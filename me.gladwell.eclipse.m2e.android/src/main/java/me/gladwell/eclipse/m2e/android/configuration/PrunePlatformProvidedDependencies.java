@@ -6,14 +6,16 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package me.gladwell.eclipse.m2e.android.resolve;
+package me.gladwell.eclipse.m2e.android.configuration;
 
-import java.util.List;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import me.gladwell.eclipse.m2e.android.project.Dependency;
+import java.lang.annotation.Retention;
 
-public interface DependencyResolver {
+import com.google.inject.BindingAnnotation;
 
-    List<org.sonatype.aether.artifact.Artifact> resolveDependencies(Dependency android, String string);
+@Retention(RUNTIME)
+@BindingAnnotation
+public @interface PrunePlatformProvidedDependencies {
 
 }

@@ -13,8 +13,17 @@ import java.io.FileNotFoundException;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 
-public interface ClasspathLoader {
+public abstract class ClasspathLoaderDecorator implements ClasspathLoader {
 
-    Iterable<IClasspathEntry> load(IJavaProject project) throws FileNotFoundException;
+    private final ClasspathLoader loader;
+
+    public ClasspathLoaderDecorator(ClasspathLoader loader) {
+        super();
+        this.loader = loader;
+    }
+
+    public Iterable<IClasspathEntry> load(IJavaProject project) throws FileNotFoundException {
+        return loader.load(project);
+    }
 
 }
