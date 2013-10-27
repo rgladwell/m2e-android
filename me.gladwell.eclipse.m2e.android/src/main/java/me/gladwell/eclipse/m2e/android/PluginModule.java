@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell, Csaba Kozák
+ * Copyright (c) 2012, 2013, 2014, 2015 Ricardo Gladwell, Csaba Kozák
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.embedder.IMavenConfigurationChangeListener;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.project.IMavenProjectChangedListener;
 import org.eclipse.m2e.core.project.IMavenProjectRegistry;
@@ -54,6 +55,7 @@ public class PluginModule extends AbstractModule {
         bind(IMavenProjectChangedListener.class).to(AndroidMavenLaunchConfigurationListener.class);
         bind(ILaunchManager.class).toInstance(DebugPlugin.getDefault().getLaunchManager());
         bind(IMavenProjectRegistry.class).toInstance(MavenPlugin.getMavenProjectRegistry());
+        bind(IMavenConfigurationChangeListener.class).to(EclipseEventsToEventBusListener.class);
     }
 
 }

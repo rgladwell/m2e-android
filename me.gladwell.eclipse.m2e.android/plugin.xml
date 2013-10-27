@@ -51,4 +51,10 @@
           id="me.gladwell.m2e.android.sourcepathProvider"
           class="me.gladwell.eclipse.m2e.inject.GuiceExtensionFactory:me.gladwell.eclipse.m2e.android.JUnitSourcepathProvider" />
    </extension>
+   <extension
+         point="org.eclipse.m2e.core.mavenProjectChangedListeners">
+      <listener
+            class="me.gladwell.eclipse.m2e.inject.GuiceExtensionFactory:me.gladwell.eclipse.m2e.android.EclipseEventsToEventBusListener">
+      </listener>
+   </extension>
 </plugin>

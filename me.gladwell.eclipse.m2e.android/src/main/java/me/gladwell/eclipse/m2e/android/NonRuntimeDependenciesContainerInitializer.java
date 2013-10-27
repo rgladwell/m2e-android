@@ -10,9 +10,9 @@ package me.gladwell.eclipse.m2e.android;
 
 import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
 
+import me.gladwell.eclipse.m2e.android.configuration.Caching;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
-import me.gladwell.eclipse.m2e.android.configuration.SourceAttacher;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProjectFactory;
 
@@ -28,7 +28,7 @@ import com.google.inject.Inject;
 
 public class NonRuntimeDependenciesContainerInitializer extends ClasspathContainerInitializer {
 
-    @Inject @SourceAttacher private ClasspathLoader loader;
+    @Inject @Caching private ClasspathLoader loader;
     @Inject EclipseAndroidProjectFactory factory;
 
     @Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010, 2014 Ricardo Gladwell, Hugo Josefson, Csaba Kozák
+ * Copyright (c) 2009- Ricardo Gladwell, Hugo Josefson, Csaba Kozák
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@ package me.gladwell.eclipse.m2e.android;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.m2e.core.embedder.IMavenConfiguration;
+import org.eclipse.m2e.core.embedder.IMavenConfigurationChangeListener;
 import org.eclipse.m2e.core.project.IMavenProjectChangedListener;
 import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.osgi.framework.BundleContext;
@@ -33,6 +35,8 @@ public class AndroidMavenPlugin extends Plugin {
     private @Inject ILaunchConfigurationListener launchConfigurationListener;
     private @Inject IMavenProjectRegistry projectManager;
     private @Inject IMavenProjectChangedListener mavenProjectChangedListener;
+    private @Inject IMavenConfiguration configuration;
+    private @Inject IMavenConfigurationChangeListener mavenConfigurationListener;
 
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -43,6 +47,7 @@ public class AndroidMavenPlugin extends Plugin {
         getInjector().injectMembers(this);
         launchManager.addLaunchConfigurationListener(launchConfigurationListener);
         projectManager.addMavenProjectChangedListener(mavenProjectChangedListener);
+        configuration.addConfigurationChangeListener(mavenConfigurationListener);
     }
 
     /**

@@ -135,7 +135,7 @@ public class AttachDocumentsClasspathLoader extends ClasspathLoaderDecorator {
                             }
 
                         } catch (Exception e) {
-                            warn("could not resolve javadocs for classpath entry=[" + entry + "]");
+                            warn("could not resolve javadocs for classpath entry=[" + entry + "]", e);
                             processed.add(entry);
                         }
                     }

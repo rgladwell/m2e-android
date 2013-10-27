@@ -9,6 +9,7 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static me.gladwell.eclipse.m2e.android.Log.debug;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -216,6 +217,7 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
         ObjectInputStream is = null;
         try {
             File file = new File(stateLocation, project.getProject().getName());
+            debug("loading classpath from file=[" + file + "]");
             if (!file.exists()) {
                 throw new FileNotFoundException(file.getAbsolutePath());
             }

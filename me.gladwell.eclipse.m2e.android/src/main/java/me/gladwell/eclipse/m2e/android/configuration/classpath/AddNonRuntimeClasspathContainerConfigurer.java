@@ -12,9 +12,9 @@ import org.eclipse.jdt.core.IClasspathContainer;
 
 import com.google.inject.Inject;
 
+import me.gladwell.eclipse.m2e.android.configuration.Caching;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
-import me.gladwell.eclipse.m2e.android.configuration.SourceAttacher;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
@@ -23,7 +23,7 @@ public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfi
     final private ClasspathLoader loader;
 
     @Inject
-    public AddNonRuntimeClasspathContainerConfigurer(@SourceAttacher ClasspathLoader loader) {
+    public AddNonRuntimeClasspathContainerConfigurer(@Caching ClasspathLoader loader) {
         super();
         this.loader = loader;
     }

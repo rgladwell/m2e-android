@@ -8,10 +8,13 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import static com.google.inject.Scopes.SINGLETON;
+
 import java.io.File;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 
 public class ConfigurationModule extends AbstractModule {
@@ -24,10 +27,12 @@ public class ConfigurationModule extends AbstractModule {
         bind(ClasspathLoader.class).annotatedWith(PrunePlatformProvidedDependencies.class).to(
                 PrunePlatformProvidedDependenciesClasspathLoader.class);
 
+        bind(ClasspathLoader.class).annotatedWith(Caching.class).to(CachingClasspathLoader.class);
         bind(ClasspathLoader.class).annotatedWith(SourceAttacher.class).to(AttachSourcesClasspathLoader.class);
         bind(ClasspathLoader.class).annotatedWith(DocumentsAttacher.class).to(AttachDocumentsClasspathLoader.class);
 
         bind(ClasspathPersister.class).to(ObjectSerializationClasspathPersister.class);
+        bind(EventBus.class).in(SINGLETON);
     }
 
 }

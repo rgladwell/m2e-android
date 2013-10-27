@@ -83,7 +83,7 @@ public class AttachSourcesClasspathLoader extends ClasspathLoaderDecorator {
                             processed.add(entry);
                         }
                     } catch (Exception e) {
-                        warn("could not resolve sources for classpath entry=[" + entry + "]");
+                        warn("could not resolve sources for classpath entry=[" + entry + "]", e);
                         processed.add(entry);
                     }
                 }

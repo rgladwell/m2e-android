@@ -26,7 +26,6 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.internal.preferences.MavenConfigurationImpl;
@@ -44,7 +43,6 @@ import com.google.common.collect.Lists;
 public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
     private static final IPath CUSTOM_PATH = new Path("/custom-path");
-    private static final String DEPENDENCY_JAR = "mockito-core-1.9.5.jar";
     private static final String PROJECT_NAME = "android-application";
 
     private MavenConfigurationImpl mavenConfiguration;
@@ -58,6 +56,7 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
         enableDownloadJavaDoc();
         waitForJobsToComplete(monitor);
     }
+
     @Override
     protected void tearDown() throws Exception {
         mavenConfiguration.setDownloadSources(false);
@@ -79,7 +78,7 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
     public void testSourcesAttached() throws Exception {
         IProject project = importAndroidProject(PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
-        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
         assertNotNull(entry.getSourceAttachmentPath());
     }
 
@@ -90,7 +89,7 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
         setCustomSourceAttachment(javaProject);
 
-        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
 
         assertEquals(CUSTOM_PATH, entry.getSourceAttachmentPath());
     }
@@ -102,7 +101,7 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
         setCustomSourceAttachment(javaProject);
         updateMavenProject(project);
 
-        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
 
         assertEquals(CUSTOM_PATH, entry.getSourceAttachmentPath());
     }
@@ -110,7 +109,8 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
     public void testDocumentationAttached() throws Exception {
         IProject project = importAndroidProject(PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
-        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
         assertThat(entry, hasExtraAttribute(IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME));
     }
 
@@ -118,8 +118,30 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
         disableDownloadJavaDoc();
         IProject project = importAndroidProject(PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
-        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
         assertThat(entry, not(hasExtraAttribute(IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME)));
+    }
+
+    public void testDocumentationAttachedIfJavaDocEnabledBeforeRefresh() throws Exception {
+        disableDownloadJavaDoc();
+        IProject project = importAndroidProject(PROJECT_NAME);
+        IJavaProject javaProject = JavaCore.create(project);
+        getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
+        enableDownloadJavaDoc();
+
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
+        assertThat(entry, hasExtraAttribute(IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME));
+    }
+
+    public void testSourcesAttachedIfEnabledBeforeRefresh() throws Exception {
+        mavenConfiguration.setDownloadSources(false);
+        IProject project = importAndroidProject(PROJECT_NAME);
+        IJavaProject javaProject = JavaCore.create(project);
+        getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
+        mavenConfiguration.setDownloadSources(true);
+
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar");
+        assertNotNull(entry.getSourceAttachmentPath());
     }
 
     private Matcher<IClasspathEntry> hasExtraAttribute(final String expected) {
@@ -170,7 +192,7 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
                         @Override
                         public IClasspathEntry apply(IClasspathEntry entry) {
-                            if (entry.getPath().toPortableString().contains(DEPENDENCY_JAR)) {
+                            if (entry.getPath().toPortableString().contains("mockito-core-1.9.5.jar")) {
                                 return JavaCore.newLibraryEntry(entry.getPath(), path, null,
                                         entry.getAccessRules(), entry.getExtraAttributes(), entry.isExported());
                             }
