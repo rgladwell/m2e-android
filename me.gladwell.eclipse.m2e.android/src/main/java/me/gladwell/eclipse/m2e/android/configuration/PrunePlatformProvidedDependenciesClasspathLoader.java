@@ -9,7 +9,6 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
 import static com.google.common.collect.Iterables.filter;
-import static me.gladwell.eclipse.m2e.android.Logger.info;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -42,7 +41,6 @@ public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathL
     @Override
     public Iterable<IClasspathEntry> load(IJavaProject project) throws FileNotFoundException {
         final Iterable<IClasspathEntry> nonRuntimeDependencies = super.load(project);
-        info("non-runtime classpath=["+nonRuntimeDependencies+"] loaded");
 
         MavenProject mavenProject = projectRegistry.getProject(project.getProject()).getMavenProject();
         if(mavenProject != null) {
@@ -50,14 +48,11 @@ public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathL
             final List<String> platformProvidedDependencies = androidProject.getPlatformProvidedDependencies();
 
             if(platformProvidedDependencies != null) {
-                info("pruning platform provided dependencies=[" + platformProvidedDependencies + "] from classpath");
                 final Iterable<IClasspathEntry> prunedNonRuntimeDependencies = filter(nonRuntimeDependencies, new Predicate<IClasspathEntry>() {
                     public boolean apply(IClasspathEntry entry) {
                         if (!platformProvidedDependencies.contains(entry.getPath().toOSString())) {
-                            info("retaining dependency=[" + entry.getPath() + "]");
                             return true;
                         } else {
-                            info("pruning dependency=[" + entry.getPath() + "]");
                             return false;
                         }
                     }

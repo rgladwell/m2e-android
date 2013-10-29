@@ -9,8 +9,6 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
 import static com.google.common.collect.Iterables.toArray;
-import static me.gladwell.eclipse.m2e.android.Logger.info;
-import static me.gladwell.eclipse.m2e.android.Logger.warn;
 
 import java.io.FileNotFoundException;
 
@@ -36,10 +34,8 @@ public class NonRuntimeDependenciesClasspathContainer implements IClasspathConta
     public IClasspathEntry[] getClasspathEntries() {
         try {
             final Iterable<IClasspathEntry> nonRuntimeDependencies = loader.load(project);
-            info("adding non-runtime classpath=[" + nonRuntimeDependencies + "] from classpath");
             return toArray(nonRuntimeDependencies, IClasspathEntry.class);
         } catch (FileNotFoundException e) {
-            warn("classpath not yet persisted", e);
             return new IClasspathEntry[0];
         }
     }

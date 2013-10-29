@@ -8,8 +8,6 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import static me.gladwell.eclipse.m2e.android.Logger.info;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -168,7 +166,6 @@ public @Singleton class ObjectSerializationClasspathPersister implements Classpa
         ObjectOutputStream os = null;
         try {
             File file = new File(stateLocation, project.getName());
-            info("persisting classpath=["+classpath+"] to file=[" + file + "]");
             os = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file))) {
                 {
                     enableReplaceObject(true);
