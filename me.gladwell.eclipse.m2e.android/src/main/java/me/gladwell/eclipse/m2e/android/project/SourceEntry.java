@@ -14,4 +14,6 @@ public interface SourceEntry {
 
     String getOutputLocation();
 
+    String getPath();
+
 }

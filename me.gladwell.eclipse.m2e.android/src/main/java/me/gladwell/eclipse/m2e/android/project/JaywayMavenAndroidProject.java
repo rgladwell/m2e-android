@@ -148,4 +148,8 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 		return null;
 	}
 
+    public List<String> getSourcePaths() {
+        return mavenProject.getCompileSourceRoots();
+    }
+
 }

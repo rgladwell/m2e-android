@@ -8,6 +8,8 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import static com.google.common.base.Predicates.and;
+
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
@@ -34,16 +36,32 @@ public class Classpaths {
         });
     }
 
+    public static IClasspathEntry findClasspathEntry(IClasspathEntry[] classpath, final String path) {
+        return matchClasspathEntry(classpath, and(classpathEntryOfType(IClasspathEntry.CPE_SOURCE), new Predicate<IClasspathEntry>() {
+            public boolean apply(IClasspathEntry entry) {
+                return entry.getPath().toOSString().endsWith(path) && entry.getOutputLocation() != null;
+            }
+        }));
+    }
+
     private static IClasspathEntry matchContainer(IClasspathDescriptor classpath, Predicate<IClasspathEntry> predicate) {
-        for(IClasspathEntry entry : classpath.getEntries()) {
-            if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-                if(predicate.apply(entry)) {
-                    return entry;
-                }
+        return matchClasspathEntry(classpath.getEntries(), and(classpathEntryOfType(IClasspathEntry.CPE_CONTAINER), predicate));
+    }
+
+    private static Predicate<IClasspathEntry> classpathEntryOfType(final int type) {
+        return new Predicate<IClasspathEntry>() {
+            public boolean apply(IClasspathEntry entry) {
+                return entry.getEntryKind() == type;
+            }
+        };
+    }
+
+    private static IClasspathEntry matchClasspathEntry(IClasspathEntry[] classpath, Predicate<IClasspathEntry> predicate) {
+        for(IClasspathEntry entry : classpath) {
+            if(predicate.apply(entry)) {
+                return entry;
             }
         }
         return null;
-        
     }
-
 }

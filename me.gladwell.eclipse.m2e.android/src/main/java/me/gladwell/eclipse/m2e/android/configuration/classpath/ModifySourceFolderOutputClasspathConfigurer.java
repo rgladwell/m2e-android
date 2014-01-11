@@ -23,7 +23,7 @@ public class ModifySourceFolderOutputClasspathConfigurer implements ClasspathCon
 
     public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
         for(SourceEntry entry : eclipseProject.getClasspath().getSourceEntries()) {
-            if(!entry.getOutputLocation().endsWith(ANDROID_CLASSES_FOLDER)) {
+            if(mavenProject.getSourcePaths().contains(entry.getPath()) && !entry.getOutputLocation().endsWith(ANDROID_CLASSES_FOLDER)) {
                 entry.setOutputLocation(ANDROID_CLASSES_FOLDER);
             }
         }

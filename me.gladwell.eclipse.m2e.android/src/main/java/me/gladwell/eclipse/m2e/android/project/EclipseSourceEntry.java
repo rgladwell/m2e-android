@@ -1,5 +1,10 @@
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.io.File;
+
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
@@ -24,6 +29,12 @@ public class EclipseSourceEntry implements SourceEntry {
 
     public String getOutputLocation() {
         return entry.getOutputLocation().toString();
+    }
+
+    public String getPath() {
+        String parent = project.getProject().getLocation().toFile().getParent();
+        File path = new File(parent, entry.getPath().toOSString());
+        return path.getAbsolutePath();
     }
 
 }

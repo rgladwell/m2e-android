@@ -33,4 +33,6 @@ public interface MavenAndroidProject {
 
     public List<String> getPlatformProvidedDependencies();
 
+    public List<String> getSourcePaths();
+
 }

@@ -9,6 +9,7 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static java.io.File.separator;
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathEntry;
 
 import java.io.File;
 
@@ -36,6 +37,7 @@ import com.android.ide.eclipse.adt.AdtConstants;
 public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     private static final String ANDROID_CLASSES_FOLDER = "bin" + separator + "classes";
+    private static final String ANDROID_TEST_CLASSES_FOLDER = "target" + separator + "test-classes";
     private static final String PROJECT_NAME = "android-application";
 
 	private IProject project;
@@ -117,11 +119,13 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
     public void testConfigureSetsCorrectSourceOutputFolder() throws Exception {
-        for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-            if(entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getOutputLocation() != null) {
-                assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
-            }
-        }
+        IClasspathEntry entry = findClasspathEntry(javaProject.getRawClasspath(), "src/main/java");
+        assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
+    }
+
+    public void testConfigureSetsCorrectTestOutputFolder() throws Exception {
+        IClasspathEntry entry = findClasspathEntry(javaProject.getRawClasspath(), "src/test/java");
+        assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_TEST_CLASSES_FOLDER));
     }
 
     public void testConfigureMarksAndroidLibrariesContainerNotExported() throws Exception {
