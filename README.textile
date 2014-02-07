@@ -4,7 +4,7 @@ The Android Configurator (*m2e-android*) is an Maven Integration for Eclipse (m2
 
 For instructions on how to get started using the m2e-android please see the "project web site.":http://rgladwell.github.com/m2e-android/
 
-_Copyright (c) 2009, 2010, 2011, 2012 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
+_Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
 *License:* "Eclipse Public License 1.0":http://www.eclipse.org/legal
 
 h2. Hacking
