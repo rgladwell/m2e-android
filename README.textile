@@ -48,3 +48,5 @@ For more information on developing the m2e-android plug-in please see the follow
 
 * "Testing":https://github.com/rgladwell/m2e-android/wiki/Testing
 * "Guidelines":https://github.com/rgladwell/m2e-android/wiki/Guidelines
+
+<a href="http://with-eclipse.github.io/" target="_blank"><img alt="with-Eclipse logo" src="http://with-eclipse.github.io/with-eclipse-1.jpg" /></a>
