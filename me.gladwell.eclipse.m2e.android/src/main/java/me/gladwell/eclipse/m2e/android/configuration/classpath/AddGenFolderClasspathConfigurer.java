@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Ricardo Gladwell
+ * Copyright (c) 2013, 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,12 @@ package me.gladwell.eclipse.m2e.android.configuration.classpath;
 import java.io.File;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 
 public class AddGenFolderClasspathConfigurer implements ClasspathConfigurer {
 
@@ -26,8 +26,8 @@ public class AddGenFolderClasspathConfigurer implements ClasspathConfigurer {
         return true;
     }
 
-    public void configure(Project session) {
-        IFolder gen = session.getJavaProject().getProject().getFolder(ANDROID_GEN_FOLDER + File.separator);
+    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+        IFolder gen = eclipseProject.getProject().getFolder(ANDROID_GEN_FOLDER + File.separator);
         if (!gen.exists()) {
             try {
                 gen.create(true, true, new NullProgressMonitor());
@@ -36,9 +36,7 @@ public class AddGenFolderClasspathConfigurer implements ClasspathConfigurer {
             }
         }
 
-        if (!session.getClasspath().containsPath(new Path(ANDROID_GEN_FOLDER))) {
-            session.getClasspath().addSourceEntry(gen.getFullPath(), null, false);
-        }
+        eclipseProject.getClasspath().addSourceEntry(ANDROID_GEN_FOLDER);
     }
 
 }

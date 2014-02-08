@@ -1,21 +1,21 @@
-package me.gladwell.eclipse.m2e.android.configuration.classpath;
+/*******************************************************************************
+ * Copyright (c) 2013, 2014 Ricardo Gladwell
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
 
-import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES;
-import static org.eclipse.jdt.core.JavaCore.newContainerEntry;
-import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
+package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
 import javax.inject.Inject;
 
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IClasspathContainer;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
-import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.configuration.PrunePlatformProvidedDependencies;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfigurer {
@@ -32,16 +32,9 @@ public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfi
         return true;
     }
 
-    public void configure(Project project) {
-        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, project.getJavaProject());
-        try {
-            setClasspathContainer(new Path(CONTAINER_NONRUNTIME_DEPENDENCIES),
-                    new IJavaProject[] { project.getJavaProject() }, new IClasspathContainer[] { nonRuntimeContainer },
-                    new NullProgressMonitor());
-            project.getClasspath().addEntry(newContainerEntry(nonRuntimeContainer.getPath(), false));
-        } catch (JavaModelException e) {
-            throw new ProjectConfigurationException(e);
-        }
+    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, eclipseProject);
+        eclipseProject.getClasspath().addContainer(nonRuntimeContainer);
     }
 
 }

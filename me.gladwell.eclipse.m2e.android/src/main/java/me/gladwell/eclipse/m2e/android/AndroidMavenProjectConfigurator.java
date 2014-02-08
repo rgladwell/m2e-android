@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010, 2011, 2012 Ricardo Gladwell and Hugo Josefson
+ * Copyright (c) 2009 - 2014 Ricardo Gladwell and Hugo Josefson
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,10 @@ package me.gladwell.eclipse.m2e.android;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
-import me.gladwell.eclipse.m2e.android.configuration.classpath.Project;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.ClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.RawClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.workspace.WorkspaceConfigurer;
+import me.gladwell.eclipse.m2e.android.project.AdtEclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
@@ -26,8 +26,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
@@ -101,13 +99,12 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
     }
 
 	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-	    final MavenAndroidProject androidProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
-		final IJavaProject javaProject = JavaCore.create(request.getProject());
-        final Project project = new Project(classpath, javaProject, androidProject);
+	    final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
+        final EclipseAndroidProject eclipseProject = new AdtEclipseAndroidProject(request.getProject(), classpath);
 		try {
 		    for(ClasspathConfigurer classpathConfigurer : classpathConfigurers) {
-		        if(classpathConfigurer.shouldApplyTo(androidProject)) {
-                    classpathConfigurer.configure(project);
+		        if(classpathConfigurer.shouldApplyTo(mavenProject)) {
+                    classpathConfigurer.configure(mavenProject, eclipseProject);
 		        }
 		    }
 		} catch (Exception e) {

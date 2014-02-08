@@ -34,4 +34,6 @@ public interface EclipseAndroidProject extends AndroidProject {
 
 	void setAssetsDirectory(File file);
 
+    public Classpath getClasspath();
+
 }

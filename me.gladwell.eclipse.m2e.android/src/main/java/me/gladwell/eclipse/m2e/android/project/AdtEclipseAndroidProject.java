@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Ricardo Gladwell
+ * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
+import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
 import com.android.ide.eclipse.adt.AdtConstants;
 import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
@@ -38,9 +40,9 @@ import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
 
 public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidProject {
 
-    private IProject project;
-
+    private final IProject project;
 	private final IWorkspace workspace;
+    private IClasspathDescriptor classpath;
 
 	public String getName() {
 		return project.getName();
@@ -50,6 +52,11 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 	    this.workspace = workspace;
 		this.project = project;
 	}
+
+    public AdtEclipseAndroidProject(IProject project,  IClasspathDescriptor classpath) {
+        this(project.getWorkspace(), project);
+        this.classpath = classpath;
+    }
 
 	public IProject getProject() {
 		return project;
@@ -175,5 +182,9 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
     		}
 		}
 	}
+
+    public Classpath getClasspath() {
+        return new MavenEclipseClasspath(JavaCore.create(project), classpath);
+    }
 
 }
