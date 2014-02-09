@@ -39,7 +39,7 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
             }
         }
 
-        persister.save(project, nonRuntimeDependenciesEntries);
+        persister.save(project.getName(), nonRuntimeDependenciesEntries);
     }
 
 }

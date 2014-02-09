@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Ricardo Gladwell
+ * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,15 +14,17 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 
-public interface EclipseAndroidProject extends AndroidProject {
+public interface EclipseAndroidProject {
+
+    public boolean isAndroidProject();
+
+    public boolean isLibrary();
 
 	public IProject getProject();
 
 	public void setAndroidProject(boolean androidProject);
 
 	public void setLibrary(boolean isLibrary);
-
-	public void setProvidedDependencies(List<String> providedDependencies);
 
 	public void setLibraryDependencies(List<EclipseAndroidProject> dependencies);
 

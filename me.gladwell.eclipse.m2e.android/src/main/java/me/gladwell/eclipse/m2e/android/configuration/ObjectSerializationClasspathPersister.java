@@ -20,8 +20,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.project.AndroidProject;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IAccessRule;
@@ -35,6 +33,8 @@ import com.google.inject.Singleton;
 /**
  * Adapted from:
  * http://git.eclipse.org/c/m2e/m2e-core.git/tree/org.eclipse.m2e.jdt/src/org/eclipse/m2e/jdt/internal/MavenClasspathContainerSaveHelper.java
+ * 
+ * @TODO re-factor into smaller classes
  */
 public @Singleton class ObjectSerializationClasspathPersister implements ClasspathPersister, ClasspathLoader {
 
@@ -162,10 +162,10 @@ public @Singleton class ObjectSerializationClasspathPersister implements Classpa
         this.stateLocation = stateLocation;
     }
 
-    public void save(AndroidProject project, List<IClasspathEntry> classpath) {
+    public void save(String project, List<IClasspathEntry> classpath) {
         ObjectOutputStream os = null;
         try {
-            File file = new File(stateLocation, project.getName());
+            File file = new File(stateLocation, project);
             os = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file))) {
                 {
                     enableReplaceObject(true);

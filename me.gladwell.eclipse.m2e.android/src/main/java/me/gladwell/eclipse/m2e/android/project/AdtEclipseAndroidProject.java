@@ -38,15 +38,11 @@ import com.android.io.StreamException;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
 
-public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidProject {
+public class AdtEclipseAndroidProject implements EclipseAndroidProject {
 
     private final IProject project;
 	private final IWorkspace workspace;
     private IClasspathDescriptor classpath;
-
-	public String getName() {
-		return project.getName();
-	}
 
 	public AdtEclipseAndroidProject(IWorkspace workspace, IProject project) {
 	    this.workspace = workspace;
@@ -89,18 +85,6 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject, AndroidP
 
 	public void setLibrary(boolean isLibrary) {
 		setAndroidProperty(ProjectProperties.PROPERTY_LIBRARY, Boolean.toString(isLibrary));
-	}
-
-	public List<String> getNonRuntimeDependencies() {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setProvidedDependencies(List<String> providedDependencies) {
-		throw new UnsupportedOperationException();
-	}
-
-	public List<Dependency> getLibraryDependencies() {
-		throw new UnsupportedOperationException();
 	}
 
 	public void setLibraryDependencies(List<EclipseAndroidProject> libraryDependencies) {
