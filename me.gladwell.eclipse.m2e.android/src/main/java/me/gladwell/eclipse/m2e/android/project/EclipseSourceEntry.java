@@ -2,9 +2,6 @@ package me.gladwell.eclipse.m2e.android.project;
 
 import java.io.File;
 
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
