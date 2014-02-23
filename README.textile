@@ -18,6 +18,7 @@ In addition to having Eclipse Juno installed, you need to do the following steps
 # Install the "Android SDK.":http://developer.android.com/sdk/index.html
 # Create ANDROID_HOME environment variable containing the Android SDK install path. 
 # Ensure you have the latest update on the Android SDK (execute @android update sdk --no-ui --obsolete --force@) 
+# Install the "Maven Android SDK Deployer":https://github.com/mosabua/maven-android-sdk-deployer
 # Install latest "Android Development Tools.":http://developer.android.com/sdk/eclipse-adt.html
 # Install "Eclipse Plug-in Development Environment.":http://www.eclipse.org/pde/
 # Install "M2E Plugin 1.2+.":http://www.eclipse.org/m2e/download/

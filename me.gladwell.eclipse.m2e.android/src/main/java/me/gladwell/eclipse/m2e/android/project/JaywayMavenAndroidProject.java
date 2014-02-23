@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Ricardo Gladwell
+ * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell and David Carver
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -95,12 +95,17 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
     private Dependency getAndroidDependency() {
         for(Artifact artifact : mavenProject.getArtifacts()) {
-            if(artifact.getGroupId().equals("com.google.android") && artifact.getArtifactId().equals("android")) {
+            if(isAndroidGroupId(artifact) && artifact.getArtifactId().equals("android")) {
                 return new MavenDependency(artifact);
             }
         }
         throw new ProjectConfigurationException("cannot find android dependency for project=[" + getName() + "]");
     }
+
+	private boolean isAndroidGroupId(Artifact artifact) {
+		return artifact.getGroupId().equals("com.google.android") ||
+		    artifact.getGroupId().equals("android");
+	}
 
 	public List<Dependency> getLibraryDependencies() {
 	    List<Dependency> results = new ArrayList<Dependency>(mavenProject.getArtifacts().size());

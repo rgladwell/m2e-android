@@ -12,6 +12,9 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null
   - echo yes |android update sdk --filter platform-tools,build-tools-17.0.0,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force > /dev/null
+  - git clone git@github.com:mosabua/maven-android-sdk-deployer.git
+  - cd maven-android-sdk-deployer
+  - mvn install
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 script: mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtycho.showEclipseLog=true -Dtarget.platform=$TARGET_PLATFORM verify
