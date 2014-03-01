@@ -8,9 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
-import javax.inject.Inject;
-
 import org.eclipse.jdt.core.IClasspathContainer;
+
+import com.google.inject.Inject;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;

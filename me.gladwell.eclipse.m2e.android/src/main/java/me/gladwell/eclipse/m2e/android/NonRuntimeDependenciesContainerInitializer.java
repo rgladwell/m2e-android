@@ -9,9 +9,6 @@
 package me.gladwell.eclipse.m2e.android;
 
 import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
-
-import javax.inject.Inject;
-
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
 import me.gladwell.eclipse.m2e.android.configuration.PrunePlatformProvidedDependencies;
@@ -24,6 +21,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
+
+import com.google.inject.Inject;
 
 public class NonRuntimeDependenciesContainerInitializer extends ClasspathContainerInitializer {
 

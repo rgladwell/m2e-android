@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Ricardo Gladwell
+ * Copyright (c) 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,8 +7,6 @@
  *******************************************************************************/
 
 package me.gladwell.eclipse.m2e.android.resolve;
-
-import javax.inject.Inject;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
@@ -19,6 +17,8 @@ import org.sonatype.aether.repository.RemoteRepository;
 import org.sonatype.aether.resolution.ArtifactRequest;
 import org.sonatype.aether.resolution.ArtifactResolutionException;
 import org.sonatype.aether.resolution.ArtifactResult;
+
+import com.google.inject.Inject;
 
 public class AetherArtifactResolver implements ArtifactResolver {
 

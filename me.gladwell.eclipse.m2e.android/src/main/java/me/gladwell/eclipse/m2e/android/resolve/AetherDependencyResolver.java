@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Ricardo Gladwell
+ * Copyright (c) 2013, 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,6 @@ package me.gladwell.eclipse.m2e.android.resolve;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.project.Dependency;
@@ -24,6 +22,8 @@ import org.sonatype.aether.resolution.ArtifactDescriptorException;
 import org.sonatype.aether.resolution.ArtifactDescriptorRequest;
 import org.sonatype.aether.resolution.ArtifactDescriptorResult;
 import org.sonatype.aether.util.artifact.DefaultArtifact;
+
+import com.google.inject.Inject;
 
 public class AetherDependencyResolver implements DependencyResolver {
 

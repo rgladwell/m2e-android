@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Ricardo Gladwell
+ * Copyright (c) 2012, 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,14 @@ package me.gladwell.eclipse.m2e.android.project;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import me.gladwell.eclipse.m2e.android.AndroidMavenException;
 import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
 import org.sonatype.aether.RepositorySystemSession;
+
+import com.google.inject.Inject;
 
 public class MavenAndroidProjectFactory implements AndroidProjectFactory<MavenAndroidProject, MavenProject> {
 

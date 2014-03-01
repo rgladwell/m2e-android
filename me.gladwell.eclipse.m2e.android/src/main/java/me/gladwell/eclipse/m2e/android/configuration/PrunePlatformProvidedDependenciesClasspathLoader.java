@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Ricardo Gladwell
+ * Copyright (c) 2013, 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,6 @@ import static com.google.common.collect.Iterables.filter;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
@@ -24,6 +22,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 
 import com.google.common.base.Predicate;
+import com.google.inject.Inject;
 
 public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathLoaderDecorator {
 
