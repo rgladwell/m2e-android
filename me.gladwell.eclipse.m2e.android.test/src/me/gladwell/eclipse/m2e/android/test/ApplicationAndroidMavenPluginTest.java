@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2013 Ricardo Gladwell and Hugo Josefson
+ * Copyright (c) 2009-2014 Ricardo Gladwell and Hugo Josefson
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,24 +9,34 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static java.io.File.separator;
+import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
+import static org.junit.Assert.assertThat;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathEntry;
+import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
 
 import java.io.File;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.JUnitClasspathProvider;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
 import com.android.ide.eclipse.adt.AdtConstants;
+import com.google.inject.Inject;
 
 /**
  * Test suite for configuring and building Android applications.
@@ -43,6 +53,9 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	private IProject project;
 	private IJavaProject javaProject;
 
+	private @Inject ILaunchManager launchManager;
+	private @Inject JUnitClasspathProvider classpathProvider;
+
     @Override
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -51,7 +64,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		javaProject = JavaCore.create(project);
 	}
 
-	public void testConfigure() throws Exception {
+    public void testConfigure() throws Exception {
 		assertNoErrors(project);
 	}
 
@@ -87,7 +100,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 		assertClasspathContains(javaProject, "commons-lang-2.4.jar");
 	}
 
-	public void testConfigureDoesNotAddPlatformDependencytToClasspath() throws Exception {
+	public void testConfigureDoesNotAddPlatformDependencyToClasspath() throws Exception {
 		assertClasspathDoesNotContain(javaProject, "android-2.3.3.jar");
 	}
 
@@ -152,6 +165,69 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
     public void testConfigureAddsNonRuntimeDependenciesToNonRuntimeContainer() throws Exception {
         assertTrue(classpathContainerContains(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar"));
+    }
+
+    // TODO quarantined integration test that fails when run after another integration test
+    public void ignoreConfigureAddsAndroidTestClasspathProviderToTestRunner() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
+
+        // then
+        assertEquals("me.gladwell.m2e.android.classpathProvider", configuration.getAttribute(ATTR_CLASSPATH_PROVIDER, ""));
+    }
+
+    private IRuntimeClasspathEntry[] provideClasspath(ILaunchConfiguration configuration) throws CoreException {
+        project.getFile("bin/classes").getLocation().toFile().mkdirs();
+        IRuntimeClasspathEntry[] unresolvedClasspath = classpathProvider.computeUnresolvedClasspath(configuration);
+        IRuntimeClasspathEntry[] resolvedClasspath = classpathProvider.resolveClasspath(unresolvedClasspath, configuration);
+        return resolvedClasspath;
+    }
+
+    public void testConfigureAddsPlatformProvidedToTestRunnerClasspath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, containsEntry("android-2.3.3.jar"));
+    }
+
+    public void testConfigureAddsPlatformProvidedDependenciesToTestRunnerClasspath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, containsEntry("commons-logging-1.1.1.jar"));
+    }
+
+    public void testConfigureAddsTransitivePlatformProvidedDependenciesToTestRunnerClasspath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, containsEntry("httpcore-4.0.1.jar"));
+    }
+
+    public void testConfigureAddsBinaryFolderToTestRunnerClasspath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, containsEntry("bin/classes"));
     }
 
 }

@@ -42,4 +42,10 @@
                id="me.gladwell.eclipse.m2e.android.classpath.NONRUNTIME_DEPENDENCIES"
                class="me.gladwell.eclipse.m2e.inject.GuiceExtensionFactory:me.gladwell.eclipse.m2e.android.NonRuntimeDependenciesContainerInitializer"/>
    </extension>
+   <extension
+         point="org.eclipse.jdt.launching.classpathProviders">
+      <classpathProvider
+          id="me.gladwell.m2e.android.classpathProvider"
+          class="me.gladwell.eclipse.m2e.inject.GuiceExtensionFactory:me.gladwell.eclipse.m2e.android.JUnitClasspathProvider"/>
+   </extension>
 </plugin>

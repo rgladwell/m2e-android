@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2013 Ricardo Gladwell and Hugo Josefson
+ * Copyright (c) 2009-2014 Ricardo Gladwell and Hugo Josefson
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-import me.gladwell.eclipse.m2e.android.configuration.Classpaths;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IMarker;
@@ -38,7 +37,6 @@ import org.eclipse.m2e.core.project.IMavenProjectImportResult;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
-import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
 import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.WorkspaceHelpers;

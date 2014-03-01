@@ -9,9 +9,14 @@
 package me.gladwell.eclipse.m2e.android;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.debug.core.ILaunchConfigurationListener;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.m2e.core.project.IMavenProjectChangedListener;
+import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.osgi.framework.BundleContext;
 
 import com.google.inject.Guice;
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 /**
@@ -26,6 +31,10 @@ public class AndroidMavenPlugin extends Plugin {
 	private static AndroidMavenPlugin plugin;
 
 	private Injector injector;
+	private @Inject ILaunchManager launchManager;
+	private @Inject ILaunchConfigurationListener launchConfigurationListener;
+	private @Inject IMavenProjectRegistry projectManager;
+    private @Inject IMavenProjectChangedListener mavenProjectChangedListener;
 
 	/**
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -33,12 +42,17 @@ public class AndroidMavenPlugin extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		getInjector().injectMembers(this);
+		launchManager.addLaunchConfigurationListener(launchConfigurationListener);
+		projectManager.addMavenProjectChangedListener(mavenProjectChangedListener);
 	}
 
 	/**
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
+        launchManager.removeLaunchConfigurationListener(launchConfigurationListener);
+        projectManager.removeMavenProjectChangedListener(mavenProjectChangedListener);
 		plugin = null;
 		super.stop(context);
 	}
