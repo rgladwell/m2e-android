@@ -26,11 +26,16 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.junit.JUnitCore;
+import org.eclipse.jdt.junit.TestRunListener;
+import org.eclipse.jdt.junit.model.ITestElement;
+import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.internal.IMavenConstants;
@@ -173,6 +178,37 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     public void testConfigureAddsNonRuntimeDependenciesToNonRuntimeContainer() throws Exception {
         assertTrue(classpathContainerContains(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
                 "mockito-core-1.9.5.jar"));
+    }
+
+    private class TestTestRunListener extends TestRunListener {
+
+        private ITestElement.Result result;
+
+        @Override
+            public void sessionFinished(ITestRunSession session) {
+            result = session.getTestResult(true);
+        }
+
+        public ITestElement.Result launchResult() {
+            return result;
+        }
+
+    }
+
+    public void testTestRunner() throws Exception {
+        // given
+        TestTestRunListener testListener = new TestTestRunListener();
+        JUnitCore.addTestRunListener(testListener);
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        ILaunch launch = configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
+
+        // then
+        while (!launch.isTerminated()) {
+            Thread.sleep(500);
+        }
+        assertEquals(ITestElement.Result.OK, testListener.launchResult());
     }
 
     // TODO quarantined integration test that fails when run after another integration test
