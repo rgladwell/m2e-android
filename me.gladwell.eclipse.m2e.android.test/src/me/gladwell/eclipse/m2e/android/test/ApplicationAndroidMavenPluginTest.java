@@ -105,11 +105,11 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 	}
 
 	public void testConfigureDoesNotAddPlatformProvidedDependenciesToClasspath() throws Exception {
-		assertClasspathDoesNotContain(javaProject, "commons-logging-1.1.1.jar");
+		assertClasspathDoesNotContainExported(javaProject, "commons-logging-1.1.1.jar");
 	}
 
     public void testConfigureDoesNotAddTransitivePlatformProvidedDependenciesToClasspath() throws Exception {
-        assertClasspathDoesNotContain(javaProject, "httpcore-4.0.1.jar");
+        assertClasspathDoesNotContainExported(javaProject, "httpcore-4.0.1.jar");
     }
 
 	public void testConfigureDoesRemoveJreClasspathContainer() throws Exception {
@@ -194,7 +194,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
 
         // then
-        assertThat(resolvedClasspath, containsEntry("android-2.3.3.jar"));
+        assertThat(resolvedClasspath, containsEntry("android-4.3_r2.jar"));
     }
 
     public void testConfigureAddsPlatformProvidedDependenciesToTestRunnerClasspath() throws Exception {

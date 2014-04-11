@@ -179,6 +179,18 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 		}
 	}
 
+    protected void assertClasspathDoesNotContainExported(IJavaProject javaProject, String path) throws JavaModelException {
+        for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+            assertFalse(entry.getPath().toOSString().contains(path));
+            if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER && entry.isExported()) {
+                IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
+                for (IClasspathEntry e : container.getClasspathEntries()) {
+                    assertFalse(path + " should not be in classpath", e.getPath().toOSString().contains(path));
+                }
+            }
+        }
+    }
+
 	protected IClasspathEntry getClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
 	    IClasspathEntry entry = findClasspathContainer(javaProject, id);
 		if(entry == null) throw new RuntimeException("classpath container=[" + id + "] not found");
