@@ -32,8 +32,10 @@ public class NonRuntimeDependenciesContainerInitializer extends ClasspathContain
     @Override
     public void initialize(IPath path, IJavaProject project) throws CoreException {
         final EclipseAndroidProject eclipseProject = factory.createAndroidProject(project.getProject());
-        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, eclipseProject);
-        setClasspathContainer(path, new IJavaProject[] { project }, new IClasspathContainer[] { nonRuntimeContainer }, new NullProgressMonitor());
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader,
+                eclipseProject);
+        setClasspathContainer(path, new IJavaProject[] { project }, new IClasspathContainer[] { nonRuntimeContainer },
+                new NullProgressMonitor());
     }
 
     @Override
@@ -42,7 +44,8 @@ public class NonRuntimeDependenciesContainerInitializer extends ClasspathContain
     }
 
     @Override
-    public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject project, IClasspathContainer container) throws CoreException {
+    public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject project, IClasspathContainer container)
+            throws CoreException {
         super.requestClasspathContainerUpdate(containerPath, project, container);
     }
 

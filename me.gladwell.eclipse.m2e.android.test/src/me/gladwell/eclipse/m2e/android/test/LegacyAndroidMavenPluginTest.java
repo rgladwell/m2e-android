@@ -13,18 +13,18 @@ import org.eclipse.core.resources.IProject;
 @SuppressWarnings("restriction")
 public class LegacyAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
-	private static final String LEGACY_ANDROID_PROJECT_NAME = "legacy-project";
-	private IProject project;
+    private static final String LEGACY_ANDROID_PROJECT_NAME = "legacy-project";
+    private IProject project;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
 
-		project = importAndroidProject(LEGACY_ANDROID_PROJECT_NAME);
-	}
+        project = importAndroidProject(LEGACY_ANDROID_PROJECT_NAME);
+    }
 
-	public void testConfigure() throws Exception {
-		assertNoErrors(project);
-	}
+    public void testConfigure() throws Exception {
+        assertNoErrors(project);
+    }
 
 }

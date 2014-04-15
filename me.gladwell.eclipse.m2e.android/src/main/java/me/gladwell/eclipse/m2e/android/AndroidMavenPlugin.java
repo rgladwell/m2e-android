@@ -19,54 +19,51 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-/**
- * The activator class controls the plug-in life cycle
- */
 public class AndroidMavenPlugin extends Plugin {
 
-	public static final String PLUGIN_ID = "me.gladwell.eclipse.m2e.android";
-	public static final String APKLIB_ERROR_TYPE = "me.gladwell.eclipse.m2e.android.markers.dependency.apklib";
+    public static final String PLUGIN_ID = "me.gladwell.eclipse.m2e.android";
+    public static final String APKLIB_ERROR_TYPE = "me.gladwell.eclipse.m2e.android.markers.dependency.apklib";
     public static final String CONTAINER_NONRUNTIME_DEPENDENCIES = "me.gladwell.eclipse.m2e.android.classpath.NONRUNTIME_DEPENDENCIES";
     public static final String ANDROID_GEN_FOLDER = "gen";
 
-	private static AndroidMavenPlugin plugin;
+    private static AndroidMavenPlugin plugin;
 
-	private Injector injector;
-	private @Inject ILaunchManager launchManager;
-	private @Inject ILaunchConfigurationListener launchConfigurationListener;
-	private @Inject IMavenProjectRegistry projectManager;
+    private Injector injector;
+    private @Inject ILaunchManager launchManager;
+    private @Inject ILaunchConfigurationListener launchConfigurationListener;
+    private @Inject IMavenProjectRegistry projectManager;
     private @Inject IMavenProjectChangedListener mavenProjectChangedListener;
 
-	/**
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-		getInjector().injectMembers(this);
-		launchManager.addLaunchConfigurationListener(launchConfigurationListener);
-		projectManager.addMavenProjectChangedListener(mavenProjectChangedListener);
-	}
+    /**
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+     */
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
+        getInjector().injectMembers(this);
+        launchManager.addLaunchConfigurationListener(launchConfigurationListener);
+        projectManager.addMavenProjectChangedListener(mavenProjectChangedListener);
+    }
 
-	/**
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
-	public void stop(BundleContext context) throws Exception {
+    /**
+     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+     */
+    public void stop(BundleContext context) throws Exception {
         launchManager.removeLaunchConfigurationListener(launchConfigurationListener);
         projectManager.removeMavenProjectChangedListener(mavenProjectChangedListener);
-		plugin = null;
-		super.stop(context);
-	}
+        plugin = null;
+        super.stop(context);
+    }
 
-	public static AndroidMavenPlugin getDefault() {
-		return plugin;
-	}
+    public static AndroidMavenPlugin getDefault() {
+        return plugin;
+    }
 
-	public Injector getInjector() {
-		if(injector == null) {
-			injector = Guice.createInjector(new PluginModule());
-		}
-		return injector;
-	}
+    public Injector getInjector() {
+        if (injector == null) {
+            injector = Guice.createInjector(new PluginModule());
+        }
+        return injector;
+    }
 
 }

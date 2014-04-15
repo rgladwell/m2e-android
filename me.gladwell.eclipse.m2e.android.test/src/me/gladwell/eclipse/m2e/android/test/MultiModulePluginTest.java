@@ -13,7 +13,7 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
     private static final String CHILD_PROJECT_NAME = "android-child";
     private static final String CHILD_LIBRARY_PROJECT_NAME = "android-child-library";
 
-	private IProject parentProject;
+    private IProject parentProject;
     private IProject childProject;
     private IProject childLibraryProject;
 
@@ -27,9 +27,9 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
     }
 
     public void testConfigure() throws Exception {
-    	assertNoErrors(parentProject);
-    	assertNoErrors(childLibraryProject);
-    	assertNoErrors(childProject);
+        assertNoErrors(parentProject);
+        assertNoErrors(childLibraryProject);
+        assertNoErrors(childProject);
     }
 
     public void testConfigureAddsAndroidNature() throws Exception {

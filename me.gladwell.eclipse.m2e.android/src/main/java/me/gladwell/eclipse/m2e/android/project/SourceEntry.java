@@ -17,4 +17,5 @@ public interface SourceEntry {
     String getPath();
 
     void ignoreOptionalWarnings();
+
 }

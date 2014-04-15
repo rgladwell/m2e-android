@@ -20,32 +20,32 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class LibraryDependenciesWorkspaceConfigurer implements WorkspaceConfigurer {
 
-	private AndroidWorkspace workspace;
+    private AndroidWorkspace workspace;
 
-	@Inject
-	public LibraryDependenciesWorkspaceConfigurer(AndroidWorkspace workspace) {
-		super();
-		this.workspace = workspace;
-	}
+    @Inject
+    public LibraryDependenciesWorkspaceConfigurer(AndroidWorkspace workspace) {
+        super();
+        this.workspace = workspace;
+    }
 
-	public boolean isConfigured(EclipseAndroidProject project) {
-		return false;
-	}
+    public boolean isConfigured(EclipseAndroidProject project) {
+        return false;
+    }
 
-	public boolean isValid(MavenAndroidProject project) {
-		return !project.getLibraryDependencies().isEmpty();
-	}
+    public boolean isValid(MavenAndroidProject project) {
+        return !project.getLibraryDependencies().isEmpty();
+    }
 
-	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
-		List<Dependency> libraryDependencies = mavenProject.getLibraryDependencies();
-		List<EclipseAndroidProject> workspaceDependencies = new ArrayList<EclipseAndroidProject>();
+    public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
+        List<Dependency> libraryDependencies = mavenProject.getLibraryDependencies();
+        List<EclipseAndroidProject> workspaceDependencies = new ArrayList<EclipseAndroidProject>();
 
-		for(Dependency dependency : libraryDependencies) {
-			EclipseAndroidProject workspaceDependency = workspace.findOpenWorkspaceDependency(dependency);
-			workspaceDependencies.add(workspaceDependency);
-		}
-		
-		eclipseProject.setLibraryDependencies(workspaceDependencies);
-	}
+        for (Dependency dependency : libraryDependencies) {
+            EclipseAndroidProject workspaceDependency = workspace.findOpenWorkspaceDependency(dependency);
+            workspaceDependencies.add(workspaceDependency);
+        }
+
+        eclipseProject.setLibraryDependencies(workspaceDependencies);
+    }
 
 }

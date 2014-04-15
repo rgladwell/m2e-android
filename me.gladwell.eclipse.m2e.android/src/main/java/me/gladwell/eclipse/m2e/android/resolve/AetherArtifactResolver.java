@@ -35,7 +35,7 @@ public class AetherArtifactResolver implements ArtifactResolver {
     public Artifact resolveArtifact(RemoteRepository central, Artifact artifact) {
         ArtifactRequest artifactRequest = new ArtifactRequest();
         artifactRequest.setArtifact(artifact);
-        artifactRequest.addRepository( central );
+        artifactRequest.addRepository(central);
         ArtifactResult artifactResult;
         try {
             artifactResult = repository.resolveArtifact(session, artifactRequest);

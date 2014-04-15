@@ -9,6 +9,7 @@
 package me.gladwell.eclipse.m2e.android;
 
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
+import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +23,14 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.IMavenProjectChangedListener;
 import org.eclipse.m2e.core.project.MavenProjectChangedEvent;
 
 import com.android.ide.eclipse.adt.AdtConstants;
 
-public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigurationListener, IMavenProjectChangedListener {
+public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigurationListener,
+        IMavenProjectChangedListener {
 
     private static final String ANDROID_TEST_CLASSPATH_PROVIDER = "me.gladwell.m2e.android.classpathProvider";
 
@@ -46,11 +47,12 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
 
     private void updateLaunchConfiguration(ILaunchConfiguration configuration) {
         try {
-            IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null));
-            if(!configuration.getAttributes().containsValue(ANDROID_TEST_CLASSPATH_PROVIDER)
+            String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, (String) null);
+            IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+
+            if (!configuration.getAttributes().containsValue(ANDROID_TEST_CLASSPATH_PROVIDER)
                     && configuration.getType().getIdentifier().equals("org.eclipse.jdt.junit.launchconfig")
-                    && project.hasNature(AdtConstants.NATURE_DEFAULT)
-                    && project.hasNature(IMavenConstants.NATURE_ID)) {
+                    && project.hasNature(AdtConstants.NATURE_DEFAULT) && project.hasNature(IMavenConstants.NATURE_ID)) {
                 ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
                 workingCopy.setAttribute(ATTR_CLASSPATH_PROVIDER, ANDROID_TEST_CLASSPATH_PROVIDER);
                 workingCopy.doSave();
@@ -77,7 +79,7 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
     }
 
     private void updateLaunchConfiguration(IProject project) throws CoreException {
-        for(ILaunchConfiguration config : getLaunchConfiguration(project)) {
+        for (ILaunchConfiguration config : getLaunchConfiguration(project)) {
             updateLaunchConfiguration(config);
         }
     }
@@ -86,11 +88,11 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
         List<ILaunchConfiguration> result = new ArrayList<ILaunchConfiguration>();
         ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
         ILaunchConfiguration[] configurations = launchManager.getLaunchConfigurations();
-        for(ILaunchConfiguration config : configurations) {
-          String projectName = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
-          if(project.getName().equals(projectName)) {
-            result.add(config);
-          }
+        for (ILaunchConfiguration config : configurations) {
+            String projectName = config.getAttribute(ATTR_PROJECT_NAME, (String) null);
+            if (project.getName().equals(projectName)) {
+                result.add(config);
+            }
         }
         return result;
     }

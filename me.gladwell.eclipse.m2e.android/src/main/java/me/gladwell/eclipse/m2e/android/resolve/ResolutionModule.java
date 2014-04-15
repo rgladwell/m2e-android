@@ -48,9 +48,7 @@ public class ResolutionModule extends AbstractModule {
     @Provides
     RepositorySystemSession provideRepositorySystemSession(RepositorySystem system, LocalRepository localRepo) {
         final MavenRepositorySystemSession session = new MavenRepositorySystemSession();
-        session.setLocalRepositoryManager(
-            system.newLocalRepositoryManager(localRepo)
-        );
+        session.setLocalRepositoryManager(system.newLocalRepositoryManager(localRepo));
         session.setTransferListener(new ConsoleMavenTransferListener(System.out));
         return session;
     }

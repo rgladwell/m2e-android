@@ -10,6 +10,6 @@ package me.gladwell.eclipse.m2e.android.project;
 
 public interface AndroidWorkspace {
 
-	EclipseAndroidProject findOpenWorkspaceDependency(Dependency dependency);
+    EclipseAndroidProject findOpenWorkspaceDependency(Dependency dependency);
 
 }

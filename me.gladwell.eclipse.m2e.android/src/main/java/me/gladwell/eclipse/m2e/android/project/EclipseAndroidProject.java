@@ -20,21 +20,21 @@ public interface EclipseAndroidProject {
 
     public boolean isLibrary();
 
-	public IProject getProject();
+    public IProject getProject();
 
-	public void setAndroidProject(boolean androidProject);
+    public void setAndroidProject(boolean androidProject);
 
-	public void setLibrary(boolean isLibrary);
+    public void setLibrary(boolean isLibrary);
 
-	public void setLibraryDependencies(List<EclipseAndroidProject> dependencies);
+    public void setLibraryDependencies(List<EclipseAndroidProject> dependencies);
 
-	public void fixProject();
+    public void fixProject();
 
-	public boolean isMavenised();
+    public boolean isMavenised();
 
-	public IFile getPom();
+    public IFile getPom();
 
-	void setAssetsDirectory(File file);
+    void setAssetsDirectory(File file);
 
     public Classpath getClasspath();
 

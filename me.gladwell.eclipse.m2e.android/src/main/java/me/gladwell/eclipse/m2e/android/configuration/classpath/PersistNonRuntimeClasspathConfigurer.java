@@ -33,8 +33,8 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
     public void configure(MavenAndroidProject project, IClasspathDescriptor classpath) {
         final List<String> nonRuntimeDependencies = project.getNonRuntimeDependencies();
         final List<IClasspathEntry> nonRuntimeDependenciesEntries = new ArrayList<IClasspathEntry>();
-        for(IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
-            if(nonRuntimeDependencies.contains(descriptor.getPath().toOSString())) {
+        for (IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
+            if (nonRuntimeDependencies.contains(descriptor.getPath().toOSString())) {
                 nonRuntimeDependenciesEntries.add(descriptor.toClasspathEntry());
             }
         }

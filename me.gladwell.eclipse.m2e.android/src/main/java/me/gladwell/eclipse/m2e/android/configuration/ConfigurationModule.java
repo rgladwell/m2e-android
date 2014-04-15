@@ -15,9 +15,8 @@ public class ConfigurationModule extends AbstractModule {
         bind(ClasspathPersister.class).to(ObjectSerializationClasspathPersister.class);
 
         bind(ClasspathLoader.class).to(ObjectSerializationClasspathPersister.class);
-        bind(ClasspathLoader.class)
-            .annotatedWith(PrunePlatformProvidedDependencies.class)
-            .to(PrunePlatformProvidedDependenciesClasspathLoader.class);
+        bind(ClasspathLoader.class).annotatedWith(PrunePlatformProvidedDependencies.class).to(
+                PrunePlatformProvidedDependenciesClasspathLoader.class);
     }
 
 }

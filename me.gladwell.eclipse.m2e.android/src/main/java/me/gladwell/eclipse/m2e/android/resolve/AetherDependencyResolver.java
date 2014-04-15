@@ -32,7 +32,8 @@ public class AetherDependencyResolver implements DependencyResolver {
     private final RepositorySystemSession session;
 
     @Inject
-    public AetherDependencyResolver(ArtifactResolver artifactResolver, RepositorySystem repository, RepositorySystemSession session) {
+    public AetherDependencyResolver(ArtifactResolver artifactResolver, RepositorySystem repository,
+            RepositorySystemSession session) {
         super();
         this.artifactResolver = artifactResolver;
         this.repository = repository;
@@ -40,22 +41,24 @@ public class AetherDependencyResolver implements DependencyResolver {
     }
 
     public List<org.sonatype.aether.artifact.Artifact> resolveDependencies(Dependency dependency, String extension) {
-        final DefaultArtifact artifact = new DefaultArtifact(dependency.getGroup(), dependency.getName(), extension, dependency.getVersion());
+        final DefaultArtifact artifact = new DefaultArtifact(dependency.getGroup(), dependency.getName(), extension,
+                dependency.getVersion());
         return resolveDependencies(artifact);
     }
 
-    private List<org.sonatype.aether.artifact.Artifact> resolveDependencies(final org.sonatype.aether.artifact.Artifact artifact) {
-        RemoteRepository central = new RemoteRepository( "central", "default", "http://repo1.maven.org/maven2/" );
+    private List<org.sonatype.aether.artifact.Artifact> resolveDependencies(
+            final org.sonatype.aether.artifact.Artifact artifact) {
+        RemoteRepository central = new RemoteRepository("central", "default", "http://repo1.maven.org/maven2/");
         ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
-        descriptorRequest.setArtifact( artifact );
-        descriptorRequest.addRepository( central );
+        descriptorRequest.setArtifact(artifact);
+        descriptorRequest.addRepository(central);
 
         List<org.sonatype.aether.artifact.Artifact> resolvedDependencies = new ArrayList<org.sonatype.aether.artifact.Artifact>();
 
         try {
-            ArtifactDescriptorResult descriptorResult = repository.readArtifactDescriptor( session, descriptorRequest );
+            ArtifactDescriptorResult descriptorResult = repository.readArtifactDescriptor(session, descriptorRequest);
             resolvedDependencies.add(artifactResolver.resolveArtifact(central, descriptorResult.getArtifact()));
-            for(org.sonatype.aether.graph.Dependency d : descriptorResult.getDependencies()) {
+            for (org.sonatype.aether.graph.Dependency d : descriptorResult.getDependencies()) {
                 Artifact resolvedArtifact = artifactResolver.resolveArtifact(central, d.getArtifact());
                 resolvedDependencies.add(resolvedArtifact);
                 resolvedDependencies.addAll(resolveDependencies(resolvedArtifact));

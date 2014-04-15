@@ -18,29 +18,29 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class MavenToEclipseAndroidProjectConverter implements AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> {
+public class MavenToEclipseAndroidProjectConverter implements
+        AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> {
 
-	private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
-	private MavenModelManager mavenModelManager;
+    private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
+    private MavenModelManager mavenModelManager;
 
-	@Inject
-	public MavenToEclipseAndroidProjectConverter(
-			AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory,
-			MavenModelManager mavenModelManager
-	) {
-		super();
-		this.mavenProjectFactory = mavenProjectFactory;	
-		this.mavenModelManager = mavenModelManager;
-	}
+    @Inject
+    public MavenToEclipseAndroidProjectConverter(
+            AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory,
+            MavenModelManager mavenModelManager) {
+        super();
+        this.mavenProjectFactory = mavenProjectFactory;
+        this.mavenModelManager = mavenModelManager;
+    }
 
-	public MavenAndroidProject createAndroidProject(EclipseAndroidProject androidProject) {
-		MavenProject project;
-		try {
-			project = mavenModelManager.readMavenProject(androidProject.getPom(), null);
-		} catch (CoreException e) {
-			throw new ProjectConfigurationException(e);
-		}
-		return mavenProjectFactory.createAndroidProject(project);
-	}
+    public MavenAndroidProject createAndroidProject(EclipseAndroidProject androidProject) {
+        MavenProject project;
+        try {
+            project = mavenModelManager.readMavenProject(androidProject.getPom(), null);
+        } catch (CoreException e) {
+            throw new ProjectConfigurationException(e);
+        }
+        return mavenProjectFactory.createAndroidProject(project);
+    }
 
 }

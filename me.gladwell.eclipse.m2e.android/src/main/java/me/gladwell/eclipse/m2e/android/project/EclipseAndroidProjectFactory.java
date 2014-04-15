@@ -15,17 +15,17 @@ import com.google.inject.Inject;
 
 public class EclipseAndroidProjectFactory implements AndroidProjectFactory<EclipseAndroidProject, IProject> {
 
-	private final IWorkspace workspace;
+    private final IWorkspace workspace;
 
     @Inject
-	public EclipseAndroidProjectFactory(IWorkspace workspace) {
+    public EclipseAndroidProjectFactory(IWorkspace workspace) {
         super();
         this.workspace = workspace;
     }
 
     public EclipseAndroidProject createAndroidProject(IProject target) {
-		EclipseAndroidProject project = new AdtEclipseAndroidProject(workspace, target);
-		return project;
-	}
+        EclipseAndroidProject project = new AdtEclipseAndroidProject(workspace, target);
+        return project;
+    }
 
 }

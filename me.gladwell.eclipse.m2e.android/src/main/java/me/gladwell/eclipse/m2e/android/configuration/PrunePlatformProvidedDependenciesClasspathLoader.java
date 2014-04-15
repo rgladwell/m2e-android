@@ -30,7 +30,8 @@ public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathL
     private final AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
 
     @Inject
-    public PrunePlatformProvidedDependenciesClasspathLoader(ClasspathLoader loader, IMavenProjectRegistry projectRegistry,
+    public PrunePlatformProvidedDependenciesClasspathLoader(ClasspathLoader loader,
+            IMavenProjectRegistry projectRegistry,
             AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory) {
         super(loader);
         this.projectRegistry = projectRegistry;
@@ -42,20 +43,21 @@ public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathL
         final Iterable<IClasspathEntry> nonRuntimeDependencies = super.load(project);
 
         MavenProject mavenProject = projectRegistry.getProject(project.getProject()).getMavenProject();
-        if(mavenProject != null) {
+        if (mavenProject != null) {
             final MavenAndroidProject androidProject = mavenProjectFactory.createAndroidProject(mavenProject);
             final List<String> platformProvidedDependencies = androidProject.getPlatformProvidedDependencies();
 
-            if(platformProvidedDependencies != null) {
-                final Iterable<IClasspathEntry> prunedNonRuntimeDependencies = filter(nonRuntimeDependencies, new Predicate<IClasspathEntry>() {
-                    public boolean apply(IClasspathEntry entry) {
-                        if (!platformProvidedDependencies.contains(entry.getPath().toOSString())) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                });
+            if (platformProvidedDependencies != null) {
+                final Iterable<IClasspathEntry> prunedNonRuntimeDependencies = filter(nonRuntimeDependencies,
+                        new Predicate<IClasspathEntry>() {
+                            public boolean apply(IClasspathEntry entry) {
+                                if (!platformProvidedDependencies.contains(entry.getPath().toOSString())) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        });
 
                 return prunedNonRuntimeDependencies;
             }

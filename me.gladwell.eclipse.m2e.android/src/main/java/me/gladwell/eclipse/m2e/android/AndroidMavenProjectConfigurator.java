@@ -40,76 +40,78 @@ import com.google.inject.Singleton;
 @Singleton
 public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
-	@Inject
-	private AbstractProjectConfigurator javaProjectConfigurator;
+    @Inject private AbstractProjectConfigurator javaProjectConfigurator;
 
-	@Inject
-	private List<WorkspaceConfigurer> workspaceConfigurers;
+    @Inject private List<WorkspaceConfigurer> workspaceConfigurers;
 
-    @Inject
-    private List<RawClasspathConfigurer> rawClasspathConfigurers;
+    @Inject private List<RawClasspathConfigurer> rawClasspathConfigurers;
 
-    @Inject
-    private List<ClasspathConfigurer> classpathConfigurers;
+    @Inject private List<ClasspathConfigurer> classpathConfigurers;
 
-	@Inject
-	private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
+    @Inject private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
 
-	@Inject
-	private AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseProjectFactory;
+    @Inject private AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseProjectFactory;
 
-	public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
-		markerManager.deleteMarkers(request.getPom(), AndroidMavenPlugin.APKLIB_ERROR_TYPE);
+    public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
+        markerManager.deleteMarkers(request.getPom(), AndroidMavenPlugin.APKLIB_ERROR_TYPE);
 
-		try {
-			final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
-			final EclipseAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request.getProject());
+        try {
+            final MavenAndroidProject mavenProject = mavenProjectFactory
+                    .createAndroidProject(request.getMavenProject());
+            final EclipseAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request
+                    .getProject());
 
-				if(mavenProject.isAndroidProject()) {
-					javaProjectConfigurator.configure(request, monitor);
-	
-					for (WorkspaceConfigurer configurer : workspaceConfigurers) {
-						try {
-							if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
-								configurer.configure(eclipseProject,  mavenProject);
-							}
-						} catch (DependencyNotFoundInWorkspace e) {
-							markerManager.addErrorMarkers(request.getPom(), e.getType(), e);
-						}
-					}
-				}
-		} catch (AndroidMavenException e) {
-			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project", e));
-		}
-	}
+            if (mavenProject.isAndroidProject()) {
+                javaProjectConfigurator.configure(request, monitor);
 
-	public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade projectFacade, MojoExecution execution, IPluginExecutionMetadata executionMetadata) {
-		return null;
-	}
-
-	public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-		final MavenAndroidProject project = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
-		try {
-		    for(RawClasspathConfigurer configurer : rawClasspathConfigurers) {
-		        configurer.configure(project, classpath);
-		    }
-		} catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
-		}
+                for (WorkspaceConfigurer configurer : workspaceConfigurers) {
+                    try {
+                        if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
+                            configurer.configure(eclipseProject, mavenProject);
+                        }
+                    } catch (DependencyNotFoundInWorkspace e) {
+                        markerManager.addErrorMarkers(request.getPom(), e.getType(), e);
+                    }
+                }
+            }
+        } catch (AndroidMavenException e) {
+            throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID,
+                    "error configuring project", e));
+        }
     }
 
-	public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath, IProgressMonitor monitor) throws CoreException {
-	    final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
+    public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade f, MojoExecution e,
+            IPluginExecutionMetadata m) {
+        return null;
+    }
+
+    public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor)
+            throws CoreException {
+        final MavenAndroidProject project = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
+        try {
+            for (RawClasspathConfigurer configurer : rawClasspathConfigurers) {
+                configurer.configure(project, classpath);
+            }
+        } catch (Exception e) {
+            throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID,
+                    "error configuring project classpath", e));
+        }
+    }
+
+    public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath,
+            IProgressMonitor monitor) throws CoreException {
+        final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
         final EclipseAndroidProject eclipseProject = new AdtEclipseAndroidProject(request.getProject(), classpath);
-		try {
-		    for(ClasspathConfigurer classpathConfigurer : classpathConfigurers) {
-		        if(classpathConfigurer.shouldApplyTo(mavenProject)) {
+        try {
+            for (ClasspathConfigurer classpathConfigurer : classpathConfigurers) {
+                if (classpathConfigurer.shouldApplyTo(mavenProject)) {
                     classpathConfigurer.configure(mavenProject, eclipseProject);
-		        }
-		    }
-		} catch (Exception e) {
-			throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID, "error configuring project classpath", e));
-		}
+                }
+            }
+        } catch (Exception e) {
+            throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID,
+                    "error configuring project classpath", e));
+        }
     }
 
 }

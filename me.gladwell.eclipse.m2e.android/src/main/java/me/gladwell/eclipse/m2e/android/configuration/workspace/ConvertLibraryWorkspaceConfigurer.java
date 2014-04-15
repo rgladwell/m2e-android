@@ -13,16 +13,16 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class ConvertLibraryWorkspaceConfigurer implements WorkspaceConfigurer {
 
-	public boolean isConfigured(EclipseAndroidProject project) {
-		return project.isLibrary();
-	}
+    public boolean isConfigured(EclipseAndroidProject project) {
+        return project.isLibrary();
+    }
 
-	public boolean isValid(MavenAndroidProject project) {
-		return project.isLibrary();
-	}
+    public boolean isValid(MavenAndroidProject project) {
+        return project.isLibrary();
+    }
 
-	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
-		eclipseProject.setLibrary(mavenProject.isLibrary());
-	}
+    public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
+        eclipseProject.setLibrary(mavenProject.isLibrary());
+    }
 
 }

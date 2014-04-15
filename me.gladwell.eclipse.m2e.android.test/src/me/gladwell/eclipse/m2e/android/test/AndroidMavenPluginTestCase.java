@@ -48,46 +48,46 @@ import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 @SuppressWarnings("restriction")
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
-	static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 120;
+    static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 120;
 
-	protected AndroidMavenPlugin plugin;
+    protected AndroidMavenPlugin plugin;
 
-	@Override
+    @Override
     protected void setUp() throws Exception {
-	    super.setUp();
+        super.setUp();
 
-	    plugin = AndroidMavenPlugin.getDefault();
-		plugin.getInjector().injectMembers(this);
+        plugin = AndroidMavenPlugin.getDefault();
+        plugin.getInjector().injectMembers(this);
 
-	    waitForAdtToLoad();
+        waitForAdtToLoad();
     }
 
-	protected void waitForAdtToLoad() throws InterruptedException, Exception {
+    protected void waitForAdtToLoad() throws InterruptedException, Exception {
         try {
-    		JobHelpers.waitForJobs(new IJobMatcher() {
-    			public boolean matches(Job job) {
-    				return job.getClass().getName().contains(Sdk.class.getName());
-    			}
+            JobHelpers.waitForJobs(new IJobMatcher() {
+                public boolean matches(Job job) {
+                    return job.getClass().getName().contains(Sdk.class.getName());
+                }
 
-    		}, MAXIMUM_SECONDS_TO_LOAD_ADT * 1000);
-        } catch(Throwable t) {
+            }, MAXIMUM_SECONDS_TO_LOAD_ADT * 1000);
+        } catch (Throwable t) {
             t.printStackTrace();
         }
-	}
+    }
 
-	protected IProject importAndroidProject(String name) throws Exception {
-		IProject project = importProject("projects/"+name+"/pom.xml");
-		waitForJobsToComplete();
-		waitForAdtToLoad();
-	    return project;
-	}
-
-	protected IProject importAndroidProject(String name, File folder) throws Exception {
-        IProject project = importProject("projects/"+name+"/pom.xml", folder);
+    protected IProject importAndroidProject(String name) throws Exception {
+        IProject project = importProject("projects/" + name + "/pom.xml");
         waitForJobsToComplete();
         waitForAdtToLoad();
         return project;
-	}
+    }
+
+    protected IProject importAndroidProject(String name, File folder) throws Exception {
+        IProject project = importProject("projects/" + name + "/pom.xml", folder);
+        waitForJobsToComplete();
+        waitForAdtToLoad();
+        return project;
+    }
 
     private IProject importProject(String pomLocation, File parent) throws Exception {
         MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
@@ -105,19 +105,21 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         File workspaceRoot = workspace.getRoot().getLocation().toFile();
         File basedir = projectInfo.getPomFile().getParentFile().getCanonicalFile();
 
-        projectInfo.setBasedirRename(basedir.getParentFile().equals(workspaceRoot)? MavenProjectInfo.RENAME_REQUIRED: MavenProjectInfo.RENAME_NO);
+        projectInfo.setBasedirRename(basedir.getParentFile().equals(workspaceRoot) ? MavenProjectInfo.RENAME_REQUIRED
+                : MavenProjectInfo.RENAME_NO);
 
         final ArrayList<MavenProjectInfo> projectInfos = new ArrayList<MavenProjectInfo>();
         projectInfos.add(projectInfo);
 
-        final ProjectImportConfiguration importConfiguration = new ProjectImportConfiguration(new ResolverConfiguration());
+        final ProjectImportConfiguration importConfiguration = new ProjectImportConfiguration(
+                new ResolverConfiguration());
 
         final ArrayList<IMavenProjectImportResult> importResults = new ArrayList<IMavenProjectImportResult>();
 
         workspace.run(new IWorkspaceRunnable() {
             public void run(IProgressMonitor monitor) throws CoreException {
-                importResults.addAll(MavenPlugin.getProjectConfigurationManager()
-                        .importProjects(projectInfos, importConfiguration, monitor));
+                importResults.addAll(MavenPlugin.getProjectConfigurationManager().importProjects(projectInfos,
+                        importConfiguration, monitor));
             }
         }, MavenPlugin.getProjectConfigurationManager().getRule(), IWorkspace.AVOID_UPDATE, monitor);
 
@@ -132,58 +134,46 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
             IMavenProjectFacade facade = MavenPlugin.getMavenProjectRegistry().create(projects[i], monitor);
             if (facade == null) {
                 fail("Project " + model1.getGroupId() + "-" + model1.getArtifactId() + "-" + model1.getVersion()
-                        + " was not imported. Errors: " + WorkspaceHelpers.toString(WorkspaceHelpers.findErrorMarkers(projects[i])));
+                        + " was not imported. Errors: "
+                        + WorkspaceHelpers.toString(WorkspaceHelpers.findErrorMarkers(projects[i])));
             }
         }
 
         return projects[0];
     }
 
-    public IProject[] importAndroidProjects(String basedir, String[] pomNames) throws Exception{
-    	IProject[] projects = importProjects(basedir, pomNames, new ResolverConfiguration());
-	waitForJobsToComplete();
-	waitForAdtToLoad();
-	return projects;
+    public IProject[] importAndroidProjects(String basedir, String[] pomNames) throws Exception {
+        IProject[] projects = importProjects(basedir, pomNames, new ResolverConfiguration());
+        waitForJobsToComplete();
+        waitForAdtToLoad();
+        return projects;
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
-		project.build(kind, monitor);
-		waitForJobsToComplete();
-	}
-
+        project.build(kind, monitor);
+        waitForJobsToComplete();
+    }
 
     protected void assertClasspathContains(IJavaProject javaProject, String path) throws JavaModelException {
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-			if(entry.getPath().toOSString().contains(path)) {
-				return;
-			} else if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-				IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
+        for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+            if (entry.getPath().toOSString().contains(path)) {
+                return;
+            } else if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+                IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
                 for (IClasspathEntry e : container.getClasspathEntries()) {
-                	if(e.getPath().toOSString().contains(path)) {
-        				return;
-        			}
+                    if (e.getPath().toOSString().contains(path)) {
+                        return;
+                    }
                 }
-			}
-		}
-		fail(path + " should be in classpath");
-	}
+            }
+        }
+        fail(path + " should be in classpath");
+    }
 
-	protected void assertClasspathDoesNotContain(IJavaProject javaProject, String path) throws JavaModelException {
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-			assertFalse(entry.getPath().toOSString().contains(path));
-			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-				IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
-                for (IClasspathEntry e : container.getClasspathEntries()) {
-        			assertFalse(path + " should not be in classpath", e.getPath().toOSString().contains(path));
-                }
-			}
-		}
-	}
-
-    protected void assertClasspathDoesNotContainExported(IJavaProject javaProject, String path) throws JavaModelException {
-        for(IClasspathEntry entry : javaProject.getRawClasspath()) {
+    protected void assertClasspathDoesNotContain(IJavaProject javaProject, String path) throws JavaModelException {
+        for (IClasspathEntry entry : javaProject.getRawClasspath()) {
             assertFalse(entry.getPath().toOSString().contains(path));
-            if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER && entry.isExported()) {
+            if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
                 IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
                 for (IClasspathEntry e : container.getClasspathEntries()) {
                     assertFalse(path + " should not be in classpath", e.getPath().toOSString().contains(path));
@@ -192,20 +182,34 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         }
     }
 
-	protected IClasspathEntry getClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
-	    IClasspathEntry entry = findClasspathContainer(javaProject, id);
-		if(entry == null) throw new RuntimeException("classpath container=[" + id + "] not found");
-		return entry;
-	}
+    protected void assertClasspathDoesNotContainExported(IJavaProject javaProject, String path)
+            throws JavaModelException {
+        for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+            assertFalse(entry.getPath().toOSString().contains(path));
+            if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER && entry.isExported()) {
+                IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), javaProject);
+                for (IClasspathEntry e : container.getClasspathEntries()) {
+                    assertFalse(path + " should not be in classpath", e.getPath().toOSString().contains(path));
+                }
+            }
+        }
+    }
+
+    protected IClasspathEntry getClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
+        IClasspathEntry entry = findClasspathContainer(javaProject, id);
+        if (entry == null)
+            throw new RuntimeException("classpath container=[" + id + "] not found");
+        return entry;
+    }
 
     private IClasspathEntry findClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
-        for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-			if(entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
-            	if(entry.getPath().toOSString().equals(id)) {
-    				return entry;
-    			}
-			}
-		}
+        for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+            if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+                if (entry.getPath().toOSString().equals(id)) {
+                    return entry;
+                }
+            }
+        }
         return null;
     }
 
@@ -213,28 +217,29 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         return findClasspathContainer(javaProject, id) != null;
     }
 
-    protected boolean classpathContainerContains(IJavaProject project, String id, String path) throws JavaModelException {
+    protected boolean classpathContainerContains(IJavaProject project, String id, String path)
+            throws JavaModelException {
         IClasspathContainer container = JavaCore.getClasspathContainer(new Path(id), project);
-        for(IClasspathEntry entry : container.getClasspathEntries()) {
-            if(entry.getPath().toOSString().contains(path)) {
+        for (IClasspathEntry entry : container.getClasspathEntries()) {
+            if (entry.getPath().toOSString().contains(path)) {
                 return true;
             }
         }
         return false;
     }
 
-	protected void assertErrorMarker(IProject project, String type) throws CoreException {
-	    List<IMarker> markers = findMarkers(project, IMarker.SEVERITY_ERROR);
-	    for(IMarker marker : markers) {
-	    	if(type.equals(marker.getType())) {
-	    	    Assert.assertTrue("Marker type " + type + " is not a subtype of " + IMarker.PROBLEM,
-	    	        marker.isSubtypeOf(IMarker.PROBLEM));
-	    	    return;
-	    	}
-	    }
+    protected void assertErrorMarker(IProject project, String type) throws CoreException {
+        List<IMarker> markers = findMarkers(project, IMarker.SEVERITY_ERROR);
+        for (IMarker marker : markers) {
+            if (type.equals(marker.getType())) {
+                Assert.assertTrue("Marker type " + type + " is not a subtype of " + IMarker.PROBLEM,
+                        marker.isSubtypeOf(IMarker.PROBLEM));
+                return;
+            }
+        }
 
-	    Assert.fail("Marker not found. Found markers:" + toString(markers));
-	}
+        Assert.fail("Marker not found. Found markers:" + toString(markers));
+    }
 
     protected File createTempFolder() throws IOException {
         File temp = File.createTempFile("temp", "");
@@ -244,8 +249,8 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     }
 
     static boolean booleanAttribute(String attributeName, IClasspathEntry entry) {
-        for(IClasspathAttribute attribute : entry.getExtraAttributes()) {
-            if(attribute.getName().equals(attributeName) && attribute.getValue().equals("true")) {
+        for (IClasspathAttribute attribute : entry.getExtraAttributes()) {
+            if (attribute.getName().equals(attributeName) && attribute.getValue().equals("true")) {
                 return true;
             }
         }

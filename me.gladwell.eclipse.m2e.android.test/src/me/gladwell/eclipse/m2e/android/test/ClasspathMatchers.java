@@ -15,7 +15,8 @@ import org.hamcrest.Matcher;
 
 public class ClasspathMatchers {
 
-    private ClasspathMatchers() {}
+    private ClasspathMatchers() {
+    }
 
     public static Matcher<IRuntimeClasspathEntry[]> containsEntry(final String path) {
         return new BaseMatcher<IRuntimeClasspathEntry[]>() {
@@ -34,8 +35,8 @@ public class ClasspathMatchers {
     }
 
     private static boolean containsEntry(String path, IRuntimeClasspathEntry[] classpath) {
-        for(IRuntimeClasspathEntry entry: classpath) {
-            if(entry.getPath().toString().endsWith(path)) {
+        for (IRuntimeClasspathEntry entry : classpath) {
+            if (entry.getPath().toString().endsWith(path)) {
                 return true;
             }
         }

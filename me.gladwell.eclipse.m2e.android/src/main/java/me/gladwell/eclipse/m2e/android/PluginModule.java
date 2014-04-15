@@ -44,9 +44,7 @@ public class PluginModule extends AbstractModule {
         bind(IWorkspace.class).toInstance(ResourcesPlugin.getWorkspace());
         bind(MavenModelManager.class).toInstance(MavenPlugin.getMavenModelManager());
 
-        bind(IRuntimeClasspathProvider.class)
-            .annotatedWith(Maven.class)
-            .to(MavenRuntimeClasspathProvider.class);
+        bind(IRuntimeClasspathProvider.class).annotatedWith(Maven.class).to(MavenRuntimeClasspathProvider.class);
 
         bind(Object.class).to(JUnitClasspathProvider.class);
         bind(ILaunchConfigurationListener.class).to(AndroidMavenLaunchConfigurationListener.class);

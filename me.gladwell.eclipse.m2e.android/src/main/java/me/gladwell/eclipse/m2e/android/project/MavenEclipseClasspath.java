@@ -8,7 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathSourceEntryDescriptor;
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntryDescriptor;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findContainerContaining;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findContainerMatching;
 import static org.eclipse.jdt.core.JavaCore.newContainerEntry;
@@ -102,7 +102,7 @@ public class MavenEclipseClasspath implements Classpath {
     }
 
     public SourceEntry getSourceEntry(String path) {
-        return new EclipseSourceEntry(project, classpath, findClasspathSourceEntryDescriptor(classpath, path));
+        return new EclipseSourceEntry(project, classpath, findSourceEntryDescriptor(classpath, path));
     }
 
 }

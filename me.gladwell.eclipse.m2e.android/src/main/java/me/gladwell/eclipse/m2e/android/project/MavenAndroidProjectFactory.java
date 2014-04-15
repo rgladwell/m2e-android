@@ -25,29 +25,29 @@ public class MavenAndroidProjectFactory implements AndroidProjectFactory<MavenAn
     private final DependencyResolver depedendencyResolver;
 
     @Inject
-	public MavenAndroidProjectFactory(RepositorySystemSession session, DependencyResolver depedendencyResolver) {
+    public MavenAndroidProjectFactory(RepositorySystemSession session, DependencyResolver depedendencyResolver) {
         super();
         this.session = session;
         this.depedendencyResolver = depedendencyResolver;
     }
 
     public MavenAndroidProject createAndroidProject(MavenProject mavenProject) {
-		final Plugin jaywayPlugin = MavenAndroidProjectFactory.findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
-        if(jaywayPlugin != null) {
-			return new JaywayMavenAndroidProject(mavenProject, jaywayPlugin, session, depedendencyResolver);
-		}
+        final Plugin jaywayPlugin = MavenAndroidProjectFactory.findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
+        if (jaywayPlugin != null) {
+            return new JaywayMavenAndroidProject(mavenProject, jaywayPlugin, session, depedendencyResolver);
+        }
 
-		throw new AndroidMavenException("un-recognised maven-android project type");
-	}
+        throw new AndroidMavenException("un-recognised maven-android project type");
+    }
 
     public static Plugin findJaywayAndroidPlugin(List<Plugin> buildPlugins) {
-    	for(Plugin plugin : buildPlugins) {
-    		if("com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId()) &&
-    				("android-maven-plugin".equals(plugin.getArtifactId()) ||
-    						"maven-android-plugin".equals(plugin.getArtifactId()))) {
-    			return plugin;
-    		}
-    	}
-    	return null;
+        for (Plugin plugin : buildPlugins) {
+            if ("com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId())
+                    && ("android-maven-plugin".equals(plugin.getArtifactId()) || "maven-android-plugin".equals(plugin
+                            .getArtifactId()))) {
+                return plugin;
+            }
+        }
+        return null;
     }
 }

@@ -12,7 +12,7 @@ import static java.io.File.separator;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
 import static org.junit.Assert.assertThat;
-import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findClasspathSourceEntry;
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntry;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
 
 import java.io.File;
@@ -41,7 +41,7 @@ import com.google.inject.Inject;
 
 /**
  * Test suite for configuring and building Android applications.
- *
+ * 
  * @author Ricardo Gladwell <ricardo.gladwell@gmail.com>
  */
 @SuppressWarnings("restriction")
@@ -51,94 +51,97 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     private static final String ANDROID_TEST_CLASSES_FOLDER = "target" + separator + "test-classes";
     private static final String PROJECT_NAME = "android-application";
 
-	private IProject project;
-	private IJavaProject javaProject;
+    private IProject project;
+    private IJavaProject javaProject;
 
-	private @Inject ILaunchManager launchManager;
-	private @Inject JUnitClasspathProvider classpathProvider;
+    private @Inject ILaunchManager launchManager;
+    private @Inject JUnitClasspathProvider classpathProvider;
 
     @Override
-	protected void setUp() throws Exception {
-		super.setUp();
+    protected void setUp() throws Exception {
+        super.setUp();
 
-		project = importAndroidProject(PROJECT_NAME);
-		javaProject = JavaCore.create(project);
-	}
+        project = importAndroidProject(PROJECT_NAME);
+        javaProject = JavaCore.create(project);
+    }
 
     public void testConfigure() throws Exception {
-		assertNoErrors(project);
-	}
+        assertNoErrors(project);
+    }
 
-	public void testConfigureAddsAndroidNature() throws Exception {
-	    assertTrue("configurer failed to add android nature", project.hasNature(AdtConstants.NATURE_DEFAULT));
-	}
+    public void testConfigureAddsAndroidNature() throws Exception {
+        assertTrue("configurer failed to add android nature", project.hasNature(AdtConstants.NATURE_DEFAULT));
+    }
 
-	public void testConfigureApkBuilderBeforeMavenBuilder() throws Exception {
-		boolean foundApkBuilder = false;
-		for(ICommand command : project.getDescription().getBuildSpec()) {
-			if("com.android.ide.eclipse.adt.ApkBuilder".equals(command.getBuilderName())) {
-				foundApkBuilder = true;
-			} else if(IMavenConstants.BUILDER_ID.equals(command.getBuilderName())) {
-				assertTrue("project APKBuilder not configured before maven builder", foundApkBuilder);
-				return;
-			}
-		}
+    public void testConfigureApkBuilderBeforeMavenBuilder() throws Exception {
+        boolean foundApkBuilder = false;
+        for (ICommand command : project.getDescription().getBuildSpec()) {
+            if ("com.android.ide.eclipse.adt.ApkBuilder".equals(command.getBuilderName())) {
+                foundApkBuilder = true;
+            } else if (IMavenConstants.BUILDER_ID.equals(command.getBuilderName())) {
+                assertTrue("project APKBuilder not configured before maven builder", foundApkBuilder);
+                return;
+            }
+        }
 
-		fail("project does not contain maven builder build command");
-	}
+        fail("project does not contain maven builder build command");
+    }
 
-	public void testConfigureDoesNotAddTargetDirectoryToClasspath() throws Exception {
-		for(IClasspathEntry entry : javaProject.getRawClasspath()) {
-			assertFalse("classpath contains reference to target directory: cause infinite build loops and build conflicts", entry.getPath().toOSString().contains("target"));
-		}
-	}
+    public void testConfigureDoesNotAddTargetDirectoryToClasspath() throws Exception {
+        for (IClasspathEntry entry : javaProject.getRawClasspath()) {
+            assertFalse(
+                    "classpath contains reference to target directory: cause infinite build loops and build conflicts",
+                    entry.getPath().toOSString().contains("target"));
+        }
+    }
 
-	public void testConfigureGeneratedResourcesFolderInRawClasspath() throws Exception {
-		assertClasspathContains(javaProject, "gen");
-	}
+    public void testConfigureGeneratedResourcesFolderInRawClasspath() throws Exception {
+        assertClasspathContains(javaProject, "gen");
+    }
 
-	public void testConfigureAddsCompileDependenciesToClasspath() throws Exception {
-		assertClasspathContains(javaProject, "commons-lang-2.4.jar");
-	}
+    public void testConfigureAddsCompileDependenciesToClasspath() throws Exception {
+        assertClasspathContains(javaProject, "commons-lang-2.4.jar");
+    }
 
-	public void testConfigureDoesNotAddPlatformDependencyToClasspath() throws Exception {
-		assertClasspathDoesNotContain(javaProject, "android-2.3.3.jar");
-	}
+    public void testConfigureDoesNotAddPlatformDependencyToClasspath() throws Exception {
+        assertClasspathDoesNotContain(javaProject, "android-2.3.3.jar");
+    }
 
-	public void testConfigureDoesNotAddPlatformProvidedDependenciesToClasspath() throws Exception {
-		assertClasspathDoesNotContainExported(javaProject, "commons-logging-1.1.1.jar");
-	}
+    public void testConfigureDoesNotAddPlatformProvidedDependenciesToClasspath() throws Exception {
+        assertClasspathDoesNotContainExported(javaProject, "commons-logging-1.1.1.jar");
+    }
 
     public void testConfigureDoesNotAddTransitivePlatformProvidedDependenciesToClasspath() throws Exception {
         assertClasspathDoesNotContainExported(javaProject, "httpcore-4.0.1.jar");
     }
 
-	public void testConfigureDoesRemoveJreClasspathContainer() throws Exception {
-		assertClasspathDoesNotContain(javaProject, JavaRuntime.JRE_CONTAINER);
-	}
+    public void testConfigureDoesRemoveJreClasspathContainer() throws Exception {
+        assertClasspathDoesNotContain(javaProject, JavaRuntime.JRE_CONTAINER);
+    }
 
-	// TODO quarantined intermittently failing integration test
-	public void ignoreTestBuildDirectoryContainsCompiledClasses() throws Exception {
-		File outputLocation = new File(ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString(), javaProject.getPath().toOSString());
-		File apiDemosApplication  = new File(outputLocation, "bin/classes/your/company/HelloAndroidActivity.class");
+    // TODO quarantined intermittently failing integration test
+    public void ignoreTestBuildDirectoryContainsCompiledClasses() throws Exception {
+        File outputLocation = new File(ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString(),
+                javaProject.getPath().toOSString());
+        File apiDemosApplication = new File(outputLocation, "bin/classes/your/company/HelloAndroidActivity.class");
 
-		buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+        buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-		assertTrue(apiDemosApplication.exists());
-	}
+        assertTrue(apiDemosApplication.exists());
+    }
 
-	public void testConfigureMarksMavenContainerExported() throws Exception {
-		IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
-		assertTrue(mavenContainer.isExported());
-	}
+    public void testConfigureMarksMavenContainerExported() throws Exception {
+        IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
+        assertTrue(mavenContainer.isExported());
+    }
 
     public void testConfigureSetsCorrectSourceOutputFolder() throws Exception {
-        IClasspathEntry entry = findClasspathSourceEntry(javaProject.getRawClasspath(), "src/main/java");
+        IClasspathEntry entry = findSourceEntry(javaProject.getRawClasspath(), "src/main/java");
         assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
     }
 
     public void testConfigureSetsCorrectTestOutputFolder() throws Exception {
-        IClasspathEntry entry = findClasspathSourceEntry(javaProject.getRawClasspath(), "src/test/java");
+        IClasspathEntry entry = findSourceEntry(javaProject.getRawClasspath(), "src/test/java");
         assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_TEST_CLASSES_FOLDER));
     }
 
@@ -156,7 +159,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     }
 
     public void testConfigureMarksNonRuntimeContainerNotExported() throws Exception {
-        IClasspathEntry androidContainer = getClasspathContainer(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES);
+        IClasspathEntry androidContainer = getClasspathContainer(javaProject,
+                AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES);
         assertFalse(androidContainer.isExported());
     }
 
@@ -165,7 +169,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     }
 
     public void testConfigureAddsNonRuntimeDependenciesToNonRuntimeContainer() throws Exception {
-        assertTrue(classpathContainerContains(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES, "mockito-core-1.9.5.jar"));
+        assertTrue(classpathContainerContains(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
+                "mockito-core-1.9.5.jar"));
     }
 
     // TODO quarantined integration test that fails when run after another integration test
@@ -177,13 +182,15 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
 
         // then
-        assertEquals("me.gladwell.m2e.android.classpathProvider", configuration.getAttribute(ATTR_CLASSPATH_PROVIDER, ""));
+        assertEquals("me.gladwell.m2e.android.classpathProvider",
+                configuration.getAttribute(ATTR_CLASSPATH_PROVIDER, ""));
     }
 
     private IRuntimeClasspathEntry[] provideClasspath(ILaunchConfiguration configuration) throws CoreException {
         project.getFile("bin/classes").getLocation().toFile().mkdirs();
         IRuntimeClasspathEntry[] unresolvedClasspath = classpathProvider.computeUnresolvedClasspath(configuration);
-        IRuntimeClasspathEntry[] resolvedClasspath = classpathProvider.resolveClasspath(unresolvedClasspath, configuration);
+        IRuntimeClasspathEntry[] resolvedClasspath = classpathProvider.resolveClasspath(unresolvedClasspath,
+                configuration);
         return resolvedClasspath;
     }
 
@@ -232,7 +239,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     }
 
     public void testConfigureDoesNotSetIgnoreWarnings() throws Exception {
-        IClasspathEntry gen = findClasspathSourceEntry(javaProject.getRawClasspath(), "gen");
+        IClasspathEntry gen = findSourceEntry(javaProject.getRawClasspath(), "gen");
         assertFalse("external assets folder isn't linked", booleanAttribute(IGNORE_OPTIONAL_PROBLEMS, gen));
     }
 }

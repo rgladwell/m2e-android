@@ -33,7 +33,8 @@ public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfi
     }
 
     public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
-        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader, eclipseProject);
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader,
+                eclipseProject);
         eclipseProject.getClasspath().addContainer(nonRuntimeContainer);
     }
 

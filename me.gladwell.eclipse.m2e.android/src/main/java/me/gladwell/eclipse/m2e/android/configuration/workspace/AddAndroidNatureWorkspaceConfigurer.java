@@ -13,16 +13,16 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class AddAndroidNatureWorkspaceConfigurer implements WorkspaceConfigurer {
 
-	public boolean isConfigured(EclipseAndroidProject project) {
-		return project.isAndroidProject();
-	}
+    public boolean isConfigured(EclipseAndroidProject project) {
+        return project.isAndroidProject();
+    }
 
-	public boolean isValid(MavenAndroidProject project) {
-		return true;
-	}
+    public boolean isValid(MavenAndroidProject project) {
+        return true;
+    }
 
-	public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
-		eclipseProject.setAndroidProject(mavenProject.isAndroidProject());
-	}
+    public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
+        eclipseProject.setAndroidProject(mavenProject.isAndroidProject());
+    }
 
 }

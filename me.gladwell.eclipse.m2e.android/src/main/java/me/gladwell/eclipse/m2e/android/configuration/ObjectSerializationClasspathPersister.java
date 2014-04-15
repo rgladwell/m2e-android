@@ -36,7 +36,8 @@ import com.google.inject.Singleton;
  * 
  * @TODO re-factor into smaller classes
  */
-public @Singleton class ObjectSerializationClasspathPersister implements ClasspathPersister, ClasspathLoader {
+public @Singleton
+class ObjectSerializationClasspathPersister implements ClasspathPersister, ClasspathLoader {
 
     static final class LibraryEntryReplace implements Serializable {
         private static final long serialVersionUID = 3901667379326978799L;
@@ -209,7 +210,7 @@ public @Singleton class ObjectSerializationClasspathPersister implements Classpa
         ObjectInputStream is = null;
         try {
             File file = new File(stateLocation, project.getProject().getName());
-            if(!file.exists()) {
+            if (!file.exists()) {
                 throw new FileNotFoundException(file.getAbsolutePath());
             }
             is = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file))) {
@@ -234,7 +235,7 @@ public @Singleton class ObjectSerializationClasspathPersister implements Classpa
             };
             classpath = (List<IClasspathEntry>) is.readObject();
             return classpath;
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             throw e;
         } catch (IOException e) {
             throw new ProjectConfigurationException(e);

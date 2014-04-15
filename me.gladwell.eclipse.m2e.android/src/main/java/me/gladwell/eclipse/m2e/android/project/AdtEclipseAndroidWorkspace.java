@@ -19,37 +19,36 @@ import com.google.inject.Singleton;
 @Singleton
 public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
 
-	private IWorkspace workspace;
-	private AndroidProjectFactory<EclipseAndroidProject, IProject> projectFactory;
-	private AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> projectConverter;
+    private IWorkspace workspace;
+    private AndroidProjectFactory<EclipseAndroidProject, IProject> projectFactory;
+    private AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> projectConverter;
 
-	@Inject
-	public AdtEclipseAndroidWorkspace(
-			IWorkspace workspace,
-			AndroidProjectFactory<EclipseAndroidProject, IProject> projectFactory,
-			AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> projectConverter) {
-		super();
-		this.workspace = workspace;
-		this.projectFactory = projectFactory;
-		this.projectConverter = projectConverter;
-	}
+    @Inject
+    public AdtEclipseAndroidWorkspace(IWorkspace workspace,
+            AndroidProjectFactory<EclipseAndroidProject, IProject> projectFactory,
+            AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> projectConverter) {
+        super();
+        this.workspace = workspace;
+        this.projectFactory = projectFactory;
+        this.projectConverter = projectConverter;
+    }
 
-	// TODO delegate workspace dep resolution to EclipseWorkspaceArtifactRepository
-	public EclipseAndroidProject findOpenWorkspaceDependency(Dependency dependency) {
-		for(IProject project : workspace.getRoot().getProjects()) {
-			if (!project.isOpen()) {
-				continue;
-			}
-			EclipseAndroidProject androidProject = projectFactory.createAndroidProject(project);
-			if(androidProject.isAndroidProject() && androidProject.isMavenised()) {
-				MavenAndroidProject mavenProject = projectConverter.createAndroidProject(androidProject);
-				if(mavenProject.matchesDependency(dependency)) {
-					return androidProject;
-				}
-			}
-		}
+    // TODO delegate workspace dep resolution to EclipseWorkspaceArtifactRepository
+    public EclipseAndroidProject findOpenWorkspaceDependency(Dependency dependency) {
+        for (IProject project : workspace.getRoot().getProjects()) {
+            if (!project.isOpen()) {
+                continue;
+            }
+            EclipseAndroidProject androidProject = projectFactory.createAndroidProject(project);
+            if (androidProject.isAndroidProject() && androidProject.isMavenised()) {
+                MavenAndroidProject mavenProject = projectConverter.createAndroidProject(androidProject);
+                if (mavenProject.matchesDependency(dependency)) {
+                    return androidProject;
+                }
+            }
+        }
 
-		throw new DependencyNotFoundInWorkspace(dependency);
-	}
+        throw new DependencyNotFoundInWorkspace(dependency);
+    }
 
 }

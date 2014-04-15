@@ -37,8 +37,8 @@ public class Classpaths {
         });
     }
 
-    public static IClasspathEntry findClasspathSourceEntry(IClasspathEntry[] classpath, final String path) {
-        return matchClasspathEntry(classpath, and(classpathEntryOfType(IClasspathEntry.CPE_SOURCE), new Predicate<IClasspathEntry>() {
+    public static IClasspathEntry findSourceEntry(IClasspathEntry[] classpath, final String path) {
+        return matchEntry(classpath, and(entryOfType(IClasspathEntry.CPE_SOURCE), new Predicate<IClasspathEntry>() {
             public boolean apply(IClasspathEntry entry) {
                 return entry.getPath().toOSString().endsWith(path);
             }
@@ -46,10 +46,10 @@ public class Classpaths {
     }
 
     private static IClasspathEntry matchContainer(IClasspathDescriptor classpath, Predicate<IClasspathEntry> predicate) {
-        return matchClasspathEntry(classpath.getEntries(), and(classpathEntryOfType(IClasspathEntry.CPE_CONTAINER), predicate));
+        return matchEntry(classpath.getEntries(), and(entryOfType(IClasspathEntry.CPE_CONTAINER), predicate));
     }
 
-    private static Predicate<IClasspathEntry> classpathEntryOfType(final int type) {
+    private static Predicate<IClasspathEntry> entryOfType(final int type) {
         return new Predicate<IClasspathEntry>() {
             public boolean apply(IClasspathEntry entry) {
                 return entry.getEntryKind() == type;
@@ -57,18 +57,18 @@ public class Classpaths {
         };
     }
 
-    private static IClasspathEntry matchClasspathEntry(IClasspathEntry[] classpath, Predicate<IClasspathEntry> predicate) {
-        for(IClasspathEntry entry : classpath) {
-            if(predicate.apply(entry)) {
+    private static IClasspathEntry matchEntry(IClasspathEntry[] classpath, Predicate<IClasspathEntry> predicate) {
+        for (IClasspathEntry entry : classpath) {
+            if (predicate.apply(entry)) {
                 return entry;
             }
         }
         return null;
     }
 
-    public static IClasspathEntryDescriptor findClasspathSourceEntryDescriptor(IClasspathDescriptor classpath, String path) {
-        for(IClasspathEntryDescriptor entry : classpath.getEntryDescriptors()) {
-            if(entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toString().endsWith(path)) {
+    public static IClasspathEntryDescriptor findSourceEntryDescriptor(IClasspathDescriptor classpath, String path) {
+        for (IClasspathEntryDescriptor entry : classpath.getEntryDescriptors()) {
+            if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE && entry.getPath().toString().endsWith(path)) {
                 return entry;
             }
         }

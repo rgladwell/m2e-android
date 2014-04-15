@@ -9,8 +9,8 @@
 package me.gladwell.eclipse.m2e.android;
 
 import static java.util.Arrays.asList;
+import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME;
 import static org.eclipse.jdt.launching.JavaRuntime.newArchiveRuntimeClasspathEntry;
-import static org.eclipse.jdt.launching.JavaRuntime.newRuntimeContainerClasspathEntry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 
@@ -41,7 +40,8 @@ public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
 
     @Inject
     public JUnitClasspathProvider(@Maven IRuntimeClasspathProvider classpathProvider, IWorkspace workspace,
-            AndroidProjectFactory<EclipseAndroidProject, IProject> factory, AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> factory2) {
+            AndroidProjectFactory<EclipseAndroidProject, IProject> factory,
+            AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> factory2) {
         super();
         this.classpathProvider = classpathProvider;
         this.workspace = workspace;
@@ -50,7 +50,8 @@ public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
     }
 
     public IRuntimeClasspathEntry[] computeUnresolvedClasspath(ILaunchConfiguration config) throws CoreException {
-        List<IRuntimeClasspathEntry> classpath = new ArrayList<IRuntimeClasspathEntry>(asList(classpathProvider.computeUnresolvedClasspath(config)));
+        List<IRuntimeClasspathEntry> classpath = new ArrayList<IRuntimeClasspathEntry>(
+                asList(classpathProvider.computeUnresolvedClasspath(config)));
 
         addPlatformDependencies(config, classpath);
         addBinaryFolder(config, classpath);
@@ -58,22 +59,25 @@ public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
         return classpath.toArray(new IRuntimeClasspathEntry[classpath.size()]);
     }
 
-    private void addPlatformDependencies(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath) throws CoreException {
-        IProject project = workspace.getRoot().getProject(config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null));
+    private void addPlatformDependencies(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath)
+            throws CoreException {
+        IProject project = workspace.getRoot().getProject(config.getAttribute(ATTR_PROJECT_NAME, (String) null));
         MavenAndroidProject androidProject = factory2.createAndroidProject(factory.createAndroidProject(project));
 
-        for(String dependency : androidProject.getPlatformProvidedDependencies()) {
+        for (String dependency : androidProject.getPlatformProvidedDependencies()) {
             classpath.add(newArchiveRuntimeClasspathEntry(new Path(dependency)));
         }
     }
 
-    private void addBinaryFolder(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath) throws CoreException {
-        IProject project = workspace.getRoot().getProject(config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null));
+    private void addBinaryFolder(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath)
+            throws CoreException {
+        IProject project = workspace.getRoot().getProject(config.getAttribute(ATTR_PROJECT_NAME, (String) null));
         IFolder binaries = project.getFolder("bin" + File.separator + "classes");
         classpath.add(newArchiveRuntimeClasspathEntry(binaries.getLocation()));
     }
 
-    public IRuntimeClasspathEntry[] resolveClasspath(IRuntimeClasspathEntry[] classpath, ILaunchConfiguration config) throws CoreException {
+    public IRuntimeClasspathEntry[] resolveClasspath(IRuntimeClasspathEntry[] classpath, ILaunchConfiguration config)
+            throws CoreException {
         return classpathProvider.resolveClasspath(classpath, config);
     }
 

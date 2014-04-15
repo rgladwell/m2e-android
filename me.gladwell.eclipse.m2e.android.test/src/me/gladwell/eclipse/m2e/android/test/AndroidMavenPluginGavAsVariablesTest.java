@@ -27,5 +27,4 @@ public class AndroidMavenPluginGavAsVariablesTest extends AndroidMavenPluginTest
         assertNoErrors(project);
     }
 
-
 }
