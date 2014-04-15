@@ -45,7 +45,7 @@ To clone them into your Eclipse workspace follow these steps:
 
 h3. Further reading
 
-For more information on developing the m2e-android plug-in please see the following wiki pages:
+For more information on developing the m2e-android plug-in please see the following:
 
+* "Contributing":https://github.com/rgladwell/m2e-android/blob/master/CONTRIBUTING.md
 * "Testing":https://github.com/rgladwell/m2e-android/wiki/Testing
-* "Guidelines":https://github.com/rgladwell/m2e-android/wiki/Guidelines
