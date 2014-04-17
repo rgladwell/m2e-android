@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Android Configurator for M2E
 Bundle-SymbolicName: me.gladwell.eclipse.m2e.android;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: me.gladwell.eclipse.m2e.android.AndroidMavenPlugin
 Bundle-Vendor: Gladwell Consultants Ltd.
 Require-Bundle: org.eclipse.core.runtime,
@@ -21,5 +21,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.junit.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Export-Package: me.gladwell.eclipse.m2e.android,
- me.gladwell.eclipse.m2e.android.configuration
+Export-Package: me.gladwell.eclipse.m2e.android,me.gladwell.eclipse.m2
+ e.android.configuration
