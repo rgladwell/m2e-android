@@ -50,3 +50,8 @@ For more information on developing the m2e-android plug-in please see the follow
 * "Contributing":https://github.com/rgladwell/m2e-android/blob/master/CONTRIBUTING.md
 * "Testing":https://github.com/rgladwell/m2e-android/wiki/Testing
 
+h3. Patrons
+
+Special thanks to those who crowdfunded project development through "Patreon":http://www.patreon.com/rgladwell:
+
+"Raphael Ackermann":https://twitter.com/acraphae
