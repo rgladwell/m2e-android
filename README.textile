@@ -1,6 +1,6 @@
-h1. Android Configurator "!http://badge.waffle.io/rgladwell/m2e-android.png(Stories in Ready)!":http://waffle.io/rgladwell/m2e-android !https://travis-ci.org/rgladwell/m2e-android.png?branch=test-classes-added-to-classpath!:https://travis-ci.org/rgladwell/m2e-android
+h1. Android for Maven Eclipse "!http://badge.waffle.io/rgladwell/m2e-android.png(Stories in Ready)!":http://waffle.io/rgladwell/m2e-android !https://travis-ci.org/rgladwell/m2e-android.png?branch=test-classes-added-to-classpath!:https://travis-ci.org/rgladwell/m2e-android
 
-The Android Configurator (*m2e-android*) is an Maven Integration for Eclipse (m2e) plug-in that adds Maven support for Android Developer Tools (ADT) and the Maven Android Plugin. It brings the power of Maven dependency management into the ADT.
+Android for Maven Eclipse (*m2e-android*) is a Maven Eclipse (m2e) plug-in that adds Maven support for Android Developer Tools (ADT) and the Maven Android Plugin. It brings the power of Maven dependency management into the ADT.
 
 For instructions on how to get started using the m2e-android please see the "project web site.":http://rgladwell.github.com/m2e-android/
 
@@ -9,7 +9,7 @@ _Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefso
 
 h2. Hacking
 
-This section details how to set-up your environment to make code changes to the *Android Configurator* code base.
+This section details how to set-up your environment to make code changes to the *m2e-android* code base.
 
 h3. 1. Getting Started
 

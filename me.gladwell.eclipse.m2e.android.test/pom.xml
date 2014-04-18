@@ -8,7 +8,7 @@
 		<groupId>me.gladwell.eclipse.m2e.android</groupId>
 		<version>1.0.1-SNAPSHOT</version>
 	</parent>
-	<name>Android Configurator for M2E Test Suite</name>
+	<name>Android for Maven Eclipse Test Suite</name>
 	<artifactId>me.gladwell.eclipse.m2e.android.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>

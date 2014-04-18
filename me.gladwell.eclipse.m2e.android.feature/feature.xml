@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="me.gladwell.eclipse.m2e.android.feature"
-      label="Android Configurator for M2E"
+      label="Android for Maven Eclipse"
       version="1.0.1.qualifier"
       provider-name="Gladwell.me">
 

@@ -1,6 +1,6 @@
-# Contributing to the Android Connector for Maven Eclipse
+# Contributing to the Android for Maven Eclipse
 
-The **Android Connector for Maven Eclipse** project follows the
+The **Android for Maven Eclipse** project follows the
 [Github Workflow](http://scottchacon.com/2011/08/31/github-flow.html)
 and contributions can be made by sending a
 [pull requests](https://help.github.com/articles/creating-a-pull-request)

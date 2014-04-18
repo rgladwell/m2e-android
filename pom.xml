@@ -5,9 +5,9 @@
 	<artifactId>m2e-android</artifactId>
 	<groupId>me.gladwell.eclipse.m2e.android</groupId>
 	<version>1.0.1-SNAPSHOT</version>
-	<name>Android Configurator for M2E</name>
+	<name>Android for Maven Eclipse</name>
 	<packaging>pom</packaging>
-	<description>Android Configurator for M2E Maven Integration for Eclipse and Maven Android Plugin</description>
+	<description>Android Configurator for M2E Integration for Eclipse and Maven Android Plugin.</description>
 	<url>https://github.com/rgladwell/m2e-android</url>
 	<issueManagement>
 		<system>Github</system>

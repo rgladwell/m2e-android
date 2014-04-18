@@ -7,17 +7,17 @@
     <catalogItem>
       <categoryId>org.eclipse.m2e.discovery.category.lifecycles</categoryId>
       <m2e-versions>1.0,1.1</m2e-versions>
-      <description>Android Configurator for M2E Maven Integration for Eclipse</description>
+      <description>Android for Maven Eclipse</description>
       <groupId>lifecycles</groupId>
       <id>me.gladwell.eclipse.m2e.android</id>
       <kind>lifecycles</kind>
       <license>EPL</license>
-      <name>Android Connector</name>
+      <name>Android for Maven Eclipse</name>
       <provider>Gladwell Consultants Ltd.</provider>
       <p2>
         <repositoryUrl>http://rgladwell.github.com/m2e-android/updates/</repositoryUrl>
         <iuId>me.gladwell.eclipse.m2e.android.feature.feature.group</iuId>
-        <iuVersion>0.4.2</iuVersion>
+        <iuVersion>1.0.0</iuVersion>
         <lifecycleMappingIU>
           <iuId>me.gladwell.eclipse.m2e.android</iuId>
         </lifecycleMappingIU>
@@ -36,7 +36,7 @@
         </rootIU>
       </p2>
       <overview>
-        <summary>Android Configurator for M2E Maven Integration for Eclipse</summary>
+        <summary>Android for Maven Eclipse</summary>
         <url>http://rgladwell.github.com/m2e-android</url>
       </overview>
     </catalogItem>  
