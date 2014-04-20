@@ -8,6 +8,8 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static java.io.File.separator;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -76,14 +78,14 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     }
 
     protected IProject importAndroidProject(String name) throws Exception {
-        IProject project = importProject("projects/" + name + "/pom.xml");
+        IProject project = importProject("projects" + separator + name + separator + "pom.xml");
         waitForJobsToComplete();
         waitForAdtToLoad();
         return project;
     }
 
     protected IProject importAndroidProject(String name, File folder) throws Exception {
-        IProject project = importProject("projects/" + name + "/pom.xml", folder);
+        IProject project = importProject("projects" + separator + name + separator + "pom.xml", folder);
         waitForJobsToComplete();
         waitForAdtToLoad();
         return project;
