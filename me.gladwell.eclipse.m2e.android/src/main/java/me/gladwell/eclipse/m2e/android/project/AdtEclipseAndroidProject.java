@@ -11,6 +11,8 @@ package me.gladwell.eclipse.m2e.android.project;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
@@ -37,6 +39,7 @@ import com.android.ide.eclipse.adt.AdtConstants;
 import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import com.android.ide.eclipse.adt.internal.sdk.ProjectState.LibraryState;
 import com.android.io.StreamException;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
@@ -117,7 +120,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
             workingCopy.save();
             state.reloadProperties();
             if (library != null) {
-                state.needs(Sdk.getProjectState(library.getProject()));
+                setProjectStateNeeds(state, Sdk.getProjectState(library.getProject()));
             }
         } catch (IOException e) {
             throw new ProjectConfigurationException(e);
@@ -173,6 +176,51 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
 
     public Classpath getClasspath() {
         return new MavenEclipseClasspath(JavaCore.create(project), classpath);
+    }
+    
+    private static LibraryState setProjectStateNeeds(ProjectState project, ProjectState libraryProject) {
+        File projectFile = project.getProject().getLocation().toFile();
+        File libraryFile = libraryProject.getProject().getLocation().toFile();
+
+        synchronized (project.getLibraries()) {
+            for (LibraryState state : project.getLibraries()) {
+                if (state.getProjectState() == null) {
+
+                    File stateFile = new File(state.getRelativePath());
+
+                    File library = stateFile.isAbsolute() ? stateFile : new File(projectFile, state.getRelativePath());
+                    try {
+                        File absPath = library.getCanonicalFile();
+                        if (absPath.equals(libraryFile)) {
+                            setProject(state, libraryProject);
+                            return state;
+                        }
+                    } catch (IOException localIOException) {
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    private static void setProject(LibraryState state, ProjectState libraryProject) {
+        Class<LibraryState> clazz = LibraryState.class;
+        boolean invoked = false;
+        try {
+            Method setProjectMethod = clazz.getDeclaredMethod("setProject", ProjectState.class);
+            setProjectMethod.setAccessible(true);
+            setProjectMethod.invoke(state, libraryProject);
+            invoked = true;
+        } catch (ReflectiveOperationException e) {
+
+        } catch (SecurityException e) {
+
+        } catch (IllegalArgumentException e) {
+        }
+
+        if (!invoked) {
+            throw new ProjectConfigurationException("Cannot add library project " + state.getProjectLocation());
+        }
     }
 
 }
