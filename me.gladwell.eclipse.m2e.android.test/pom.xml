@@ -74,8 +74,16 @@
                     me.gladwell.eclipse.m2e.android.test/target/plugin_customisation.ini
                 </outputFile>
                 <regex>false</regex>
-                <token>$ANDROID_HOME$</token>
-                <value>${env.ANDROID_HOME}</value>
+                <replacements>
+                    <replacement>
+                        <token>$ANDROID_HOME$</token>
+                        <value>${env.ANDROID_HOME}</value>
+                    </replacement>
+                    <replacement>
+                        <token>\</token>
+                        <value>\\</value>
+                    </replacement>
+                </replacements>
             </configuration>
         </plugin>
 		</plugins>

@@ -136,12 +136,14 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     }
 
     public void testConfigureSetsCorrectSourceOutputFolder() throws Exception {
-        IClasspathEntry entry = findSourceEntry(javaProject.getRawClasspath(), "src/main/java");
+        IClasspathEntry entry = findSourceEntry(javaProject.getRawClasspath(), "src" + separator + "main" + separator
+                + "java");
         assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
     }
 
     public void testConfigureSetsCorrectTestOutputFolder() throws Exception {
-        IClasspathEntry entry = findSourceEntry(javaProject.getRawClasspath(), "src/test/java");
+        IClasspathEntry entry = findSourceEntry(javaProject.getRawClasspath(), "src" + separator + "test" + separator
+                + "java");
         assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_TEST_CLASSES_FOLDER));
     }
 
