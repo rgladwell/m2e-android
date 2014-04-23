@@ -28,6 +28,11 @@ cloned project folder:
 $ mvn verify
 ```
 
+You can also run the tests inside Eclipse using the PDE JUnit launcher
+(`[com.googlecode.eclipse.m2e.android.test] test`) in the test module. There is
+also a launcher to run an instance of Eclipse with the latest m2e-android code in
+your local workspace (`[com.googlecode.eclipse.m2e.android] run`).
+
 _Note:_ You may find tests can stall because the ADT is waiting for user
 interraction from dialogs. To avoid this execute the following command:
 

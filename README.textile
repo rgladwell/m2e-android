@@ -48,7 +48,6 @@ h3. Further reading
 For more information on developing the m2e-android plug-in please see the following:
 
 * "Contributing":https://github.com/rgladwell/m2e-android/blob/master/CONTRIBUTING.md
-* "Testing":https://github.com/rgladwell/m2e-android/wiki/Testing
 
 h3. Patrons
 
