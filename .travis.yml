@@ -5,17 +5,19 @@ env:
     - TARGET_PLATFORM=indigo
     - TARGET_PLATFORM=juno
 before_install:
-  - wget http://dl.google.com/android/android-sdk_r22.0.1-linux.tgz
-  - tar -zxf android-sdk_r22.0.1-linux.tgz
+  - wget http://dl.google.com/android/android-sdk_r22.6.2-linux.tgz
+  - tar -zxf android-sdk_r22.6.2-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:${ANDROID_HOME}/tools
   - sudo apt-get update -qq
   - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null
-  - echo yes |android update sdk --filter platform-tools,build-tools-17.0.0,android-18,addon-google_apis-google-18,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force > /dev/null
+  - echo yes |android update sdk --filter platform-tools,build-tools-19.0.3,android-18,addon-google_apis-google-18,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force > /dev/null
   - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
   - cd maven-android-sdk-deployer
   - mvn install -P 4.3
   - cd ..
-  - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-script: mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtycho.showEclipseLog=true -Dtarget.platform=$TARGET_PLATFORM verify
+before_script:
+  - export DISPLAY=:99.0
+  - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
+script: mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
