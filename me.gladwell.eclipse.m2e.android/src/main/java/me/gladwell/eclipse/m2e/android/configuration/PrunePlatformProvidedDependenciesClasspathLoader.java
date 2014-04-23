@@ -9,16 +9,22 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
 import static com.google.common.collect.Iterables.filter;
+import static me.gladwell.eclipse.m2e.android.Log.warn;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 
+import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.Log;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.apache.maven.project.MavenProject;
+import org.eclipse.core.runtime.ILog;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 
 import com.google.common.base.Predicate;
@@ -42,25 +48,30 @@ public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathL
     public Iterable<IClasspathEntry> load(IJavaProject project) throws FileNotFoundException {
         final Iterable<IClasspathEntry> nonRuntimeDependencies = super.load(project);
 
-        MavenProject mavenProject = projectRegistry.getProject(project.getProject()).getMavenProject();
-        if (mavenProject != null) {
-            final MavenAndroidProject androidProject = mavenProjectFactory.createAndroidProject(mavenProject);
-            final List<String> platformProvidedDependencies = androidProject.getPlatformProvidedDependencies();
+        IMavenProjectFacade facade = projectRegistry.getProject(project.getProject());
+        if(facade != null) {
+            MavenProject mavenProject = facade.getMavenProject();
+            if (mavenProject != null) {
+                final MavenAndroidProject androidProject = mavenProjectFactory.createAndroidProject(mavenProject);
+                final List<String> platformProvidedDependencies = androidProject.getPlatformProvidedDependencies();
 
-            if (platformProvidedDependencies != null) {
-                final Iterable<IClasspathEntry> prunedNonRuntimeDependencies = filter(nonRuntimeDependencies,
-                        new Predicate<IClasspathEntry>() {
-                            public boolean apply(IClasspathEntry entry) {
-                                if (!platformProvidedDependencies.contains(entry.getPath().toOSString())) {
-                                    return true;
-                                } else {
-                                    return false;
+                if (platformProvidedDependencies != null) {
+                    final Iterable<IClasspathEntry> prunedNonRuntimeDependencies = filter(nonRuntimeDependencies,
+                            new Predicate<IClasspathEntry>() {
+                                public boolean apply(IClasspathEntry entry) {
+                                    if (!platformProvidedDependencies.contains(entry.getPath().toOSString())) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                return prunedNonRuntimeDependencies;
+                    return prunedNonRuntimeDependencies;
+                }
             }
+        } else {
+            warn("maven project not yet registered for " + project);
         }
 
         return nonRuntimeDependencies;
