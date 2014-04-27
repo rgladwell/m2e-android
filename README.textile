@@ -1,4 +1,4 @@
-h1. Android for Maven Eclipse "!http://badge.waffle.io/rgladwell/m2e-android.png(Stories in Ready)!":http://waffle.io/rgladwell/m2e-android !https://travis-ci.org/rgladwell/m2e-android.png?branch=test-classes-added-to-classpath!:https://travis-ci.org/rgladwell/m2e-android
+h1. Android for Maven Eclipse "!http://badge.waffle.io/rgladwell/m2e-android.png(Stories in Ready)!":http://waffle.io/rgladwell/m2e-android !https://travis-ci.org/rgladwell/m2e-android.png!:https://travis-ci.org/rgladwell/m2e-android
 
 Android for Maven Eclipse (*m2e-android*) is a "Maven Eclipse":http://www.eclipse.org/m2e/ (m2e) plug-in that adds Maven support for "Android Developer Tools":http://developer.android.com/tools/sdk/eclipse-adt.html (ADT) and the "Maven Android Plugin":https://code.google.com/p/maven-android-plugin/. It brings the power of Maven dependency management into the ADT.
 
