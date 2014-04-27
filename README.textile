@@ -54,3 +54,22 @@ h3. Patrons
 Special thanks to those who crowdfunded project development through "Patreon":http://www.patreon.com/rgladwell:
 
 "Raphael Ackermann":https://twitter.com/acraphae
+
+h3. Travis
+
+The m2e-android project uses "Travis":http://travis-ci.org/ to continuously
+integrate its code. To help diagnose issues with Travis, we have added a
+"Vagrant":http://www.vagrantup.com/ image and provisioning script that
+simulates a Travis CI build.
+
+To use this please follow these steps:
+
+# Install "Vagrant":http://www.vagrantup.com/downloads.html.
+# Execute @vagrant up@.
+
+You can then get screenshots by logging into a stalling insatnce as follows:
+
+@$ vagrant ssh@
+@$ sudo apt-get install imagemagick@
+@$ cd /vagrant@
+@$ import -display :99 -window root screenshot.png@
