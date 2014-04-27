@@ -40,33 +40,36 @@ public class AetherDependencyResolver implements DependencyResolver {
         this.session = session;
     }
 
-    public List<org.sonatype.aether.artifact.Artifact> resolveDependencies(Dependency dependency, String extension) {
+    public List<org.sonatype.aether.artifact.Artifact> resolveDependencies(Dependency dependency, String extension, List<RemoteRepository> repositories) {
         final DefaultArtifact artifact = new DefaultArtifact(dependency.getGroup(), dependency.getName(), extension,
                 dependency.getVersion());
-        return resolveDependencies(artifact);
+        return resolveDependencies(artifact, repositories);
     }
 
     private List<org.sonatype.aether.artifact.Artifact> resolveDependencies(
-            final org.sonatype.aether.artifact.Artifact artifact) {
-        RemoteRepository central = new RemoteRepository("central", "default", "http://repo1.maven.org/maven2/");
+            final org.sonatype.aether.artifact.Artifact artifact,
+            List<RemoteRepository> repositories) {
         ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
         descriptorRequest.setArtifact(artifact);
-        descriptorRequest.addRepository(central);
+        
+        for (RemoteRepository remoteRepository : repositories) {
+            descriptorRequest.addRepository(remoteRepository);
+        }
 
         List<org.sonatype.aether.artifact.Artifact> resolvedDependencies = new ArrayList<org.sonatype.aether.artifact.Artifact>();
 
         try {
             ArtifactDescriptorResult descriptorResult = repository.readArtifactDescriptor(session, descriptorRequest);
-            resolvedDependencies.add(artifactResolver.resolveArtifact(central, descriptorResult.getArtifact()));
+            resolvedDependencies.add(artifactResolver.resolveArtifact(repositories, descriptorResult.getArtifact()));
             for (org.sonatype.aether.graph.Dependency d : descriptorResult.getDependencies()) {
-                Artifact resolvedArtifact = artifactResolver.resolveArtifact(central, d.getArtifact());
+                Artifact resolvedArtifact = artifactResolver.resolveArtifact(repositories, d.getArtifact());
                 resolvedDependencies.add(resolvedArtifact);
-                resolvedDependencies.addAll(resolveDependencies(resolvedArtifact));
+                resolvedDependencies.addAll(resolveDependencies(resolvedArtifact, repositories));
             }
         } catch (ArtifactDescriptorException e) {
             throw new ProjectConfigurationException(e);
         }
-
+        
         return resolvedDependencies;
     }
 }

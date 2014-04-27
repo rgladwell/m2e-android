@@ -8,6 +8,8 @@
 
 package me.gladwell.eclipse.m2e.android.resolve;
 
+import java.util.List;
+
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
 import org.sonatype.aether.RepositorySystem;
@@ -32,10 +34,14 @@ public class AetherArtifactResolver implements ArtifactResolver {
         this.session = session;
     }
 
-    public Artifact resolveArtifact(RemoteRepository central, Artifact artifact) {
+    public Artifact resolveArtifact(List<RemoteRepository> repositories, Artifact artifact) {
         ArtifactRequest artifactRequest = new ArtifactRequest();
         artifactRequest.setArtifact(artifact);
-        artifactRequest.addRepository(central);
+
+        for (RemoteRepository remoteRepository : repositories) {
+            artifactRequest.addRepository(remoteRepository);
+        }
+        
         ArtifactResult artifactResult;
         try {
             artifactResult = repository.resolveArtifact(session, artifactRequest);
