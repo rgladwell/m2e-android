@@ -36,4 +36,8 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
         assertTrue("failed to add android nature to child module", childProject.hasNature(AdtConstants.NATURE_DEFAULT));
     }
 
+    public void testConfigureDoesNotAddAndroidNatureToParentProject() throws Exception {
+        assertFalse("added android nature to parent", parentProject.hasNature(AdtConstants.NATURE_DEFAULT));
+    }
+
 }
