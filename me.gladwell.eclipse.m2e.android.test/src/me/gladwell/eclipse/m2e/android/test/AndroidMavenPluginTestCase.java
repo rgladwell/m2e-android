@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 
 import org.apache.maven.model.Model;
@@ -234,13 +233,13 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         List<IMarker> markers = findMarkers(project, IMarker.SEVERITY_ERROR);
         for (IMarker marker : markers) {
             if (type.equals(marker.getType())) {
-                Assert.assertTrue("Marker type " + type + " is not a subtype of " + IMarker.PROBLEM,
+                assertTrue("Marker type " + type + " is not a subtype of " + IMarker.PROBLEM,
                         marker.isSubtypeOf(IMarker.PROBLEM));
                 return;
             }
         }
 
-        Assert.fail("Marker not found. Found markers:" + toString(markers));
+        fail("Marker not found. Found markers:" + toString(markers));
     }
 
     protected File createTempFolder() throws IOException {
