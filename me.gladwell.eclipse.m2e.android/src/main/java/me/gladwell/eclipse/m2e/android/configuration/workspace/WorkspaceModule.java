@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.project.AdtEclipseAndroidWorkspace;
-import me.gladwell.eclipse.m2e.android.project.AndroidWorkspace;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
