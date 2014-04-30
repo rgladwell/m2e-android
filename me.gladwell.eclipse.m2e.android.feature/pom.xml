@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>m2e-android</artifactId>
 		<groupId>me.gladwell.eclipse.m2e.android</groupId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.0.1</version>
 	</parent>
 	<artifactId>me.gladwell.eclipse.m2e.android.feature</artifactId>
 	<name>Android for Maven Eclipse Feature</name>
