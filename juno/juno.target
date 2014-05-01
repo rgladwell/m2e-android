@@ -15,12 +15,12 @@
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.m2e.feature.feature.group" version="1.4.0.20130601-0317"/>
-<repository location="http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317"/>
+<unit id="org.eclipse.m2e.feature.feature.group" version="1.5.0.20140309-1847"/>
+<repository location="http://download.eclipse.org/technology/m2e/milestones/1.5"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.4.0.20130601-0317"/>
-<repository location="http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317"/>
+<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.5.0.20140309-1847"/>
+<repository location="http://download.eclipse.org/technology/m2e/milestones/1.5"/>
 </location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <repository location="http://download.eclipse.org/releases/juno/"/>
