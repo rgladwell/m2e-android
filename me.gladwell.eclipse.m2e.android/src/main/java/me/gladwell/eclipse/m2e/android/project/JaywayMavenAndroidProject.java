@@ -25,8 +25,8 @@ import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.repository.RemoteRepository;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
@@ -92,13 +92,15 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         List<ArtifactRepository> repositories = mavenProject.getRemoteArtifactRepositories();
         
         List<RemoteRepository> remoteRepositories = new ArrayList<RemoteRepository>();
-        
+
         for (ArtifactRepository repository : repositories) {
-            remoteRepositories.add(new RemoteRepository(repository.getId(), repository.getLayout().toString(), repository.getUrl()));
+            RemoteRepository.Builder builder = new RemoteRepository.Builder(repository.getId(), repository.getLayout()
+                    .toString(), repository.getUrl());
+            remoteRepositories.add(builder.build());
         }
 
-        final List<org.sonatype.aether.artifact.Artifact> dependencies = dependencyResolver.resolveDependencies(android, "jar", remoteRepositories);
-        for(org.sonatype.aether.artifact.Artifact dependency : dependencies) {
+        final List<org.eclipse.aether.artifact.Artifact> dependencies = dependencyResolver.resolveDependencies(android, "jar", remoteRepositories);
+        for(org.eclipse.aether.artifact.Artifact dependency : dependencies) {
             platformProvidedDependencies.add(dependency.getFile().getAbsolutePath());
         }
         

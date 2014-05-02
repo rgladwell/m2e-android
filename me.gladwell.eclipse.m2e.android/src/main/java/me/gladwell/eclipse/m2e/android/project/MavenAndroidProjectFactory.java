@@ -15,7 +15,7 @@ import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
-import org.sonatype.aether.RepositorySystemSession;
+import org.eclipse.aether.RepositorySystemSession;
 
 import com.google.inject.Inject;
 

@@ -12,10 +12,10 @@ import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.project.Dependency;
 
-import org.sonatype.aether.repository.RemoteRepository;
+import org.eclipse.aether.repository.RemoteRepository;
 
 public interface DependencyResolver {
 
-    List<org.sonatype.aether.artifact.Artifact> resolveDependencies(Dependency android, String string, List<RemoteRepository> repositories);
+    List<org.eclipse.aether.artifact.Artifact> resolveDependencies(Dependency android, String string, List<RemoteRepository> repositories);
 
 }

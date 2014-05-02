@@ -8,15 +8,16 @@
 
 package me.gladwell.eclipse.m2e.android.resolve;
 
-import org.apache.maven.cli.ConsoleMavenTransferListener;
-import org.apache.maven.repository.internal.MavenRepositorySystemSession;
+import org.apache.maven.cli.transfer.ConsoleMavenTransferListener;
+import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
+import org.eclipse.aether.DefaultRepositorySystemSession;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.embedder.MavenImpl;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.repository.LocalRepository;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -47,8 +48,8 @@ public class ResolutionModule extends AbstractModule {
 
     @Provides
     RepositorySystemSession provideRepositorySystemSession(RepositorySystem system, LocalRepository localRepo) {
-        final MavenRepositorySystemSession session = new MavenRepositorySystemSession();
-        session.setLocalRepositoryManager(system.newLocalRepositoryManager(localRepo));
+        final DefaultRepositorySystemSession session = MavenRepositorySystemUtils.newSession();
+        session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
         session.setTransferListener(new ConsoleMavenTransferListener(System.out));
         return session;
     }
