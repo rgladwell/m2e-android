@@ -14,6 +14,7 @@ import java.util.List;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathPersister;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
@@ -33,9 +34,22 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
     public void configure(MavenAndroidProject project, IClasspathDescriptor classpath) {
         final List<String> nonRuntimeDependencies = project.getNonRuntimeDependencies();
         final List<IClasspathEntry> nonRuntimeDependenciesEntries = new ArrayList<IClasspathEntry>();
+        
+        List<IPath> nonRuntimeProjects = null;
+        
+        if (project.shouldResolveWorkspaceProjects()) {
+            nonRuntimeProjects = project.getNonRuntimeProjects();
+        }
+        
         for (IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
             if (nonRuntimeDependencies.contains(descriptor.getPath().toOSString())) {
                 nonRuntimeDependenciesEntries.add(descriptor.toClasspathEntry());
+            }
+            
+            if (nonRuntimeProjects != null) {
+                if (nonRuntimeProjects.contains(descriptor.getPath())) {
+                    nonRuntimeDependenciesEntries.add(descriptor.toClasspathEntry());
+                }
             }
         }
 

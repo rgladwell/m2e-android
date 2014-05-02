@@ -21,6 +21,7 @@ public class ClasspathModule extends AbstractModule {
 
         rawClasspathConfigurers.add(configurer);
         rawClasspathConfigurers.add(new RemoveNonRuntimeDependenciesConfigurer());
+        rawClasspathConfigurers.add(new RemoveNonRuntimeProjectsConfigurer());
 
         return Collections.unmodifiableList(rawClasspathConfigurers);
     }

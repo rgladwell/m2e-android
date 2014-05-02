@@ -13,8 +13,12 @@ import static org.codehaus.plexus.util.StringUtils.isEmpty;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
 
@@ -25,8 +29,13 @@ import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.m2e.core.project.IMavenProjectFacade;
+import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.repository.RemoteRepository;
+
+import com.google.inject.Inject;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
@@ -38,12 +47,19 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
     private final Plugin jaywayPlugin;
     private final RepositorySystemSession session;
     private final DependencyResolver dependencyResolver;
+    
+    @Inject
+    private AndroidWorkspace workspace;
 
+    @Inject
+    private IMavenProjectRegistry registry;
+    
     public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin, RepositorySystemSession session, DependencyResolver dependencyResolver) {
         this.mavenProject = mavenProject;
         this.jaywayPlugin = jaywayPlugin;
         this.session = session;
         this.dependencyResolver = dependencyResolver;
+        AndroidMavenPlugin.getDefault().getInjector().injectMembers(this);
     }
 
     public String getName() {
@@ -68,6 +84,28 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 		return ANDROID_LIBRARY_PACKAGE_TYPE.equals(packaging);
 	}
 
+	public List<IPath> getNonRuntimeProjects() {
+	    Set<IPath> nonRuntimeProjects = new HashSet<IPath>();
+	    
+	    for (Artifact artifact : mavenProject.getArtifacts()) {
+	        
+            if (!Artifact.SCOPE_COMPILE.equals(artifact.getScope()) && !Artifact.SCOPE_RUNTIME.equals(artifact.getScope())) {
+                Dependency dependency = new MavenDependency(artifact);
+                EclipseAndroidProject workspaceDependency = null;
+                
+                try {
+                    workspaceDependency = workspace.findOpenWorkspaceDependency(dependency);
+                } catch (DependencyNotFoundInWorkspace e) {
+                    continue;
+                }
+                
+                nonRuntimeProjects.add(workspaceDependency.getProject().getFullPath());
+            }
+        }
+
+	    return new ArrayList<IPath>(nonRuntimeProjects);
+	}
+	
 	public List<String> getNonRuntimeDependencies() {
 	    List<String> list = new ArrayList<String>( mavenProject.getArtifacts().size() + 1 );
 	    list.add( mavenProject.getBuild().getOutputDirectory() );
@@ -177,4 +215,8 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         return mavenProject.getCompileSourceRoots();
     }
 
+    public boolean shouldResolveWorkspaceProjects() {
+        IMavenProjectFacade facade = registry.getMavenProject(mavenProject.getGroupId(), mavenProject.getArtifactId(), mavenProject.getVersion());
+        return facade.getResolverConfiguration().shouldResolveWorkspaceProjects();
+    }
 }
