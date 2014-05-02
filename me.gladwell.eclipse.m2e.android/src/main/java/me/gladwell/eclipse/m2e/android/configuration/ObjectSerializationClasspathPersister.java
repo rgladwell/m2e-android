@@ -20,6 +20,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
+import me.gladwell.eclipse.m2e.android.configuration.classpath.BuildPathManager;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IAccessRule;
@@ -157,17 +160,17 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
         }
     }
 
-    private final File stateLocation;
+    private BuildPathManager buildPathManager;
 
     @Inject
-    public ObjectSerializationClasspathPersister(File stateLocation) {
-        this.stateLocation = stateLocation;
+    public ObjectSerializationClasspathPersister(BuildPathManager buildPathManager) {
+        this.buildPathManager = buildPathManager;
     }
 
-    public void save(String project, List<IClasspathEntry> classpath) {
+    public void save(IProject project, List<IClasspathEntry> classpath) {
         ObjectOutputStream os = null;
         try {
-            File file = new File(stateLocation, project);
+            File file = buildPathManager.getContainerStateFile(project);
             os = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file))) {
                 {
                     enableReplaceObject(true);
@@ -210,7 +213,7 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
         List<IClasspathEntry> classpath = null;
         ObjectInputStream is = null;
         try {
-            File file = new File(stateLocation, project.getProject().getName());
+            File file = buildPathManager.getContainerStateFile(project.getProject());
             if (!file.exists()) {
                 throw new FileNotFoundException(file.getAbsolutePath());
             }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathPersister;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -30,8 +31,9 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
         this.persister = persister;
     }
 
-    public void configure(MavenAndroidProject project, IClasspathDescriptor classpath) {
-        final List<String> nonRuntimeDependencies = project.getNonRuntimeDependencies();
+    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject,
+            IClasspathDescriptor classpath) {
+        final List<String> nonRuntimeDependencies = mavenProject.getNonRuntimeDependencies();
         final List<IClasspathEntry> nonRuntimeDependenciesEntries = new ArrayList<IClasspathEntry>();
         for (IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
             if (nonRuntimeDependencies.contains(descriptor.getPath().toOSString())) {
@@ -39,7 +41,7 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
             }
         }
 
-        persister.save(project.getName(), nonRuntimeDependenciesEntries);
+        persister.save(eclipseProject.getProject(), nonRuntimeDependenciesEntries);
     }
 
 }

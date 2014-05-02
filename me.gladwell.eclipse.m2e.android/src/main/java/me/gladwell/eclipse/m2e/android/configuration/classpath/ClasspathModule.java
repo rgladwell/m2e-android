@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.embedder.IMaven;
+import org.eclipse.m2e.core.embedder.IMavenConfiguration;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
@@ -11,16 +15,21 @@ public class ClasspathModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        bind(IMavenConfiguration.class).toInstance(MavenPlugin.getMavenConfiguration());
         bind(PersistNonRuntimeClasspathConfigurer.class);
         bind(AddNonRuntimeClasspathContainerConfigurer.class);
+        bind(IMaven.class).toInstance(MavenPlugin.getMaven());
+        bind(BuildPathManager.class);
     }
 
     @Provides
-    List<RawClasspathConfigurer> provideRawClasspathConfigurers(PersistNonRuntimeClasspathConfigurer configurer) {
+    List<RawClasspathConfigurer> provideRawClasspathConfigurers(PersistNonRuntimeClasspathConfigurer persistConfigurer,
+            AttatchSourcesClasspathConfigurer attatchSourcesConfigurer) {
         final List<RawClasspathConfigurer> rawClasspathConfigurers = new ArrayList<RawClasspathConfigurer>();
 
-        rawClasspathConfigurers.add(configurer);
+        rawClasspathConfigurers.add(persistConfigurer);
         rawClasspathConfigurers.add(new RemoveNonRuntimeDependenciesConfigurer());
+        rawClasspathConfigurers.add(attatchSourcesConfigurer);
 
         return Collections.unmodifiableList(rawClasspathConfigurers);
     }

@@ -87,10 +87,12 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 
     public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor)
             throws CoreException {
-        final MavenAndroidProject project = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
+        final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
+        final EclipseAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(facade
+                .getProject());
         try {
             for (RawClasspathConfigurer configurer : rawClasspathConfigurers) {
-                configurer.configure(project, classpath);
+                configurer.configure(mavenProject, eclipseProject, classpath);
             }
         } catch (Exception e) {
             throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID,
