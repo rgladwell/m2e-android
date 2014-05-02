@@ -26,8 +26,8 @@ public class RemoveNonRuntimeDependenciesConfigurer implements RawClasspathConfi
 
     public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath) {
         final List<Dependency> nonRuntimeDependencies = mavenProject.getNonRuntimeDependencies();
-        final List<String> nonRuntimeDependencyPaths = transform(nonRuntimeDependencies, new Function<Dependency, String>() {
 
+        final List<String> nonRuntimeDependencyPaths = transform(nonRuntimeDependencies, new Function<Dependency, String>() {
             public String apply(Dependency mavenDependency) {
                return mavenDependency.getPath();
             }
@@ -35,7 +35,6 @@ public class RemoveNonRuntimeDependenciesConfigurer implements RawClasspathConfi
 
         classpath.removeEntry(new EntryFilter() {
             public boolean accept(IClasspathEntryDescriptor descriptor) {
-                
                 return nonRuntimeDependencyPaths.contains(descriptor.getPath().toOSString());
             }
         });
