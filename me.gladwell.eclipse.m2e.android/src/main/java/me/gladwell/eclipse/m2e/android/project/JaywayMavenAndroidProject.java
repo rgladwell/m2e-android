@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
@@ -59,7 +58,6 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         this.jaywayPlugin = jaywayPlugin;
         this.session = session;
         this.dependencyResolver = dependencyResolver;
-        AndroidMavenPlugin.getDefault().getInjector().injectMembers(this);
     }
 
     public String getName() {

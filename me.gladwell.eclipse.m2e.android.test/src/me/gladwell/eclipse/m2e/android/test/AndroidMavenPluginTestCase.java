@@ -220,13 +220,18 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
     protected boolean classpathContainerContains(IJavaProject project, String id, String path)
             throws JavaModelException {
+        return getClasspathEntry(project, id, path) != null;
+    }
+    
+    protected IClasspathEntry getClasspathEntry(IJavaProject project, String id, String path) throws JavaModelException {
         IClasspathContainer container = JavaCore.getClasspathContainer(new Path(id), project);
+        
         for (IClasspathEntry entry : container.getClasspathEntries()) {
             if (entry.getPath().toOSString().contains(path)) {
-                return true;
+                return entry;
             }
         }
-        return false;
+        return null;
     }
 
     protected void assertErrorMarker(IProject project, String type) throws CoreException {
