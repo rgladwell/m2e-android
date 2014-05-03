@@ -25,6 +25,8 @@ public class WorkspaceModule extends AbstractModule {
         workspaceConfigurers.add(new ConvertLibraryWorkspaceConfigurer());
         workspaceConfigurers.add(configurer);
         workspaceConfigurers.add(new LinkAssetsFolderConfigurer());
+        workspaceConfigurers.add(new LinkAndroidManifestConfigurer());
+        workspaceConfigurers.add(new LinkResourceDirectoryConfigurer());
 
         return Collections.unmodifiableList(workspaceConfigurers);
     }

@@ -30,6 +30,7 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
+import com.android.SdkConstants;
 import com.android.ide.eclipse.adt.AdtConstants;
 import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
 import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
@@ -149,27 +150,51 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
 
     public void setAssetsDirectory(File assets) {
         IFolder link = project.getFolder(AdtConstants.WS_ASSETS);
+        linkResource(link, assets);
+    }
 
-        if (!link.getLocation().toFile().equals(assets)) {
-            IPath assetsPath = new Path(assets.getPath());
+    public void setResourceFolder(File resourceDirectory) {
+        IFolder link = project.getFolder(SdkConstants.FD_RES);
+        linkResource(link, resourceDirectory);
+    }
+    
+    public void setAndroidManifest(File androidManifestFile) {
+        IFile link = project.getFile(SdkConstants.FN_ANDROID_MANIFEST_XML);
+        linkResource(link, androidManifestFile);
+    }
+    
+    public Classpath getClasspath() {
+        return new MavenEclipseClasspath(JavaCore.create(project), classpath);
+    }
+    
+    private void linkResource(IResource resource, File newFile) {
+        if (!resource.getLocation().toFile().equals(newFile)) {
+            IPath newPath = new Path(newFile.getPath());
 
-            IStatus status = workspace.validateLinkLocation(link, assetsPath);
+            IStatus status = workspace.validateLinkLocation(resource, newPath);
             if (!status.matches(Status.ERROR)) {
 
                 try {
-                    link.createLink(assetsPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
+                    createLink(resource, newPath);
                 } catch (CoreException e) {
                     throw new ProjectConfigurationException(e);
                 }
 
             } else {
-                throw new ProjectConfigurationException("invalid location for link=[" + link + "]");
+                throw new ProjectConfigurationException("invalid location for link=[" + resource + "]");
             }
         }
-    }
 
-    public Classpath getClasspath() {
-        return new MavenEclipseClasspath(JavaCore.create(project), classpath);
     }
-
+    
+    private static void createLink(IResource resource, IPath newPath) throws CoreException {
+        if (resource instanceof IFile) {
+            ((IFile) resource).createLink(newPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
+        } else if (resource instanceof IFolder) {
+            ((IFolder) resource).createLink(newPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
+        } else {
+            throw new ProjectConfigurationException("resource is not a file or a folder=[" + resource + "]");
+        }
+    }
+    
 }
