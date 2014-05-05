@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
+import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.eclipse.m2e.core.project.configurator.AbstractBuildParticipant;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
@@ -51,6 +52,8 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
     @Inject private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
 
     @Inject private AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseProjectFactory;
+    
+    @Inject private IMavenProjectRegistry registry;
 
     public void configure(ProjectConfigurationRequest request, IProgressMonitor monitor) throws CoreException {
         markerManager.deleteMarkers(request.getPom(), AndroidMavenPlugin.APKLIB_ERROR_TYPE);
@@ -87,10 +90,11 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 
     public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor)
             throws CoreException {
-        final MavenAndroidProject project = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
+        final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
+        final EclipseAndroidProject eclipseProject = new AdtEclipseAndroidProject(registry, facade.getProject(), classpath);
         try {
             for (RawClasspathConfigurer configurer : rawClasspathConfigurers) {
-                configurer.configure(project, classpath);
+                configurer.configure(mavenProject, eclipseProject, classpath);
             }
         } catch (Exception e) {
             throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID,
@@ -101,7 +105,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
     public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath,
             IProgressMonitor monitor) throws CoreException {
         final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
-        final EclipseAndroidProject eclipseProject = new AdtEclipseAndroidProject(request.getProject(), classpath);
+        final EclipseAndroidProject eclipseProject = new AdtEclipseAndroidProject(registry, request.getProject(), classpath);
         try {
             for (ClasspathConfigurer classpathConfigurer : classpathConfigurers) {
                 if (classpathConfigurer.shouldApplyTo(mavenProject)) {

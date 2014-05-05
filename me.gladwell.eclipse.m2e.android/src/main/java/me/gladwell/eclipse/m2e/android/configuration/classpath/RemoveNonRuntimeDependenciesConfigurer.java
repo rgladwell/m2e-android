@@ -8,22 +8,35 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
+import static com.google.common.collect.Lists.transform;
+
 import java.util.List;
 
+import me.gladwell.eclipse.m2e.android.project.Dependency;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 
+import com.google.common.base.Function;
+
 public class RemoveNonRuntimeDependenciesConfigurer implements RawClasspathConfigurer {
 
-    public void configure(MavenAndroidProject project, IClasspathDescriptor classpath) {
-        final List<String> nonRuntimeDependencies = project.getNonRuntimeDependencies();
+    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath) {
+        final List<Dependency> nonRuntimeDependencies = mavenProject.getNonRuntimeDependencies();
+        final List<String> nonRuntimeDependencyPaths = transform(nonRuntimeDependencies, new Function<Dependency, String>() {
+
+            public String apply(Dependency mavenDependency) {
+               return mavenDependency.getPath();
+            }
+        });
 
         classpath.removeEntry(new EntryFilter() {
             public boolean accept(IClasspathEntryDescriptor descriptor) {
-                return nonRuntimeDependencies.contains(descriptor.getPath().toOSString());
+                
+                return nonRuntimeDependencyPaths.contains(descriptor.getPath().toOSString());
             }
         });
     }

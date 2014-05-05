@@ -13,15 +13,17 @@ public class ClasspathModule extends AbstractModule {
     protected void configure() {
         bind(PersistNonRuntimeClasspathConfigurer.class);
         bind(AddNonRuntimeClasspathContainerConfigurer.class);
+        bind(RemoveNonRuntimeProjectsConfigurer.class);
     }
 
     @Provides
-    List<RawClasspathConfigurer> provideRawClasspathConfigurers(PersistNonRuntimeClasspathConfigurer configurer) {
+    List<RawClasspathConfigurer> provideRawClasspathConfigurers(PersistNonRuntimeClasspathConfigurer persistConfigurer,
+            RemoveNonRuntimeProjectsConfigurer removeProjectsConfigurer) {
         final List<RawClasspathConfigurer> rawClasspathConfigurers = new ArrayList<RawClasspathConfigurer>();
 
-        rawClasspathConfigurers.add(configurer);
+        rawClasspathConfigurers.add(persistConfigurer);
         rawClasspathConfigurers.add(new RemoveNonRuntimeDependenciesConfigurer());
-        rawClasspathConfigurers.add(new RemoveNonRuntimeProjectsConfigurer());
+        rawClasspathConfigurers.add(removeProjectsConfigurer);
 
         return Collections.unmodifiableList(rawClasspathConfigurers);
     }

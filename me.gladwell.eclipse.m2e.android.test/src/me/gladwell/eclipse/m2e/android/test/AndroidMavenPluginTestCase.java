@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IMarker;
@@ -220,7 +221,11 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
     protected boolean classpathContainerContains(IJavaProject project, String id, String path)
             throws JavaModelException {
-        return getClasspathEntry(project, id, path) != null;
+        try {
+            return getClasspathEntry(project, id, path) != null;
+        } catch (ProjectConfigurationException e) {
+            return false;
+        }
     }
     
     protected IClasspathEntry getClasspathEntry(IJavaProject project, String id, String path) throws JavaModelException {
@@ -231,7 +236,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
                 return entry;
             }
         }
-        return null;
+        throw new ProjectConfigurationException("ClasspathEntry [" + path + "] nt found in container [" + id + "]");
     }
 
     protected void assertErrorMarker(IProject project, String type) throws CoreException {

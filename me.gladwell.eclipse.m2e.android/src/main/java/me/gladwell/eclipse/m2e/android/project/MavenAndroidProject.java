@@ -11,8 +11,6 @@ package me.gladwell.eclipse.m2e.android.project;
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.core.runtime.IPath;
-
 public interface MavenAndroidProject {
 
     public String getName();
@@ -25,7 +23,7 @@ public interface MavenAndroidProject {
 
     public boolean isLibrary();
 
-    public List<String> getNonRuntimeDependencies();
+    public List<Dependency> getNonRuntimeDependencies();
 
     public List<Dependency> getLibraryDependencies();
 
@@ -39,8 +37,4 @@ public interface MavenAndroidProject {
 
     public boolean isIgnoreOptionalWarningsInGenFolder();
     
-    public boolean shouldResolveWorkspaceProjects();
-    
-    public List<IPath> getNonRuntimeProjects();
-
 }

@@ -37,7 +37,6 @@ public class ProvidedWorkspaceProjectTest extends AndroidMavenPluginTestCase {
         IClasspathEntry entry = getClasspathEntry(test, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
                 app.getPath().toOSString());
         
-        assertNotNull(entry);
         assertTrue(entry.getEntryKind() == IClasspathEntry.CPE_PROJECT);
     }
     
@@ -48,7 +47,6 @@ public class ProvidedWorkspaceProjectTest extends AndroidMavenPluginTestCase {
         IClasspathEntry entry = getClasspathEntry(test, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
                 app.getPath().toOSString());
         
-        assertNotNull(entry);
         assertTrue(entry.getEntryKind() == IClasspathEntry.CPE_LIBRARY);
     }
 }

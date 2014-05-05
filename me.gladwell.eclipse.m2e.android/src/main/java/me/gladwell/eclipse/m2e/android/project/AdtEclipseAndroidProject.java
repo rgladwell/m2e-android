@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;
+import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
@@ -42,15 +43,17 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
 
     private final IProject project;
     private final IWorkspace workspace;
+    private final IMavenProjectRegistry registry;
     private IClasspathDescriptor classpath;
 
-    public AdtEclipseAndroidProject(IWorkspace workspace, IProject project) {
+    public AdtEclipseAndroidProject(IMavenProjectRegistry registry, IWorkspace workspace, IProject project) {
         this.workspace = workspace;
         this.project = project;
+        this.registry = registry;
     }
 
-    public AdtEclipseAndroidProject(IProject project, IClasspathDescriptor classpath) {
-        this(project.getWorkspace(), project);
+    public AdtEclipseAndroidProject(IMavenProjectRegistry registry, IProject project, IClasspathDescriptor classpath) {
+        this(registry, project.getWorkspace(), project);
         this.classpath = classpath;
     }
 
@@ -170,6 +173,10 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
 
     public Classpath getClasspath() {
         return new MavenEclipseClasspath(JavaCore.create(project), classpath);
+    }
+
+    public boolean shouldResolveWorkspaceProjects() {
+        return registry.getProject(project).getResolverConfiguration().shouldResolveWorkspaceProjects();
     }
 
 }

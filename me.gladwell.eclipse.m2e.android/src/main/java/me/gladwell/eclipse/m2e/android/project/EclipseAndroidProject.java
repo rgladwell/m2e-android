@@ -37,5 +37,7 @@ public interface EclipseAndroidProject {
     void setAssetsDirectory(File file);
 
     public Classpath getClasspath();
+    
+    public boolean shouldResolveWorkspaceProjects();
 
 }
