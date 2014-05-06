@@ -209,3 +209,14 @@ display:none;
 
 /* Original open source design by Andreas Viklund - http://andreasviklund.com
 Released through OSWD.org */
+
+#banner {
+   position: absolute;
+   top: 0;
+   width: 100%;
+   text-align: center;
+   padding-top: 10px;
+   padding-bottom: 10px;
+   color: white;
+   background-color: orange;
+}
