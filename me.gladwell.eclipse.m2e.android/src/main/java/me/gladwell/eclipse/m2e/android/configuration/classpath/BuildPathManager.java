@@ -289,7 +289,8 @@ public class BuildPathManager implements IResourceChangeListener {
 
                 if (javaDocUrl == null || srcPath == null) {
                     scheduleDownload(project.getProject(), facade.getMavenProject(), artifactKey,
-                            mavenConfiguration.isDownloadSources(), mavenConfiguration.isDownloadJavaDoc());
+                            mavenConfiguration.isDownloadSources() && srcPath == null,
+                            mavenConfiguration.isDownloadJavaDoc() && javaDocUrl == null);
                 }
 
                 configuredEntries[i] = descriptor.toClasspathEntry();
