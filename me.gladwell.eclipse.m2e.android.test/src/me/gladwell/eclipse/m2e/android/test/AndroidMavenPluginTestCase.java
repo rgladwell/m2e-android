@@ -17,6 +17,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IMarker;
@@ -38,6 +39,7 @@ import org.eclipse.m2e.core.embedder.MavenModelManager;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.IMavenProjectImportResult;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
+import org.eclipse.m2e.core.project.MavenUpdateRequest;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
@@ -221,13 +223,22 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
     protected boolean classpathContainerContains(IJavaProject project, String id, String path)
             throws JavaModelException {
+        try {
+            return getClasspathEntry(project, id, path) != null;
+        } catch (ProjectConfigurationException e) {
+            return false;
+        }
+    }
+    
+    protected IClasspathEntry getClasspathEntry(IJavaProject project, String id, String path) throws JavaModelException {
         IClasspathContainer container = JavaCore.getClasspathContainer(new Path(id), project);
+        
         for (IClasspathEntry entry : container.getClasspathEntries()) {
             if (entry.getPath().toOSString().contains(path)) {
-                return true;
+                return entry;
             }
         }
-        return false;
+        throw new ProjectConfigurationException("ClasspathEntry [" + path + "] not found in container [" + id + "]");
     }
 
     protected void assertErrorMarker(IProject project, String type) throws CoreException {
@@ -257,6 +268,10 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
             }
         }
         return false;
+    }
+    
+    protected void updateMavenProject(IProject project) {
+        MavenPlugin.getMavenProjectRegistry().refresh(new MavenUpdateRequest(project, false, false));
     }
 
 }
