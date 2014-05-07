@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>m2e-android</artifactId>
 	<groupId>me.gladwell.eclipse.m2e.android</groupId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<name>Android for Maven Eclipse</name>
 	<packaging>pom</packaging>
 	<description>Android Configurator for M2E Integration for Eclipse and Maven Android Plugin.</description>
@@ -32,7 +32,7 @@
 		<url>https://gladwell.me/</url>
 	</organization>
 	<properties>
-		<tycho-version>0.18.1</tycho-version>
+		<tycho-version>0.20.0</tycho-version>
 		<target.platform>kepler</target.platform>
 	</properties>
 	<modules>

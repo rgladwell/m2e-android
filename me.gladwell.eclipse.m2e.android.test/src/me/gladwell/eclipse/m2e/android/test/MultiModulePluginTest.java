@@ -1,3 +1,11 @@
+/*******************************************************************************
+ * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
 package me.gladwell.eclipse.m2e.android.test;
 
 import java.io.File;
@@ -34,6 +42,10 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
 
     public void testConfigureAddsAndroidNature() throws Exception {
         assertTrue("failed to add android nature to child module", childProject.hasNature(AdtConstants.NATURE_DEFAULT));
+    }
+
+    public void testConfigureDoesNotAddAndroidNatureToParentProject() throws Exception {
+        assertFalse("added android nature to parent", parentProject.hasNature(AdtConstants.NATURE_DEFAULT));
     }
 
 }

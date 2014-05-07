@@ -16,8 +16,11 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
@@ -53,9 +56,15 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
             if (!configuration.getAttributes().containsValue(ANDROID_TEST_CLASSPATH_PROVIDER)
                     && configuration.getType().getIdentifier().equals("org.eclipse.jdt.junit.launchconfig")
                     && project.hasNature(AdtConstants.NATURE_DEFAULT) && project.hasNature(IMavenConstants.NATURE_ID)) {
-                ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
+                final ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
                 workingCopy.setAttribute(ATTR_CLASSPATH_PROVIDER, ANDROID_TEST_CLASSPATH_PROVIDER);
-                workingCopy.doSave();
+                new WorkspaceJob("Update launch configuration") {
+                    @Override
+                    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+                        workingCopy.doSave();
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
             }
         } catch (CoreException e) {
             // TODO Auto-generated catch block

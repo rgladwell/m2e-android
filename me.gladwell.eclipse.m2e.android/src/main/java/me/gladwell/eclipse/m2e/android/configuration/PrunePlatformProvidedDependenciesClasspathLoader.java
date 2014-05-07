@@ -14,14 +14,10 @@ import static me.gladwell.eclipse.m2e.android.Log.warn;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-import me.gladwell.eclipse.m2e.android.Log;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.apache.maven.project.MavenProject;
-import org.eclipse.core.runtime.ILog;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;

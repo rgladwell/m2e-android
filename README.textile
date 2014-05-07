@@ -1,4 +1,4 @@
-h1. Android for Maven Eclipse "!http://badge.waffle.io/rgladwell/m2e-android.png(Stories in Ready)!":http://waffle.io/rgladwell/m2e-android !https://travis-ci.org/rgladwell/m2e-android.png?branch=test-classes-added-to-classpath!:https://travis-ci.org/rgladwell/m2e-android
+h1. Android for Maven Eclipse "!http://badge.waffle.io/rgladwell/m2e-android.png(Stories in Ready)!":http://waffle.io/rgladwell/m2e-android !https://travis-ci.org/rgladwell/m2e-android.png!:https://travis-ci.org/rgladwell/m2e-android
 
 Android for Maven Eclipse (*m2e-android*) is a "Maven Eclipse":http://www.eclipse.org/m2e/ (m2e) plug-in that adds Maven support for "Android Developer Tools":http://developer.android.com/tools/sdk/eclipse-adt.html (ADT) and the "Maven Android Plugin":https://code.google.com/p/maven-android-plugin/. It brings the power of Maven dependency management into the ADT.
 
@@ -48,10 +48,28 @@ h3. Further reading
 For more information on developing the m2e-android plug-in please see the following:
 
 * "Contributing":https://github.com/rgladwell/m2e-android/blob/master/CONTRIBUTING.md
-* "Testing":https://github.com/rgladwell/m2e-android/wiki/Testing
 
 h3. Patrons
 
 Special thanks to those who crowdfunded project development through "Patreon":http://www.patreon.com/rgladwell:
 
 "Raphael Ackermann":https://twitter.com/acraphae
+
+h3. Travis
+
+The m2e-android project uses "Travis":http://travis-ci.org/ to continuously
+integrate its code. To help diagnose issues with Travis, we have added a
+"Vagrant":http://www.vagrantup.com/ image and provisioning script that
+simulates a Travis CI build.
+
+To use this please follow these steps:
+
+# Install "Vagrant":http://www.vagrantup.com/downloads.html.
+# Execute @vagrant up@.
+
+You can then get screenshots by logging into a stalling insatnce as follows:
+
+@$ vagrant ssh@
+@$ sudo apt-get install imagemagick@
+@$ cd /vagrant@
+@$ import -display :99 -window root screenshot.png@

@@ -10,7 +10,6 @@ package me.gladwell.eclipse.m2e.android.project;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
@@ -25,8 +24,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IClasspathAttribute;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.internal.IMavenConstants;

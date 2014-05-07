@@ -8,3 +8,6 @@ bin
 target
 release.properties
 pom.xml.*
+
+#Other
+.vagrant
