@@ -31,7 +31,7 @@ import org.sonatype.aether.repository.RemoteRepository;
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
     private static final String ANDROID_PACKAGE_TYPE = "apk";
-    static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
+    public static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
     private static final String IGNORE_WARNING_CONFIGURATION_NAME = "ignoreOptionalWarningsInGenFolder";
 
     private final MavenProject mavenProject;
