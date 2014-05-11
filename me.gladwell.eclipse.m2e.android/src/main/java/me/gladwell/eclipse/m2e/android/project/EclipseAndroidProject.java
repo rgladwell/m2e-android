@@ -40,4 +40,6 @@ public interface EclipseAndroidProject {
     
     public boolean shouldResolveWorkspaceProjects();
 
+    public String getPath();
+
 }

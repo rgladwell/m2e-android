@@ -9,19 +9,14 @@
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathPersister;
-import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 import me.gladwell.eclipse.m2e.android.project.AndroidWorkspace;
 import me.gladwell.eclipse.m2e.android.project.Dependency;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
-import org.apache.maven.artifact.Artifact;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
@@ -46,55 +41,39 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
 
     public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath) {
         final List<Dependency> nonRuntimeDependencies = mavenProject.getNonRuntimeDependencies();
-        final List<String> nonRuntimeDependencyPaths = transform(nonRuntimeDependencies, new Function<Dependency, String>() {
 
+        final List<String> nonRuntimeDependencyPaths = transform(nonRuntimeDependencies, new Function<Dependency, String>() {
             public String apply(Dependency dependency) {
                return dependency.getPath();
             }
         });
-        
+
         final List<IClasspathEntry> nonRuntimeDependenciesEntries = new ArrayList<IClasspathEntry>();
-        
-        List<IPath> nonRuntimeProjects = null;
-        
-        if (eclipseProject.shouldResolveWorkspaceProjects()) {
-            nonRuntimeProjects = getNonRuntimeProjects(nonRuntimeDependencies);
-        }
-        
+
         for (IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
             if (nonRuntimeDependencyPaths.contains(descriptor.getPath().toOSString())) {
                 nonRuntimeDependenciesEntries.add(descriptor.toClasspathEntry());
             }
-            
-            if (nonRuntimeProjects != null) {
-                if (nonRuntimeProjects.contains(descriptor.getPath())) {
+        }
+
+        // TODO re-factor into separate method/class
+        if (eclipseProject.shouldResolveWorkspaceProjects()) {
+            List<EclipseAndroidProject> nonRuntimeProjects = workspace.findOpenWorkspaceDependencies(nonRuntimeDependencies);
+
+            final List<String> nonRuntimeProjectPaths = transform(nonRuntimeProjects, new Function<EclipseAndroidProject, String>() {
+                public String apply(EclipseAndroidProject project) {
+                   return project.getPath();
+                }
+            });
+
+            for (IClasspathEntryDescriptor descriptor : classpath.getEntryDescriptors()) {
+                if (nonRuntimeProjectPaths.contains(descriptor.getPath().toString())) {
                     nonRuntimeDependenciesEntries.add(descriptor.toClasspathEntry());
                 }
             }
         }
 
         persister.save(mavenProject.getName(), nonRuntimeDependenciesEntries);
-    }
-    
-    private List<IPath> getNonRuntimeProjects(List<Dependency> dependencies) {
-        Set<IPath> nonRuntimeProjects = new HashSet<IPath>();
-        
-        for (Dependency dependency : dependencies) {
-            
-            if (!Artifact.SCOPE_COMPILE.equals(dependency.getScope()) && !Artifact.SCOPE_RUNTIME.equals(dependency.getScope())) {
-                EclipseAndroidProject workspaceDependency = null;
-                
-                try {
-                    workspaceDependency = workspace.findOpenWorkspaceDependency(dependency);
-                } catch (DependencyNotFoundInWorkspace e) {
-                    continue;
-                }
-                
-                nonRuntimeProjects.add(workspaceDependency.getProject().getFullPath());
-            }
-        }
-
-        return new ArrayList<IPath>(nonRuntimeProjects);
     }
 
 }

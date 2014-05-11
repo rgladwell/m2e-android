@@ -8,6 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 
 import org.eclipse.core.resources.IProject;
@@ -49,6 +52,24 @@ public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
         }
 
         throw new DependencyNotFoundInWorkspace(dependency);
+    }
+
+    public List<EclipseAndroidProject> findOpenWorkspaceDependencies(List<Dependency> dependencies) {
+        List<EclipseAndroidProject> openWorkspaceDependencies = new ArrayList<EclipseAndroidProject>();
+
+        for (Dependency dependency : dependencies) {
+            EclipseAndroidProject workspaceDependency = null;
+
+            try {
+                workspaceDependency = findOpenWorkspaceDependency(dependency);
+            } catch (DependencyNotFoundInWorkspace e) {
+                continue;
+            }
+
+            openWorkspaceDependencies.add(workspaceDependency);
+        }
+
+        return openWorkspaceDependencies;
     }
 
 }

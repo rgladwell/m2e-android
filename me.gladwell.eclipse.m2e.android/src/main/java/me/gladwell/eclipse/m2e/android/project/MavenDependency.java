@@ -40,11 +40,7 @@ public class MavenDependency implements Dependency {
     public String getPath() {
         return artifact.getFile().getAbsolutePath();
     }
-    
-    public String getScope() {
-        return artifact.getScope();
-    }
-    
+
     @Override
     public String toString() {
         return artifact.toString();

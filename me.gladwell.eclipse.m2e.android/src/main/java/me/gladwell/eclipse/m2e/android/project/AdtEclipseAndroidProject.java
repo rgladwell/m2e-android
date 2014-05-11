@@ -179,4 +179,8 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
         return registry.getProject(project).getResolverConfiguration().shouldResolveWorkspaceProjects();
     }
 
+    public String getPath() {
+        return project.getFullPath().toString();
+    }
+
 }
