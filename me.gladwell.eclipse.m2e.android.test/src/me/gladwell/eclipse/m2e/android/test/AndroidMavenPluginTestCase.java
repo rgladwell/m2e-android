@@ -224,6 +224,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         try {
             return getClasspathEntry(project, id, path) != null;
         } catch (ProjectConfigurationException e) {
+            e.printStackTrace();
             return false;
         }
     }
