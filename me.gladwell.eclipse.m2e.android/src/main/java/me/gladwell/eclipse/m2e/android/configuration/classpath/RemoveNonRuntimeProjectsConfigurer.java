@@ -1,6 +1,7 @@
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
-import static com.google.common.collect.Lists.transform;
+import static com.google.common.collect.FluentIterable.from;
+import static me.gladwell.eclipse.m2e.android.configuration.classpath.Paths.eclipseProjectToPathFunction;
 
 import java.util.List;
 
@@ -12,7 +13,6 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 import org.eclipse.m2e.jdt.IClasspathDescriptor.EntryFilter;
 
-import com.google.common.base.Function;
 import com.google.inject.Inject;
 
 public class RemoveNonRuntimeProjectsConfigurer implements RawClasspathConfigurer {
@@ -28,11 +28,9 @@ public class RemoveNonRuntimeProjectsConfigurer implements RawClasspathConfigure
         if (eclipseProject.shouldResolveWorkspaceProjects()) {
            final List<EclipseAndroidProject> nonRuntimeProjects = workspace.findOpenWorkspaceDependencies(mavenProject.getNonRuntimeDependencies());
 
-           final List<String> nonRuntimeProjectPaths = transform(nonRuntimeProjects, new Function<EclipseAndroidProject, String>() {
-               public String apply(EclipseAndroidProject project) {
-                  return project.getPath();
-               }
-           });
+           final List<String> nonRuntimeProjectPaths = from(nonRuntimeProjects)
+                   .transform(eclipseProjectToPathFunction())
+                   .toList();
 
             classpath.removeEntry(new EntryFilter() {
                 public boolean accept(IClasspathEntryDescriptor descriptor) {
