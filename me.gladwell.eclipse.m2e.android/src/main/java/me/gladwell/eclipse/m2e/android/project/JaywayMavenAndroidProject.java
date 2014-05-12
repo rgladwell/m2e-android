@@ -25,30 +25,22 @@ import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.repository.RemoteRepository;
 
-import com.google.inject.Inject;
-
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
-	private static final String ANDROID_PACKAGE_TYPE = "apk";
-	        static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
+    private static final String ANDROID_PACKAGE_TYPE = "apk";
+    static final String ANDROID_LIBRARY_PACKAGE_TYPE = "apklib";
     private static final String IGNORE_WARNING_CONFIGURATION_NAME = "ignoreOptionalWarningsInGenFolder";
 
-	private final MavenProject mavenProject;
+    private final MavenProject mavenProject;
     private final Plugin jaywayPlugin;
     private final RepositorySystemSession session;
     private final DependencyResolver dependencyResolver;
-    
-    @Inject
-    private AndroidWorkspace workspace;
 
-    @Inject
-    private IMavenProjectRegistry registry;
-    
-    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin, RepositorySystemSession session, DependencyResolver dependencyResolver) {
+    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin, RepositorySystemSession session,
+            DependencyResolver dependencyResolver) {
         this.mavenProject = mavenProject;
         this.jaywayPlugin = jaywayPlugin;
         this.session = session;
@@ -56,111 +48,113 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
     }
 
     public String getName() {
-		return mavenProject.getArtifactId();
-	}
+        return mavenProject.getArtifactId();
+    }
 
-	public String getGroup() {
-		return mavenProject.getGroupId();
-	}
+    public String getGroup() {
+        return mavenProject.getGroupId();
+    }
 
-	public String getVersion() {
-		return mavenProject.getVersion();
-	}
+    public String getVersion() {
+        return mavenProject.getVersion();
+    }
 
-	public boolean isAndroidProject() {
-		String packaging = mavenProject.getPackaging().toLowerCase();
-		return ANDROID_LIBRARY_PACKAGE_TYPE.equals(packaging) || ANDROID_PACKAGE_TYPE.equals(packaging);
-	}
+    public boolean isAndroidProject() {
+        String packaging = mavenProject.getPackaging().toLowerCase();
+        return ANDROID_LIBRARY_PACKAGE_TYPE.equals(packaging) || ANDROID_PACKAGE_TYPE.equals(packaging);
+    }
 
-	public boolean isLibrary() {
-		String packaging = mavenProject.getPackaging().toLowerCase();
-		return ANDROID_LIBRARY_PACKAGE_TYPE.equals(packaging);
-	}
-	
-	public List<Dependency> getNonRuntimeDependencies() {
-	    List<Dependency> list = new ArrayList<Dependency>( mavenProject.getArtifacts().size() );
+    public boolean isLibrary() {
+        String packaging = mavenProject.getPackaging().toLowerCase();
+        return ANDROID_LIBRARY_PACKAGE_TYPE.equals(packaging);
+    }
 
-	    for ( Artifact a : mavenProject.getArtifacts() ) {
-	        if ( a.getArtifactHandler().isAddedToClasspath() ) {
-	            if ( !Artifact.SCOPE_COMPILE.equals( a.getScope() ) && !Artifact.SCOPE_RUNTIME.equals( a.getScope() )) {
-	            	list.add(new MavenDependency(a));
-	            }
-	        }
-	    }
+    public List<Dependency> getNonRuntimeDependencies() {
+        List<Dependency> list = new ArrayList<Dependency>(mavenProject.getArtifacts().size());
 
-	    return list;
-	}
+        for (Artifact a : mavenProject.getArtifacts()) {
+            if (a.getArtifactHandler().isAddedToClasspath()) {
+                if (!Artifact.SCOPE_COMPILE.equals(a.getScope()) && !Artifact.SCOPE_RUNTIME.equals(a.getScope())) {
+                    list.add(new MavenDependency(a));
+                }
+            }
+        }
+
+        return list;
+    }
 
     public List<String> getPlatformProvidedDependencies() {
         final Dependency android = getAndroidDependency();
         final List<String> platformProvidedDependencies = new ArrayList<String>();
         final DefaultProjectBuildingRequest projectBuildingRequest = new DefaultProjectBuildingRequest();
         projectBuildingRequest.setRepositorySession(session);
-        
+
         List<ArtifactRepository> repositories = mavenProject.getRemoteArtifactRepositories();
-        
+
         List<RemoteRepository> remoteRepositories = new ArrayList<RemoteRepository>();
-        
+
         for (ArtifactRepository repository : repositories) {
-            remoteRepositories.add(new RemoteRepository(repository.getId(), repository.getLayout().toString(), repository.getUrl()));
+            remoteRepositories.add(new RemoteRepository(repository.getId(), repository.getLayout().toString(),
+                    repository.getUrl()));
         }
 
-        final List<org.sonatype.aether.artifact.Artifact> dependencies = dependencyResolver.resolveDependencies(android, "jar", remoteRepositories);
-        for(org.sonatype.aether.artifact.Artifact dependency : dependencies) {
+        final List<org.sonatype.aether.artifact.Artifact> dependencies = dependencyResolver.resolveDependencies(
+                android, "jar", remoteRepositories);
+        for (org.sonatype.aether.artifact.Artifact dependency : dependencies) {
             platformProvidedDependencies.add(dependency.getFile().getAbsolutePath());
         }
-        
+
         return platformProvidedDependencies;
     }
 
     private Dependency getAndroidDependency() {
-        for(Artifact artifact : mavenProject.getArtifacts()) {
-            if(isAndroidGroupId(artifact) && artifact.getArtifactId().equals("android")) {
+        for (Artifact artifact : mavenProject.getArtifacts()) {
+            if (isAndroidGroupId(artifact) && artifact.getArtifactId().equals("android")) {
                 return new MavenDependency(artifact);
             }
         }
         throw new ProjectConfigurationException("cannot find android dependency for project=[" + getName() + "]");
     }
 
-	private boolean isAndroidGroupId(Artifact artifact) {
-		return artifact.getGroupId().equals("com.google.android") ||
-		    artifact.getGroupId().equals("android");
-	}
+    private boolean isAndroidGroupId(Artifact artifact) {
+        return artifact.getGroupId().equals("com.google.android") || artifact.getGroupId().equals("android");
+    }
 
-	public List<Dependency> getLibraryDependencies() {
-	    List<Dependency> results = new ArrayList<Dependency>(mavenProject.getArtifacts().size());
-	
-	    for(Artifact a : mavenProject.getArtifacts()) {
-	    	Dependency dependency = new MavenDependency(a);
-	        if(dependency.isLibrary()) {
-	        	results.add(new MavenDependency(a));
-	        }
-	    }
+    public List<Dependency> getLibraryDependencies() {
+        List<Dependency> results = new ArrayList<Dependency>(mavenProject.getArtifacts().size());
 
-	    return results;
-	}
+        for (Artifact a : mavenProject.getArtifacts()) {
+            Dependency dependency = new MavenDependency(a);
+            if (dependency.isLibrary()) {
+                results.add(new MavenDependency(a));
+            }
+        }
 
-	public boolean matchesDependency(Dependency dependency) {
-		return StringUtils.equals(dependency.getName(), getName())
-				&& StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
-				&& dependency.getVersion().equals(mavenProject.getVersion());
-	}
+        return results;
+    }
 
-	public File getAssetsDirectory() {
-		String configuredAssetsDirectory = getConfiguredAssetsDirectory();
-		if(configuredAssetsDirectory == null) return null;
-		File assetsDirectory = new File(configuredAssetsDirectory);
+    public boolean matchesDependency(Dependency dependency) {
+        return StringUtils.equals(dependency.getName(), getName())
+                && StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
+                && dependency.getVersion().equals(mavenProject.getVersion());
+    }
 
-		if (!assetsDirectory.isAbsolute()) {
-			assetsDirectory = new File(mavenProject.getBasedir(), configuredAssetsDirectory);
-		}
+    public File getAssetsDirectory() {
+        String configuredAssetsDirectory = getConfiguredAssetsDirectory();
+        if (configuredAssetsDirectory == null)
+            return null;
+        File assetsDirectory = new File(configuredAssetsDirectory);
 
-		return assetsDirectory;
-	}
+        if (!assetsDirectory.isAbsolute()) {
+            assetsDirectory = new File(mavenProject.getBasedir(), configuredAssetsDirectory);
+        }
 
-	private String getConfiguredAssetsDirectory() {
-		return getConfigurationParameter("assetsDirectory");
-	}
+        return assetsDirectory;
+    }
+
+    private String getConfiguredAssetsDirectory() {
+        return getConfigurationParameter("assetsDirectory");
+    }
 
     public boolean isIgnoreOptionalWarningsInGenFolder() {
         return parseBoolean(getConfigurationParameter(IGNORE_WARNING_CONFIGURATION_NAME));
