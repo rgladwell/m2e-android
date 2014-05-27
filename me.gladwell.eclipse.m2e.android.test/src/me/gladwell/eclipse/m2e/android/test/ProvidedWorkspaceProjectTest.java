@@ -1,16 +1,13 @@
 package me.gladwell.eclipse.m2e.android.test;
 
-import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
 import static java.io.File.separator;
+import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES;
 
 @SuppressWarnings("restriction")
 public class ProvidedWorkspaceProjectTest extends AndroidMavenPluginTestCase {
@@ -29,24 +26,23 @@ public class ProvidedWorkspaceProjectTest extends AndroidMavenPluginTestCase {
         test = JavaCore.create(projects[1]);
     }
 
-    public void testConfigureRemovesProjectFromMavenDependencies() throws JavaModelException {
+    public void testConfigureRemovesProjectFromMavenDependencies() throws Exception {
         assertFalse(classpathContainerContains(test, IClasspathManager.CONTAINER_ID, app.getPath().toOSString()));
     }
 
-    public void testConfigureAddsProjectToNonRuntimeDependencies() throws JavaModelException {
-        IClasspathEntry entry = getClasspathEntry(test, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
-                app.getPath().toOSString());
+    public void testConfigureAddsProjectToNonRuntimeDependencies() throws Exception {
+        IClasspathEntry entry = getClasspathEntry(test, CONTAINER_NONRUNTIME_DEPENDENCIES, app.getPath().toOSString());
         
         assertTrue(entry.getEntryKind() == IClasspathEntry.CPE_PROJECT);
     }
-    
-    public void testConfigureAddsProvidedJarIfDependencyClosed() throws CoreException, InterruptedException {
+
+    public void testConfigureAddsProvidedJarIfDependencyClosed() throws Exception {
         app.getProject().close(null);
         waitForJobsToComplete();
         
-        IClasspathEntry entry = getClasspathEntry(test, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
-                app.getPath().toOSString());
+        IClasspathEntry entry = getClasspathEntry(test, CONTAINER_NONRUNTIME_DEPENDENCIES, app.getPath().toOSString());
         
         assertTrue(entry.getEntryKind() == IClasspathEntry.CPE_LIBRARY);
     }
+
 }
