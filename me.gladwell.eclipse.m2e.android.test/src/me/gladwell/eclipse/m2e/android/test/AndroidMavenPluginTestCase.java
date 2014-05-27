@@ -85,14 +85,19 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     }
 
     protected IProject importAndroidProject(String name, File folder) throws Exception {
-        IProject project = importProject("projects" + separator + name + separator + "pom.xml", folder);
+        return importProject(name, folder, new ResolverConfiguration());
+    }
+
+    protected IProject importAndroidProject(String name, ResolverConfiguration configuration) throws Exception {
+        IProject project = importProject("projects" + separator + name + separator + "pom.xml", configuration);
         waitForJobsToComplete();
         waitForAdtToLoad();
         return project;
     }
 
-    private IProject importProject(String pomLocation, File parent) throws Exception {
+    private IProject importProject(String name, File parent, ResolverConfiguration configuration) throws Exception {
         MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
+        String pomLocation = "projects" + separator + name + separator + "pom.xml";
 
         File pomFile = new File(pomLocation);
         File src = new File(pomFile.getParentFile().getCanonicalPath());
@@ -113,8 +118,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         final ArrayList<MavenProjectInfo> projectInfos = new ArrayList<MavenProjectInfo>();
         projectInfos.add(projectInfo);
 
-        final ProjectImportConfiguration importConfiguration = new ProjectImportConfiguration(
-                new ResolverConfiguration());
+        final ProjectImportConfiguration importConfiguration = new ProjectImportConfiguration(configuration);
 
         final ArrayList<IMavenProjectImportResult> importResults = new ArrayList<IMavenProjectImportResult>();
 
