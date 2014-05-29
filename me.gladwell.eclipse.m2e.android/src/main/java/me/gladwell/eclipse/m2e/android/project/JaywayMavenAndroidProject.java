@@ -183,13 +183,13 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
     
     private File getConfiguredFile(String path) {
         if(path == null) return null;
-        File assetsDirectory = new File(path);
+        File directory = new File(path);
 
-        if (!assetsDirectory.isAbsolute()) {
-            assetsDirectory = new File(mavenProject.getBasedir(), path);
+        if (!directory.isAbsolute()) {
+            directory = new File(mavenProject.getBasedir(), path);
         }
 
-        return assetsDirectory;
+        return directory;
     }
 
     public List<String> getSourcePaths() {
