@@ -79,14 +79,18 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     }
     
     public void testNonDefaultResourceFolderLinkCreated() throws Exception {
-        IProject project = importAndroidProject("issue-168/customresfolder");
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml",
+        "android-internaldirassets/pom.xml" });
+        IProject project = projects[1];
         
         // TODO insufficient test, should verify linked location
         assertTrue("res folder isn't linked", project.getFolder(SdkConstants.FD_RES).isLinked());
     }
     
     public void testNonDefaultAndroidManifestLinkCreated() throws Exception {
-        IProject project = importAndroidProject("issue-168/custommanifest");
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml",
+        "android-internaldirassets/pom.xml" });
+        IProject project = projects[1];
         
         // TODO insufficient test, should verify linked location
         assertTrue("AndroidManifest.xml file isn't linked", project.getFile(SdkConstants.ANDROID_MANIFEST_XML).isLinked());
