@@ -27,8 +27,6 @@ public interface MavenAndroidProject {
 
     public List<Dependency> getLibraryDependencies();
 
-    public boolean matchesDependency(Dependency dependency);
-
     public File getAssetsDirectory();
     
     public File getResourceFolder();

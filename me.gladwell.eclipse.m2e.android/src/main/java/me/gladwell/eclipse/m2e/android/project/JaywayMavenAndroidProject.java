@@ -133,12 +133,6 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         return results;
     }
 
-    public boolean matchesDependency(Dependency dependency) {
-        return StringUtils.equals(dependency.getName(), getName())
-                && StringUtils.equals(dependency.getGroup(), mavenProject.getGroupId())
-                && dependency.getVersion().equals(mavenProject.getVersion());
-    }
-
 	public File getAssetsDirectory() {
 		return getConfiguredFile(getConfiguredAssetsDirectory());
 	}
