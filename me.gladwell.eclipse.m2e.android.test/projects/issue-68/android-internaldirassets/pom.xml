@@ -37,8 +37,8 @@
 				<artifactId>android-maven-plugin</artifactId>
 				<version>3.1.1</version>
 				<configuration>
-					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
-					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+					<androidManifestFile>${project.basedir}/src/main/AndroidManifest.xml</androidManifestFile>
+					<resourceDirectory>${project.basedir}/src/main/res</resourceDirectory>
 					<nativeLibrariesDirectory>${project.basedir}/src/main/native</nativeLibrariesDirectory>
 					<assetsDirectory>assets2</assetsDirectory>
 					<sdk>

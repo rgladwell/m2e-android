@@ -139,22 +139,29 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
                 && dependency.getVersion().equals(mavenProject.getVersion());
     }
 
-    public File getAssetsDirectory() {
-        String configuredAssetsDirectory = getConfiguredAssetsDirectory();
-        if (configuredAssetsDirectory == null)
-            return null;
-        File assetsDirectory = new File(configuredAssetsDirectory);
-
-        if (!assetsDirectory.isAbsolute()) {
-            assetsDirectory = new File(mavenProject.getBasedir(), configuredAssetsDirectory);
-        }
-
-        return assetsDirectory;
+	public File getAssetsDirectory() {
+		return getConfiguredFile(getConfiguredAssetsDirectory());
+	}
+	
+	public File getResourceFolder() {
+	    return getConfiguredFile(getConfiguredResourceDirectory());
     }
+	
+	public File getAndroidManifestFile() {
+	    return getConfiguredFile(getConfiguredAndroidManifestFile());
+	}
 
-    private String getConfiguredAssetsDirectory() {
-        return getConfigurationParameter("assetsDirectory");
-    }
+	private String getConfiguredAssetsDirectory() {
+		return getConfigurationParameter("assetsDirectory");
+	}
+	
+	private String getConfiguredResourceDirectory() {
+	    return getConfigurationParameter("resourceDirectory");
+	}
+	
+	private String getConfiguredAndroidManifestFile() {
+	    return getConfigurationParameter("androidManifestFile");
+	}
 
     public boolean isIgnoreOptionalWarningsInGenFolder() {
         return parseBoolean(getConfigurationParameter(IGNORE_WARNING_CONFIGURATION_NAME));
@@ -164,18 +171,30 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         Object configuration = jaywayPlugin.getConfiguration();
         if (configuration instanceof Xpp3Dom) {
             Xpp3Dom confDom = (Xpp3Dom) configuration;
-            Xpp3Dom assetsDirectoryDom = confDom.getChild(name);
-            if (assetsDirectoryDom != null) {
-                String assetsDirectory = assetsDirectoryDom.getValue();
-                if (!isEmpty(assetsDirectory)) {
-                    return assetsDirectory;
+            Xpp3Dom parameterDom = confDom.getChild(name);
+            if (parameterDom != null) {
+                String parameter = parameterDom.getValue();
+                if (!isEmpty(parameter)) {
+                    return parameter;
                 }
             }
         }
         return null;
     }
+    
+    private File getConfiguredFile(String path) {
+        if(path == null) return null;
+        File directory = new File(path);
+
+        if (!directory.isAbsolute()) {
+            directory = new File(mavenProject.getBasedir(), path);
+        }
+
+        return directory;
+    }
 
     public List<String> getSourcePaths() {
         return mavenProject.getCompileSourceRoots();
     }
+
 }

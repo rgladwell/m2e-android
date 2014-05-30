@@ -30,6 +30,10 @@ public interface MavenAndroidProject {
     public boolean matchesDependency(Dependency dependency);
 
     public File getAssetsDirectory();
+    
+    public File getResourceFolder();
+    
+    public File getAndroidManifestFile();
 
     public List<String> getPlatformProvidedDependencies();
 

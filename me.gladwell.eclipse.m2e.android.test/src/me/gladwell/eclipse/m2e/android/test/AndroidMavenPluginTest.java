@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 
+import com.android.SdkConstants;
 import com.android.ide.eclipse.adt.AdtConstants;
 
 @SuppressWarnings("restriction")
@@ -75,6 +76,24 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
         // TODO insufficient test, should verify linked location
         assertTrue("external assets folder isn't linked", project.getFolder("assets").isLinked());
+    }
+    
+    public void testNonDefaultResourceFolderLinkCreated() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml",
+        "android-internaldirassets/pom.xml" });
+        IProject project = projects[1];
+        
+        // TODO insufficient test, should verify linked location
+        assertTrue("res folder isn't linked", project.getFolder(SdkConstants.FD_RES).isLinked());
+    }
+    
+    public void testNonDefaultAndroidManifestLinkCreated() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml",
+        "android-internaldirassets/pom.xml" });
+        IProject project = projects[1];
+        
+        // TODO insufficient test, should verify linked location
+        assertTrue("AndroidManifest.xml file isn't linked", project.getFile(SdkConstants.ANDROID_MANIFEST_XML).isLinked());
     }
 
     public void testConfigureSetsIgnoreWarningsForGenFolder() throws Exception {
