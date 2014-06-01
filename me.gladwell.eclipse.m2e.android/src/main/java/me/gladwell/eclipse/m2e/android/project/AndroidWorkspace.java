@@ -8,8 +8,12 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.util.List;
+
 public interface AndroidWorkspace {
 
     EclipseAndroidProject findOpenWorkspaceDependency(Dependency dependency);
+
+    List<EclipseAndroidProject> findOpenWorkspaceDependencies(List<Dependency> nonRuntimeDependencies);
 
 }

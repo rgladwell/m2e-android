@@ -23,18 +23,20 @@ public interface MavenAndroidProject {
 
     public boolean isLibrary();
 
-    public List<String> getNonRuntimeDependencies();
+    public List<Dependency> getNonRuntimeDependencies();
 
     public List<Dependency> getLibraryDependencies();
 
-    public boolean matchesDependency(Dependency dependency);
-
     public File getAssetsDirectory();
+    
+    public File getResourceFolder();
+    
+    public File getAndroidManifestFile();
 
     public List<String> getPlatformProvidedDependencies();
 
     public List<String> getSourcePaths();
 
     public boolean isIgnoreOptionalWarningsInGenFolder();
-
+    
 }

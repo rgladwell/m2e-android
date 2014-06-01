@@ -11,6 +11,7 @@ package me.gladwell.eclipse.m2e.android.project;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenException;
+import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
 
 import org.apache.maven.model.Plugin;
@@ -34,7 +35,10 @@ public class MavenAndroidProjectFactory implements AndroidProjectFactory<MavenAn
     public MavenAndroidProject createAndroidProject(MavenProject mavenProject) {
         final Plugin jaywayPlugin = MavenAndroidProjectFactory.findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
         if (jaywayPlugin != null) {
-            return new JaywayMavenAndroidProject(mavenProject, jaywayPlugin, session, depedendencyResolver);
+            JaywayMavenAndroidProject androidProject = new JaywayMavenAndroidProject(mavenProject, jaywayPlugin,
+                    session, depedendencyResolver);
+            AndroidMavenPlugin.getDefault().getInjector().injectMembers(androidProject);
+            return androidProject;
         }
 
         throw new AndroidMavenException("un-recognised maven-android project type");

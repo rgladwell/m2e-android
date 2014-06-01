@@ -34,8 +34,16 @@ public interface EclipseAndroidProject {
 
     public IFile getPom();
 
-    void setAssetsDirectory(File file);
+    public void setAssetsDirectory(File file);
+ 
+    public void setResourceFolder(File resourceDirectory);
+    
+    public void setAndroidManifest(File androidManifestFile);
 
     public Classpath getClasspath();
+    
+    public boolean shouldResolveWorkspaceProjects();
+
+    public String getPath();
 
 }

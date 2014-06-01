@@ -15,7 +15,6 @@ import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
 public interface RawClasspathConfigurer {
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject,
-            IClasspathDescriptor classpath);
+    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath);
 
 }

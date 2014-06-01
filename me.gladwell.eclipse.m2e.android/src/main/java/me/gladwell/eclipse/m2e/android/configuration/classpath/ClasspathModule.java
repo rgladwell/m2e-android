@@ -18,17 +18,19 @@ public class ClasspathModule extends AbstractModule {
         bind(IMavenConfiguration.class).toInstance(MavenPlugin.getMavenConfiguration());
         bind(PersistNonRuntimeClasspathConfigurer.class);
         bind(AddNonRuntimeClasspathContainerConfigurer.class);
+        bind(RemoveNonRuntimeProjectsConfigurer.class);
         bind(IMaven.class).toInstance(MavenPlugin.getMaven());
         bind(BuildPathManager.class);
     }
 
     @Provides
     List<RawClasspathConfigurer> provideRawClasspathConfigurers(PersistNonRuntimeClasspathConfigurer persistConfigurer,
-            AttatchSourcesClasspathConfigurer attatchSourcesConfigurer) {
+            RemoveNonRuntimeProjectsConfigurer removeProjectsConfigurer, AttatchSourcesClasspathConfigurer attatchSourcesConfigurer) {
         final List<RawClasspathConfigurer> rawClasspathConfigurers = new ArrayList<RawClasspathConfigurer>();
 
         rawClasspathConfigurers.add(persistConfigurer);
         rawClasspathConfigurers.add(new RemoveNonRuntimeDependenciesConfigurer());
+        rawClasspathConfigurers.add(removeProjectsConfigurer);
         rawClasspathConfigurers.add(attatchSourcesConfigurer);
 
         return Collections.unmodifiableList(rawClasspathConfigurers);

@@ -18,4 +18,5 @@ public interface Dependency {
 
     public boolean isLibrary();
 
+    public String getPath();
 }

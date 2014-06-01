@@ -37,6 +37,10 @@ public class MavenDependency implements Dependency {
         return artifact.getType().equals(ANDROID_LIBRARY_PACKAGE_TYPE);
     }
 
+    public String getPath() {
+        return artifact.getFile().getAbsolutePath();
+    }
+
     @Override
     public String toString() {
         return artifact.toString();
