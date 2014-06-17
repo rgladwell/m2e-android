@@ -31,8 +31,8 @@ public class EclipseSourceEntry implements SourceEntry {
     }
 
     public String getPath() {
-        String parent = project.getProject().getLocation().toFile().getParent();
-        File path = new File(parent, entry.getPath().toOSString());
+        File file = project.getProject().getLocation().toFile();
+        File path = new File(file, entry.getPath().removeFirstSegments(1).toOSString());
         return path.getAbsolutePath();
     }
 

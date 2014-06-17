@@ -8,8 +8,13 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
+import static java.io.File.separator;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntry;
+import static me.gladwell.eclipse.m2e.android.test.ProjectImporter.importAndroidTestProject;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
+
+import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -101,6 +106,27 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IClasspathEntry gen = findSourceEntry(project.getRawClasspath(), "gen");
 
         assertTrue("external assets folder isn't linked", booleanAttribute(IGNORE_OPTIONAL_PROBLEMS, gen));
+    }
+
+    private static final String ANDROID_CLASSES_FOLDER = "bin" + separator + "classes";
+
+    public void testConfigureWhenProjectFolderAndNameMismatch() throws Exception {
+        IProject project = importAndroidTestProject("android-application")
+                                .withProjectFolder(new File("mismatch"))
+                                .into(workspace);
+
+        assertNoErrors(project);
+    }
+
+    public void testConfigureSetsCorrectOutputLocationWhenProjectFolderAndNameMismatch() throws Exception {
+        IProject project = importAndroidTestProject("android-application")
+                                .withProjectFolder(new File("mismatch"))
+                                .into(workspace);
+
+        IClasspathEntry[] classpath = JavaCore.create(project).getRawClasspath();
+        IClasspathEntry entry = findSourceEntry(classpath, "src" + separator + "main" + separator + "java");
+
+        assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
     }
 
 }
