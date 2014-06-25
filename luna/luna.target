@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<?pde version="3.8"?>
+<target name="Eclipse 4.4.x (Luna)" sequenceNumber="43">
+
+<locations>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="com.android.ide.eclipse.adt.feature.group" version="22.6.3.v201404151837-1123206"/>
+<unit id="com.android.ide.eclipse.ddms.feature.group" version="22.6.3.v201404151837-1123206"/>
+<unit id="com.android.ide.eclipse.hierarchyviewer.feature.group" version="22.6.3.v201404151837-1123206"/>
+<unit id="com.android.ide.eclipse.traceview.feature.group" version="22.6.3.v201404151837-1123206"/>
+<repository location="http://anthonydahanne.github.com/publish_adt_to_p2repo/"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
+<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.m2e.feature.feature.group" version="1.5.0.20140606-0033"/>
+<repository location="http://download.eclipse.org/technology/m2e/milestones/1.5"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.5.0.20140606-0033"/>
+<repository location="http://download.eclipse.org/technology/m2e/milestones/1.5"/>
+</location>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<repository location="http://download.eclipse.org/releases/luna/"/>
+</location>
+</locations>
+<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.6"/>
+</target>
