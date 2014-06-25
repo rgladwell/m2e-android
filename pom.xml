@@ -33,16 +33,17 @@
 	</organization>
 	<properties>
 		<tycho-version>0.20.0</tycho-version>
-		<target.platform>kepler</target.platform>
+		<target.platform>luna</target.platform>
 	</properties>
 	<modules>
 		<module>me.gladwell.eclipse.m2e.android</module>
 		<module>me.gladwell.eclipse.m2e.android.feature</module>
 		<module>me.gladwell.eclipse.m2e.android.test</module>
 		<module>me.gladwell.eclipse.m2e.android.update</module>
+		<module>indigo</module>
 		<module>kepler</module>
 		<module>juno</module>
-		<module>indigo</module>
+		<module>luna</module>
 	</modules>
 	<build>
 		<plugins>
