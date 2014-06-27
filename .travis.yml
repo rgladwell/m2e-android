@@ -1,9 +1,6 @@
 language: java
 env:
   matrix:
-    - TARGET_PLATFORM=indigo
-    - TARGET_PLATFORM=juno
-    - TARGET_PLATFORM=kepler
     - TARGET_PLATFORM=luna
 before_install:
   - wget http://dl.google.com/android/android-sdk_r22.6.2-linux.tgz

@@ -2,7 +2,7 @@
 <feature
       id="me.gladwell.eclipse.m2e.android.feature"
       label="Android for Maven Eclipse"
-      version="1.0.2.qualifier"
+      version="1.1.0.qualifier"
       provider-name="Gladwell.me">
 
    <description url="http://rgladwell.github.com/m2e-android/">
@@ -49,7 +49,7 @@ the Program.
 are necessarily infringed by the use or sale of its Contribution alone
 or when combined with the Program.
 
-&quot;Program&quot; means the Contributions distributed in accordance with this
+&quot;Program&quot; means the1.0.200.20111228-1245 Contributions distributed in accordance with this
 Agreement.
 
 &quot;Recipient&quot; means anyone who receives the Program under this Agreement,
@@ -121,7 +121,7 @@ When the Program is made available in source code form:
 
 a) it must be made available under this Agreement; and
 
-b) a copy of this Agreement must be included with each copy of the Program.
+b) a copy of this Agreeme1.0.200.20111228-1245nt must be included with each copy of the Program.
 
 Contributors may not remove or alter any copyright notices contained
 within the Program.
@@ -263,7 +263,7 @@ to a jury trial in any resulting litigation.
          id="me.gladwell.eclipse.m2e.android"
          download-size="0"
          install-size="0"
-         version="1.0.2.qualifier"
+         version="1.1.0.qualifier"
          unpack="false"/>
 
 </feature>

@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>m2e-android</artifactId>
 	<groupId>me.gladwell.eclipse.m2e.android</groupId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>Android for Maven Eclipse</name>
 	<packaging>pom</packaging>
 	<description>Android Configurator for M2E Integration for Eclipse and Maven Android Plugin.</description>
@@ -40,9 +40,6 @@
 		<module>me.gladwell.eclipse.m2e.android.feature</module>
 		<module>me.gladwell.eclipse.m2e.android.test</module>
 		<module>me.gladwell.eclipse.m2e.android.update</module>
-		<module>indigo</module>
-		<module>kepler</module>
-		<module>juno</module>
 		<module>luna</module>
 	</modules>
 	<build>
