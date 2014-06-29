@@ -77,6 +77,12 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         }
     }
 
+    /**
+     * @deprecated
+     * Method replaced by the fluent {@link ProjectImporter#importAndroidTestProject(String)}
+     * project builder.
+     */
+    @Deprecated
     protected IProject importAndroidProject(String name) throws Exception {
         IProject project = importProject("projects" + separator + name + separator + "pom.xml");
         waitForJobsToComplete();
