@@ -46,7 +46,7 @@ public class MavenEclipseClasspath implements Classpath {
         List<SourceEntry> entries = new ArrayList<SourceEntry>();
         for(IClasspathEntryDescriptor entry : classpath.getEntryDescriptors()) {
             if(entry.getOutputLocation() != null && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-                entries.add(new EclipseSourceEntry(project, classpath, entry));
+                entries.add(new EclipseSourceEntry(project.getProject(), classpath, entry));
             }
         }
         return entries;
@@ -55,7 +55,7 @@ public class MavenEclipseClasspath implements Classpath {
     public void addContainer(IClasspathContainer container) {
         try {
             setClasspathContainer(container.getPath(),
-                    new IJavaProject[] { project.getJavaProject() }, new IClasspathContainer[] { container },
+                    new IJavaProject[] { project }, new IClasspathContainer[] { container },
                     new NullProgressMonitor());
             classpath.addEntry(newContainerEntry(container.getPath(), false));
         } catch (JavaModelException e) {
@@ -102,7 +102,7 @@ public class MavenEclipseClasspath implements Classpath {
     }
 
     public SourceEntry getSourceEntry(String path) {
-        return new EclipseSourceEntry(project, classpath, findSourceEntryDescriptor(classpath, path));
+        return new EclipseSourceEntry(project.getProject(), classpath, findSourceEntryDescriptor(classpath, path));
     }
 
 }
