@@ -20,9 +20,15 @@ and conform to the
 
 ###...be fully testable
 
-Tests should verify new functionality or bugs and be well written with good
-coverage. To run the tests in Maven execute the following from within the
-cloned project folder:
+All new functionality or bugs should be developed using
+[Test Driven Development](http://c2.com/cgi/wiki?TestDrivenDevelopment)
+ensuring
+[tests are written first](http://www.extremeprogramming.org/rules/testfirst.html),
+you regularly [refactor](http://www.jamesshore.com/Blog/Red-Green-Refactor.html),
+etc..
+
+To run the tests in Maven execute the following from within the cloned project
+folder:
 
 ```
 $ mvn verify
