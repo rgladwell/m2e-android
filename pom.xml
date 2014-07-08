@@ -45,6 +45,15 @@
 		<module>juno</module>
 		<module>luna</module>
 	</modules>
+
+    <dependencies>
+      <dependency>
+        <groupId>org.sonatype</groupId>
+        <artifactId>org.sonatype.aether</artifactId>
+        <version>1.13.1</version>
+      </dependency>
+    </dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -58,6 +67,7 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho-version}</version>
 				<configuration>
+               <pomDependencies>consider</pomDependencies>
 					<target>
 						<artifact>
 							<groupId>me.gladwell.eclipse.m2e.android</groupId>
@@ -96,6 +106,19 @@
 					</environments>
 				</configuration>
 			</plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-source-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <executions>
+          <execution>
+            <id>plugin-source</id>
+            <goals>
+              <goal>plugin-source</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>

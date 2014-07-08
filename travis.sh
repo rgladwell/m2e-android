@@ -22,4 +22,5 @@ Xvfb :99 -ac -screen 0 1024x768x24 &
 export DISPLAY=:99.0
 cd /vagrant
 echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
+mvn --file org.sonatype.aether/pom.xml clean install
 mvn clean install -Dtycho.showEclipseLog=true

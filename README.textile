@@ -13,7 +13,7 @@ This section details how to set-up your environment to make code changes to the 
 
 h3. 1. Getting Started
 
-In addition to having Eclipse Juno installed, you need to do the following steps:
+In addition to having "Eclipse Luna":http://eclipse.org/downloads installed, you need to do the following steps:
 
 # Install the "Android SDK.":http://developer.android.com/sdk/index.html
 # Create ANDROID_HOME environment variable containing the Android SDK install path. 

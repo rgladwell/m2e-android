@@ -6,14 +6,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package me.gladwell.eclipse.m2e.android.resolve;
+package me.gladwell.eclipse.m2e.android.resolve.eclipse;
 
 import java.util.List;
 
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.repository.RemoteRepository;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.repository.RemoteRepository;
 
-public interface ArtifactResolver {
+interface ArtifactResolver {
 
     Artifact resolveArtifact(List<RemoteRepository> repositories, Artifact artifact);
 

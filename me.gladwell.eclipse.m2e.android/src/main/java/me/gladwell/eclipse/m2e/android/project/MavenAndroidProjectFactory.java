@@ -12,23 +12,20 @@ import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenException;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
+import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
-import org.sonatype.aether.RepositorySystemSession;
 
 import com.google.inject.Inject;
 
 public class MavenAndroidProjectFactory implements AndroidProjectFactory<MavenAndroidProject, MavenProject> {
 
-    private final RepositorySystemSession session;
-    private final DependencyResolver depedendencyResolver;
+    private final LibraryResolver depedendencyResolver;
 
     @Inject
-    public MavenAndroidProjectFactory(RepositorySystemSession session, DependencyResolver depedendencyResolver) {
+    public MavenAndroidProjectFactory(LibraryResolver depedendencyResolver) {
         super();
-        this.session = session;
         this.depedendencyResolver = depedendencyResolver;
     }
 
@@ -36,7 +33,7 @@ public class MavenAndroidProjectFactory implements AndroidProjectFactory<MavenAn
         final Plugin jaywayPlugin = MavenAndroidProjectFactory.findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
         if (jaywayPlugin != null) {
             JaywayMavenAndroidProject androidProject = new JaywayMavenAndroidProject(mavenProject, jaywayPlugin,
-                    session, depedendencyResolver);
+                    depedendencyResolver);
             AndroidMavenPlugin.getDefault().getInjector().injectMembers(androidProject);
             return androidProject;
         }

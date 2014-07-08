@@ -21,4 +21,5 @@ before_install:
 before_script:
   - export DISPLAY=:99.0
   - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
+  - mvn --file org.sonatype.aether/pom.xml install
 script: mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify

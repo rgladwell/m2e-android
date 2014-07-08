@@ -16,17 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
-import me.gladwell.eclipse.m2e.android.resolve.DependencyResolver;
+import me.gladwell.eclipse.m2e.android.resolve.Library;
+import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
 import org.apache.maven.artifact.Artifact;
-import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Plugin;
-import org.apache.maven.project.DefaultProjectBuildingRequest;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.repository.RemoteRepository;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
@@ -36,14 +32,11 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
     private final MavenProject mavenProject;
     private final Plugin jaywayPlugin;
-    private final RepositorySystemSession session;
-    private final DependencyResolver dependencyResolver;
+    private final LibraryResolver dependencyResolver;
 
-    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin, RepositorySystemSession session,
-            DependencyResolver dependencyResolver) {
+    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin, LibraryResolver dependencyResolver) {
         this.mavenProject = mavenProject;
         this.jaywayPlugin = jaywayPlugin;
-        this.session = session;
         this.dependencyResolver = dependencyResolver;
     }
 
@@ -86,22 +79,11 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
     public List<String> getPlatformProvidedDependencies() {
         final Dependency android = getAndroidDependency();
         final List<String> platformProvidedDependencies = new ArrayList<String>();
-        final DefaultProjectBuildingRequest projectBuildingRequest = new DefaultProjectBuildingRequest();
-        projectBuildingRequest.setRepositorySession(session);
 
-        List<ArtifactRepository> repositories = mavenProject.getRemoteArtifactRepositories();
+        final List<Library> libraries = dependencyResolver.resolveLibraries(android, "jar", mavenProject);
 
-        List<RemoteRepository> remoteRepositories = new ArrayList<RemoteRepository>();
-
-        for (ArtifactRepository repository : repositories) {
-            remoteRepositories.add(new RemoteRepository(repository.getId(), repository.getLayout().toString(),
-                    repository.getUrl()));
-        }
-
-        final List<org.sonatype.aether.artifact.Artifact> dependencies = dependencyResolver.resolveDependencies(
-                android, "jar", remoteRepositories);
-        for (org.sonatype.aether.artifact.Artifact dependency : dependencies) {
-            platformProvidedDependencies.add(dependency.getFile().getAbsolutePath());
+        for (Library library : libraries) {
+            platformProvidedDependencies.add(library.getFile().getAbsolutePath());
         }
 
         return platformProvidedDependencies;

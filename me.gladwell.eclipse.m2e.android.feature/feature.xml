@@ -266,4 +266,11 @@ to a jury trial in any resulting litigation.
          version="1.0.2.qualifier"
          unpack="false"/>
 
+   <plugin
+         id="org.sonatype.aether"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

@@ -6,29 +6,29 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package me.gladwell.eclipse.m2e.android.resolve;
+package me.gladwell.eclipse.m2e.android.resolve.eclipse;
 
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.artifact.Artifact;
-import org.sonatype.aether.repository.RemoteRepository;
-import org.sonatype.aether.resolution.ArtifactRequest;
-import org.sonatype.aether.resolution.ArtifactResolutionException;
-import org.sonatype.aether.resolution.ArtifactResult;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.Artifact;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
+import org.eclipse.aether.resolution.ArtifactResult;
 
 import com.google.inject.Inject;
 
-public class AetherArtifactResolver implements ArtifactResolver {
+class EclipseAetherArtifactResolver implements ArtifactResolver {
 
     private final RepositorySystem repository;
     private final RepositorySystemSession session;
 
     @Inject
-    public AetherArtifactResolver(RepositorySystem repository, RepositorySystemSession session) {
+    public EclipseAetherArtifactResolver(RepositorySystem repository, RepositorySystemSession session) {
         super();
         this.repository = repository;
         this.session = session;

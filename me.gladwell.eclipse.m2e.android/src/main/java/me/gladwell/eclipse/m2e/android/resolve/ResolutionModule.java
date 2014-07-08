@@ -8,49 +8,44 @@
 
 package me.gladwell.eclipse.m2e.android.resolve;
 
-import org.apache.maven.cli.ConsoleMavenTransferListener;
-import org.apache.maven.repository.internal.MavenRepositorySystemSession;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
-import org.eclipse.core.runtime.CoreException;
+import static me.gladwell.eclipse.m2e.android.Log.warn;
+import me.gladwell.eclipse.m2e.android.resolve.eclipse.EclipseAetherModule;
+import me.gladwell.eclipse.m2e.android.resolve.sonatype.SonatypeAetherModule;
+
+import org.codehaus.plexus.PlexusContainer;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.embedder.MavenImpl;
-import org.sonatype.aether.RepositorySystem;
-import org.sonatype.aether.RepositorySystemSession;
-import org.sonatype.aether.repository.LocalRepository;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.core.runtime.CoreException;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
 
 public class ResolutionModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
-        bind(ArtifactResolver.class).to(AetherArtifactResolver.class);
-        bind(DependencyResolver.class).to(AetherDependencyResolver.class);
-    }
+    private final PlexusContainer mavenContainer;
 
-    @Provides
-    RepositorySystem provideRepositorySystem() {
+    public ResolutionModule() {
         try {
-            return ((MavenImpl) MavenPlugin.getMaven()).getPlexusContainer().lookup(RepositorySystem.class);
-        } catch (ComponentLookupException e) {
-            throw new RuntimeException(e);
+            this.mavenContainer = ((MavenImpl) MavenPlugin.getMaven()).getPlexusContainer();
         } catch (CoreException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @Provides
-    LocalRepository providesLocalRepository() throws CoreException {
-        return new LocalRepository(MavenPlugin.getMaven().getLocalRepository().getBasedir());
+    private boolean eclipseAetherAPIAvailable() {
+        return mavenContainer.hasComponent(RepositorySystem.class);
     }
 
-    @Provides
-    RepositorySystemSession provideRepositorySystemSession(RepositorySystem system, LocalRepository localRepo) {
-        final MavenRepositorySystemSession session = new MavenRepositorySystemSession();
-        session.setLocalRepositoryManager(system.newLocalRepositoryManager(localRepo));
-        session.setTransferListener(new ConsoleMavenTransferListener(System.out));
-        return session;
+    @Override
+    protected void configure() {
+        bind(PlexusContainer.class).toInstance(mavenContainer);
+
+        if(eclipseAetherAPIAvailable()) {
+            install(new EclipseAetherModule());
+        } else {
+            warn("Eclipse Aether API not available - reverting to Sonatype Aether API");
+            install(new SonatypeAetherModule());
+        }
     }
 
 }

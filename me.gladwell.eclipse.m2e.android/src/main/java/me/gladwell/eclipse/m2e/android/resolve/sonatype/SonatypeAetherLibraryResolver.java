@@ -6,14 +6,18 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
-package me.gladwell.eclipse.m2e.android.resolve;
+package me.gladwell.eclipse.m2e.android.resolve.sonatype;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.project.Dependency;
+import me.gladwell.eclipse.m2e.android.resolve.Library;
+import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.project.MavenProject;
 import org.sonatype.aether.RepositorySystem;
 import org.sonatype.aether.RepositorySystemSession;
 import org.sonatype.aether.artifact.Artifact;
@@ -25,51 +29,63 @@ import org.sonatype.aether.util.artifact.DefaultArtifact;
 
 import com.google.inject.Inject;
 
-public class AetherDependencyResolver implements DependencyResolver {
+public class SonatypeAetherLibraryResolver implements LibraryResolver {
 
-    private final ArtifactResolver artifactResolver;
+    private final ArtifactResolver resolver;
     private final RepositorySystem repository;
     private final RepositorySystemSession session;
 
     @Inject
-    public AetherDependencyResolver(ArtifactResolver artifactResolver, RepositorySystem repository,
+    public SonatypeAetherLibraryResolver(ArtifactResolver resolver, RepositorySystem repository,
             RepositorySystemSession session) {
         super();
-        this.artifactResolver = artifactResolver;
+        this.resolver = resolver;
         this.repository = repository;
         this.session = session;
     }
 
-    public List<org.sonatype.aether.artifact.Artifact> resolveDependencies(Dependency dependency, String extension, List<RemoteRepository> repositories) {
-        final DefaultArtifact artifact = new DefaultArtifact(dependency.getGroup(), dependency.getName(), extension,
+    public List<Library> resolveLibraries(Dependency dependency, String type, MavenProject project) {
+        final DefaultArtifact artifact = new DefaultArtifact(
+                dependency.getGroup(),
+                dependency.getName(),
+                type,
                 dependency.getVersion());
-        return resolveDependencies(artifact, repositories);
+
+        final List<ArtifactRepository> repositories = project.getRemoteArtifactRepositories();
+        final List<RemoteRepository> remoteRepositories = new ArrayList<RemoteRepository>();
+
+        for (ArtifactRepository repository : repositories) {
+            RemoteRepository repo = new RemoteRepository(repository.getId(), repository.getLayout().toString(),
+                    repository.getUrl());
+            remoteRepositories.add(repo);
+        }
+
+        return resolveDependencies(artifact, remoteRepositories);
     }
 
-    private List<org.sonatype.aether.artifact.Artifact> resolveDependencies(
-            final org.sonatype.aether.artifact.Artifact artifact,
-            List<RemoteRepository> repositories) {
+    private List<Library> resolveDependencies(Artifact artifact, List<RemoteRepository> repositories) {
         ArtifactDescriptorRequest descriptorRequest = new ArtifactDescriptorRequest();
         descriptorRequest.setArtifact(artifact);
-        
+
         for (RemoteRepository remoteRepository : repositories) {
             descriptorRequest.addRepository(remoteRepository);
         }
 
-        List<org.sonatype.aether.artifact.Artifact> resolvedDependencies = new ArrayList<org.sonatype.aether.artifact.Artifact>();
+        List<Library> libraries = new ArrayList<Library>();
 
         try {
             ArtifactDescriptorResult descriptorResult = repository.readArtifactDescriptor(session, descriptorRequest);
-            resolvedDependencies.add(artifactResolver.resolveArtifact(repositories, descriptorResult.getArtifact()));
+            libraries.add(new Library(resolver.resolveArtifact(repositories, descriptorResult.getArtifact())));
             for (org.sonatype.aether.graph.Dependency d : descriptorResult.getDependencies()) {
-                Artifact resolvedArtifact = artifactResolver.resolveArtifact(repositories, d.getArtifact());
-                resolvedDependencies.add(resolvedArtifact);
-                resolvedDependencies.addAll(resolveDependencies(resolvedArtifact, repositories));
+                Artifact resolvedArtifact = resolver.resolveArtifact(repositories, d.getArtifact());
+                libraries.add(new Library(resolvedArtifact));
+                libraries.addAll(resolveDependencies(resolvedArtifact, repositories));
             }
         } catch (ArtifactDescriptorException e) {
             throw new ProjectConfigurationException(e);
         }
-        
-        return resolvedDependencies;
+
+        return libraries;
     }
+
 }
