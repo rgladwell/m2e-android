@@ -6,6 +6,7 @@ env:
     - TARGET_PLATFORM=kepler
     - TARGET_PLATFORM=luna
 before_install:
+  - mvn --file org.sonatype.aether/pom.xml install
   - wget http://dl.google.com/android/android-sdk_r23.0.1-linux.tgz
   - tar -zxf android-sdk_r23.0.1-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
@@ -21,5 +22,4 @@ before_install:
 before_script:
   - export DISPLAY=:99.0
   - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
-  - mvn --file org.sonatype.aether/pom.xml install
 script: mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
