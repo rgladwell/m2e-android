@@ -1,111 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<artifactId>m2e-android</artifactId>
-	<groupId>me.gladwell.eclipse.m2e.android</groupId>
-	<version>1.0.2-SNAPSHOT</version>
-	<name>Android for Maven Eclipse</name>
-	<packaging>pom</packaging>
-	<description>Android Configurator for M2E Integration for Eclipse and Maven Android Plugin.</description>
-	<url>https://github.com/rgladwell/m2e-android</url>
-	<issueManagement>
-		<system>Github</system>
-		<url>https://github.com/rgladwell/m2e-android/issues</url>
-	</issueManagement>
-	<inceptionYear>2009</inceptionYear>
-	<developers>
-		<developer>
-			<id>ricardo.gladwell</id>
-			<name>Ricardo Gladwell</name>
-			<email>ricardo@gladwell.me</email>
-			<url>http://gladwell.me</url>
-		</developer>
-	</developers>
-	<scm>
-		<connection>scm:git@github.com:rgladwell/m2e-android.git</connection>
-		<developerConnection>scm:git@github.com:rgladwell/m2e-android.git</developerConnection>
-		<url>https://github.com/rgladwell/m2e-android</url>
-	</scm>
-	<organization>
-		<name>Gladwell Consultants Ltd.</name>
-		<url>https://gladwell.me/</url>
-	</organization>
-	<properties>
-		<tycho-version>0.20.0</tycho-version>
-		<target.platform>luna</target.platform>
-	</properties>
-	<modules>
-		<module>me.gladwell.eclipse.m2e.android</module>
-		<module>me.gladwell.eclipse.m2e.android.feature</module>
-		<module>me.gladwell.eclipse.m2e.android.test</module>
-		<module>me.gladwell.eclipse.m2e.android.update</module>
-		<module>indigo</module>
-		<module>kepler</module>
-		<module>juno</module>
-		<module>luna</module>
-	</modules>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <dependencies>
-      <dependency>
-        <groupId>org.sonatype</groupId>
-        <artifactId>org.sonatype.aether</artifactId>
-        <version>1.13.1</version>
-      </dependency>
-    </dependencies>
+  <artifactId>m2e-android</artifactId>
+  <groupId>me.gladwell.eclipse.m2e.android</groupId>
+  <version>1.0.2-SNAPSHOT</version>
+  <name>Android for Maven Eclipse</name>
+  <packaging>pom</packaging>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-maven-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<extensions>true</extensions>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>target-platform-configuration</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-               <pomDependencies>consider</pomDependencies>
-					<target>
-						<artifact>
-							<groupId>me.gladwell.eclipse.m2e.android</groupId>
-							<artifactId>${target.platform}</artifactId>
-							<version>${project.version}</version>
-						</artifact>
-					</target>
-					<resolver>p2</resolver>
-					<pomDependencies>consider</pomDependencies>
-					<environments>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86</arch>
-						</environment>
-						<environment>
-							<os>win32</os>
-							<ws>win32</ws>
-							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>macosx</os>
-							<ws>cocoa</ws>
-							<arch>x86_64</arch>
-						</environment>
-					</environments>
-				</configuration>
-			</plugin>
+  <description>Android Configurator for M2E Integration for Eclipse and Maven Android Plugin.</description>
+
+  <url>https://github.com/rgladwell/m2e-android</url>
+
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/rgladwell/m2e-android/issues</url>
+  </issueManagement>
+
+  <inceptionYear>2009</inceptionYear>
+
+  <developers>
+    <developer>
+      <id>ricardo.gladwell</id>
+      <name>Ricardo Gladwell</name>
+      <email>ricardo@gladwell.me</email>
+      <url>http://gladwell.me</url>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git@github.com:rgladwell/m2e-android.git</connection>
+    <developerConnection>scm:git@github.com:rgladwell/m2e-android.git</developerConnection>
+    <url>https://github.com/rgladwell/m2e-android</url>
+  </scm>
+
+  <organization>
+    <name>Gladwell Consultants Ltd.</name>
+    <url>https://gladwell.me/</url>
+  </organization>
+
+  <ciManagement>
+    <url>http://ci.dahanne.net/job/m2e-android_master/</url>
+    <system>Jenkins</system>
+  </ciManagement>
+
+  <properties>
+    <tycho-version>0.20.0</tycho-version>
+    <target.platform>luna</target.platform>
+  </properties>
+
+  <modules>
+    <module>me.gladwell.eclipse.m2e.android</module>
+    <module>me.gladwell.eclipse.m2e.android.feature</module>
+    <module>me.gladwell.eclipse.m2e.android.test</module>
+    <module>me.gladwell.eclipse.m2e.android.update</module>
+    <module>indigo</module>
+    <module>kepler</module>
+    <module>juno</module>
+    <module>luna</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.sonatype</groupId>
+      <artifactId>org.sonatype.aether</artifactId>
+      <version>1.13.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <pomDependencies>consider</pomDependencies>
+          <target>
+            <artifact>
+              <groupId>me.gladwell.eclipse.m2e.android</groupId>
+              <artifactId>${target.platform}</artifactId>
+              <version>${project.version}</version>
+            </artifact>
+          </target>
+          <resolver>p2</resolver>
+          <pomDependencies>consider</pomDependencies>
+          <environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
@@ -119,45 +134,43 @@
           </execution>
         </executions>
       </plugin>
-		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.eclipse.tycho
-										</groupId>
-										<artifactId>
-											tycho-packaging-plugin
-										</artifactId>
-										<versionRange>
-											[0.13.0,)
-										</versionRange>
-										<goals>
-											<goal>validate-id</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-	<ciManagement>
-		<url>http://ci.dahanne.net/job/m2e-android_master/</url>
-		<system>Jenkins</system>
-	</ciManagement>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings 
+          only. It has no influence on the Maven build itself. -->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      org.eclipse.tycho
+                    </groupId>
+                    <artifactId>
+                      tycho-packaging-plugin
+                    </artifactId>
+                    <versionRange>
+                      [0.13.0,)
+                    </versionRange>
+                    <goals>
+                      <goal>validate-id</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
 </project>

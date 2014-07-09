@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>m2e-android</artifactId>
-		<groupId>me.gladwell.eclipse.m2e.android</groupId>
-		<version>1.0.2-SNAPSHOT</version>
-	</parent>
-	<artifactId>me.gladwell.eclipse.m2e.android.update</artifactId>
-	<name>Android for Maven Eclipse Repository</name>
-	<packaging>eclipse-repository</packaging>
-	<properties>
-    		<github.global.server>github</github.global.server>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>m2e-android</artifactId>
+    <groupId>me.gladwell.eclipse.m2e.android</groupId>
+    <version>1.0.2-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>me.gladwell.eclipse.m2e.android.update</artifactId>
+  <name>Android for Maven Eclipse Repository</name>
+  <packaging>eclipse-repository</packaging>
+
+  <properties>
+    <github.global.server>github</github.global.server>
 <!--
    We are using a github.global.server, to be able to authenticate against github during publishing of the site.
    That means, we have to configure in ~/.m2/settings.xml, the following info :
@@ -22,46 +25,49 @@
     <password>An OAuth token generated following the instructions at : http://developer.github.com/v3/oauth/</password>
   </server>
 -->
-    		<github-site-plugin-version>0.9</github-site-plugin-version>
-  	</properties>
-	<profiles>
-		<profile>
-			<id>release</id>
-			<activation>
-				<property>
-					<name>release</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.github.github</groupId>
-						<artifactId>site-maven-plugin</artifactId>
-						<version>${github-site-plugin-version}</version>
-						<configuration>
-							<message>Updating release update site for ${project.version}</message>
-							<outputDirectory>${project.build.directory}/repository</outputDirectory>
-							<path>updates/m2e-android</path>
-							<merge>true</merge>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>${github-site-plugin-version}</version>
-				<configuration>
-					<message>Updating master/snapshot update site for ${project.version}</message>
-					<outputDirectory>${project.build.directory}/repository</outputDirectory>
-					<path>updates/master/m2e-android</path>
-					<merge>true</merge>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <github-site-plugin-version>0.9</github-site-plugin-version>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <property>
+          <name>release</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.github</groupId>
+            <artifactId>site-maven-plugin</artifactId>
+            <version>${github-site-plugin-version}</version>
+            <configuration>
+              <message>Updating release update site for
+                ${project.version}</message>
+              <outputDirectory>${project.build.directory}/repository</outputDirectory>
+              <path>updates/m2e-android</path>
+              <merge>true</merge>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>${github-site-plugin-version}</version>
+        <configuration>
+          <message>Updating master/snapshot update site for ${project.version}</message>
+          <outputDirectory>${project.build.directory}/repository</outputDirectory>
+          <path>updates/master/m2e-android</path>
+          <merge>true</merge>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

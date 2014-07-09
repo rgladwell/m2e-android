@@ -1,91 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<artifactId>m2e-android</artifactId>
-		<groupId>me.gladwell.eclipse.m2e.android</groupId>
-		<version>1.0.2-SNAPSHOT</version>
-	</parent>
-	<name>Android for Maven Eclipse Test Suite</name>
-	<artifactId>me.gladwell.eclipse.m2e.android.test</artifactId>
-	<packaging>eclipse-test-plugin</packaging>
-	<properties>
-		<vmargs>-XX:MaxPermSize=1024m -Xmx1024m</vmargs>
-	</properties>
-	<profiles>
-		<profile>
-			<id>mac-customization</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<vmargs>-XX:MaxPermSize=1024m -Xmx1024m -XstartOnFirstThread</vmargs>
-			</properties>
-		</profile>
-	</profiles>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<argLine>${vmargs} -Declipse.pluginCustomization=${project.build.directory}/plugin_customisation.ini</argLine>
-					<useUIHarness>true</useUIHarness>
-					<dependencies>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>com.android.ide.eclipse.adt</artifactId>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>com.android.ide.eclipse.ddms</artifactId>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>com.android.ide.eclipse.hierarchyviewer</artifactId>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>com.android.ide.eclipse.traceview</artifactId>
-						</dependency>
-					</dependencies>
-				</configuration>
-			</plugin>
-       <plugin>
-            <groupId>com.google.code.maven-replacer-plugin</groupId>
-            <artifactId>replacer</artifactId>
-            <version>1.5.2</version>
-            <executions>
-                <execution>
-                    <phase>prepare-package</phase>
-                    <goals>
-                        <goal>replace</goal>
-                    </goals>                    
-                </execution>
-            </executions>
-            <configuration>
-                <file>me.gladwell.eclipse.m2e.android.test/plugin_customisation.ini</file>
-                <outputFile>
-                    me.gladwell.eclipse.m2e.android.test/target/plugin_customisation.ini
-                </outputFile>
-                <regex>false</regex>
-                <replacements>
-                    <replacement>
-                        <token>$ANDROID_HOME$</token>
-                        <value>${env.ANDROID_HOME}</value>
-                    </replacement>
-                    <replacement>
-                        <token>\</token>
-                        <value>\\</value>
-                    </replacement>
-                </replacements>
-            </configuration>
-        </plugin>
-		</plugins>
-	</build>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>m2e-android</artifactId>
+    <groupId>me.gladwell.eclipse.m2e.android</groupId>
+    <version>1.0.2-SNAPSHOT</version>
+  </parent>
+
+  <name>Android for Maven Eclipse Test Suite</name>
+  <artifactId>me.gladwell.eclipse.m2e.android.test</artifactId>
+  <packaging>eclipse-test-plugin</packaging>
+
+  <properties>
+    <vmargs>-XX:MaxPermSize=1024m -Xmx1024m</vmargs>
+  </properties>
+
+  <profiles>
+    <profile>
+      <id>mac-customization</id>
+      <activation>
+        <os>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <vmargs>-XX:MaxPermSize=1024m -Xmx1024m -XstartOnFirstThread</vmargs>
+      </properties>
+    </profile>
+  </profiles>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-surefire-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <argLine>${vmargs}
+            -Declipse.pluginCustomization=${project.build.directory}/plugin_customisation.ini</argLine>
+          <useUIHarness>true</useUIHarness>
+          <dependencies>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>com.android.ide.eclipse.adt</artifactId>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>com.android.ide.eclipse.ddms</artifactId>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>com.android.ide.eclipse.hierarchyviewer</artifactId>
+            </dependency>
+            <dependency>
+              <type>p2-installable-unit</type>
+              <artifactId>com.android.ide.eclipse.traceview</artifactId>
+            </dependency>
+          </dependencies>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.google.code.maven-replacer-plugin</groupId>
+        <artifactId>replacer</artifactId>
+        <version>1.5.2</version>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>replace</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <file>me.gladwell.eclipse.m2e.android.test/plugin_customisation.ini</file>
+          <outputFile>
+            me.gladwell.eclipse.m2e.android.test/target/plugin_customisation.ini
+          </outputFile>
+          <regex>false</regex>
+          <replacements>
+            <replacement>
+              <token>$ANDROID_HOME$</token>
+              <value>${env.ANDROID_HOME}</value>
+            </replacement>
+            <replacement>
+              <token>\</token>
+              <value>\\</value>
+            </replacement>
+          </replacements>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
