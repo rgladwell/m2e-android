@@ -11,3 +11,4 @@ pom.xml.*
 
 #Other
 .vagrant
+.checkstyle
