@@ -1,38 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
-
 <target name="eclipse 3.7.0" sequenceNumber="13">
-<locations>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.2.1259578"/>
-<unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.2.1259578"/>
-<unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.2.1259578"/>
-<unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.2.1259578"/>
-<repository location="https://dl-ssl.google.com/android/eclipse/"/>
-</location>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
-<repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
-</location>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.m2e.feature.feature.group" version="1.4.0.20130601-0317"/>
-<repository location="http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317"/>
-</location>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.4.0.20130601-0317"/>
-<repository location="http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317"/>
-</location>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.aether.feature.feature.group" version="1.0.0.v20140518"/>
-<repository location="http://download.eclipse.org/aether/aether-core/releases/"/>
-</location>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<repository location="http://download.eclipse.org/releases/indigo/"/>
-</location>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.slf4j.api" version="1.6.4.v20120130-2120"/>
-<repository location="http://download.eclipse.org/releases/juno/"/>
-</location>
-</locations>
-<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+   <locations>
+      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.2.1259578"/>
+         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.2.1259578"/>
+         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.2.1259578"/>
+         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.2.1259578"/>
+         <repository location="https://dl-ssl.google.com/android/eclipse/"/>
+      </location>
+      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <unit id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
+         <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
+      </location>
+      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <unit id="org.eclipse.m2e.feature.feature.group" version="1.4.0.20130601-0317"/>
+         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.4.0.20130601-0317"/>
+         <repository location="http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317"/>
+      </location>
+      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <unit id="org.eclipse.aether.feature.feature.group" version="1.0.0.v20140518"/>
+         <repository location="http://download.eclipse.org/aether/aether-core/releases/"/>
+      </location>
+      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <repository location="http://download.eclipse.org/releases/indigo/"/>
+      </location>
+      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <unit id="org.slf4j.api" version="1.6.4.v20120130-2120"/>
+         <repository location="http://download.eclipse.org/releases/juno/"/>
+      </location>
+   </locations>
+   <targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 </target>
