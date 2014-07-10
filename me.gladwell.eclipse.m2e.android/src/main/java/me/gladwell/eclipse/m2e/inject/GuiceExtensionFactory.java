@@ -34,7 +34,7 @@ public class GuiceExtensionFactory implements IExecutableExtension, IExecutableE
 
     public Object create() throws CoreException {
         if (null == typeName) {
-            new CoreException(new Status(IStatus.ERROR, contributor.getName(),
+            throw new CoreException(new Status(IStatus.ERROR, contributor.getName(),
                     "Configuration is missing class information"));
         }
 
@@ -42,9 +42,9 @@ public class GuiceExtensionFactory implements IExecutableExtension, IExecutableE
         try {
             type = resolve(contributor).loadClass(typeName);
         } catch (final InvalidRegistryObjectException e) {
-            new CoreException(new Status(IStatus.ERROR, contributor.getName(), "", e));
+            throw new CoreException(new Status(IStatus.ERROR, contributor.getName(), "", e));
         } catch (final ClassNotFoundException e) {
-            new CoreException(new Status(IStatus.ERROR, contributor.getName(), "", e));
+            throw new CoreException(new Status(IStatus.ERROR, contributor.getName(), "", e));
         }
 
         final Object instance = AndroidMavenPlugin.getDefault().getInjector().getInstance(type);
