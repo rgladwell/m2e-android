@@ -21,10 +21,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
-import com.google.common.base.Function;
-
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Lists.transform;
 import static me.gladwell.eclipse.m2e.android.configuration.classpath.Paths.dependencyToPathFunction;
 import static me.gladwell.eclipse.m2e.android.configuration.classpath.Paths.eclipseProjectToPathFunction;
 

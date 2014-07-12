@@ -1,6 +1,5 @@
 package me.gladwell.eclipse.m2e.android.resolve.sonatype;
 
-import org.apache.maven.cli.transfer.ConsoleMavenTransferListener;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.sonatype.aether.repository.LocalRepository;
