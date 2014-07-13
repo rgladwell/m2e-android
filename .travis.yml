@@ -1,12 +1,16 @@
 language: java
+
 env:
   matrix:
     - TARGET_PLATFORM=indigo
     - TARGET_PLATFORM=juno
     - TARGET_PLATFORM=kepler
     - TARGET_PLATFORM=luna
+
 before_install:
   - mvn --file org.sonatype.aether/pom.xml install
+
+  # install latest android sdk updates and dependencies
   - wget http://dl.google.com/android/android-sdk_r23.0.1-linux.tgz
   - tar -zxf android-sdk_r23.0.1-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
@@ -14,12 +18,18 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null
   - echo yes |android update sdk --filter platform-tools,build-tools-20.0.0,android-18,addon-google_apis-google-18,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force > /dev/null
+
+  # install android sdk dependencies in local repo
   - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
   - cd maven-android-sdk-deployer
   - mvn install -P 4.3
   - cd ..
+
+  # start windowing session
   - sh -e /etc/init.d/xvfb start
+
 before_script:
   - export DISPLAY=:99.0
   - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
+
 script: mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
