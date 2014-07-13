@@ -15,16 +15,6 @@
   <packaging>eclipse-repository</packaging>
 
   <properties>
-    <github.global.server>github</github.global.server>
-<!--
-   We are using a github.global.server, to be able to authenticate against github during publishing of the site.
-   That means, we have to configure in ~/.m2/settings.xml, the following info :
-   <server>
-    <id>github</id>
-    <username></username>
-    <password>An OAuth token generated following the instructions at : http://developer.github.com/v3/oauth/</password>
-  </server>
--->
     <github-site-plugin-version>0.9</github-site-plugin-version>
   </properties>
 
