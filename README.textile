@@ -7,6 +7,10 @@ For instructions on how to get started using the m2e-android please see the "pro
 _Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
 *License:* "Eclipse Public License 1.0":http://www.eclipse.org/legal
 
+Special thanks to those who crowdfunded project development through "Patreon":http://www.patreon.com/rgladwell:
+
+"Raphael Ackermann":https://twitter.com/acraphae
+
 h2. Hacking
 
 This section details how to set-up your environment to make code changes to the *m2e-android* code base.
@@ -48,28 +52,5 @@ h3. Further reading
 For more information on developing the m2e-android plug-in please see the following:
 
 * "Contributing":https://github.com/rgladwell/m2e-android/blob/master/CONTRIBUTING.md
-
-h3. Patrons
-
-Special thanks to those who crowdfunded project development through "Patreon":http://www.patreon.com/rgladwell:
-
-"Raphael Ackermann":https://twitter.com/acraphae
-
-h3. Travis
-
-The m2e-android project uses "Travis":http://travis-ci.org/ to continuously
-integrate its code. To help diagnose issues with Travis, we have added a
-"Vagrant":http://www.vagrantup.com/ image and provisioning script that
-simulates a Travis CI build.
-
-To use this please follow these steps:
-
-# Install "Vagrant":http://www.vagrantup.com/downloads.html.
-# Execute @vagrant up@.
-
-You can then get screenshots by logging into a stalling insatnce as follows:
-
-@$ vagrant ssh@
-@$ sudo apt-get install imagemagick@
-@$ cd /vagrant@
-@$ import -display :99 -window root screenshot.png@
+* "Deployment":https://github.com/rgladwell/m2e-android/wiki/Deploying
+* "Travis":https://github.com/rgladwell/m2e-android/wiki/Travis
