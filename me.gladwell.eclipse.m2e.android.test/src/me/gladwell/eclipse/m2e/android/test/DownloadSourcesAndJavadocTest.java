@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Ricardo Gladwell, Csaba Kozák
+ * Copyright (c) 2014, 2015 Ricardo Gladwell, Csaba Kozak
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,18 +8,18 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES;
+import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
+import static org.junit.Assert.assertThat;
+
 import java.util.Arrays;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-import me.gladwell.eclipse.m2e.android.NonRuntimeDependenciesContainerInitializer;
-
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jdt.core.ClasspathContainerInitializer;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -29,6 +29,9 @@ import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.internal.preferences.MavenConfigurationImpl;
 import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 
 import com.google.common.base.Function;
@@ -38,116 +41,105 @@ import com.google.common.collect.Lists;
 @SuppressWarnings("restriction")
 public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
-    private static final String DEPENDECY_JAR = "mockito-core-1.9.5.jar";
+    private static final IPath CUSTOM_PATH = new Path("/custom-path");
+    private static final String DEPENDENCY_JAR = "mockito-core-1.9.5.jar";
     private static final String PROJECT_NAME = "android-application";
-    private static final int MAXIMUM_WAIT_SECONDS = 100;
+
+    private MavenConfigurationImpl mavenConfiguration;
     private IProject project;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        MavenConfigurationImpl mavenConfiguration = (MavenConfigurationImpl) MavenPlugin.getMavenConfiguration();
+        mavenConfiguration = (MavenConfigurationImpl) MavenPlugin.getMavenConfiguration();
         mavenConfiguration.setDownloadSources(true);
 
         project = importAndroidProject(PROJECT_NAME);
+        waitForJobsToComplete(monitor);
+    }
 
-        waitForDownloadSourcesJobToComplete();
+    @Override
+    protected void tearDown() throws Exception {
+        mavenConfiguration.setDownloadSources(false);
+        super.tearDown();
     }
 
     @Test
     public void testSourcesAttached() throws JavaModelException {
         IJavaProject javaProject = JavaCore.create(project);
-
-        IClasspathEntry entry = getClasspathEntry(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
-                DEPENDECY_JAR);
-        String entryPath = entry.getPath().toPortableString();
-        String sourcePath = entryPath.replace(DEPENDECY_JAR, "mockito-core-1.9.5-sources.jar");
-        assertEquals(sourcePath, entry.getSourceAttachmentPath().toPortableString());
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+        assertNotNull(entry.getSourceAttachmentPath());
     }
 
     @Test
-    public void testCustomSourcesAttached() throws CoreException, InterruptedException {
+    public void testCustomSourcesAttached() throws Exception {
         IJavaProject javaProject = JavaCore.create(project);
 
         setCustomSourceAttachment(javaProject);
 
-        IClasspathEntry entry = getClasspathEntry(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
-                DEPENDECY_JAR);
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
 
-        assertEquals(entry.getPath().toPortableString(), entry.getSourceAttachmentPath().toPortableString());
+        assertEquals(CUSTOM_PATH, entry.getSourceAttachmentPath());
     }
 
-    public void testUpdatingMavenProjectWithEntryWithCustomSourceAttachmentNotOverrideAttachment()
-            throws JavaModelException, CoreException, InterruptedException {
+    public void testUpdatingMavenProjectWithEntryWithCustomSourceAttachmentNotOverrideAttachment() throws Exception {
         IJavaProject javaProject = JavaCore.create(project);
 
         setCustomSourceAttachment(javaProject);
         updateMavenProject(project);
 
-        waitForDownloadSourcesJobToComplete();
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
 
-        IClasspathEntry entry = getClasspathEntry(javaProject, AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES,
-                DEPENDECY_JAR);
-
-        assertEquals(entry.getPath().toPortableString(), entry.getSourceAttachmentPath().toPortableString());
+        assertEquals(CUSTOM_PATH, entry.getSourceAttachmentPath());
     }
 
-    private void setCustomSourceAttachment(IJavaProject javaProject) throws JavaModelException, CoreException,
-            InterruptedException {
-        IClasspathContainer classpathContainer = JavaCore.getClasspathContainer(new Path(
-                AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES), javaProject);
-
-        ClasspathContainerInitializer initializer = JavaCore
-                .getClasspathContainerInitializer(AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES);
-        FakeContainer fakeContainer = new FakeContainer(classpathContainer);
-
-        initializer.requestClasspathContainerUpdate(classpathContainer.getPath(), javaProject, fakeContainer);
-
-        waitForClasspathPersisterJobToComplete();
-
-        fakeContainer.setShouldFakeEntries(false);
+    public void testDocumentationAttached() throws Exception {
+        IJavaProject javaProject = JavaCore.create(project);
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+        assertThat(entry, hasExtraAttribute(IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME));
     }
 
-    private void waitForDownloadSourcesJobToComplete() {
-        JobHelpers.waitForJobs(new IJobMatcher() {
+    private Matcher<IClasspathEntry> hasExtraAttribute(final String expected) {
+        return new BaseMatcher<IClasspathEntry>() {
 
             @Override
-            public boolean matches(Job job) {
-                return job.getName().contains("Downloading sources and JavaDoc");
+            public boolean matches(Object target) {
+                IClasspathEntry entry = (IClasspathEntry) target;
+                for(IClasspathAttribute attribute : entry.getExtraAttributes()) {
+                    if(attribute.getName().equals(expected)) return true;
+                }
+                return false;
             }
-        }, MAXIMUM_WAIT_SECONDS * 1000);
-    }
-
-    private void waitForClasspathPersisterJobToComplete() {
-        JobHelpers.waitForJobs(new IJobMatcher() {
 
             @Override
-            public boolean matches(Job job) {
-                return job.getName().contains(NonRuntimeDependenciesContainerInitializer.PERSIST_JOB_NAME);
+            public void describeTo(Description d) {
+                d.appendText("entry with expected attribute '");
+                d.appendText(expected);
+                d.appendText("'");
             }
-        }, MAXIMUM_WAIT_SECONDS * 1000);
+            
+        };
     }
-    
+
+    private void setCustomSourceAttachment(IJavaProject javaProject) throws Exception {
+        IClasspathContainer container = JavaCore.getClasspathContainer(new Path(CONTAINER_NONRUNTIME_DEPENDENCIES), javaProject);
+        setClasspathContainer(new Path(CONTAINER_NONRUNTIME_DEPENDENCIES), new IJavaProject[] { javaProject },
+                new IClasspathContainer[] { new FakeContainer(container, CUSTOM_PATH) }, monitor);
+    }
+
     private class FakeContainer implements IClasspathContainer {
 
         private IClasspathContainer realContainer;
+        private IPath path;
 
-        private boolean shouldFakeEntries = true;
-
-        public FakeContainer(IClasspathContainer realContainer) {
+        public FakeContainer(IClasspathContainer realContainer, IPath path) {
             this.realContainer = realContainer;
-        }
-
-        public void setShouldFakeEntries(boolean shouldFakeEntries) {
-            this.shouldFakeEntries = shouldFakeEntries;
+            this.path = path;
         }
 
         @Override
         public IClasspathEntry[] getClasspathEntries() {
-            if (!shouldFakeEntries) {
-                return realContainer.getClasspathEntries();
-            }
 
             List<IClasspathEntry> entries = Arrays.asList(realContainer.getClasspathEntries());
 
@@ -156,8 +148,8 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
                         @Override
                         public IClasspathEntry apply(IClasspathEntry entry) {
-                            if (entry.getPath().toPortableString().contains(DEPENDECY_JAR)) {
-                                return JavaCore.newLibraryEntry(entry.getPath(), entry.getPath(), null,
+                            if (entry.getPath().toPortableString().contains(DEPENDENCY_JAR)) {
+                                return JavaCore.newLibraryEntry(entry.getPath(), path, null,
                                         entry.getAccessRules(), entry.getExtraAttributes(), entry.isExported());
                             }
                             return entry;
