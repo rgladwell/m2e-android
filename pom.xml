@@ -41,8 +41,8 @@
   </organization>
 
   <ciManagement>
-    <url>http://ci.dahanne.net/job/m2e-android_master/</url>
-    <system>Jenkins</system>
+    <url>https://travis-ci.org/rgladwell/m2e-android</url>
+    <system>Travis</system>
   </ciManagement>
 
   <properties>
