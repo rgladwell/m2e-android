@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013 Ricardo Gladwell
+ * Copyright (c) 2013, 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@ package me.gladwell.eclipse.m2e.android.configuration;
 
 import static com.google.common.base.Predicates.and;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
@@ -57,6 +58,14 @@ public class Classpaths {
         };
     }
 
+    private static Predicate<IClasspathEntry> entryForPath(final IPath path) {
+        return new Predicate<IClasspathEntry>() {
+            public boolean apply(IClasspathEntry entry) {
+                return entry.getPath().equals(path);
+            }
+        };
+    }
+
     private static IClasspathEntry matchEntry(IClasspathEntry[] classpath, Predicate<IClasspathEntry> predicate) {
         for (IClasspathEntry entry : classpath) {
             if (predicate.apply(entry)) {
@@ -73,6 +82,10 @@ public class Classpaths {
             }
         }
         return null;
+    }
+
+    public static IClasspathEntry findEntryMatching(IClasspathEntry[] classpath, IPath path) {
+        return matchEntry(classpath, entryForPath(path));
     }
 
 }

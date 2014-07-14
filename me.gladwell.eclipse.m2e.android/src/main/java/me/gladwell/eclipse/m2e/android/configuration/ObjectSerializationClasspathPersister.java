@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2014 Ricardo Gladwell, Csaba Kozák
+ * Copyright (c) 2013, 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,8 @@
  *******************************************************************************/
 
 package me.gladwell.eclipse.m2e.android.configuration;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,9 +22,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.configuration.classpath.BuildPathManager;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IAccessRule;
@@ -160,17 +162,17 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
         }
     }
 
-    private BuildPathManager buildPathManager;
+    private final File stateLocation;
 
     @Inject
-    public ObjectSerializationClasspathPersister(BuildPathManager buildPathManager) {
-        this.buildPathManager = buildPathManager;
+    public ObjectSerializationClasspathPersister(File stateLocation) {
+        this.stateLocation = stateLocation;
     }
 
-    public void save(IProject project, List<IClasspathEntry> classpath) {
+    public void save(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, Iterable<IClasspathEntry> classpath) {
         ObjectOutputStream os = null;
         try {
-            File file = buildPathManager.getContainerStateFile(project);
+            File file = new File(stateLocation, eclipseProject.getProject().getName());
             os = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file))) {
                 {
                     enableReplaceObject(true);
@@ -194,7 +196,7 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
                     return super.replaceObject(o);
                 }
             };
-            os.writeObject(classpath);
+            os.writeObject(newArrayList(classpath));
             os.flush();
         } catch (IOException e) {
             throw new ProjectConfigurationException(e);
@@ -213,7 +215,7 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
         List<IClasspathEntry> classpath = null;
         ObjectInputStream is = null;
         try {
-            File file = buildPathManager.getContainerStateFile(project.getProject());
+            File file = new File(stateLocation, project.getProject().getName());
             if (!file.exists()) {
                 throw new FileNotFoundException(file.getAbsolutePath());
             }
@@ -257,3 +259,4 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
     }
 
 }
+

@@ -8,8 +8,6 @@
 
 package me.gladwell.eclipse.m2e.android;
 
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
@@ -35,8 +33,6 @@ public class AndroidMavenPlugin extends Plugin {
     private @Inject ILaunchConfigurationListener launchConfigurationListener;
     private @Inject IMavenProjectRegistry projectManager;
     private @Inject IMavenProjectChangedListener mavenProjectChangedListener;
-    private @Inject IWorkspace workspace;
-    private @Inject IResourceChangeListener resourceChangedListener;
 
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -47,7 +43,6 @@ public class AndroidMavenPlugin extends Plugin {
         getInjector().injectMembers(this);
         launchManager.addLaunchConfigurationListener(launchConfigurationListener);
         projectManager.addMavenProjectChangedListener(mavenProjectChangedListener);
-        workspace.addResourceChangeListener(resourceChangedListener);
     }
 
     /**
@@ -56,7 +51,6 @@ public class AndroidMavenPlugin extends Plugin {
     public void stop(BundleContext context) throws Exception {
         launchManager.removeLaunchConfigurationListener(launchConfigurationListener);
         projectManager.removeMavenProjectChangedListener(mavenProjectChangedListener);
-        workspace.removeResourceChangeListener(resourceChangedListener);
         plugin = null;
         super.stop(context);
     }

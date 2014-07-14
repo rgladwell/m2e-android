@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
-import me.gladwell.eclipse.m2e.android.configuration.PrunePlatformProvidedDependencies;
+import me.gladwell.eclipse.m2e.android.configuration.SourceAttacher;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
@@ -23,7 +23,7 @@ public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfi
     final private ClasspathLoader loader;
 
     @Inject
-    public AddNonRuntimeClasspathContainerConfigurer(@PrunePlatformProvidedDependencies ClasspathLoader loader) {
+    public AddNonRuntimeClasspathContainerConfigurer(@SourceAttacher ClasspathLoader loader) {
         super();
         this.loader = loader;
     }

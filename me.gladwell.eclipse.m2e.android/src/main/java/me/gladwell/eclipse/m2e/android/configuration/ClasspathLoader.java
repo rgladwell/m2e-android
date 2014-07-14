@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 
+//TODO move this classpath persistance code to .classpath package
 public interface ClasspathLoader {
 
     Iterable<IClasspathEntry> load(IJavaProject project) throws FileNotFoundException;

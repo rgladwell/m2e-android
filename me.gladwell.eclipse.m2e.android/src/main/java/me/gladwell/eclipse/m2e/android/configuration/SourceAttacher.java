@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013,2014 Ricardo Gladwell, Csaba Kozák
+ * Copyright (c) 2014 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,14 +8,14 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
-import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import org.eclipse.jdt.core.IClasspathEntry;
+import java.lang.annotation.Retention;
 
-// TODO move this classpath persistance code to .classpath package
-public interface ClasspathPersister {
+import com.google.inject.BindingAnnotation;
 
-    void save(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, Iterable<IClasspathEntry> classpath);
+@Retention(RUNTIME)
+@BindingAnnotation
+public @interface SourceAttacher {
 
 }
