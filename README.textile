@@ -4,6 +4,11 @@ Android for Maven Eclipse (*m2e-android*) is a "Maven Eclipse":http://www.eclips
 
 For instructions on how to get started using the m2e-android please see the "project web site.":http://rgladwell.github.com/m2e-android/
 
+To build execute the following commands from within the project folder:
+
+@mvn --file org.sonatype.aether/pom.xml install@
+@mvn install@
+
 _Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefson and Anthony Dannane_
 *License:* "Eclipse Public License 1.0":http://www.eclipse.org/legal
 
@@ -11,9 +16,9 @@ Special thanks to those who crowdfunded project development through "Patreon":ht
 
 "Raphael Ackermann":https://twitter.com/acraphae
 
-h2. Hacking
+h2. Eclipse Set-up
 
-This section details how to set-up your environment to make code changes to the *m2e-android* code base.
+This section details how to set-up your Eclipse development environment to make code changes to the *m2e-android* code base:
 
 h3. 1. Getting Started
 
@@ -47,7 +52,7 @@ To clone them into your Eclipse workspace follow these steps:
 # Select _Git_ and click _Next_.
 # Check the _Use or create Repository in parent folder of project_ and click _Finish_.
 
-h3. Further reading
+h2. Further reading
 
 For more information on developing the m2e-android plug-in please see the following:
 
