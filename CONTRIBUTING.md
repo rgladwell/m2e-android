@@ -31,7 +31,7 @@ To run the tests in Maven execute the following from within the cloned project
 folder:
 
 ```
-$ mvn verify
+$ mvn -Dtycho.showEclipseLog=true verify 
 ```
 
 You can also run the tests inside Eclipse using the PDE JUnit launcher
