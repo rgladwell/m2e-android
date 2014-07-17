@@ -6,30 +6,35 @@ Android for Maven Eclipse (**m2e-android**) is a [Maven Eclipse](http://www.ecli
 
 For instructions on how to get started using the m2e-android please see the [project web site.](http://rgladwell.github.com/m2e-android/)
 
+Special thanks to our patrons who crowdfunded project development through [Patreon](http://www.patreon.com/rgladwell):
+
+ * [Raphael Ackermann](https://twitter.com/acraphae)
+
+#Building
+
+Before you start you need to:
+
+ * Install the [Android SDK](http://developer.android.com/sdk/index.html).
+ * Create `ANDROID_HOME` environment variable containing the Android SDK install path. 
+ * Ensure you have the latest update on the Android SDK (execute `android update sdk --no-ui --obsolete --force`) 
+ * Install [Maven 3](http://maven.apache.org/download.html) for command line [Tycho](http://tycho.sonatype.org/) support.
+ * Install the [Maven Android SDK Deployer](https://github.com/mosabua/maven-android-sdk-deployer)
+
 To build execute the following commands from within the project folder:
 
 ```
 $ mvn --file org.sonatype.aether/pom.xml install
 $ mvn install
 ```
-
-Special thanks to our patrons who crowdfunded project development through [Patreon](http://www.patreon.com/rgladwell):
-
- * [Raphael Ackermann](https://twitter.com/acraphae)
  
-##Eclipse Set-up
+###Eclipse Set-up
 
 This section details how to set-up your Eclipse development environment to make code changes to the **m2e-android** code base:
 
  * Install [Eclipse Luna](http://eclipse.org/downloads).
- * Install the [Android SDK](http://developer.android.com/sdk/index.html)
- * Create `ANDROID_HOME` environment variable containing the Android SDK install path. 
- * Ensure you have the latest update on the Android SDK (execute `android update sdk --no-ui --obsolete --force`) 
- * Install the [Maven Android SDK Deployer](https://github.com/mosabua/maven-android-sdk-deployer)
  * Install latest [Android Development Tools.](http://developer.android.com/sdk/eclipse-adt.html)
  * Install [Eclipse Plug-in Development Environment.](http://www.eclipse.org/pde/)
  * Install [M2E Plugin.](http://www.eclipse.org/m2e/download)
- * Install [Maven 3](http://maven.apache.org/download.html) for command line [Tycho](http://tycho.sonatype.org/) support.
  * In Eclipse select _Help -> Install new software..._ and go to the m2eclipse update site.
  * Un-check the _Group items by category_ check box.
  * You should now see the "m2e - Extensions Development Support (Optional)" plugin.
