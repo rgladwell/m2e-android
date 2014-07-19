@@ -32,7 +32,7 @@ $ mvn install
 This section details how to set-up your Eclipse development environment to make code changes to the **m2e-android** code base:
 
  * Install [Eclipse Luna](http://eclipse.org/downloads).
- * Install latest [Android Development Tools.](http://developer.android.com/sdk/eclipse-adt.html)
+ * Install latest [Android Development Tools.](http://developer.android.com/sdk/installing/installing-adt.html)
  * Install [Eclipse Plug-in Development Environment.](http://www.eclipse.org/pde/)
  * Install [M2E Plugin.](http://www.eclipse.org/m2e/download)
  * In Eclipse select _Help -> Install new software..._ and go to the m2eclipse update site.
