@@ -23,6 +23,8 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
@@ -162,7 +164,9 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     }
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
-        project.build(kind, monitor);
+        ResourcesPlugin.getWorkspace().build(project.getBuildConfigs(), kind, true, monitor);
+        project.build(kind, "org.eclipse.jdt.core.javabuilder", null, monitor);
+    
         waitForJobsToComplete();
     }
 

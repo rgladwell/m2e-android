@@ -197,6 +197,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
     public void testTestRunner() throws Exception {
         // given
+        buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+        
         TestTestRunListener testListener = new TestTestRunListener();
         JUnitCore.addTestRunListener(testListener);
         ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
