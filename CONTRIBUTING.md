@@ -83,6 +83,6 @@ files, screenshots and other relevant information.
 
 ###...Unique
 
-Please search for duplicates before reporting a bug and ensure summaries are
-include relevant keywords to make it easier for other users to find duplicates.
+Please search for duplicates before reporting a bug and ensure summaries
+include relevant keywords to make it easier for others to find duplicates.
 
