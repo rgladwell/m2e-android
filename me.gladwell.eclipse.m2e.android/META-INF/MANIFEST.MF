@@ -21,5 +21,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.junit.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
-Export-Package: me.gladwell.eclipse.m2e.android,me.gladwell.eclipse.m2
- e.android.configuration
+Export-Package: me.gladwell.eclipse.m2e.android,
+ me.gladwell.eclipse.m2e.android.configuration,
+ me.gladwell.eclipse.m2e.android.configuration.classpath

@@ -281,4 +281,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         IClasspathEntry gen = findSourceEntry(javaProject.getRawClasspath(), "gen");
         assertFalse("external assets folder isn't linked", booleanAttribute(IGNORE_OPTIONAL_PROBLEMS, gen));
     }
+    
+    public void testSourceFolderOrder() throws Exception {
+    	IClasspathEntry[] entries = javaProject.getRawClasspath();
+    	assertTrue(entries[0].getPath().toString().contains("src/main/java"));
+       	assertTrue(entries[1].getPath().toString().contains("src/test/java"));
+    }
 }

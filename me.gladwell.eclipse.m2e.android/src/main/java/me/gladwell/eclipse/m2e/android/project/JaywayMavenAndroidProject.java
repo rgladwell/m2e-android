@@ -1,9 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell and David Carver
+ * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell and others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * 2014-09-10 - David Carver - added helper methods to get test/source/resources
  *******************************************************************************/
 
 package me.gladwell.eclipse.m2e.android.project;
@@ -17,6 +19,7 @@ import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.Resource;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -144,6 +147,18 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
     public List<String> getSourcePaths() {
         return mavenProject.getCompileSourceRoots();
+    }
+    
+    public List<String> getTestSourcePaths() {
+    	return mavenProject.getTestCompileSourceRoots();
+    }
+    
+    public List<Resource> getResources() {
+    	return mavenProject.getResources();
+    }
+    
+    public List<Resource> getTestResources() {
+    	return mavenProject.getTestResources();
     }
 
 }
