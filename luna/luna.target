@@ -3,10 +3,10 @@
 <target name="Eclipse 4.4.x (Luna)" sequenceNumber="43">
    <locations>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.2.1259578"/>
-         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.2.1259578"/>
-         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.2.1259578"/>
-         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.2.1259578"/>
+         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.3.1327240"/>
+         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.3.1327240"/>
+         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.3.1327240"/>
+         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.3.1327240"/>
          <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
