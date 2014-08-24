@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/me.gladwell.eclipse.m2e.android.feature_1.0.2.qualifier.jar" id="me.gladwell.eclipse.m2e.android.feature" version="1.0.2.qualifier">
+   <feature url="features/me.gladwell.eclipse.m2e.android.feature_1.1.0.jar" id="me.gladwell.eclipse.m2e.android.feature" version="1.1.0">
       <category name="me.gladwell.eclipse.m2e.android.category"/>
    </feature>
    <bundle id="org.sonatype.aether" version="1.13.1"/>
