@@ -2,7 +2,6 @@ package me.gladwell.eclipse.m2e.android.resolve.eclipse;
 
 import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
-import org.apache.maven.cli.transfer.ConsoleMavenTransferListener;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.eclipse.aether.DefaultRepositorySystemSession;
@@ -37,7 +36,6 @@ public class EclipseAetherModule extends AbstractModule {
     RepositorySystemSession provideRepositorySystemSession(RepositorySystem system, LocalRepository localRepo) {
         final DefaultRepositorySystemSession session = new DefaultRepositorySystemSession();
         session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
-        session.setTransferListener(new ConsoleMavenTransferListener(System.out));
         return session;
     }
 
