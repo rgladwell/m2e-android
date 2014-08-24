@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Android for Maven Eclipse Test Suite
 Bundle-SymbolicName: me.gladwell.eclipse.m2e.android.test;singleton:=true
-Bundle-Version: 1.1.0
+Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: me.gladwell.eclipse.m2e.android.test.Activator
 Bundle-Vendor: Google Code
 Require-Bundle: org.eclipse.ui,

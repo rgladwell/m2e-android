@@ -2,7 +2,7 @@
 <feature
       id="me.gladwell.eclipse.m2e.android.feature"
       label="Android for Maven Eclipse"
-      version="1.1.0"
+      version="1.1.1.qualifier"
       provider-name="Gladwell.me">
 
    <description url="http://rgladwell.github.com/m2e-android/">
@@ -263,7 +263,7 @@ to a jury trial in any resulting litigation.
          id="me.gladwell.eclipse.m2e.android"
          download-size="0"
          install-size="0"
-         version="1.1.0"
+         version="1.1.1.qualifier"
          unpack="false"/>
 
    <plugin
