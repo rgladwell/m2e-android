@@ -7,7 +7,6 @@
   </properties>
   <children size='3'>
     <child location='m2e-android'/>
-    <child location='http://download.eclipse.org/technology/m2e/releases'/>
     <child location='https://dl-ssl.google.com/android/eclipse/'/>
   </children>
 </repository>
