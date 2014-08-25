@@ -125,14 +125,14 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     }
 
     // TODO quarantined intermittently failing integration test
-    public void ignoreTestBuildDirectoryContainsCompiledClasses() throws Exception {
+    public void testBuildDirectoryContainsCompiledClasses() throws Exception {
         File outputLocation = new File(ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString(),
                 javaProject.getPath().toOSString());
-        File apiDemosApplication = new File(outputLocation, "bin/classes/your/company/HelloAndroidActivity.class");
+        File compiledClass = new File(outputLocation, "bin/classes/your/company/HelloAndroidActivity.class");
 
         buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
 
-        assertTrue(apiDemosApplication.exists());
+        assertTrue(compiledClass.exists());
     }
 
     public void testConfigureMarksMavenContainerExported() throws Exception {
