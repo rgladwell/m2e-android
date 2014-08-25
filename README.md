@@ -9,6 +9,7 @@ For instructions on how to get started using the m2e-android please see the [pro
 Special thanks to our patrons who crowdfunded project development through [Patreon](http://www.patreon.com/rgladwell):
 
  * [Raphael Ackermann](https://twitter.com/acraphae)
+ * George Baker.
 
 #Building
 
