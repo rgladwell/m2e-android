@@ -61,6 +61,13 @@
     <module>luna</module>
   </modules>
 
+  <repositories>
+    <repository>
+      <id>m2e-android-mvn-repo</id>
+        <url>https://raw.githubusercontent.com/rgladwell/m2e-android/gh-pages/maven-repository</url>
+    </repository>
+  </repositories>
+  
   <dependencies>
     <dependency>
       <groupId>org.sonatype</groupId>
