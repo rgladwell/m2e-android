@@ -1,5 +1,9 @@
 language: java
 
+branches:
+  except:
+    - gh-pages
+
 env:
   global:
     - secure: "GAkAOv0XSs3UqAdvAuxQrcE8caIA4yad5iBV0WvOxnXgNghScgAojrEwcaTBqvB8OWckuRfBe4kGZKuWIoQbeXqr/EqVAbcGgU4fXzNMXTdAFre7UCR+TNcwS8R4h5JmWj0rrn7eXGp+LCXN9EmLeqecp8ciPrFMqBk4d/0iXPw="
