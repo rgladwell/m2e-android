@@ -14,8 +14,6 @@ env:
     - TARGET_PLATFORM=luna
 
 before_install:
-  - mvn --file org.sonatype.aether/pom.xml install
-
   # install latest android sdk updates and dependencies
   - wget http://dl.google.com/android/android-sdk_r23.0.1-linux.tgz
   - tar -zxf android-sdk_r23.0.1-linux.tgz

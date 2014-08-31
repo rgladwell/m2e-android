@@ -21,10 +21,9 @@ Before you start you need to:
  * Install [Maven 3](http://maven.apache.org/download.html) for command line [Tycho](http://tycho.sonatype.org/) support.
  * Install the [Maven Android SDK Deployer](https://github.com/mosabua/maven-android-sdk-deployer)
 
-To build execute the following commands from within the project folder:
+To build execute the following command from within the project folder:
 
 ```
-$ mvn --file org.sonatype.aether/pom.xml install
 $ mvn install
 ```
  
