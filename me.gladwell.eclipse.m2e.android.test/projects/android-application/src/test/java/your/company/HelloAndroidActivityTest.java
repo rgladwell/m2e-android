@@ -8,7 +8,7 @@ public class HelloAndroidActivityTest {
 
     @Test
     public void test() {
-        assertTrue(true);
+        assertTrue(HelloAndroidActivity.isAndroidForMavenEclipseGreat());
     }
 
 }
