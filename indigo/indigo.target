@@ -19,10 +19,6 @@
          <repository location="http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="org.eclipse.aether.feature.feature.group" version="1.0.0.v20140518"/>
-         <repository location="http://download.eclipse.org/aether/aether-core/releases/"/>
-      </location>
-      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
          <repository location="http://download.eclipse.org/releases/indigo/"/>
       </location>

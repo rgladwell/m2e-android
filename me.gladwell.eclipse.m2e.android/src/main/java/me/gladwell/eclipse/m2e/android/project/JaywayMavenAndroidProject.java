@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
-import me.gladwell.eclipse.m2e.android.resolve.Library;
 import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
 import org.apache.maven.artifact.Artifact;
@@ -80,10 +79,10 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         final Dependency android = getAndroidDependency();
         final List<String> platformProvidedDependencies = new ArrayList<String>();
 
-        final List<Library> libraries = dependencyResolver.resolveLibraries(android, "jar", mavenProject);
+        final List<String> libraries = dependencyResolver.resolveLibraries(android, "jar", mavenProject);
 
-        for (Library library : libraries) {
-            platformProvidedDependencies.add(library.getFile().getAbsolutePath());
+        for (String library : libraries) {
+            platformProvidedDependencies.add(library);
         }
 
         return platformProvidedDependencies;

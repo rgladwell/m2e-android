@@ -16,6 +16,6 @@ import org.apache.maven.project.MavenProject;
 
 public interface LibraryResolver {
 
-    List<Library> resolveLibraries(Dependency dependency, String type, MavenProject project);
+    List<String> resolveLibraries(Dependency dependency, String type, MavenProject project);
 
 }

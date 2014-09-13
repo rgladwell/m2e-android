@@ -3,6 +3,5 @@
    <feature url="features/me.gladwell.eclipse.m2e.android.feature_1.1.1.qualifier.jar" id="me.gladwell.eclipse.m2e.android.feature" version="1.1.1.qualifier">
       <category name="me.gladwell.eclipse.m2e.android.category"/>
    </feature>
-   <bundle id="org.sonatype.aether" version="1.13.1"/>
    <category-def name="me.gladwell.eclipse.m2e.android.category" label="Android for Maven Eclipse"/>
 </site>
