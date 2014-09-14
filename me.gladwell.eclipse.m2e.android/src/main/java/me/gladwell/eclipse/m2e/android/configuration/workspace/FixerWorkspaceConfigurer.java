@@ -13,7 +13,7 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class FixerWorkspaceConfigurer implements WorkspaceConfigurer {
 
-    public boolean isConfigured(EclipseAndroidProject project) {
+    public boolean isConfigured(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
         return false;
     }
 

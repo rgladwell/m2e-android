@@ -13,7 +13,7 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public interface WorkspaceConfigurer {
 
-    boolean isConfigured(EclipseAndroidProject project);
+    boolean isConfigured(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject);
 
     boolean isValid(MavenAndroidProject project);
 

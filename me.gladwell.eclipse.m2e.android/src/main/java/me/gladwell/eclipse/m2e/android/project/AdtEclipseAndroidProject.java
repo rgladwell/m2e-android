@@ -22,7 +22,6 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
@@ -39,6 +38,7 @@ import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
 import com.android.io.StreamException;
 import com.android.sdklib.internal.project.ProjectProperties;
+import com.android.sdklib.internal.project.ProjectProperties.PropertyType;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
 
 public class AdtEclipseAndroidProject implements EclipseAndroidProject {
@@ -91,13 +91,19 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
     public void setLibrary(boolean isLibrary) {
         setAndroidProperty(ProjectProperties.PROPERTY_LIBRARY, Boolean.toString(isLibrary));
     }
+    
+    public void setPlatform(String platform) {
+        setAndroidProperty(ProjectProperties.PROPERTY_TARGET, platform);
+    }
 
     public void setLibraryDependencies(List<EclipseAndroidProject> libraryDependencies) {
         int i = 1;
         for (EclipseAndroidProject library : libraryDependencies) {
-            setAndroidProperty(library, ProjectPropertiesWorkingCopy.PROPERTY_LIB_REF + i,
-                    relativizePath(library, getProject()));
+            setAndroidProperty(ProjectProperties.PROPERTY_LIB_REF + i, relativizePath(library, getProject()));
             i++;
+            ProjectState state = getProjectState();
+            state.reloadProperties();
+            state.needs(Sdk.getProjectState(library.getProject()));
         }
     }
 
@@ -108,19 +114,17 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
     }
 
     private void setAndroidProperty(String property, String value) {
-        setAndroidProperty(null, property, value);
-    }
-
-    private void setAndroidProperty(EclipseAndroidProject library, String property, String value) {
         try {
-            ProjectState state = getProjectState();
-            ProjectPropertiesWorkingCopy workingCopy = state.getProperties().makeWorkingCopy();
+            ProjectPropertiesWorkingCopy workingCopy = ProjectProperties.create(
+                    getProject().getLocation().toOSString(), PropertyType.PROJECT);
+
+            if (workingCopy.getFile().exists()) {
+                workingCopy = ProjectProperties.load(getProject().getLocation().toOSString(), PropertyType.PROJECT)
+                        .makeWorkingCopy();
+            }
+
             workingCopy.setProperty(property, value);
             workingCopy.save();
-            state.reloadProperties();
-            if (library != null) {
-                state.needs(Sdk.getProjectState(library.getProject()));
-            }
         } catch (IOException e) {
             throw new ProjectConfigurationException(e);
         } catch (StreamException e) {
