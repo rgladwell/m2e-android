@@ -9,11 +9,13 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static java.io.File.separator;
+import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntry;
+import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
+import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsIncludePattern;
+import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.hasAttribute;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
 import static org.junit.Assert.assertThat;
-import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntry;
-import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
 
 import java.io.File;
 
@@ -29,9 +31,11 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.junit.JUnitCore;
 import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestElement;
@@ -280,5 +284,25 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     public void testConfigureDoesNotSetIgnoreWarnings() throws Exception {
         IClasspathEntry gen = findSourceEntry(javaProject.getRawClasspath(), "gen");
         assertFalse("external assets folder isn't linked", booleanAttribute(IGNORE_OPTIONAL_PROBLEMS, gen));
+    }
+    
+    public void testConfigureDoesNotRemoveIncludesFromEntry() throws Exception {
+        IClasspathEntry mainJava = findSourceEntry(javaProject.getRawClasspath(), "src" + separator + "main" + separator + "java");
+        assertThat(mainJava, containsIncludePattern("**" + separator + "*.java"));
+    }
+    
+    public void testConfigureDoesNotRemovePomDerivedAttributeFromEntry() throws JavaModelException {
+        IClasspathEntry mainJava = findSourceEntry(javaProject.getRawClasspath(), "src" + separator + "main" + separator + "java");
+        assertThat(mainJava, hasAttribute(IClasspathManager.POMDERIVED_ATTRIBUTE, "true"));
+    }
+    
+    public void testConfigureDoesNotRemoveOptionalAttributeFromEntry() throws Exception {
+        IClasspathEntry mainJava = findSourceEntry(javaProject.getRawClasspath(), "src" + separator + "main" + separator + "java");
+        assertThat(mainJava, hasAttribute(IClasspathAttribute.OPTIONAL, "true"));
+    }
+    
+    public void testConfigureDoesNotRemovePomDerivedAttributeFromMavenContainer() throws Exception {
+        IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
+        assertThat(mavenContainer, hasAttribute(IClasspathManager.POMDERIVED_ATTRIBUTE, "true"));
     }
 }
