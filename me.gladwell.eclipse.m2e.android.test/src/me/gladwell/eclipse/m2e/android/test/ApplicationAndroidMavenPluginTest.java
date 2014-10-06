@@ -124,7 +124,6 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         assertClasspathDoesNotContain(javaProject, JavaRuntime.JRE_CONTAINER);
     }
 
-    // TODO quarantined intermittently failing integration test
     public void testBuildDirectoryContainsCompiledClasses() throws Exception {
         File outputLocation = new File(ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString(),
                 javaProject.getPath().toOSString());
