@@ -135,4 +135,18 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
         assertNoErrors(project);
     }
+    
+    public void testProjectWithAndroidMavenPlugin4DefaultValuesCompiles() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+
+        assertNoErrors(project);
+    }
+
+    public void testAssetsLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+
+        // TODO insufficient test, should verify linked location
+        assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
+    }
+
 }

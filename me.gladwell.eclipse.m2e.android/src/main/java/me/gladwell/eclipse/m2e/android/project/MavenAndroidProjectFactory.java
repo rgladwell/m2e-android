@@ -16,24 +16,27 @@ import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
+import org.eclipse.m2e.core.embedder.IMaven;
 
 import com.google.inject.Inject;
 
 public class MavenAndroidProjectFactory implements AndroidProjectFactory<MavenAndroidProject, MavenProject> {
 
     private final LibraryResolver depedendencyResolver;
+    private final IMaven maven;
 
     @Inject
-    public MavenAndroidProjectFactory(LibraryResolver depedendencyResolver) {
+    public MavenAndroidProjectFactory(LibraryResolver depedendencyResolver, IMaven maven) {
         super();
         this.depedendencyResolver = depedendencyResolver;
+        this.maven = maven;
     }
 
     public MavenAndroidProject createAndroidProject(MavenProject mavenProject) {
         final Plugin jaywayPlugin = MavenAndroidProjectFactory.findJaywayAndroidPlugin(mavenProject.getBuildPlugins());
         if (jaywayPlugin != null) {
             JaywayMavenAndroidProject androidProject = new JaywayMavenAndroidProject(mavenProject, jaywayPlugin,
-                    depedendencyResolver);
+                    depedendencyResolver, maven);
             AndroidMavenPlugin.getDefault().getInjector().injectMembers(androidProject);
             return androidProject;
         }
