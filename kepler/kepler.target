@@ -3,10 +3,10 @@
 <target name="Eclipse Kepler 4.3.0">
    <locations>
       <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.3.1327240"/>
-         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.3.1327240"/>
-         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.3.1327240"/>
-         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.3.1327240"/>
+         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.4.1468518"/>
+         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.4.1468518"/>
+         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.4.1468518"/>
+         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.4.1468518"/>
          <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
       <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
