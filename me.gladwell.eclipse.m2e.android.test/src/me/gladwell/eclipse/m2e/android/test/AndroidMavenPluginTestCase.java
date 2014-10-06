@@ -13,6 +13,7 @@ import static java.io.File.separator;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
@@ -165,7 +166,9 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
         ResourcesPlugin.getWorkspace().build(project.getBuildConfigs(), kind, true, monitor);
-        project.build(kind, "org.eclipse.jdt.core.javabuilder", null, monitor);
+        project.build(kind, "com.android.ide.eclipse.adt.ResourceManagerBuilder", new HashMap<String, String>(), monitor);
+        project.build(kind, "com.android.ide.eclipse.adt.PreCompilerBuilder", new HashMap<String, String>(), monitor);
+        project.build(kind, "org.eclipse.jdt.core.javabuilder", new HashMap<String, String>(), monitor);
     
         waitForJobsToComplete();
     }
