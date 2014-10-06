@@ -9,9 +9,14 @@
          <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.3.1327240"/>
          <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
-      <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="org.junit" version="4.8.2.v4_8_2_v20110321-1705"/>
-         <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository/"/>
+      <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+         <unit id="org.junit" version="4.11.0.v201303080030"/>
+         <unit id="org.hamcrest" version="1.1.0.v20090501071000"/>
+         <unit id="org.hamcrest.library" version="1.1.0.v20090501071000"/>
+         <unit id="org.mockito" version="1.8.4.v201303031500"/>
+         <unit id="org.hamcrest.integration" version="1.1.0.v201303031500"/>
+         <unit id="org.hamcrest.generator" version="1.1.0.v20090501071000"/>
+         <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20130517111416/repository/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="org.eclipse.m2e.feature.feature.group" version="1.4.0.20130601-0317"/>
