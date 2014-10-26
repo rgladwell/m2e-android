@@ -23,4 +23,4 @@ export DISPLAY=:99.0
 cd /vagrant
 echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
 mvn --file org.sonatype.aether/pom.xml clean install
-mvn clean install -Dtycho.showEclipseLog=true
+mvn -e clean install -Dtycho.showEclipseLog=true

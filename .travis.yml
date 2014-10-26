@@ -38,7 +38,7 @@ before_script:
   - export DISPLAY=:99.0
   - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
 
-script: mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
+script: mvn -e --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
 
 after_success:
   - if [[ "$TARGET_PLATFORM" == "luna" ]]; then mvn -Dgithub.global.oauth2Token=$GITHUB_AUTH_TOKEN -pl me.gladwell.eclipse.m2e.android.update com.github.github:site-maven-plugin:site; fi
