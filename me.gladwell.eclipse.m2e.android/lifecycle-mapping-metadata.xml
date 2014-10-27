@@ -3,6 +3,24 @@
   <pluginExecutions>
     <pluginExecution>
       <pluginExecutionFilter>
+        <groupId>com.simpligility.maven.plugins</groupId>
+        <artifactId>android-maven-plugin</artifactId>
+        <versionRange>[2.0.0,5.0.0)</versionRange>
+        <goals>
+          <goal>generate-sources</goal>
+          <goal>unpack</goal>
+          <goal>proguard</goal>
+        </goals>
+      </pluginExecutionFilter>
+      <action>
+        <configurator>
+          <id>me.gladwell.eclipse.m2e.android.androidDevelopmentToolsProjectConfigurator
+          </id>
+        </configurator>
+      </action>
+    </pluginExecution>
+    <pluginExecution>
+      <pluginExecutionFilter>
         <groupId>com.jayway.maven.plugins.android.generation2</groupId>
         <artifactId>android-maven-plugin</artifactId>
         <versionRange>[2.0.0,4.0.0)</versionRange>

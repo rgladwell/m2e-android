@@ -43,12 +43,30 @@ public class MavenAndroidProjectFactory implements AndroidProjectFactory<MavenAn
 
     public static Plugin findJaywayAndroidPlugin(List<Plugin> buildPlugins) {
         for (Plugin plugin : buildPlugins) {
-            if ("com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId())
-                    && ("android-maven-plugin".equals(plugin.getArtifactId()) || "maven-android-plugin".equals(plugin
-                            .getArtifactId()))) {
+            if (isAndroidPlugin(plugin)) {
                 return plugin;
             }
         }
         return null;
+    }
+
+    private static boolean isAndroidPlugin(Plugin plugin) {
+        return isJaywayPluginWithOldArtifactName(plugin) || isJaywayPluginWithNewArtifactName(plugin)
+                || isSimpligilityPlugin(plugin);
+    }
+
+    private static boolean isJaywayPluginWithOldArtifactName(Plugin plugin) {
+        return "com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId())
+                && "maven-android-plugin".equals(plugin.getArtifactId());
+    }
+
+    private static boolean isJaywayPluginWithNewArtifactName(Plugin plugin) {
+        return "com.jayway.maven.plugins.android.generation2".equals(plugin.getGroupId())
+                && "android-maven-plugin".equals(plugin.getArtifactId());
+    }
+
+    private static boolean isSimpligilityPlugin(Plugin plugin) {
+        return "com.simpligility.maven.plugins".equals(plugin.getGroupId())
+                && "android-maven-plugin".equals(plugin.getArtifactId());
     }
 }
