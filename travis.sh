@@ -14,7 +14,7 @@ sudo apt-get update
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true |  sudo debconf-set-selections
 echo yes | sudo apt-get install --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch xvfb git oracle-java7-installer
-echo yes | android update sdk --filter platform-tools,build-tools-20.0.0,android-18,addon-google_apis-google-18,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force
+echo yes | android update sdk --filter platform-tools,build-tools-21.0.2,android-18,addon-google_apis-google-18,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force
 git clone https://github.com/mosabua/maven-android-sdk-deployer.git
 cd maven-android-sdk-deployer
 mvn install -P 4.3
