@@ -20,7 +20,7 @@ import org.eclipse.m2e.core.MavenPlugin;
 public class RemoteAndroidDependencyTestCase extends AndroidMavenPluginTestCase {
 
     private static final String REPO_NAME = "test_repo";
-    private static final String ANDROID_VERSION = "4.3_r2";
+    private static final String ANDROID_VERSION = "4.3.1_r3";
     private static final String ANDROID_JAR = "android-" + ANDROID_VERSION + ".jar";
 
     private String localAndroidDependencyPath;
