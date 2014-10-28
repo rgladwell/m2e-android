@@ -9,7 +9,7 @@
     <name>my-android-application</name>
 
     <properties>
-        <platform.version>4.3_r2</platform.version>
+        <platform.version>4.3.1_r3</platform.version>
     </properties>
 
     <dependencies>
