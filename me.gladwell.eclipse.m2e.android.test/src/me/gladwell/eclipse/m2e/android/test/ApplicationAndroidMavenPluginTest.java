@@ -241,7 +241,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
 
         // then
-        assertThat(resolvedClasspath, containsEntry("android-4.3_r2.jar"));
+        assertThat(resolvedClasspath, containsEntry("android-4.3.1_r3.jar"));
     }
 
     public void testConfigureAddsPlatformProvidedDependenciesToTestRunnerClasspath() throws Exception {
