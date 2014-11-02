@@ -45,6 +45,10 @@
     <system>Travis</system>
   </ciManagement>
 
+  <prerequisites>
+    <maven>3.1.1</maven>
+  </prerequisites>
+  
   <properties>
     <tycho-version>0.21.0</tycho-version>
     <target.platform>luna</target.platform>
@@ -137,7 +141,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>
-        <version>2.5.4</version>
+        <version>3.0.0</version>
         <configuration>
           <maxRank>14</maxRank>
         </configuration>
