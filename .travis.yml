@@ -38,7 +38,7 @@ before_install:
 
 before_script:
   - export DISPLAY=:99.0
-  - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
+  - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME$'\n'pingId=844 > ~/.android/ddms.cfg
 
 script: mvn -e --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
 
