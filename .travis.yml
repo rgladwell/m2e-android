@@ -1,4 +1,14 @@
-language: java
+sudo: false
+language: android
+android:
+  components:
+    - build-tools-21.1.1
+    - android-7
+    - addon-google_apis-google-18
+  licenses:
+    - android-sdk-license-5be876d5
+jdk:
+- oraclejdk8
 
 branches:
   except:
@@ -16,15 +26,6 @@ env:
 before_install:
   - mvn --file org.sonatype.aether/pom.xml install
 
-  # install latest android sdk updates and dependencies
-  - wget http://dl.google.com/android/android-sdk_r23.0.1-linux.tgz
-  - tar -zxf android-sdk_r23.0.1-linux.tgz
-  - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null
-  - echo yes |android update sdk --filter platform-tools,build-tools-21.0.2,android-18,addon-google_apis-google-18,android-10,android-7,extra-android-support,sysimg-16 --no-ui --force > /dev/null
-
   # install android sdk dependencies in local repo
   - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
   - cd maven-android-sdk-deployer
@@ -36,9 +37,11 @@ before_install:
 
 before_script:
   - export DISPLAY=:99.0
-  - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME > ~/.android/ddms.cfg
+  - echo adtUsed=true$'\n'lastSdkPath=$ANDROID_HOME$'\n'pingId=844 > ~/.android/ddms.cfg
 
-script: mvn -e --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
+script:
+  - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V
+  - mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
 
 after_success:
   - if [[ "$TARGET_PLATFORM" == "luna" ]]; then mvn -Dgithub.global.oauth2Token=$GITHUB_AUTH_TOKEN -pl me.gladwell.eclipse.m2e.android.update com.github.github:site-maven-plugin:site; fi
