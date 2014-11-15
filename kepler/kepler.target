@@ -10,9 +10,9 @@
          <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
       <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="org.eclipse.m2e.feature.feature.group" version="1.4.0.20130601-0317"/>
-         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.4.0.20130601-0317"/>
-         <repository location="http://download.eclipse.org/technology/m2e/releases/1.4/1.4.0.20130601-0317"/>
+         <unit id="org.eclipse.m2e.feature.feature.group" version="1.4.1.20140328-1905"/>
+         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.4.1.20140328-1905"/>
+         <repository location="http://download.eclipse.org/technology/m2e/releases/1.4/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="org.eclipse.aether.feature.feature.group" version="1.0.0.v20140518"/>
