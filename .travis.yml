@@ -41,7 +41,7 @@ before_script:
 
 script:
   - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V
-  - mvn --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true verify
+  - mvn verify -e --file me.gladwell.eclipse.m2e.android.test/pom.xml -Dtarget.platform=$TARGET_PLATFORM -Dtycho.showEclipseLog=true
 
 after_success:
   - if [[ "$TARGET_PLATFORM" == "luna" ]]; then mvn -Dgithub.global.oauth2Token=$GITHUB_AUTH_TOKEN -pl me.gladwell.eclipse.m2e.android.update com.github.github:site-maven-plugin:site; fi
