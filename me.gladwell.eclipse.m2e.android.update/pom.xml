@@ -15,7 +15,7 @@
   <packaging>eclipse-repository</packaging>
 
   <properties>
-    <github-site-plugin-version>0.9</github-site-plugin-version>
+    <github-site-plugin-version>0.10</github-site-plugin-version>
   </properties>
 
   <profiles>
