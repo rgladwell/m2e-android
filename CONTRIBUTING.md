@@ -43,7 +43,7 @@ _Note:_ You may find tests can stall because the ADT is waiting for user
 interraction from dialogs. To avoid this execute the following command:
 
 ```
-$ echo 'adtUsed=true' > ~/.android/ddms.cfg
+$ echo 'adtUsed=true'$'\n'pingId=844 > ~/.android/ddms.cfg
 ```
 
 ###...have a clear intention
