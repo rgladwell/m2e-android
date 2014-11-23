@@ -129,4 +129,10 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         assertTrue(entry.getOutputLocation().toOSString().endsWith(ANDROID_CLASSES_FOLDER));
     }
 
+    public void testConfigureWithAndroidMavenPluginSimpligilityGroupId() throws Exception {
+        IProject project = importAndroidTestProject("simpligility-groupid").withProjectFolder(
+                new File("simpligility-groupid")).into(workspace);
+
+        assertNoErrors(project);
+    }
 }
