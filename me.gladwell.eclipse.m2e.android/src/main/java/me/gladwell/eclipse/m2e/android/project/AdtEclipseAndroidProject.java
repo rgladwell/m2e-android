@@ -22,6 +22,7 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaCore;
@@ -171,23 +172,25 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
     }
     
     private void linkResource(IResource resource, File newFile) {
-        if (!resource.getLocation().toFile().equals(newFile)) {
-            IPath newPath = new Path(newFile.getPath());
-
-            IStatus status = workspace.validateLinkLocation(resource, newPath);
-            if (!status.matches(Status.ERROR)) {
-
-                try {
-                    createLink(resource, newPath);
-                } catch (CoreException e) {
-                    throw new ProjectConfigurationException(e);
-                }
-
-            } else {
-                throw new ProjectConfigurationException("invalid location for link=[" + resource + "]");
+        try {
+            if (resource.isLinked()) {
+                resource.delete(0, null);
             }
-        }
 
+            if (!resource.getLocation().toFile().equals(newFile)) {
+                IPath newPath = new Path(newFile.getPath());
+
+                IStatus status = workspace.validateLinkLocation(resource, newPath);
+                if (!status.matches(Status.ERROR)) {
+                    createLink(resource, newPath);
+                } else {
+                    throw new ProjectConfigurationException("invalid location for link=[" + resource + "]");
+                }
+            }
+
+        } catch (CoreException e) {
+            throw new ProjectConfigurationException("cannot update link=[" + resource + "]", e);
+        }
     }
 
     private static void createLink(IResource resource, IPath newPath) throws CoreException {
