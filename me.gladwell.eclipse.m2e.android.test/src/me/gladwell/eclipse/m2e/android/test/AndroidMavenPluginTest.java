@@ -13,10 +13,16 @@ import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourc
 import static me.gladwell.eclipse.m2e.android.test.ProjectImporter.importAndroidTestProject;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 
+import java.io.File;
+
+import org.codehaus.plexus.util.FileUtils;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.internal.project.ProjectConfigurationManager;
+import org.eclipse.m2e.core.project.MavenUpdateRequest;
 
 import com.android.SdkConstants;
 import com.android.ide.eclipse.adt.AdtConstants;
@@ -144,6 +150,21 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
         // TODO insufficient test, should verify linked location
         assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
+    }
+    
+    public void testResLinkRemovedAfterSwitchedToADTLocation() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+        
+        project.getFile("pom.xml").delete(true, null);
+        
+        FileUtils.rename(project.getFile("pom_old_res.xml").getLocation().toFile(), project.getFile("pom.xml").getLocation().toFile());
+        FileUtils.rename(new File(project.getLocation().toOSString() + separator + "src" + separator + "main" + separator + "res"),
+                new File(project.getLocation().toOSString() + separator + "res2"));
+        
+        ProjectConfigurationManager projectConfigurationManager = (ProjectConfigurationManager) MavenPlugin.getProjectConfigurationManager();
+        projectConfigurationManager.updateProjectConfiguration(new MavenUpdateRequest(project, false, false), true, true, true, monitor);
+        
+        assertFalse("internal res folder is linked", project.getFolder("res").isLinked());
     }
 
 }
