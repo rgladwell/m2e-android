@@ -10,7 +10,7 @@ public class LinkAssetsFolderConfigurer implements WorkspaceConfigurer {
     }
 
     public boolean isValid(MavenAndroidProject project) {
-        return project.getAssetsDirectory() != null;
+        return true;
     }
 
     public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
