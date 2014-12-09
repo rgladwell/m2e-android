@@ -48,7 +48,7 @@ public class ProjectImporter {
     }
 
     public ProjectImporter withProjectFolder(File file) {
-        this.destination = file.getAbsoluteFile();
+        this.destination = file;
         return this;
     }
 
@@ -59,13 +59,15 @@ public class ProjectImporter {
 
     // TODO too big: re-factor method by extracting code into sub-methods and classes
     private IProject importProject(IWorkspace workspace, File source) throws IOException, CoreException {
-        copyDir(source, destination);
+        File workspaceRoot = workspace.getRoot().getLocation().toFile();
+        File projectDestination = new File(workspaceRoot, destination.getName());
+        
+        copyDir(source, projectDestination);
 
         String pomName = sourcePom.getName();
         File targetPom = new File(destination, pomName);
         Model model = mavenModelManager.readMavenModel(targetPom);
         MavenProjectInfo projectInfo = new MavenProjectInfo(pomName, targetPom, model, null);
-        File workspaceRoot = workspace.getRoot().getLocation().toFile();
         File basedir = projectInfo.getPomFile().getParentFile().getCanonicalFile();
 
         projectInfo.setBasedirRename(basedir.getParentFile().equals(workspaceRoot) ? RENAME_REQUIRED : RENAME_NO);
