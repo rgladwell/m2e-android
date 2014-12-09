@@ -34,40 +34,39 @@ public class ProjectImporter {
     private final static IProjectConfigurationManager configurationManager = MavenPlugin.getProjectConfigurationManager();
     private final static MavenModelManager mavenModelManager = MavenPlugin.getMavenModelManager();
 
-    private final File sourcePom;
-    private File destination;
+    private final String projectName;
+    private String folderName;
     private ResolverConfiguration configuration = new ResolverConfiguration();
 
-    public ProjectImporter(File sourcePom) {
-        this.sourcePom = sourcePom;
-        this.destination = new File(sourcePom.getParentFile().getName());
+    public ProjectImporter(String projectName) {
+        this.projectName = projectName;
+        this.folderName = projectName;
     }
 
-    public static ProjectImporter importAndroidTestProject(String name) {
-        return new ProjectImporter(new File("projects" + separator + name + separator + "pom.xml"));
+    public static ProjectImporter importAndroidTestProject(String projectName) {
+        return new ProjectImporter(projectName);
     }
 
-    public ProjectImporter withProjectFolder(File file) {
-        this.destination = file;
+    public ProjectImporter withProjectFolder(String folderName) {
+        this.folderName = folderName;
         return this;
     }
 
     public IProject into(IWorkspace workspace) throws Exception {
-        File source = new File(sourcePom.getParentFile().getCanonicalPath());
+        File source = new File("projects" + separator + projectName);
         return importProject(workspace, source);
     }
 
     // TODO too big: re-factor method by extracting code into sub-methods and classes
     private IProject importProject(IWorkspace workspace, File source) throws IOException, CoreException {
         File workspaceRoot = workspace.getRoot().getLocation().toFile();
-        File projectDestination = new File(workspaceRoot, destination.getName());
+        File destination = new File(workspaceRoot, folderName);
         
-        copyDir(source, projectDestination);
+        copyDir(source, destination);
 
-        String pomName = sourcePom.getName();
-        File targetPom = new File(destination, pomName);
+        File targetPom = new File(destination, "pom.xml");
         Model model = mavenModelManager.readMavenModel(targetPom);
-        MavenProjectInfo projectInfo = new MavenProjectInfo(pomName, targetPom, model, null);
+        MavenProjectInfo projectInfo = new MavenProjectInfo("pom.xml", targetPom, model, null);
         File basedir = projectInfo.getPomFile().getParentFile().getCanonicalFile();
 
         projectInfo.setBasedirRename(basedir.getParentFile().equals(workspaceRoot) ? RENAME_REQUIRED : RENAME_NO);

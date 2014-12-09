@@ -8,13 +8,10 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
-import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
 import static java.io.File.separator;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntry;
 import static me.gladwell.eclipse.m2e.android.test.ProjectImporter.importAndroidTestProject;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
-
-import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -112,7 +109,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     public void testConfigureWhenProjectFolderAndNameMismatch() throws Exception {
         IProject project = importAndroidTestProject("android-application")
-                                .withProjectFolder(new File("mismatch"))
+                                .withProjectFolder("mismatch")
                                 .into(workspace);
 
         assertNoErrors(project);
@@ -120,7 +117,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     public void testConfigureSetsCorrectOutputLocationWhenProjectFolderAndNameMismatch() throws Exception {
         IProject project = importAndroidTestProject("android-application")
-                                .withProjectFolder(new File("mismatch"))
+                                .withProjectFolder("mismatch")
                                 .into(workspace);
 
         IClasspathEntry[] classpath = JavaCore.create(project).getRawClasspath();
@@ -130,8 +127,8 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     }
 
     public void testConfigureWithAndroidMavenPluginSimpligilityGroupId() throws Exception {
-        IProject project = importAndroidTestProject("simpligility-groupid").withProjectFolder(
-                new File("simpligility-groupid")).into(workspace);
+        IProject project = importAndroidTestProject("simpligility-groupid").withProjectFolder("simpligility-groupid")
+                .into(workspace);
 
         assertNoErrors(project);
     }
