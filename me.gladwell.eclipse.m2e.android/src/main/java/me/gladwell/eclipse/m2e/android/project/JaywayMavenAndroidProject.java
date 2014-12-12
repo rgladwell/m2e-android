@@ -8,9 +8,6 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import static java.lang.Boolean.parseBoolean;
-import static org.codehaus.plexus.util.StringUtils.isEmpty;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +18,9 @@ import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.m2e.core.embedder.IMaven;
 
 public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
@@ -32,11 +31,14 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
     private final MavenProject mavenProject;
     private final Plugin jaywayPlugin;
     private final LibraryResolver dependencyResolver;
+    private final IMaven maven;
 
-    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin, LibraryResolver dependencyResolver) {
+    public JaywayMavenAndroidProject(MavenProject mavenProject, Plugin jaywayPlugin,
+            LibraryResolver dependencyResolver, IMaven maven) {
         this.mavenProject = mavenProject;
         this.jaywayPlugin = jaywayPlugin;
         this.dependencyResolver = dependencyResolver;
+        this.maven = maven;
     }
 
     public String getName() {
@@ -114,58 +116,30 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         return results;
     }
 
-	public File getAssetsDirectory() {
-		return getConfiguredFile(getConfiguredAssetsDirectory());
-	}
-	
-	public File getResourceFolder() {
-	    return getConfiguredFile(getConfiguredResourceDirectory());
+    public File getAssetsDirectory() {
+        return getConfigurationParameter("assetsDirectory", File.class);
     }
-	
-	public File getAndroidManifestFile() {
-	    return getConfiguredFile(getConfiguredAndroidManifestFile());
-	}
 
-	private String getConfiguredAssetsDirectory() {
-		return getConfigurationParameter("assetsDirectory");
-	}
-	
-	private String getConfiguredResourceDirectory() {
-	    return getConfigurationParameter("resourceDirectory");
-	}
-	
-	private String getConfiguredAndroidManifestFile() {
-	    return getConfigurationParameter("androidManifestFile");
-	}
+    public File getResourceFolder() {
+        return getConfigurationParameter("resourceDirectory", File.class);
+    }
+
+    public File getAndroidManifestFile() {
+        return getConfigurationParameter("androidManifestFile", File.class);
+    }
 
     public boolean isIgnoreOptionalWarningsInGenFolder() {
-        return parseBoolean(getConfigurationParameter(IGNORE_WARNING_CONFIGURATION_NAME));
+        Boolean parameter = getConfigurationParameter(IGNORE_WARNING_CONFIGURATION_NAME, Boolean.class);
+        return parameter != null ? parameter : false;
     }
 
-    private String getConfigurationParameter(String name) {
-        Object configuration = jaywayPlugin.getConfiguration();
-        if (configuration instanceof Xpp3Dom) {
-            Xpp3Dom confDom = (Xpp3Dom) configuration;
-            Xpp3Dom parameterDom = confDom.getChild(name);
-            if (parameterDom != null) {
-                String parameter = parameterDom.getValue();
-                if (!isEmpty(parameter)) {
-                    return parameter;
-                }
-            }
+    private <T> T getConfigurationParameter(String name, Class<T> type) {
+        try {
+            return maven.getMojoParameterValue(mavenProject, name, type, jaywayPlugin, jaywayPlugin,
+                    "generate-sources", new NullProgressMonitor());
+        } catch (CoreException e) {
+            throw new ProjectConfigurationException("Could not read POM configuration: " + name, e);
         }
-        return null;
-    }
-    
-    private File getConfiguredFile(String path) {
-        if(path == null) return null;
-        File directory = new File(path);
-
-        if (!directory.isAbsolute()) {
-            directory = new File(mavenProject.getBasedir(), path);
-        }
-
-        return directory;
     }
 
     public List<String> getSourcePaths() {

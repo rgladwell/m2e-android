@@ -10,7 +10,7 @@ public class LinkAndroidManifestConfigurer implements WorkspaceConfigurer {
     }
 
     public boolean isValid(MavenAndroidProject project) {
-        return project.getAndroidManifestFile() != null;
+        return true;
     }
 
     public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
