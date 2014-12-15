@@ -149,22 +149,66 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
 
         // TODO insufficient test, should verify linked location
-        assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
+        assertTrue("assets folder isn't linked", project.getFolder("assets").isLinked());
     }
-    
-    public void testResLinkRemovedAfterSwitchedToADTLocation() throws Exception {
+
+    public void testManifestLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
-        
+
+        // TODO insufficient test, should verify linked location
+        assertTrue("manifest file isn't linked", project.getFile("AndroidManifest.xml").isLinked());
+    }
+
+    public void testResourceLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+
+        // TODO insufficient test, should verify linked location
+        assertTrue("res folder isn't linked", project.getFolder("res").isLinked());
+    }
+
+    public void testResourceUnlinkedOnRevertToADTDefaults() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+
         project.getFile("pom.xml").delete(true, null);
-        
+
         FileUtils.rename(project.getFile("pom_old_res.xml").getLocation().toFile(), project.getFile("pom.xml").getLocation().toFile());
         FileUtils.rename(new File(project.getLocation().toOSString() + separator + "src" + separator + "main" + separator + "res"),
-                new File(project.getLocation().toOSString() + separator + "res2"));
-        
+                new File(project.getLocation().toOSString() + separator + "res"));
+
         ProjectConfigurationManager projectConfigurationManager = (ProjectConfigurationManager) MavenPlugin.getProjectConfigurationManager();
         projectConfigurationManager.updateProjectConfiguration(new MavenUpdateRequest(project, false, false), true, true, true, monitor);
-        
-        assertFalse("internal res folder is linked", project.getFolder("res").isLinked());
+
+        assertFalse("resource folder is linked", project.getFolder("res").isLinked());
+    }
+
+    public void testAssetsUnlinkedOnRevertToADTDefaults() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+
+        project.getFile("pom.xml").delete(true, null);
+
+        FileUtils.rename(project.getFile("pom_old_res.xml").getLocation().toFile(), project.getFile("pom.xml").getLocation().toFile());
+        FileUtils.rename(new File(project.getLocation().toOSString() + separator + "src" + separator + "main" + separator + "assets"),
+                new File(project.getLocation().toOSString() + separator + "assets"));
+
+        ProjectConfigurationManager projectConfigurationManager = (ProjectConfigurationManager) MavenPlugin.getProjectConfigurationManager();
+        projectConfigurationManager.updateProjectConfiguration(new MavenUpdateRequest(project, false, false), true, true, true, monitor);
+
+        assertFalse("assets folder is linked", project.getFolder("assets").isLinked());
+    }
+
+    public void testManifestUnlinkedOnRevertToADTDefaults() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+
+        project.getFile("pom.xml").delete(true, null);
+
+        FileUtils.rename(project.getFile("pom_old_res.xml").getLocation().toFile(), project.getFile("pom.xml").getLocation().toFile());
+        FileUtils.rename(new File(project.getLocation().toOSString() + separator + "src" + separator + "main" + separator + "AndroidManifest.xml"),
+                new File(project.getLocation().toOSString() + separator + "AndroidManifest.xml"));
+
+        ProjectConfigurationManager projectConfigurationManager = (ProjectConfigurationManager) MavenPlugin.getProjectConfigurationManager();
+        projectConfigurationManager.updateProjectConfiguration(new MavenUpdateRequest(project, false, false), true, true, true, monitor);
+
+        assertFalse("manifest is linked", project.getFile("AndroidManifest.xml").isLinked());
     }
 
 }

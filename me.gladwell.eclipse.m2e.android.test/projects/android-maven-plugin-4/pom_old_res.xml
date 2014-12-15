@@ -24,7 +24,9 @@
                 <artifactId>android-maven-plugin</artifactId>
                 <version>4.0.0-rc.1</version>
                 <configuration>
+                    <androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
                     <resourceDirectory>${project.basedir}/res</resourceDirectory>
+                    <assetsDirectory>${project.basedir}/assets</assetsDirectory>
                     <sdk>
                         <platform>18</platform>
                     </sdk>
