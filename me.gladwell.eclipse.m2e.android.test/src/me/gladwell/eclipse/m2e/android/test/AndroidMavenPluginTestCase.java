@@ -38,9 +38,11 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.MavenModelManager;
+import org.eclipse.m2e.core.internal.project.ProjectConfigurationManager;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.IMavenProjectImportResult;
 import org.eclipse.m2e.core.project.MavenProjectInfo;
+import org.eclipse.m2e.core.project.MavenUpdateRequest;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
@@ -275,6 +277,11 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         temp.delete();
         temp.mkdirs();
         return temp;
+    }
+
+    protected static void updateConfiguration(IProject project) {
+        ProjectConfigurationManager projectConfigurationManager = (ProjectConfigurationManager) MavenPlugin.getProjectConfigurationManager();
+        projectConfigurationManager.updateProjectConfiguration(new MavenUpdateRequest(project, false, false), true, true, true, monitor);
     }
 
     static boolean booleanAttribute(String attributeName, IClasspathEntry entry) {
