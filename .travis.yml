@@ -1,5 +1,7 @@
 sudo: false
+
 language: android
+
 android:
   components:
     - build-tools-21.1.1
@@ -7,8 +9,9 @@ android:
     - addon-google_apis-google-18
   licenses:
     - android-sdk-license-5be876d5
+
 jdk:
-- oraclejdk8
+  - oraclejdk8
 
 branches:
   except:
