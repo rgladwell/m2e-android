@@ -51,7 +51,7 @@
   
   <properties>
     <tycho-version>0.22.0</tycho-version>
-    <target.platform>luna</target.platform>
+    <target.platform>mars</target.platform>
   </properties>
 
   <modules>
@@ -63,6 +63,7 @@
     <module>kepler</module>
     <module>juno</module>
     <module>luna</module>
+    <module>mars</module>
   </modules>
 
   <build>
