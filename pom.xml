@@ -50,7 +50,7 @@
   </prerequisites>
   
   <properties>
-    <tycho-version>0.21.0</tycho-version>
+    <tycho-version>0.22.0</tycho-version>
     <target.platform>luna</target.platform>
   </properties>
 
