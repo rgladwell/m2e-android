@@ -26,6 +26,10 @@ env:
     - TARGET_PLATFORM=kepler
     - TARGET_PLATFORM=luna
 
+cache:
+  directories:
+    - $HOME/.m2
+
 before_install:
   # install android sdk dependencies in local repo
   - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
