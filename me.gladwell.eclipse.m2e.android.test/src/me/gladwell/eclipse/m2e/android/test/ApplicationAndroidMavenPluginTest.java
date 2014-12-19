@@ -194,8 +194,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
     }
 
-    // quarantined failing test on CI
-    public void ignoreTestRunner() throws Exception {
+    public void testTestRunner() throws Exception {
         // given
         buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
         
