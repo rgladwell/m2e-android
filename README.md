@@ -2,9 +2,7 @@
 
 _Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefson, Anthony Dannane, Mykola Nikishov, Raphael Ackermann, Csaba Kozák, and Sonatype Inc.. All rights reserved. This program and the accompanying materials are made available under the terms of the [Eclipse Public License 1.0](http://www.eclipse.org/legal) which accompanies this distribution_
 
-Android for Maven Eclipse (**m2e-android**) adds Maven support to the [Android Developer Tools](http://developer.android.com/tools/sdk/eclipse-adt.html) (ADT).
-
-For instructions on how to get started using the m2e-android please see the [project web site.](http://rgladwell.github.com/m2e-android/)
+Android for Maven Eclipse (**m2e-android**) adds [Maven](http://maven.apache.org/) support to the [Android Developer Tools](http://developer.android.com/tools/sdk/eclipse-adt.html) (ADT). This is developer documentation, for user instructions on how to install please see the [project web site.](http://rgladwell.github.com/m2e-android/)
 
 Special thanks to our patrons who crowdfunded project development through [Patreon](http://www.patreon.com/rgladwell):
 
