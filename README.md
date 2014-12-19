@@ -41,12 +41,12 @@ To configure your development environment please follow these steps:
 
 This project consists of several sub-modules, including:
 
- * the parent POM project,
- * the core plugin
- * a test suite
- * the feature project,
- * various [target definitions](https://wiki.eclipse.org/PDE/Target_Definitions),
- * and an update site project.
+ * Parent POM.
+ * Core Eclpise plugin.
+ * Test suite.
+ * Eclipse feature.
+ * Various [target definitions](https://wiki.eclipse.org/PDE/Target_Definitions).
+ * and the update site.
 
 To clone them into your Eclipse workspace follow these steps: 
 
