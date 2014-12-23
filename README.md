@@ -40,7 +40,7 @@ To configure your development environment please follow these steps:
 This project consists of several sub-modules, including:
 
  * Parent POM.
- * Core Eclpise plugin.
+ * Core Eclipse plugin.
  * Test suite.
  * Eclipse feature.
  * Various [target definitions](https://wiki.eclipse.org/PDE/Target_Definitions).
