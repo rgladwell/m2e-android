@@ -23,7 +23,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.junit4.runtime
 Bundle-ActivationPolicy: lazy
 Export-Package: me.gladwell.eclipse.m2e.android.test
-Import-Package: org.apache.maven.archetype.catalog,
- org.eclipse.m2e.jdt,
+Import-Package: org.eclipse.m2e.jdt,
  org.eclipse.m2e.tests.common
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
