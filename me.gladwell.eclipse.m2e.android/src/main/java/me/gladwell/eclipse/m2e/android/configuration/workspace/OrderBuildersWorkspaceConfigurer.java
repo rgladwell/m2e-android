@@ -24,7 +24,7 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 
 public class OrderBuildersWorkspaceConfigurer implements WorkspaceConfigurer {
 
-    public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
+    public static final String APK_BUILDER_COMMAND_NAME = "org.eclipse.andmore.ApkBuilder";
 
     public boolean isConfigured(EclipseAndroidProject project) {
         return false;

@@ -33,10 +33,10 @@ import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
 import com.android.SdkConstants;
-import com.android.ide.eclipse.adt.AdtConstants;
-import com.android.ide.eclipse.adt.internal.project.ProjectHelper;
-import com.android.ide.eclipse.adt.internal.sdk.ProjectState;
-import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import org.eclipse.andmore.AdtConstants;
+import org.eclipse.andmore.internal.project.ProjectHelper;
+import org.eclipse.andmore.internal.sdk.ProjectState;
+import org.eclipse.andmore.internal.sdk.Sdk;
 import com.android.io.StreamException;
 import com.android.sdklib.internal.project.ProjectProperties;
 import com.android.sdklib.internal.project.ProjectPropertiesWorkingCopy;
