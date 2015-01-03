@@ -30,7 +30,7 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.IMavenProjectChangedListener;
 import org.eclipse.m2e.core.project.MavenProjectChangedEvent;
 
-import com.android.ide.eclipse.adt.AdtConstants;
+import org.eclipse.andmore.AdtConstants;
 
 public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigurationListener,
         IMavenProjectChangedListener {

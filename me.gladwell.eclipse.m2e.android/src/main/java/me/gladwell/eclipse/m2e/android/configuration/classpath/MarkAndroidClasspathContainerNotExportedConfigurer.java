@@ -11,7 +11,7 @@ package me.gladwell.eclipse.m2e.android.configuration.classpath;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
-import com.android.ide.eclipse.adt.AdtConstants;
+import org.eclipse.andmore.AdtConstants;
 
 public class MarkAndroidClasspathContainerNotExportedConfigurer implements ClasspathConfigurer {
 
