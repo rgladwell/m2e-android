@@ -8,6 +8,5 @@
   <children size='3'>
     <child location='m2e-android'/>
     <child location='https://dl-ssl.google.com/android/eclipse/'/>
-    <child location='http://download.eclipse.org/aether/aether-core/releases/'/>
   </children>
 </repository>
