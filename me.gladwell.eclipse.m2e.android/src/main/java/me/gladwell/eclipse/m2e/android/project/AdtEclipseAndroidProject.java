@@ -177,7 +177,7 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
                 resource.delete(0, null);
             }
 
-            if (!resource.getLocation().toFile().equals(newFile)) {
+            if (!resource.getLocation().toFile().equals(newFile) && newFile.exists()) {
                 IPath newPath = new Path(newFile.getPath());
 
                 IStatus status = workspace.validateLinkLocation(resource, newPath);
@@ -195,9 +195,9 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
 
     private static void createLink(IResource resource, IPath newPath) throws CoreException {
         if (resource instanceof IFile) {
-            ((IFile) resource).createLink(newPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
+            ((IFile) resource).createLink(newPath, IResource.REPLACE, null);
         } else if (resource instanceof IFolder) {
-            ((IFolder) resource).createLink(newPath, IResource.ALLOW_MISSING_LOCAL | IResource.REPLACE, null);
+            ((IFolder) resource).createLink(newPath, IResource.REPLACE, null);
         } else {
             throw new ProjectConfigurationException("resource is not a file or a folder=[" + resource + "]");
         }
