@@ -5,7 +5,7 @@
       version="1.2.1.qualifier"
       provider-name="Gladwell.me">
 
-   <description url="http://rgladwell.github.com/m2e-android/">
+   <description url="http://rgladwell.github.io/m2e-android/">
       Integration for the Android Development Tools and the M2Eclipse
 Maven2 plugin.
    </description>
@@ -240,7 +240,7 @@ to a jury trial in any resulting litigation.
    </license>
 
    <url>
-      <update label="m2e-android Update Site" url="http://rgladwell.github.com/m2e-android/updates/"/>
+      <update label="m2e-android Update Site" url="http://rgladwell.github.io/m2e-android/updates/"/>
    </url>
 
    <requires>
