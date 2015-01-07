@@ -201,5 +201,11 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
         assertFalse("manifest is linked", project.getFile("AndroidManifest.xml").isLinked());
     }
+    
+    public void testNonExistingResourcesAreNotLinked() throws Exception {
+        IProject project = importAndroidTestProject("simpligility-groupid").into(workspace);
+        
+        assertFalse("link created for non-existing assets folder", project.getFolder(AdtConstants.WS_ASSETS).exists());
+    }
 
 }
