@@ -201,4 +201,18 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         assertFalse("link created for non-existing assets folder", project.getFolder(AdtConstants.WS_ASSETS).exists());
     }
 
+    public void testProjectRelativeLinksCreatedWhenTargetIsInsideProjectFolder() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+        
+        assertEquals("PROJECT_LOC", project.getFile(AdtConstants.WS_ASSETS).getRawLocation().segment(0));
+    }
+    
+    public void testAbsoluteLinksCreatedWhenTargetIsOutsideProjectFolder() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml",
+        "android-relativeoutside/pom.xml" });
+        IProject project = projects[1];
+        
+        assertFalse("invalid relative link created",project.getFile(AdtConstants.WS_ASSETS).getRawLocation().segment(0).equals("PROJECT_LOC"));
+    }
+
 }
