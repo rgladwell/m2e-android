@@ -178,8 +178,14 @@ public class AdtEclipseAndroidProject implements EclipseAndroidProject {
             }
 
             if (!resource.getLocation().toFile().equals(newFile) && newFile.exists()) {
-                IPath newPath = new Path(newFile.getPath());
-
+                IPath newPath = null;
+                
+                if (project.getLocation().isPrefixOf(new Path(newFile.getPath()))) {
+                    newPath = new Path("PROJECT_LOC").append(new Path(newFile.getPath()).makeRelativeTo(project.getLocation()));
+                } else {
+                    newPath = new Path(newFile.getPath());
+                }
+                
                 IStatus status = workspace.validateLinkLocation(resource, newPath);
                 if (!status.matches(Status.ERROR)) {
                     createLink(resource, newPath);

@@ -61,8 +61,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
                 "android-internaldirassets/pom.xml" });
         IProject project = projects[1];
 
-        // TODO insufficient test, should verify linked location
-        assertTrue("internal assets folder isn't linked", project.getFolder("assets").isLinked());
+        assertEquals(project.getLocation().append("assets2"), project.getFolder(AdtConstants.WS_ASSETS).getLocation());
     }
 
     public void testNonDefaultExternalAssetsFolderCompiles() throws Exception {
@@ -78,8 +77,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
                 "android-relativeoutside/pom.xml" });
         IProject project = projects[1];
 
-        // TODO insufficient test, should verify linked location
-        assertTrue("external assets folder isn't linked", project.getFolder("assets").isLinked());
+        assertEquals(projects[0].getLocation().append("outsideassets"), project.getFolder(AdtConstants.WS_ASSETS).getLocation());
     }
     
     public void testNonDefaultResourceFolderLinkCreated() throws Exception {
@@ -87,8 +85,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         "android-internaldirassets/pom.xml" });
         IProject project = projects[1];
         
-        // TODO insufficient test, should verify linked location
-        assertTrue("res folder isn't linked", project.getFolder(SdkConstants.FD_RES).isLinked());
+        assertEquals(project.getLocation().append("src/main/res"), project.getFolder(SdkConstants.FD_RES).getLocation());
     }
     
     public void testNonDefaultAndroidManifestLinkCreated() throws Exception {
@@ -96,8 +93,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         "android-internaldirassets/pom.xml" });
         IProject project = projects[1];
         
-        // TODO insufficient test, should verify linked location
-        assertTrue("AndroidManifest.xml file isn't linked", project.getFile(SdkConstants.ANDROID_MANIFEST_XML).isLinked());
+        assertEquals(project.getLocation().append("src/main/AndroidManifest.xml"), project.getFile(SdkConstants.ANDROID_MANIFEST_XML).getLocation());
     }
 
     public void testConfigureSetsIgnoreWarningsForGenFolder() throws Exception {
@@ -144,22 +140,19 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     public void testAssetsLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
 
-        // TODO insufficient test, should verify linked location
-        assertTrue("assets folder isn't linked", project.getFolder("assets").isLinked());
+        assertEquals(project.getLocation().append("src/main/assets"), project.getFolder(AdtConstants.WS_ASSETS).getLocation());
     }
 
     public void testManifestLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
 
-        // TODO insufficient test, should verify linked location
-        assertTrue("manifest file isn't linked", project.getFile("AndroidManifest.xml").isLinked());
+        assertEquals(project.getLocation().append("src/main/AndroidManifest.xml"), project.getFile(SdkConstants.ANDROID_MANIFEST_XML).getLocation());
     }
 
     public void testResourceLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
 
-        // TODO insufficient test, should verify linked location
-        assertTrue("res folder isn't linked", project.getFolder("res").isLinked());
+        assertEquals(project.getLocation().append("src/main/res"), project.getFolder(SdkConstants.FD_RES).getLocation());
     }
 
     public void testResourceUnlinkedOnRevertToADTDefaults() throws Exception {
@@ -206,6 +199,20 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IProject project = importAndroidTestProject("simpligility-groupid").into(workspace);
         
         assertFalse("link created for non-existing assets folder", project.getFolder(AdtConstants.WS_ASSETS).exists());
+    }
+
+    public void testProjectRelativeLinksCreatedWhenTargetIsInsideProjectFolder() throws Exception {
+        IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
+        
+        assertEquals("PROJECT_LOC", project.getFile(AdtConstants.WS_ASSETS).getRawLocation().segment(0));
+    }
+    
+    public void testAbsoluteLinksCreatedWhenTargetIsOutsideProjectFolder() throws Exception {
+        IProject[] projects = importAndroidProjects(MULTIMODULE_ROOT, new String[] { "pom.xml",
+        "android-relativeoutside/pom.xml" });
+        IProject project = projects[1];
+        
+        assertFalse("invalid relative link created",project.getFile(AdtConstants.WS_ASSETS).getRawLocation().segment(0).equals("PROJECT_LOC"));
     }
 
 }
