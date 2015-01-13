@@ -6,7 +6,7 @@
   <parent>
     <artifactId>m2e-android</artifactId>
     <groupId>me.gladwell.eclipse.m2e.android</groupId>
-    <version>1.2.1</version>
+    <version>1.2.2-SNAPSHOT</version>
   </parent>
 
   <artifactId>me.gladwell.eclipse.m2e.android</artifactId>
