@@ -146,4 +146,8 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         return mavenProject.getCompileSourceRoots();
     }
 
+    public String getOutputDirectory() {
+        return mavenProject.getBuild().getOutputDirectory();
+    }
+
 }
