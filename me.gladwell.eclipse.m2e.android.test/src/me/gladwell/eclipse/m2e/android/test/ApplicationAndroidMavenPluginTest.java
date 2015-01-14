@@ -16,6 +16,7 @@ import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.hasAttribut
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
 import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.not;
 
 import java.io.File;
 
@@ -284,6 +285,17 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
         // then
         assertThat(resolvedClasspath, containsEntry("bin/classes"));
+    }
+    
+    public void testConfigureRemovesTargetFolderFromTestRunnerClasspath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, not(containsEntry("target/classes")));
     }
 
     public void testConfigureDoesNotSetIgnoreWarnings() throws Exception {
