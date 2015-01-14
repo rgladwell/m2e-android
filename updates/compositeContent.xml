@@ -5,7 +5,7 @@
   <properties size='1'>
     <property name='p2.timestamp' value='1243822502440'/>
   </properties>
-  <children size='3'>
+  <children size='2'>
     <child location='m2e-android'/>
     <child location='https://dl-ssl.google.com/android/eclipse/'/>
   </children>
