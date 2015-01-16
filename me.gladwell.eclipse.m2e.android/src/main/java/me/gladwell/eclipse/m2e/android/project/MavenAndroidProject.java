@@ -39,4 +39,6 @@ public interface MavenAndroidProject {
 
     public boolean isIgnoreOptionalWarningsInGenFolder();
     
+    public Sdk getAndroidSdk();
+    
 }

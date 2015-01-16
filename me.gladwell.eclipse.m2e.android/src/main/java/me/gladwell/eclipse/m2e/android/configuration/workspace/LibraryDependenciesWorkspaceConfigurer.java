@@ -28,7 +28,7 @@ public class LibraryDependenciesWorkspaceConfigurer implements WorkspaceConfigur
         this.workspace = workspace;
     }
 
-    public boolean isConfigured(EclipseAndroidProject project) {
+    public boolean isConfigured(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
         return false;
     }
 

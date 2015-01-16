@@ -18,6 +18,7 @@ public class WorkspaceModule extends AbstractModule {
     List<WorkspaceConfigurer> provideWorkspaceConfigurers(LibraryDependenciesWorkspaceConfigurer configurer) {
         final List<WorkspaceConfigurer> workspaceConfigurers = new ArrayList<WorkspaceConfigurer>();
 
+        workspaceConfigurers.add(new AddProjectPropertiesFileConfigurer());
         workspaceConfigurers.add(new FixerWorkspaceConfigurer());
         workspaceConfigurers.add(new AddAndroidNatureWorkspaceConfigurer());
         workspaceConfigurers.add(new OrderBuildersWorkspaceConfigurer());

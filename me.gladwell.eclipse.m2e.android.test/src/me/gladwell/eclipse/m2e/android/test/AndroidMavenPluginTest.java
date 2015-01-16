@@ -15,6 +15,11 @@ import static me.gladwell.eclipse.m2e.android.test.IResources.rename;
 import static me.gladwell.eclipse.m2e.android.test.ProjectImporter.importAndroidTestProject;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -22,6 +27,7 @@ import org.eclipse.jdt.core.JavaCore;
 
 import com.android.SdkConstants;
 import com.android.ide.eclipse.adt.AdtConstants;
+import com.android.sdklib.internal.project.ProjectProperties;
 
 @SuppressWarnings("restriction")
 public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
@@ -213,6 +219,21 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IProject project = projects[1];
         
         assertFalse("invalid relative link created",project.getFile(AdtConstants.WS_ASSETS).getRawLocation().segment(0).equals("PROJECT_LOC"));
+    }
+    
+    public void testConfigureGeneratesProjectProperties() throws Exception {
+        IProject project = importAndroidTestProject("android-application").into(workspace);
+        
+        IFile file = project.getFile(ProjectProperties.PropertyType.PROJECT.getFilename());
+        delete(file);
+        
+        updateConfiguration(project);
+        
+        InputStream is = new FileInputStream(file.getLocation().toFile());
+        Properties projectProperties = new Properties();
+        projectProperties.load(is);
+        
+        assertEquals(projectProperties.get(ProjectProperties.PROPERTY_TARGET), "android-10"); 
     }
 
 }

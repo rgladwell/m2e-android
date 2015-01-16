@@ -27,6 +27,8 @@ public interface EclipseAndroidProject {
     public void setLibrary(boolean isLibrary);
 
     public void setLibraryDependencies(List<EclipseAndroidProject> dependencies);
+    
+    public void setPlatform(String platform);
 
     public void fixProject();
 

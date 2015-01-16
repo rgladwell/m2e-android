@@ -69,7 +69,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 
                 for (WorkspaceConfigurer configurer : workspaceConfigurers) {
                     try {
-                        if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject)) {
+                        if (configurer.isValid(mavenProject) && !configurer.isConfigured(eclipseProject, mavenProject)) {
                             configurer.configure(eclipseProject, mavenProject);
                         }
                     } catch (DependencyNotFoundInWorkspace e) {

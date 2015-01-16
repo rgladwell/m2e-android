@@ -26,7 +26,7 @@ public class OrderBuildersWorkspaceConfigurer implements WorkspaceConfigurer {
 
     public static final String APK_BUILDER_COMMAND_NAME = "com.android.ide.eclipse.adt.ApkBuilder";
 
-    public boolean isConfigured(EclipseAndroidProject project) {
+    public boolean isConfigured(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
         return false;
     }
 
