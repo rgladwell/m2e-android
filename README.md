@@ -1,5 +1,7 @@
 #Android for Maven Eclipse [![Stories in Ready](http://badge.waffle.io/rgladwell/m2e-android.png)](http://waffle.io/rgladwell/m2e-android) [![Build Status](https://travis-ci.org/rgladwell/m2e-android.svg?branch=master)](https://travis-ci.org/rgladwell/m2e-android)
 
+[![Join the chat at https://gitter.im/rgladwell/m2e-android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rgladwell/m2e-android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 _Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefson, Anthony Dannane, Mykola Nikishov, Raphael Ackermann, Csaba Kozák, and Sonatype Inc.. All rights reserved. This program and the accompanying materials are made available under the terms of the [Eclipse Public License 1.0](http://www.eclipse.org/legal) which accompanies this distribution_
 
 Android for Maven Eclipse (**m2e-android**) adds [Maven](http://maven.apache.org/) support to the [Android Developer Tools](http://developer.android.com/tools/sdk/eclipse-adt.html) (ADT). This is developer documentation, for user instructions on how to install please see the [project web site.](http://rgladwell.github.com/m2e-android/)
