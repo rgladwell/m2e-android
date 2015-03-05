@@ -34,9 +34,9 @@ To configure your development environment please follow these steps:
  * Install [Eclipse Luna](http://eclipse.org/downloads).
  * Install latest [Android Development Tools](http://developer.android.com/sdk/installing/installing-adt.html).
  * Install [Eclipse Plug-in Development Environment.](http://www.eclipse.org/pde/).
- * In Eclipse select _Help -> Install new software..._ and go to the _Maven Eclipse_ update site.
+ * In Eclipse select _Help -> Install new software..._ and select the _Luna_ update site from the _Work With_ drop down.
  * Un-check the _Group items by category_ check box.
- * You should now see the "m2e - Extensions Development Support (Optional)" plugin.
+ * Search for the "m2e - Extensions Development Support (Optional)" plugin.
  * Select, install and restart Eclipse.
 
 This project consists of several sub-modules, including:
@@ -52,11 +52,10 @@ To clone them into your Eclipse workspace follow these steps:
 
  * Clone this git repository into your local workspace.
  * In Eclipse select _File_ -> _Import..._ in the menu and then select _Maven_ -> _Existing Maven Projects_.
- * Choose the parent folder you just cloned into your workspace (should be _m2e-android_), select all sub projects and click _Finish_
- * If you get a _"Plugin exception not covered by lifecycle configuration"_ error, click _"Discover new m2e connectors."_ This will allow you to install the Tycho configurator.
- * Mark all new projects in the _Package Explorer_ and right-click on them to select _Team_ -> _Share Project_.
- * Select _Git_ and click _Next_.
- * Check the _Use or create Repository in parent folder of project_ and click _Finish_.
+ * Select the `m2e-android` folder you just cloned and select the parent and some of the sub-projects (excluding the targets i.e. `luna`, `mars`, etc.).
+ * Click _Finish_.
+ * This should install some additional m2e extensions if not already installed
+ * Restart Eclipse when prompted.
 
 ##Further Reading
 
