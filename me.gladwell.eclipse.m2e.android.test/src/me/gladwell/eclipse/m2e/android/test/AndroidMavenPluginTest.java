@@ -29,7 +29,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     private static final String SIMPLE_PROJECT_NAME = "simple-project";
     private static final String MULTIMODULE_ROOT = "projects/issue-68";
 
-    public void testConfigureNonAndroidProject() throws Exception {
+    public void testConfigureNonAndroidProjectDoesNotAddNature() throws Exception {
         IProject project = importAndroidProject(SIMPLE_PROJECT_NAME);
         assertThat(project, not(hasAndroidNature()));
     }
@@ -39,7 +39,11 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IJavaProject javaProject = JavaCore.create(project);
         assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation()
                 .toString().equals("/" + SIMPLE_PROJECT_NAME + "/target/android-classes"));
+    }
 
+    public void testConfigureNonAndroidProjectDoesAddGenFolder() throws Exception {
+        IProject project = importAndroidProject(SIMPLE_PROJECT_NAME);
+        IJavaProject javaProject = JavaCore.create(project);
         for (IClasspathEntry entry : javaProject.getRawClasspath()) {
             assertFalse("classpath contains reference to gen directory", entry.getPath().toOSString().contains("gen"));
         }
