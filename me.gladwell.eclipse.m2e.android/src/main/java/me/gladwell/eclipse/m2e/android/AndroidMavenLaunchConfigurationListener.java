@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Ricardo Gladwell
+ * Copyright (c) 2014, 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,12 +66,12 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
             IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
             EclipseAndroidProject eclipseProject = factory.createAndroidProject(project);
 
-            if (!configuration.getAttributes().containsValue(ANDROID_TEST_CLASSPATH_PROVIDER)
-                    && configuration.getType().getIdentifier().equals("org.eclipse.jdt.junit.launchconfig")
-                    && eclipseProject.isAndroidProject() && project.hasNature(IMavenConstants.NATURE_ID)) {
-                final ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
-                workingCopy.setAttribute(ATTR_CLASSPATH_PROVIDER, ANDROID_TEST_CLASSPATH_PROVIDER);
-                workingCopy.setAttribute(ATTR_SOURCE_PATH_PROVIDER, ANDROID_TEST_SOURCEPATH_PROVIDER);
+            if (isAndroidJUnitLaunch(configuration)
+                    && eclipseProject.isAndroidProject()
+                    && isMavenProject(project)) {
+
+                final ILaunchConfigurationWorkingCopy workingCopy = addCustomClasspathProviderTo(configuration);
+
                 new WorkspaceJob("Update launch configuration") {
                     @Override
                     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
@@ -79,11 +79,27 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
                         return Status.OK_STATUS;
                     }
                 }.schedule();
+
             }
         } catch (CoreException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private ILaunchConfigurationWorkingCopy addCustomClasspathProviderTo(ILaunchConfiguration configuration) throws CoreException {
+        ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
+        workingCopy.setAttribute(ATTR_CLASSPATH_PROVIDER, ANDROID_TEST_CLASSPATH_PROVIDER);
+        return workingCopy;
+    }
+
+    private boolean isAndroidJUnitLaunch(ILaunchConfiguration configuration) throws CoreException {
+        return !configuration.getAttributes().containsValue(ANDROID_TEST_CLASSPATH_PROVIDER)
+                    && configuration.getType().getIdentifier().equals("org.eclipse.jdt.junit.launchconfig");
+    }
+
+    private boolean isMavenProject(IProject project) throws CoreException {
+        return project.hasNature(IMavenConstants.NATURE_ID);
     }
 
     public void mavenProjectChanged(MavenProjectChangedEvent[] events, IProgressMonitor monitor) {
