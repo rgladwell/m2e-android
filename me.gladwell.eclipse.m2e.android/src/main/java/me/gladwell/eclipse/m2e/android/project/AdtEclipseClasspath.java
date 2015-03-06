@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Ricardo Gladwell
+ * Copyright (c) 2014, 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,12 +31,14 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
-public class MavenEclipseClasspath implements Classpath {
+import com.android.ide.eclipse.adt.AdtConstants;
+
+public class AdtEclipseClasspath implements Classpath {
 
     private final IJavaProject project;
     private final IClasspathDescriptor classpath;
 
-    public MavenEclipseClasspath(IJavaProject project, IClasspathDescriptor classpath) {
+    public AdtEclipseClasspath(IJavaProject project, IClasspathDescriptor classpath) {
         super();
         this.project = project;
         this.classpath = classpath;
@@ -90,7 +92,7 @@ public class MavenEclipseClasspath implements Classpath {
     public void markNotExported(String path) {
         setClassPathEntryExported(path, false);
     }
-    
+
     private void setClassPathEntryExported(String path, boolean exported) {
         IClasspathEntry oldEntry = findContainerMatching(classpath, path);
         if (oldEntry != null) {
@@ -105,6 +107,10 @@ public class MavenEclipseClasspath implements Classpath {
 
     public SourceEntry getSourceEntry(String path) {
         return new EclipseSourceEntry(project.getProject(), findSourceEntryDescriptor(classpath, path));
+    }
+
+    public Entry getAndroidClasspathContainer() {
+        return new EclipseEntry(classpath, AdtConstants.CONTAINER_PRIVATE_LIBRARIES);
     }
 
 }

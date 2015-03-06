@@ -15,6 +15,9 @@ import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_S
 import java.util.ArrayList;
 import java.util.List;
 
+import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
@@ -31,13 +34,20 @@ import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.project.IMavenProjectChangedListener;
 import org.eclipse.m2e.core.project.MavenProjectChangedEvent;
 
-import com.android.ide.eclipse.adt.AdtConstants;
+import com.google.inject.Inject;
 
 public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigurationListener,
         IMavenProjectChangedListener {
 
     private static final String ANDROID_TEST_CLASSPATH_PROVIDER = "me.gladwell.m2e.android.classpathProvider";
     private static final String ANDROID_TEST_SOURCEPATH_PROVIDER = "me.gladwell.m2e.android.sourcepathProvider";
+
+    private final AndroidProjectFactory<EclipseAndroidProject, IProject> factory;
+
+    @Inject
+    public AndroidMavenLaunchConfigurationListener(AndroidProjectFactory<EclipseAndroidProject, IProject> factory) {
+        this.factory = factory;
+    }
 
     public void launchConfigurationAdded(ILaunchConfiguration configuration) {
         updateLaunchConfiguration(configuration);
@@ -54,10 +64,11 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
         try {
             String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, (String) null);
             IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+            EclipseAndroidProject eclipseProject = factory.createAndroidProject(project);
 
             if (!configuration.getAttributes().containsValue(ANDROID_TEST_CLASSPATH_PROVIDER)
                     && configuration.getType().getIdentifier().equals("org.eclipse.jdt.junit.launchconfig")
-                    && project.hasNature(AdtConstants.NATURE_DEFAULT) && project.hasNature(IMavenConstants.NATURE_ID)) {
+                    && eclipseProject.isAndroidProject() && project.hasNature(IMavenConstants.NATURE_ID)) {
                 final ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
                 workingCopy.setAttribute(ATTR_CLASSPATH_PROVIDER, ANDROID_TEST_CLASSPATH_PROVIDER);
                 workingCopy.setAttribute(ATTR_SOURCE_PATH_PROVIDER, ANDROID_TEST_SOURCEPATH_PROVIDER);

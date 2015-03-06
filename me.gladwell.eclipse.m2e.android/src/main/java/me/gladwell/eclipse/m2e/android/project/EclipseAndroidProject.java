@@ -46,4 +46,6 @@ public interface EclipseAndroidProject {
 
     public String getPath();
 
+    public void orderBuilders();
+
 }
