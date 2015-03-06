@@ -28,9 +28,9 @@ public interface MavenAndroidProject {
     public List<Dependency> getLibraryDependencies();
 
     public File getAssetsDirectory();
-    
+
     public File getResourceFolder();
-    
+
     public File getAndroidManifestFile();
 
     public List<String> getPlatformProvidedDependencies();
@@ -40,5 +40,5 @@ public interface MavenAndroidProject {
     public String getOutputDirectory();
 
     public boolean isIgnoreOptionalWarningsInGenFolder();
-    
+
 }
