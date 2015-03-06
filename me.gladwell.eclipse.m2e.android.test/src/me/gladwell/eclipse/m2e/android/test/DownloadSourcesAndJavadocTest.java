@@ -8,12 +8,14 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
-import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES;
+import static java.util.Arrays.asList;
+import static me.gladwell.eclipse.m2e.android.test.Classpaths.findEntry;
+import static org.eclipse.jdt.core.JavaCore.newLibraryEntry;
 import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.not;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -34,10 +36,6 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Test;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 @SuppressWarnings("restriction")
 public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
@@ -184,23 +182,16 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
         @Override
         public IClasspathEntry[] getClasspathEntries() {
+            List<IClasspathEntry> classpath = new ArrayList<IClasspathEntry>(asList(realContainer.getClasspathEntries()));
+            IClasspathEntry mockito = findEntry(realContainer.getClasspathEntries(), "mockito-core-1.9.5.jar");
 
-            List<IClasspathEntry> entries = Arrays.asList(realContainer.getClasspathEntries());
+            classpath.remove(mockito);
 
-            List<IClasspathEntry> modifiedEntries = Lists.transform(entries,
-                    new Function<IClasspathEntry, IClasspathEntry>() {
+            mockito = newLibraryEntry(mockito.getPath(), path, null,
+                    mockito.getAccessRules(), mockito.getExtraAttributes(), mockito.isExported());
 
-                        @Override
-                        public IClasspathEntry apply(IClasspathEntry entry) {
-                            if (entry.getPath().toPortableString().contains("mockito-core-1.9.5.jar")) {
-                                return JavaCore.newLibraryEntry(entry.getPath(), path, null,
-                                        entry.getAccessRules(), entry.getExtraAttributes(), entry.isExported());
-                            }
-                            return entry;
-                        }
-                    });
-
-            return Iterables.toArray(modifiedEntries, IClasspathEntry.class);
+            classpath.add(mockito);
+            return classpath.toArray(realContainer.getClasspathEntries());
         }
 
         @Override

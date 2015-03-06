@@ -8,13 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
-import static com.android.ide.eclipse.adt.internal.sdk.Sdk.getProjectState;
 import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
 
 import java.io.File;
-
-import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -26,6 +22,7 @@ import org.eclipse.m2e.jdt.IClasspathManager;
 @SuppressWarnings("restriction")
 public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
+    private static final String APKLIB_ERROR_TYPE = "me.gladwell.eclipse.m2e.android.markers.dependency.apklib";
     private static final String ANDROID_LIB_PROJECT_NAME = "android-library";
     private static final String TEST_PROJECT_WITH_APKLIB_DEPS = "test-project-apklib-deps";
 
@@ -41,21 +38,21 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     }
 
     public void testConfigureAppliesLibraryState() throws Exception {
-        IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
-        assertTrue(getProjectState(libraryProject).isLibrary());
+        TestAndroidProject libraryProject = new TestAndroidProject(importAndroidProject(ANDROID_LIB_PROJECT_NAME));
+        assertTrue(libraryProject.isLibrary());
     }
 
     public void testConfigureAddsWorkspaceLibraryProjectToProjectProperties() throws Exception {
         IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
-        IProject project = importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS);
+        TestAndroidProject project = new TestAndroidProject(importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS));
 
-        assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+        assertTrue(project.libraries().contains(libraryProject));
     }
 
     public void testConfigureAddsErrorForNonExistentLibraryProject() throws Exception {
         IProject project = importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS);
 
-        assertErrorMarker(project, AndroidMavenPlugin.APKLIB_ERROR_TYPE);
+        assertErrorMarker(project, APKLIB_ERROR_TYPE);
     }
 
     public void testConfigureWithClosedProject() throws Exception {
@@ -65,17 +62,15 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         try {
             importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS);
         } catch (CoreException ex) {
-            if (ex.getCause() instanceof ProjectConfigurationException) {
-                fail("Access denied: M2E is trying to access a closed project");
-            }
+            fail("Access denied: M2E is trying to access a closed project");
         }
     }
 
     public void testConfigureAddsWorkspaceLibraryProjectWithDifferentArtifactId() throws Exception {
         IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
-        IProject project = importAndroidProject("test-project-apklib-deps-diff-artifact-id");
+        TestAndroidProject project = new TestAndroidProject(importAndroidProject("test-project-apklib-deps-diff-artifact-id"));
 
-        assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+        assertTrue(project.libraries().contains(libraryProject));
     }
 
     public void testConfigureClearsOldErrors() throws Exception {
@@ -89,17 +84,17 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     public void testConfigureAddsWorkspaceLibraryInSubfdoler() throws Exception {
         File subfolder = new File(workspace.getRoot().getLocation().toFile(), "subfolder");
         IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME, subfolder);
-        IProject project = importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS);
+        TestAndroidProject project = new TestAndroidProject(importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS));
 
-        assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+        assertTrue(project.libraries().contains(libraryProject));
     }
 
     public void testConfigureAddsWorkspaceLibraryOutsideWorkspaceFolder() throws Exception {
         File temp = createTempFolder();
         IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME, temp);
-        IProject project = importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS);
+        TestAndroidProject project = new TestAndroidProject(importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS));
 
-        assertTrue(getProjectState(project).getFullLibraryProjects().contains(libraryProject));
+        assertTrue(project.libraries().contains(libraryProject));
     }
 
     public void testConfigureDoesNotMarkMavenContainerExported() throws Exception {

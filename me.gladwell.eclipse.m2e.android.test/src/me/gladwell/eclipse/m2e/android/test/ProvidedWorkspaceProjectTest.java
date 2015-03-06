@@ -6,8 +6,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.jdt.IClasspathManager;
 
-import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES;
-
 @SuppressWarnings("restriction")
 public class ProvidedWorkspaceProjectTest extends AndroidMavenPluginTestCase {
 

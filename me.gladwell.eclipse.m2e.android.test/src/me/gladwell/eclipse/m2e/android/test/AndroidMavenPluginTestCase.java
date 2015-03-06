@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009-2014 Ricardo Gladwell, Hugo Josefson, Csaba Kozák
+ * Copyright (c) 2009-2015 Ricardo Gladwell, Hugo Josefson, Csaba Kozák
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
-
 import org.apache.maven.model.Model;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
@@ -29,7 +26,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -46,47 +42,23 @@ import org.eclipse.m2e.core.project.MavenUpdateRequest;
 import org.eclipse.m2e.core.project.ProjectImportConfiguration;
 import org.eclipse.m2e.core.project.ResolverConfiguration;
 import org.eclipse.m2e.tests.common.AbstractMavenProjectTestCase;
-import org.eclipse.m2e.tests.common.JobHelpers;
 import org.eclipse.m2e.tests.common.WorkspaceHelpers;
-import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
-
-import com.android.ide.eclipse.adt.internal.sdk.Sdk;
-import com.google.inject.Inject;
 
 @SuppressWarnings("restriction")
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
 
-    static final int MAXIMUM_SECONDS_TO_LOAD_ADT = 120;
-
-    protected AndroidMavenPlugin plugin;
-
-    @Inject File stateLocation;
+    public static final String CONTAINER_NONRUNTIME_DEPENDENCIES = "me.gladwell.eclipse.m2e.android.classpath.NONRUNTIME_DEPENDENCIES";
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
-        plugin = AndroidMavenPlugin.getDefault();
-        plugin.getInjector().injectMembers(this);
-
-        cleanNonruntimeClasspathCache();
-        waitForAdtToLoad();
+        cleanClasspathCache();
     }
 
-    private void cleanNonruntimeClasspathCache() throws IOException {
-        cleanDirectory(stateLocation);
-    }
-
-    protected void waitForAdtToLoad() throws InterruptedException, Exception {
-        try {
-            JobHelpers.waitForJobs(new IJobMatcher() {
-                public boolean matches(Job job) {
-                    return job.getClass().getName().contains(Sdk.class.getName());
-                }
-
-            }, MAXIMUM_SECONDS_TO_LOAD_ADT * 1000);
-        } catch (Throwable t) {
-            t.printStackTrace();
+    private void cleanClasspathCache() throws IOException {
+        File cache = new File(workspace.getRoot().getLocation().toFile(), ".metadata/.plugins/me.gladwell.eclipse.m2e.android");
+        if(cache.exists()) {
+            cleanDirectory(cache);
         }
     }
 
@@ -99,7 +71,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     protected IProject importAndroidProject(String name) throws Exception {
         IProject project = importProject("projects" + separator + name + separator + "pom.xml");
         waitForJobsToComplete();
-        waitForAdtToLoad();
         return project;
     }
 
@@ -110,7 +81,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     protected IProject importAndroidProject(String name, ResolverConfiguration configuration) throws Exception {
         IProject project = importProject("projects" + separator + name + separator + "pom.xml", configuration);
         waitForJobsToComplete();
-        waitForAdtToLoad();
         return project;
     }
 
@@ -170,7 +140,6 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     public IProject[] importAndroidProjects(String basedir, String[] pomNames) throws Exception {
         IProject[] projects = importProjects(basedir, pomNames, new ResolverConfiguration());
         waitForJobsToComplete();
-        waitForAdtToLoad();
         return projects;
     }
 
@@ -224,14 +193,14 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         }
     }
 
-    protected IClasspathEntry getClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
+    protected static IClasspathEntry getClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
         IClasspathEntry entry = findClasspathContainer(javaProject, id);
         if (entry == null)
             throw new RuntimeException("classpath container=[" + id + "] not found");
         return entry;
     }
 
-    private IClasspathEntry findClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
+    protected static IClasspathEntry findClasspathContainer(IJavaProject javaProject, String id) throws JavaModelException {
         for (IClasspathEntry entry : javaProject.getRawClasspath()) {
             if (entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
                 if (entry.getPath().toOSString().equals(id)) {
@@ -246,11 +215,10 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         return findClasspathContainer(javaProject, id) != null;
     }
 
-    protected boolean classpathContainerContains(IJavaProject project, String id, String path)
-            throws JavaModelException {
+    protected boolean classpathContainerContains(IJavaProject project, String id, String path) throws JavaModelException {
         try {
             return getClasspathEntry(project, id, path) != null;
-        } catch (ProjectConfigurationException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -258,13 +226,14 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     
     protected IClasspathEntry getClasspathEntry(IJavaProject project, String id, String path) throws JavaModelException {
         IClasspathContainer container = JavaCore.getClasspathContainer(new Path(id), project);
-        
+
         for (IClasspathEntry entry : container.getClasspathEntries()) {
             if (entry.getPath().toOSString().contains(path)) {
                 return entry;
             }
         }
-        throw new ProjectConfigurationException("ClasspathEntry [" + path + "] not found in container [" + id + "]");
+
+        throw new RuntimeException("ClasspathEntry [" + path + "] nt found in container [" + id + "]");
     }
 
     protected void assertErrorMarker(IProject project, String type) throws CoreException {

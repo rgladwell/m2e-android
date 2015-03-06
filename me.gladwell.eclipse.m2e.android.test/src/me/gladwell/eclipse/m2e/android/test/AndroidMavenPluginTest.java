@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013 Ricardo Gladwell
+ * Copyright (c) 2012, 2013, 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,19 +9,19 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static java.io.File.separator;
-import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntry;
+import static me.gladwell.eclipse.m2e.android.test.Classpaths.findSourceEntry;
 import static me.gladwell.eclipse.m2e.android.test.IResources.delete;
 import static me.gladwell.eclipse.m2e.android.test.IResources.rename;
+import static me.gladwell.eclipse.m2e.android.test.Matchers.hasAndroidNature;
 import static me.gladwell.eclipse.m2e.android.test.ProjectImporter.importAndroidTestProject;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-
-import com.android.SdkConstants;
-import com.android.ide.eclipse.adt.AdtConstants;
 
 @SuppressWarnings("restriction")
 public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
@@ -31,8 +31,11 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     public void testConfigureNonAndroidProject() throws Exception {
         IProject project = importAndroidProject(SIMPLE_PROJECT_NAME);
+        assertThat(project, not(hasAndroidNature()));
+    }
 
-        assertFalse("configurer added android nature", project.hasNature(AdtConstants.NATURE_DEFAULT));
+    public void testConfigureNonAndroidProjectDoesSetOutputLocation() throws Exception {
+        IProject project = importAndroidProject(SIMPLE_PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
         assertFalse("output location set to android value for non-android project", javaProject.getOutputLocation()
                 .toString().equals("/" + SIMPLE_PROJECT_NAME + "/target/android-classes"));
@@ -61,7 +64,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
                 "android-internaldirassets/pom.xml" });
         IProject project = projects[1];
 
-        assertEquals(project.getLocation().append("assets2"), project.getFolder(AdtConstants.WS_ASSETS).getLocation());
+        assertEquals(project.getLocation().append("assets2"), project.getFolder("assets").getLocation());
     }
 
     public void testNonDefaultExternalAssetsFolderCompiles() throws Exception {
@@ -77,7 +80,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
                 "android-relativeoutside/pom.xml" });
         IProject project = projects[1];
 
-        assertEquals(projects[0].getLocation().append("outsideassets"), project.getFolder(AdtConstants.WS_ASSETS).getLocation());
+        assertEquals(projects[0].getLocation().append("outsideassets"), project.getFolder("assets").getLocation());
     }
     
     public void testNonDefaultResourceFolderLinkCreated() throws Exception {
@@ -85,7 +88,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         "android-internaldirassets/pom.xml" });
         IProject project = projects[1];
         
-        assertEquals(project.getLocation().append("src/main/res"), project.getFolder(SdkConstants.FD_RES).getLocation());
+        assertEquals(project.getLocation().append("src/main/res"), project.getFolder("res").getLocation());
     }
     
     public void testNonDefaultAndroidManifestLinkCreated() throws Exception {
@@ -93,7 +96,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         "android-internaldirassets/pom.xml" });
         IProject project = projects[1];
         
-        assertEquals(project.getLocation().append("src/main/AndroidManifest.xml"), project.getFile(SdkConstants.ANDROID_MANIFEST_XML).getLocation());
+        assertEquals(project.getLocation().append("src/main/AndroidManifest.xml"), project.getFile("AndroidManifest.xml").getLocation());
     }
 
     public void testConfigureSetsIgnoreWarningsForGenFolder() throws Exception {
@@ -140,19 +143,19 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     public void testAssetsLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
 
-        assertEquals(project.getLocation().append("src/main/assets"), project.getFolder(AdtConstants.WS_ASSETS).getLocation());
+        assertEquals(project.getLocation().append("src/main/assets"), project.getFolder("assets").getLocation());
     }
 
     public void testManifestLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
 
-        assertEquals(project.getLocation().append("src/main/AndroidManifest.xml"), project.getFile(SdkConstants.ANDROID_MANIFEST_XML).getLocation());
+        assertEquals(project.getLocation().append("src/main/AndroidManifest.xml"), project.getFile("AndroidManifest.xml").getLocation());
     }
 
     public void testResourceLinkCreatedWithAndroidMavenPlugin4DefaultValue() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
 
-        assertEquals(project.getLocation().append("src/main/res"), project.getFolder(SdkConstants.FD_RES).getLocation());
+        assertEquals(project.getLocation().append("src/main/res"), project.getFolder("res").getLocation());
     }
 
     public void testResourceUnlinkedOnRevertToADTDefaults() throws Exception {
@@ -198,13 +201,13 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
     public void testNonExistingResourcesAreNotLinked() throws Exception {
         IProject project = importAndroidTestProject("simpligility-groupid").into(workspace);
         
-        assertFalse("link created for non-existing assets folder", project.getFolder(AdtConstants.WS_ASSETS).exists());
+        assertFalse("link created for non-existing assets folder", project.getFolder("assets").exists());
     }
 
     public void testProjectRelativeLinksCreatedWhenTargetIsInsideProjectFolder() throws Exception {
         IProject project = importAndroidTestProject("android-maven-plugin-4").into(workspace);
         
-        assertEquals("PROJECT_LOC", project.getFile(AdtConstants.WS_ASSETS).getRawLocation().segment(0));
+        assertEquals("PROJECT_LOC", project.getFile("assets").getRawLocation().segment(0));
     }
     
     public void testAbsoluteLinksCreatedWhenTargetIsOutsideProjectFolder() throws Exception {
@@ -212,7 +215,7 @@ public class AndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         "android-relativeoutside/pom.xml" });
         IProject project = projects[1];
         
-        assertFalse("invalid relative link created",project.getFile(AdtConstants.WS_ASSETS).getRawLocation().segment(0).equals("PROJECT_LOC"));
+        assertFalse("invalid relative link created",project.getFile("assets").getRawLocation().segment(0).equals("PROJECT_LOC"));
     }
 
 }

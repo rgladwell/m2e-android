@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell
+ * Copyright (c) 2012, 2013, 2014, 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,8 @@ import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 
-import com.android.ide.eclipse.adt.AdtConstants;
+import static me.gladwell.eclipse.m2e.android.test.Matchers.hasAndroidNature;
+import static org.junit.Assert.assertThat;
 
 @SuppressWarnings("restriction")
 public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
@@ -41,11 +42,11 @@ public class MultiModulePluginTest extends AndroidMavenPluginTestCase {
     }
 
     public void testConfigureAddsAndroidNature() throws Exception {
-        assertTrue("failed to add android nature to child module", childProject.hasNature(AdtConstants.NATURE_DEFAULT));
+        assertThat(childProject, hasAndroidNature());
     }
 
     public void testConfigureDoesNotAddAndroidNatureToParentProject() throws Exception {
-        assertFalse("added android nature to parent", parentProject.hasNature(AdtConstants.NATURE_DEFAULT));
+        assertThat(childProject, hasAndroidNature());
     }
 
 }
