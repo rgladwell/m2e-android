@@ -8,12 +8,12 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.workspace;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class AddAndroidNatureWorkspaceConfigurer implements WorkspaceConfigurer {
 
-    public boolean isConfigured(EclipseAndroidProject project) {
+    public boolean isConfigured(IDEAndroidProject project) {
         return project.isAndroidProject();
     }
 
@@ -21,7 +21,7 @@ public class AddAndroidNatureWorkspaceConfigurer implements WorkspaceConfigurer 
         return true;
     }
 
-    public void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
+    public void configure(IDEAndroidProject eclipseProject, MavenAndroidProject mavenProject) {
         eclipseProject.setAndroidProject(mavenProject.isAndroidProject());
     }
 

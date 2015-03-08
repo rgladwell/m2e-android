@@ -6,7 +6,7 @@ import static me.gladwell.eclipse.m2e.android.configuration.classpath.Paths.ecli
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.project.AndroidWorkspace;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
@@ -24,9 +24,9 @@ public class RemoveNonRuntimeProjectsConfigurer implements RawClasspathConfigure
         this.workspace = workspace;
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject, IClasspathDescriptor classpath) {
         if (eclipseProject.shouldResolveWorkspaceProjects()) {
-           final List<EclipseAndroidProject> nonRuntimeProjects = workspace.findOpenWorkspaceDependencies(mavenProject.getNonRuntimeDependencies());
+           final List<IDEAndroidProject> nonRuntimeProjects = workspace.findOpenWorkspaceDependencies(mavenProject.getNonRuntimeDependencies());
 
            final List<String> nonRuntimeProjectPaths = from(nonRuntimeProjects)
                    .transform(eclipseProjectToPathFunction())

@@ -8,13 +8,13 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
 public interface RawClasspathConfigurer {
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath);
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject, IClasspathDescriptor classpath);
 
 }

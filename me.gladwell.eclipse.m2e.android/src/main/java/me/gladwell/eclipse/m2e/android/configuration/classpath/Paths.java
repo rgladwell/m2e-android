@@ -1,7 +1,7 @@
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
 import me.gladwell.eclipse.m2e.android.project.Dependency;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 
 import com.google.common.base.Function;
 
@@ -10,9 +10,9 @@ public class Paths {
     private Paths() {
     }
 
-    public static Function<EclipseAndroidProject, String> eclipseProjectToPathFunction() {
-        return new Function<EclipseAndroidProject, String>() {
-            public String apply(EclipseAndroidProject project) {
+    public static Function<IDEAndroidProject, String> eclipseProjectToPathFunction() {
+        return new Function<IDEAndroidProject, String>() {
+            public String apply(IDEAndroidProject project) {
                 return project.getPath().toString();
             }
             

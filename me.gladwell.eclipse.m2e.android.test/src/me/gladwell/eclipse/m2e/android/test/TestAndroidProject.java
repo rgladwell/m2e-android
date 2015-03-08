@@ -1,11 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2015 Ricardo Gladwell
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *******************************************************************************/
+
 package me.gladwell.eclipse.m2e.android.test;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static me.gladwell.eclipse.m2e.android.test.AndroidMavenPluginTestCase.findClasspathContainer;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -41,7 +49,7 @@ public class TestAndroidProject {
 
     public List<IProject> libraries() throws IOException, CoreException {
         Properties properties = projectProperties();
-        List<IProject> libraries = newArrayList();
+        List<IProject> libraries = new ArrayList<IProject>();
         int index = 1;
         String library = properties.getProperty("android.library.reference." + index);
 

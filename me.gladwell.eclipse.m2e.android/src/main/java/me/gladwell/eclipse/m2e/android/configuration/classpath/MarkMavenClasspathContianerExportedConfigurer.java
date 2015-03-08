@@ -8,7 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.m2e.jdt.IClasspathManager;
@@ -19,7 +19,7 @@ public class MarkMavenClasspathContianerExportedConfigurer implements ClasspathC
         return !project.isLibrary();
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject) {
         eclipseProject.getClasspath().markExported(IClasspathManager.CONTAINER_ID);
     }
 

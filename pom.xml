@@ -64,6 +64,7 @@
     <module>juno</module>
     <module>luna</module>
     <module>mars</module>
+    <module>andmore</module>
   </modules>
 
   <build>
@@ -74,6 +75,7 @@
         <version>${tycho-version}</version>
         <extensions>true</extensions>
       </plugin>
+
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
@@ -115,8 +117,12 @@
               <arch>x86_64</arch>
             </environment>
           </environments>
+          <dependency-resolution>
+            <optionalDependencies>ignore</optionalDependencies>
+          </dependency-resolution>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>findbugs-maven-plugin</artifactId>

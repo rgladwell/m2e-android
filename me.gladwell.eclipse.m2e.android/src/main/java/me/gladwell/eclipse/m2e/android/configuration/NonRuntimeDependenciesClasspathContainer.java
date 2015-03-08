@@ -13,7 +13,7 @@ import static com.google.common.collect.Iterables.toArray;
 import java.io.FileNotFoundException;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -25,9 +25,9 @@ import org.eclipse.jdt.core.JavaCore;
 public class NonRuntimeDependenciesClasspathContainer implements IClasspathContainer {
 
     private final ClasspathLoader loader;
-    private final EclipseAndroidProject eclipseProject;
+    private final IDEAndroidProject eclipseProject;
 
-    public NonRuntimeDependenciesClasspathContainer(ClasspathLoader loader, EclipseAndroidProject project) {
+    public NonRuntimeDependenciesClasspathContainer(ClasspathLoader loader, IDEAndroidProject project) {
         super();
         this.loader = loader;
         this.eclipseProject = project;

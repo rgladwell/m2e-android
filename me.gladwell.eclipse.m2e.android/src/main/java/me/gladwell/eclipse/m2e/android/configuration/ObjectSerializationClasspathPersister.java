@@ -23,7 +23,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.core.runtime.IPath;
@@ -170,7 +170,7 @@ class ObjectSerializationClasspathPersister implements ClasspathPersister, Class
         this.stateLocation = stateLocation;
     }
 
-    public void save(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, Iterable<IClasspathEntry> classpath) {
+    public void save(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject, Iterable<IClasspathEntry> classpath) {
         ObjectOutputStream os = null;
         try {
             File file = new File(stateLocation, eclipseProject.getProject().getName());

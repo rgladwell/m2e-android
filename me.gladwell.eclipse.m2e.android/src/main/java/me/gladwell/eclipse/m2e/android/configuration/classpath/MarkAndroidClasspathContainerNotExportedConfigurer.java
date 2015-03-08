@@ -8,7 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class MarkAndroidClasspathContainerNotExportedConfigurer implements ClasspathConfigurer {
@@ -17,7 +17,7 @@ public class MarkAndroidClasspathContainerNotExportedConfigurer implements Class
         return true;
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject) {
         eclipseProject.getClasspath().getAndroidClasspathContainer().markNotExported();
     }
 

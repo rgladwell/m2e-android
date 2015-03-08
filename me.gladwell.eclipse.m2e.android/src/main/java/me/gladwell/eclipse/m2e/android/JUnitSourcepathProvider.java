@@ -9,7 +9,8 @@ import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.Dependency;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.core.resources.IProject;
@@ -26,16 +27,16 @@ public class JUnitSourcepathProvider implements IRuntimeClasspathProvider {
     
     private final IRuntimeClasspathProvider classpathProvider;
     private final IWorkspace workspace;
-    private final AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseAndroidFactory;
-    private final AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> mavenAndroidFactory;
+    private final IDEAndroidProjectFactory ideAndroidFactory;
+    private final AndroidProjectFactory<MavenAndroidProject, IDEAndroidProject> mavenAndroidFactory;
     
     @Inject
     public JUnitSourcepathProvider(@MavenSource IRuntimeClasspathProvider classpathProvider, IWorkspace workspace,
-            AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseAndroidFactory,
-            AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> mavenAndroidFactory) {
+            IDEAndroidProjectFactory ideAndroidFactory,
+            AndroidProjectFactory<MavenAndroidProject, IDEAndroidProject> mavenAndroidFactory) {
         this.classpathProvider = classpathProvider;
         this.workspace = workspace;
-        this.eclipseAndroidFactory = eclipseAndroidFactory;
+        this.ideAndroidFactory = ideAndroidFactory;
         this.mavenAndroidFactory = mavenAndroidFactory;
     }
 
@@ -51,7 +52,7 @@ public class JUnitSourcepathProvider implements IRuntimeClasspathProvider {
     private void addNonRuntimeDependencies(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath)
             throws CoreException {
         IProject project = workspace.getRoot().getProject(config.getAttribute(ATTR_PROJECT_NAME, (String) null));
-        MavenAndroidProject androidProject = mavenAndroidFactory.createAndroidProject(eclipseAndroidFactory.createAndroidProject(project));
+        MavenAndroidProject androidProject = mavenAndroidFactory.createAndroidProject(ideAndroidFactory.createAndroidProject(project));
         
         for (Dependency dependency : androidProject.getNonRuntimeDependencies()) {
             classpath.add(newArchiveRuntimeClasspathEntry(new Path(dependency.getPath())));

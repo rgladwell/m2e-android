@@ -13,7 +13,7 @@ import static com.google.common.collect.Lists.transform;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.project.Dependency;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
@@ -24,7 +24,7 @@ import com.google.common.base.Function;
 
 public class RemoveNonRuntimeDependenciesConfigurer implements RawClasspathConfigurer {
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject, IClasspathDescriptor classpath) {
         final List<Dependency> nonRuntimeDependencies = mavenProject.getNonRuntimeDependencies();
 
         final List<String> nonRuntimeDependencyPaths = transform(nonRuntimeDependencies, new Function<Dependency, String>() {

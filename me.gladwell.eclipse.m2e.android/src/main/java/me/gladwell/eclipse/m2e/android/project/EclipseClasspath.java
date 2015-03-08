@@ -31,15 +31,15 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
-import com.android.ide.eclipse.adt.AdtConstants;
+public class EclipseClasspath implements Classpath {
 
-public class AdtEclipseClasspath implements Classpath {
-
+    private final ToolkitAdaptor adaptor;
     private final IJavaProject project;
     private final IClasspathDescriptor classpath;
 
-    public AdtEclipseClasspath(IJavaProject project, IClasspathDescriptor classpath) {
+    public EclipseClasspath(ToolkitAdaptor adaptor, IJavaProject project, IClasspathDescriptor classpath) {
         super();
+        this.adaptor = adaptor;
         this.project = project;
         this.classpath = classpath;
     }
@@ -110,7 +110,7 @@ public class AdtEclipseClasspath implements Classpath {
     }
 
     public Entry getAndroidClasspathContainer() {
-        return new EclipseEntry(classpath, AdtConstants.CONTAINER_PRIVATE_LIBRARIES);
+        return new EclipseEntry(classpath, adaptor.containerId());
     }
 
 }

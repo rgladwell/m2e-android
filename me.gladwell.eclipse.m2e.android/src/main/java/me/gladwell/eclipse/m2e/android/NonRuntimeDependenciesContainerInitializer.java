@@ -9,16 +9,14 @@
 package me.gladwell.eclipse.m2e.android;
 
 import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
-
 import me.gladwell.eclipse.m2e.android.configuration.Caching;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProjectFactory;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ClasspathContainerInitializer;
 import org.eclipse.jdt.core.IClasspathContainer;
@@ -29,15 +27,15 @@ import com.google.inject.Inject;
 public class NonRuntimeDependenciesContainerInitializer extends ClasspathContainerInitializer {
 
     @Inject @Caching private ClasspathLoader loader;
-    @Inject EclipseAndroidProjectFactory factory;
+    @Inject IDEAndroidProjectFactory factory;
 
     @Override
     public void initialize(IPath path, IJavaProject project) throws CoreException {
-        final EclipseAndroidProject eclipseProject = factory.createAndroidProject(project.getProject());
-        final IClasspathContainer container = new NonRuntimeDependenciesClasspathContainer(loader, eclipseProject);
-        final IProgressMonitor monitor = new NullProgressMonitor();
-
-        setClasspathContainer(path, new IJavaProject[] { project }, new IClasspathContainer[] { container }, monitor);
+        final IDEAndroidProject eclipseProject = factory.createAndroidProject(project.getProject());
+        final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader,
+                eclipseProject);
+        setClasspathContainer(path, new IJavaProject[] { project }, new IClasspathContainer[] { nonRuntimeContainer },
+                new NullProgressMonitor());
     }
 
     @Override

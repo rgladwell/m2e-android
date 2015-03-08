@@ -18,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.core.resources.IFolder;
@@ -39,18 +40,18 @@ public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
 
     private final IRuntimeClasspathProvider classpathProvider;
     private final IWorkspace workspace;
-    private final AndroidProjectFactory<EclipseAndroidProject, IProject> factory;
-    private final AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> factory2;
+    private final IDEAndroidProjectFactory eclipseFactory;
+    private final AndroidProjectFactory<MavenAndroidProject, IDEAndroidProject> mavenFactory;
 
     @Inject
     public JUnitClasspathProvider(@Maven IRuntimeClasspathProvider classpathProvider, IWorkspace workspace,
-            AndroidProjectFactory<EclipseAndroidProject, IProject> factory,
-            AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> factory2) {
+            IDEAndroidProjectFactory eclipseFactory,
+            AndroidProjectFactory<MavenAndroidProject, IDEAndroidProject> mavenFactory) {
         super();
         this.classpathProvider = classpathProvider;
         this.workspace = workspace;
-        this.factory = factory;
-        this.factory2 = factory2;
+        this.eclipseFactory = eclipseFactory;
+        this.mavenFactory = mavenFactory;
     }
 
     public IRuntimeClasspathEntry[] computeUnresolvedClasspath(ILaunchConfiguration config) throws CoreException {
@@ -66,7 +67,7 @@ public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
     private void addPlatformDependencies(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath)
             throws CoreException {
         IProject project = workspace.getRoot().getProject(config.getAttribute(ATTR_PROJECT_NAME, (String) null));
-        MavenAndroidProject androidProject = factory2.createAndroidProject(factory.createAndroidProject(project));
+        MavenAndroidProject androidProject = mavenFactory.createAndroidProject(eclipseFactory.createAndroidProject(project));
 
         for (String dependency : androidProject.getPlatformProvidedDependencies()) {
             classpath.add(newArchiveRuntimeClasspathEntry(new Path(dependency)));
@@ -92,8 +93,8 @@ public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
     
     private void removeMavenBuildOutputFolder(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath) throws CoreException {
         IProject project = workspace.getRoot().getProject(config.getAttribute(ATTR_PROJECT_NAME, (String) null));
-        EclipseAndroidProject androidProject = factory.createAndroidProject(project);
-        MavenAndroidProject mavenProject = factory2.createAndroidProject(androidProject);
+        IDEAndroidProject androidProject = eclipseFactory.createAndroidProject(project);
+        MavenAndroidProject mavenProject = mavenFactory.createAndroidProject(androidProject);
         
         final String mavenOutputDirectory = mavenProject.getOutputDirectory();
         Path mavenOutputDirectoryPath = new Path(mavenOutputDirectory);

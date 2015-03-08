@@ -10,7 +10,7 @@ package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
 import static org.eclipse.jdt.launching.JavaRuntime.JRE_CONTAINER;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class RemoveJREClasspathContainerConfigurer implements ClasspathConfigurer {
@@ -19,7 +19,7 @@ public class RemoveJREClasspathContainerConfigurer implements ClasspathConfigure
         return true;
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject) {
         eclipseProject.getClasspath().removeContainer(JRE_CONTAINER);
     }
 

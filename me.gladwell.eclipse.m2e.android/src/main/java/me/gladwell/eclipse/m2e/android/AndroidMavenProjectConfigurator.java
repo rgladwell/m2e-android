@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 - 2014 Ricardo Gladwell, Hugo Josefson, Csaba Kozák
+ * Copyright (c) 2009 - 2015 Ricardo Gladwell, Hugo Josefson, Csaba Kozák
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,10 @@ import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspa
 import me.gladwell.eclipse.m2e.android.configuration.classpath.ClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.RawClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.workspace.WorkspaceConfigurer;
-import me.gladwell.eclipse.m2e.android.project.AdtEclipseAndroidProject;
-import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.apache.maven.plugin.MojoExecution;
@@ -51,7 +52,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 
     @Inject private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
 
-    @Inject private AndroidProjectFactory<EclipseAndroidProject, IProject> eclipseProjectFactory;
+    @Inject private IDEAndroidProjectFactory eclipseProjectFactory;
     
     @Inject private IMavenProjectRegistry registry;
 
@@ -61,7 +62,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
         try {
             final MavenAndroidProject mavenProject = mavenProjectFactory
                     .createAndroidProject(request.getMavenProject());
-            final EclipseAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request
+            final IDEAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request
                     .getProject());
 
             if (mavenProject.isAndroidProject()) {
@@ -91,7 +92,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
     public void configureClasspath(IMavenProjectFacade facade, IClasspathDescriptor classpath, IProgressMonitor monitor)
             throws CoreException {
         final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(facade.getMavenProject());
-        final EclipseAndroidProject eclipseProject = new AdtEclipseAndroidProject(registry, facade.getProject(), classpath);
+        final IDEAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(facade.getProject(), classpath);
         try {
             for (RawClasspathConfigurer configurer : rawClasspathConfigurers) {
                 configurer.configure(mavenProject, eclipseProject, classpath);
@@ -105,7 +106,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
     public void configureRawClasspath(ProjectConfigurationRequest request, IClasspathDescriptor classpath,
             IProgressMonitor monitor) throws CoreException {
         final MavenAndroidProject mavenProject = mavenProjectFactory.createAndroidProject(request.getMavenProject());
-        final EclipseAndroidProject eclipseProject = new AdtEclipseAndroidProject(registry, request.getProject(), classpath);
+        final IDEAndroidProject eclipseProject = eclipseProjectFactory.createAndroidProject(request.getProject(), classpath);
         try {
             for (ClasspathConfigurer classpathConfigurer : classpathConfigurers) {
                 if (classpathConfigurer.shouldApplyTo(mavenProject)) {

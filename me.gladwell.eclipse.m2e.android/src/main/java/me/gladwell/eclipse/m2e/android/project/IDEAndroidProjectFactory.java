@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Ricardo Gladwell
+ * Copyright (c) 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,12 +8,13 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
-import java.util.List;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.m2e.jdt.IClasspathDescriptor;
 
-public interface AndroidWorkspace {
+public interface IDEAndroidProjectFactory extends AndroidProjectFactory<IDEAndroidProject, IProject> {
 
-    IDEAndroidProject findOpenWorkspaceDependency(Dependency dependency);
+    public IDEAndroidProject createAndroidProject(IProject target);
 
-    List<IDEAndroidProject> findOpenWorkspaceDependencies(List<Dependency> nonRuntimeDependencies);
+    public IDEAndroidProject createAndroidProject(IProject target, IClasspathDescriptor classpath);
 
 }

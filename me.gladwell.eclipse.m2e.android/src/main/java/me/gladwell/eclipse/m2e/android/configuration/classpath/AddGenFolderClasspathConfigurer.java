@@ -14,7 +14,7 @@ import java.io.File;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.core.resources.IFolder;
@@ -27,7 +27,7 @@ public class AddGenFolderClasspathConfigurer implements ClasspathConfigurer {
         return true;
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject) {
         IFolder gen = eclipseProject.getProject().getFolder(ANDROID_GEN_FOLDER + File.separator);
         if (!gen.exists()) {
             try {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009- Ricardo Gladwell, Hugo Josefson, Csaba Kozák
+ * Copyright (c) 2009-2015 Ricardo Gladwell, Hugo Josefson, Csaba Kozák
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class AndroidMavenPlugin extends Plugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
-        getInjector().injectMembers(this);
+        createInjector(context).injectMembers(this);
         launchManager.addLaunchConfigurationListener(launchConfigurationListener);
         projectManager.addMavenProjectChangedListener(mavenProjectChangedListener);
         configuration.addConfigurationChangeListener(mavenConfigurationListener);
@@ -64,10 +64,12 @@ public class AndroidMavenPlugin extends Plugin {
         return plugin;
     }
 
+    public Injector createInjector(BundleContext context) {
+        injector = Guice.createInjector(new PluginModule(context));
+        return injector;
+    }
+
     public Injector getInjector() {
-        if (injector == null) {
-            injector = Guice.createInjector(new PluginModule());
-        }
         return injector;
     }
 

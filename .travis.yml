@@ -26,10 +26,12 @@ env:
     - TARGET_PLATFORM=kepler
     - TARGET_PLATFORM=luna
     - TARGET_PLATFORM=mars
+    - TARGET_PLATFORM=andmore
 
 matrix:
   allow_failures:
     - env: TARGET_PLATFORM=mars
+    - env: TARGET_PLATFORM=andmore
 
 cache:
   directories:

@@ -1,0 +1,16 @@
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>andmore</artifactId>
+  <packaging>eclipse-target-definition</packaging>
+  <name>Luna/Andmore Target Definition</name>
+
+  <parent>
+    <artifactId>m2e-android</artifactId>
+    <groupId>me.gladwell.eclipse.m2e.android</groupId>
+    <version>1.2.2-SNAPSHOT</version>
+  </parent>
+
+</project>

@@ -10,7 +10,7 @@ package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
 import static java.io.File.separator;
 import me.gladwell.eclipse.m2e.android.project.SourceEntry;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class ModifySourceFolderOutputClasspathConfigurer implements ClasspathConfigurer {
@@ -21,7 +21,7 @@ public class ModifySourceFolderOutputClasspathConfigurer implements ClasspathCon
         return true;
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject) {
         for (SourceEntry entry : eclipseProject.getClasspath().getSourceEntries()) {
             if (mavenProject.getSourcePaths().contains(entry.getPath())
                     && !entry.getOutputLocation().endsWith(ANDROID_CLASSES_FOLDER)) {

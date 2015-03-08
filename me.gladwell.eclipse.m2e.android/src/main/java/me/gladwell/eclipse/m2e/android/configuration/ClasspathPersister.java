@@ -8,7 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -16,6 +16,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 // TODO move this classpath persistance code to .classpath package
 public interface ClasspathPersister {
 
-    void save(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, Iterable<IClasspathEntry> classpath);
+    void save(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject, Iterable<IClasspathEntry> classpath);
 
 }

@@ -15,8 +15,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2e.jdt;bundle-version="1.0.0",
  org.eclipse.m2e.maven.runtime;bundle-version="1.0.0",
  org.eclipse.ui;bundle-version="3.5.0",
- com.android.ide.eclipse.adt;bundle-version="21.0.0",
- com.android.ide.eclipse.base;bundle-version="21.0.0",
+ com.android.ide.eclipse.adt;bundle-version="21.0.0";resolution:=optional,
+ com.android.ide.eclipse.base;bundle-version="21.0.0";resolution:=optional,
+ org.eclipse.andmore;resolution:=optional,
+ org.eclipse.andmore.base;resolution:=optional,
  org.eclipse.debug.core,
  org.eclipse.jdt.junit.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

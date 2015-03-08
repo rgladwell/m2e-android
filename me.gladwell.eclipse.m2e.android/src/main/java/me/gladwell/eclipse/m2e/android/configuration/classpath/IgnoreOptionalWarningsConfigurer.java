@@ -9,7 +9,7 @@
 package me.gladwell.eclipse.m2e.android.configuration.classpath;
 
 import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.ANDROID_GEN_FOLDER;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class IgnoreOptionalWarningsConfigurer implements ClasspathConfigurer {
@@ -18,7 +18,7 @@ public class IgnoreOptionalWarningsConfigurer implements ClasspathConfigurer {
         return project.isIgnoreOptionalWarningsInGenFolder();
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject) {
         eclipseProject.getClasspath().getSourceEntry(ANDROID_GEN_FOLDER).ignoreOptionalWarnings();
     }
 

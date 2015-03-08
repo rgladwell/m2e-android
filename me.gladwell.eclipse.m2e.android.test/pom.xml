@@ -30,6 +30,40 @@
         <vmargs>-XX:MaxPermSize=1024m -Xmx1024m -XstartOnFirstThread</vmargs>
       </properties>
     </profile>
+    <profile>
+      <id>andmore</id>
+      <activation>
+        <property>
+          <name>target.platform</name>
+          <value>andmore</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.tycho</groupId>
+            <artifactId>tycho-surefire-plugin</artifactId>
+            <version>${tycho-version}</version>
+            <configuration>
+              <argLine>${vmargs}
+                -Declipse.pluginCustomization=${project.build.directory}/plugin_customisation.ini</argLine>
+              <useUIHarness>true</useUIHarness>
+              <dependencies>
+                <dependency>
+                  <type>p2-installable-unit</type>
+                  <artifactId>org.eclipse.andmore</artifactId>
+                </dependency>
+                <dependency>
+                  <type>p2-installable-unit</type>
+                  <artifactId>org.eclipse.sdk.ide</artifactId>
+                  <version>0.0.0</version>
+                </dependency>
+              </dependencies>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
   </profiles>
 
   <build>
@@ -57,6 +91,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-surefire-plugin</artifactId>
@@ -69,18 +104,6 @@
             <dependency>
               <type>p2-installable-unit</type>
               <artifactId>com.android.ide.eclipse.adt</artifactId>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>com.android.ide.eclipse.ddms</artifactId>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>com.android.ide.eclipse.hierarchyviewer</artifactId>
-            </dependency>
-            <dependency>
-              <type>p2-installable-unit</type>
-              <artifactId>com.android.ide.eclipse.traceview</artifactId>
             </dependency>
             <dependency>
               <type>p2-installable-unit</type>

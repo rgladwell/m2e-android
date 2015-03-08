@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Ricardo Gladwell
+ * Copyright (c) 2012, 2015 Ricardo Gladwell
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,15 +25,15 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
+public class EclipseAndroidWorkspace implements AndroidWorkspace {
 
     private IWorkspace workspace;
-    private AndroidProjectFactory<EclipseAndroidProject, IProject> projectFactory;
+    private IDEAndroidProjectFactory projectFactory;
     private MavenModelManager mavenModelManager;
 
     @Inject
-    public AdtEclipseAndroidWorkspace(IWorkspace workspace,
-            AndroidProjectFactory<EclipseAndroidProject, IProject> projectFactory,
+    public EclipseAndroidWorkspace(IWorkspace workspace,
+            IDEAndroidProjectFactory projectFactory,
             MavenModelManager mavenModelManager) {
         super();
         this.workspace = workspace;
@@ -42,12 +42,12 @@ public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
     }
 
     // TODO delegate workspace dep resolution to EclipseWorkspaceArtifactRepository
-    public EclipseAndroidProject findOpenWorkspaceDependency(Dependency dependency) {
+    public IDEAndroidProject findOpenWorkspaceDependency(Dependency dependency) {
         for (IProject project : workspace.getRoot().getProjects()) {
             if (!project.isOpen()) {
                 continue;
             }
-            EclipseAndroidProject androidProject = projectFactory.createAndroidProject(project);
+            IDEAndroidProject androidProject = projectFactory.createAndroidProject(project);
             if (androidProject.isMavenised()) {
                 MavenProject mavenProject;
                 try {
@@ -67,11 +67,11 @@ public class AdtEclipseAndroidWorkspace implements AndroidWorkspace {
         throw new DependencyNotFoundInWorkspace(dependency);
     }
 
-    public List<EclipseAndroidProject> findOpenWorkspaceDependencies(List<Dependency> dependencies) {
-        List<EclipseAndroidProject> openWorkspaceDependencies = new ArrayList<EclipseAndroidProject>();
+    public List<IDEAndroidProject> findOpenWorkspaceDependencies(List<Dependency> dependencies) {
+        List<IDEAndroidProject> openWorkspaceDependencies = new ArrayList<IDEAndroidProject>();
 
         for (Dependency dependency : dependencies) {
-            EclipseAndroidProject workspaceDependency = null;
+            IDEAndroidProject workspaceDependency = null;
 
             try {
                 workspaceDependency = findOpenWorkspaceDependency(dependency);

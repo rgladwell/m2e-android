@@ -19,7 +19,7 @@ import com.google.inject.Singleton;
 
 @Singleton
 public class MavenToEclipseAndroidProjectConverter implements
-        AndroidProjectFactory<MavenAndroidProject, EclipseAndroidProject> {
+        AndroidProjectFactory<MavenAndroidProject, IDEAndroidProject> {
 
     private AndroidProjectFactory<MavenAndroidProject, MavenProject> mavenProjectFactory;
     private MavenModelManager mavenModelManager;
@@ -33,7 +33,7 @@ public class MavenToEclipseAndroidProjectConverter implements
         this.mavenModelManager = mavenModelManager;
     }
 
-    public MavenAndroidProject createAndroidProject(EclipseAndroidProject androidProject) {
+    public MavenAndroidProject createAndroidProject(IDEAndroidProject androidProject) {
         MavenProject project;
         try {
             project = mavenModelManager.readMavenProject(androidProject.getPom(), null);

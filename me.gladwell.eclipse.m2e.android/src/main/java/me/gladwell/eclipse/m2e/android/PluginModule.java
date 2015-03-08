@@ -29,10 +29,17 @@ import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider;
 import org.eclipse.m2e.jdt.internal.launch.MavenSourcePathProvider;
+import org.osgi.framework.BundleContext;
 
 import com.google.inject.AbstractModule;
 
 public class PluginModule extends AbstractModule {
+
+    private final BundleContext context;
+
+    public PluginModule(BundleContext context) {
+        this.context = context;
+    }
 
     @Override
     protected void configure() {
@@ -41,6 +48,8 @@ public class PluginModule extends AbstractModule {
         install(new WorkspaceModule());
         install(new ProjectModule());
         install(new ResolutionModule());
+
+        bind(BundleContext.class).toInstance(context);
 
         bind(AbstractProjectConfigurator.class).to(JavaProjectConfigurator.class);
         bind(IWorkspace.class).toInstance(ResourcesPlugin.getWorkspace());

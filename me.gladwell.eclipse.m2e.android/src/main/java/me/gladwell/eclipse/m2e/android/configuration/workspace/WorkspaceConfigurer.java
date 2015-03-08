@@ -8,15 +8,15 @@
 
 package me.gladwell.eclipse.m2e.android.configuration.workspace;
 
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public interface WorkspaceConfigurer {
 
-    boolean isConfigured(EclipseAndroidProject project);
+    boolean isConfigured(IDEAndroidProject project);
 
     boolean isValid(MavenAndroidProject project);
 
-    void configure(EclipseAndroidProject eclipseProject, MavenAndroidProject mavenProject);
+    void configure(IDEAndroidProject eclipseProject, MavenAndroidProject mavenProject);
 
 }

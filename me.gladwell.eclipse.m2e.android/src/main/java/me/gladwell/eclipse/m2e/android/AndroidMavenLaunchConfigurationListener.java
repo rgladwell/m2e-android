@@ -15,8 +15,8 @@ import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_S
 import java.util.ArrayList;
 import java.util.List;
 
-import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProjectFactory;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -42,10 +42,10 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
     private static final String ANDROID_TEST_CLASSPATH_PROVIDER = "me.gladwell.m2e.android.classpathProvider";
     private static final String ANDROID_TEST_SOURCEPATH_PROVIDER = "me.gladwell.m2e.android.sourcepathProvider";
 
-    private final AndroidProjectFactory<EclipseAndroidProject, IProject> factory;
+    private final IDEAndroidProjectFactory factory;
 
     @Inject
-    public AndroidMavenLaunchConfigurationListener(AndroidProjectFactory<EclipseAndroidProject, IProject> factory) {
+    public AndroidMavenLaunchConfigurationListener(IDEAndroidProjectFactory factory) {
         this.factory = factory;
     }
 
@@ -64,13 +64,13 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
         try {
             String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, (String) null);
             IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-            EclipseAndroidProject eclipseProject = factory.createAndroidProject(project);
+            IDEAndroidProject eclipseProject = factory.createAndroidProject(project);
 
             if (isAndroidJUnitLaunch(configuration)
                     && eclipseProject.isAndroidProject()
                     && isMavenProject(project)) {
 
-                final ILaunchConfigurationWorkingCopy workingCopy = addCustomClasspathProviderTo(configuration);
+                final ILaunchConfigurationWorkingCopy workingCopy = addCustomClasspathProvidersTo(configuration);
 
                 new WorkspaceJob("Update launch configuration") {
                     @Override
@@ -87,9 +87,10 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
         }
     }
 
-    private ILaunchConfigurationWorkingCopy addCustomClasspathProviderTo(ILaunchConfiguration configuration) throws CoreException {
+    private ILaunchConfigurationWorkingCopy addCustomClasspathProvidersTo(ILaunchConfiguration configuration) throws CoreException {
         ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
         workingCopy.setAttribute(ATTR_CLASSPATH_PROVIDER, ANDROID_TEST_CLASSPATH_PROVIDER);
+        workingCopy.setAttribute(ATTR_SOURCE_PATH_PROVIDER, ANDROID_TEST_SOURCEPATH_PROVIDER);
         return workingCopy;
     }
 

@@ -24,7 +24,7 @@ import me.gladwell.eclipse.m2e.android.configuration.ClasspathPersister;
 import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 import me.gladwell.eclipse.m2e.android.project.AndroidWorkspace;
 import me.gladwell.eclipse.m2e.android.project.Dependency;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.core.runtime.Path;
@@ -49,7 +49,7 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
         this.workspace = workspace;
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject, IClasspathDescriptor classpath) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject, IClasspathDescriptor classpath) {
         final List<Dependency> nonRuntimeDependencies = mavenProject.getNonRuntimeDependencies();
 
         List<String> nonRuntimeDependencyPaths = from(nonRuntimeDependencies)
@@ -57,7 +57,7 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
                 .toList();
 
         if(eclipseProject.shouldResolveWorkspaceProjects()) {
-            List<EclipseAndroidProject> nonRuntimeProjects = workspace.findOpenWorkspaceDependencies(nonRuntimeDependencies);
+            List<IDEAndroidProject> nonRuntimeProjects = workspace.findOpenWorkspaceDependencies(nonRuntimeDependencies);
 
             final List<String> nonRuntimeProjectPaths = from(nonRuntimeProjects)
                     .transform(eclipseProjectToPathFunction())

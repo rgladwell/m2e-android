@@ -36,6 +36,8 @@ To configure your development environment please follow these steps:
 
  * Install [Eclipse Luna](http://eclipse.org/downloads).
  * Install latest [Android Development Tools](http://developer.android.com/sdk/installing/installing-adt.html).
+ * Add [Orbit update site](http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/) to your availabile update sites.
+ * Install Andmore from [development update site](http://download.eclipse.org/tools/orbit/downloads/drops/R20150124073747/repository/)
  * Install [Eclipse Plug-in Development Environment.](http://www.eclipse.org/pde/).
  * In Eclipse select _Help -> Install new software..._ and select the _Luna_ update site from the _Work With_ drop down.
  * Un-check the _Group items by category_ check box.

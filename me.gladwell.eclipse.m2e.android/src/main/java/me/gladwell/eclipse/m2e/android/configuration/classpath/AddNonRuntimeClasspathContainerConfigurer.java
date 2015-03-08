@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 import me.gladwell.eclipse.m2e.android.configuration.Caching;
 import me.gladwell.eclipse.m2e.android.configuration.ClasspathLoader;
 import me.gladwell.eclipse.m2e.android.configuration.NonRuntimeDependenciesClasspathContainer;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
+import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfigurer {
@@ -32,7 +32,7 @@ public class AddNonRuntimeClasspathContainerConfigurer implements ClasspathConfi
         return true;
     }
 
-    public void configure(MavenAndroidProject mavenProject, EclipseAndroidProject eclipseProject) {
+    public void configure(MavenAndroidProject mavenProject, IDEAndroidProject eclipseProject) {
         final IClasspathContainer nonRuntimeContainer = new NonRuntimeDependenciesClasspathContainer(loader,
                 eclipseProject);
         eclipseProject.getClasspath().addContainer(nonRuntimeContainer);
