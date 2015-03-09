@@ -6,6 +6,8 @@ _Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefso
 
 Android for Maven Eclipse (**m2e-android**) adds [Maven](http://maven.apache.org/) support to the [Android Developer Tools](http://developer.android.com/tools/sdk/eclipse-adt.html) (ADT). This is developer documentation, for user instructions on how to install please see the [project web site.](http://rgladwell.github.com/m2e-android/)
 
+*Lead Maintainer*: [Ricardo Gladwell](http://gladwell.me)
+
 Special thanks to our patrons who crowdfunded project development through [Patreon](http://www.patreon.com/rgladwell):
 
  * [Raphael Ackermann](https://twitter.com/acraphae)
