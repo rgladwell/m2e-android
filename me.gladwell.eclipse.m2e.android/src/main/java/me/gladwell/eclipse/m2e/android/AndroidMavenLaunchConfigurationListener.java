@@ -10,6 +10,7 @@ package me.gladwell.eclipse.m2e.android;
 
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME;
+import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_SOURCE_PATH_PROVIDER;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
         IMavenProjectChangedListener {
 
     private static final String ANDROID_TEST_CLASSPATH_PROVIDER = "me.gladwell.m2e.android.classpathProvider";
+    private static final String ANDROID_TEST_SOURCEPATH_PROVIDER = "me.gladwell.m2e.android.sourcepathProvider";
 
     public void launchConfigurationAdded(ILaunchConfiguration configuration) {
         updateLaunchConfiguration(configuration);
@@ -58,6 +60,7 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
                     && project.hasNature(AdtConstants.NATURE_DEFAULT) && project.hasNature(IMavenConstants.NATURE_ID)) {
                 final ILaunchConfigurationWorkingCopy workingCopy = configuration.getWorkingCopy();
                 workingCopy.setAttribute(ATTR_CLASSPATH_PROVIDER, ANDROID_TEST_CLASSPATH_PROVIDER);
+                workingCopy.setAttribute(ATTR_SOURCE_PATH_PROVIDER, ANDROID_TEST_SOURCEPATH_PROVIDER);
                 new WorkspaceJob("Update launch configuration") {
                     @Override
                     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {

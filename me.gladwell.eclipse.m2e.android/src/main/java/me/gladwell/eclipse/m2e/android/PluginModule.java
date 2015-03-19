@@ -9,11 +9,13 @@
 package me.gladwell.eclipse.m2e.android;
 
 import me.gladwell.eclipse.m2e.android.configuration.ConfigurationModule;
+import me.gladwell.eclipse.m2e.android.configuration.classpath.BuildPathManager;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.ClasspathModule;
 import me.gladwell.eclipse.m2e.android.configuration.workspace.WorkspaceModule;
 import me.gladwell.eclipse.m2e.android.project.ProjectModule;
 import me.gladwell.eclipse.m2e.android.resolve.ResolutionModule;
 
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.DebugPlugin;
@@ -27,6 +29,7 @@ import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.JavaProjectConfigurator;
 import org.eclipse.m2e.jdt.internal.launch.MavenRuntimeClasspathProvider;
+import org.eclipse.m2e.jdt.internal.launch.MavenSourcePathProvider;
 
 import com.google.inject.AbstractModule;
 
@@ -45,12 +48,15 @@ public class PluginModule extends AbstractModule {
         bind(MavenModelManager.class).toInstance(MavenPlugin.getMavenModelManager());
 
         bind(IRuntimeClasspathProvider.class).annotatedWith(Maven.class).to(MavenRuntimeClasspathProvider.class);
+        bind(IRuntimeClasspathProvider.class).annotatedWith(MavenSource.class).to(MavenSourcePathProvider.class);
 
-        bind(Object.class).to(JUnitClasspathProvider.class);
+        bind(JUnitClasspathProvider.class);
+        bind(JUnitSourcepathProvider.class);
         bind(ILaunchConfigurationListener.class).to(AndroidMavenLaunchConfigurationListener.class);
         bind(IMavenProjectChangedListener.class).to(AndroidMavenLaunchConfigurationListener.class);
         bind(ILaunchManager.class).toInstance(DebugPlugin.getDefault().getLaunchManager());
         bind(IMavenProjectRegistry.class).toInstance(MavenPlugin.getMavenProjectRegistry());
+        bind(IResourceChangeListener.class).to(BuildPathManager.class);
     }
 
 }

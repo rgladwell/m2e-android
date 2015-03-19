@@ -11,6 +11,7 @@ package me.gladwell.eclipse.m2e.android.test;
 import static java.io.File.separator;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
+import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_SOURCE_PATH_PROVIDER;
 import static org.junit.Assert.assertThat;
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findSourceEntry;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
@@ -19,6 +20,7 @@ import java.io.File;
 
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.JUnitClasspathProvider;
+import me.gladwell.eclipse.m2e.android.JUnitSourcepathProvider;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -37,6 +39,7 @@ import org.eclipse.jdt.junit.TestRunListener;
 import org.eclipse.jdt.junit.model.ITestElement;
 import org.eclipse.jdt.junit.model.ITestRunSession;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.jdt.IClasspathManager;
@@ -61,6 +64,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
     private @Inject ILaunchManager launchManager;
     private @Inject JUnitClasspathProvider classpathProvider;
+    private @Inject JUnitSourcepathProvider sourcepathProvider;
 
     @Override
     protected void setUp() throws Exception {
@@ -225,12 +229,16 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
                 configuration.getAttribute(ATTR_CLASSPATH_PROVIDER, ""));
     }
 
-    private IRuntimeClasspathEntry[] provideClasspath(ILaunchConfiguration configuration) throws CoreException {
+    private IRuntimeClasspathEntry[] provideClasspath(IRuntimeClasspathProvider provider, ILaunchConfiguration configuration) throws CoreException {
         project.getFile("bin/classes").getLocation().toFile().mkdirs();
-        IRuntimeClasspathEntry[] unresolvedClasspath = classpathProvider.computeUnresolvedClasspath(configuration);
+        IRuntimeClasspathEntry[] unresolvedClasspath = provider.computeUnresolvedClasspath(configuration);
         IRuntimeClasspathEntry[] resolvedClasspath = classpathProvider.resolveClasspath(unresolvedClasspath,
                 configuration);
         return resolvedClasspath;
+    }
+    
+    private IRuntimeClasspathEntry[] provideJUnitClasspath(ILaunchConfiguration configuration) throws CoreException {
+        return provideClasspath(classpathProvider, configuration);
     }
 
     public void testConfigureAddsPlatformProvidedToTestRunnerClasspath() throws Exception {
@@ -238,7 +246,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
 
         // when
-        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+        IRuntimeClasspathEntry[] resolvedClasspath = provideJUnitClasspath(configuration);
 
         // then
         assertThat(resolvedClasspath, containsEntry("android-4.3.1_r3.jar"));
@@ -249,7 +257,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
 
         // when
-        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+        IRuntimeClasspathEntry[] resolvedClasspath = provideJUnitClasspath(configuration);
 
         // then
         assertThat(resolvedClasspath, containsEntry("commons-logging-1.1.1.jar"));
@@ -260,7 +268,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
 
         // when
-        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+        IRuntimeClasspathEntry[] resolvedClasspath = provideJUnitClasspath(configuration);
 
         // then
         assertThat(resolvedClasspath, containsEntry("httpcore-4.0.1.jar"));
@@ -271,10 +279,59 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
 
         // when
-        IRuntimeClasspathEntry[] resolvedClasspath = provideClasspath(configuration);
+        IRuntimeClasspathEntry[] resolvedClasspath = provideJUnitClasspath(configuration);
 
         // then
         assertThat(resolvedClasspath, containsEntry("bin/classes"));
+    }
+    
+    public void ignoreConfigureAddsAndroidTestSourcepathProviderToTestRunner() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
+
+        // then
+        assertEquals("me.gladwell.m2e.android.sourcepathProvider",
+                configuration.getAttribute(ATTR_SOURCE_PATH_PROVIDER, ""));
+    }
+    
+    private IRuntimeClasspathEntry[] provideJUnitSourcepath(ILaunchConfiguration configuration) throws CoreException {
+        return provideClasspath(sourcepathProvider, configuration);
+    }
+    
+    public void testConfigureAddsNonRuntimeDependenciesToTestRunnerSourcepath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideJUnitSourcepath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, containsEntry("mockito-core-1.9.5.jar"));
+    }
+    
+    public void testConfigureAddsRuntimeDependenciesToTestRunnerSourcepath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideJUnitSourcepath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, containsEntry("commons-lang-2.4.jar"));
+    }
+    
+    public void testConfigureAddsTransitiveNonRuntimeDependenciesToTestRunnerSourcepath() throws Exception {
+        // given
+        ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
+
+        // when
+        IRuntimeClasspathEntry[] resolvedClasspath = provideJUnitSourcepath(configuration);
+
+        // then
+        assertThat(resolvedClasspath, containsEntry("hamcrest-core-1.3.jar"));
     }
 
     public void testConfigureDoesNotSetIgnoreWarnings() throws Exception {

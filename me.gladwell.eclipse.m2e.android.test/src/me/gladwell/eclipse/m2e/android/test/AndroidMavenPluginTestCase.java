@@ -256,7 +256,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
                 return entry;
             }
         }
-        throw new ProjectConfigurationException("ClasspathEntry [" + path + "] nt found in container [" + id + "]");
+        throw new ProjectConfigurationException("ClasspathEntry [" + path + "] not found in container [" + id + "]");
     }
 
     protected void assertErrorMarker(IProject project, String type) throws CoreException {
@@ -291,6 +291,10 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
             }
         }
         return false;
+    }
+    
+    protected void updateMavenProject(IProject project) {
+        MavenPlugin.getMavenProjectRegistry().refresh(new MavenUpdateRequest(project, false, false));
     }
 
 }

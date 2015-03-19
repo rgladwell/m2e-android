@@ -10,10 +10,11 @@ package me.gladwell.eclipse.m2e.android.configuration;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IClasspathEntry;
 
 public interface ClasspathPersister {
 
-    void save(String project, List<IClasspathEntry> classpath);
+    void save(IProject project, List<IClasspathEntry> classpath);
 
 }
