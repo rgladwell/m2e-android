@@ -68,4 +68,4 @@ For more information on developing the m2e-android plug-in please see the follow
 * [Deployment](https://github.com/rgladwell/m2e-android/wiki/Deploying)
 * [Travis](https://github.com/rgladwell/m2e-android/wiki/Travis)
 * [Maven Eclipse](https://www.eclipse.org/m2e/)
-* [Maven Android Plugin](https://code.google.com/p/maven-android-plugin)
+* [Maven Android Plugin](http://simpligility.github.io/android-maven-plugin)
