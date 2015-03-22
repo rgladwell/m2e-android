@@ -9,6 +9,10 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.internal.core.JavaProject;
 
 @SuppressWarnings("restriction")
 public class LegacyAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
@@ -25,6 +29,12 @@ public class LegacyAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
 
     public void testConfigure() throws Exception {
         assertNoErrors(project);
+    }
+    
+    public void testSourceMainJavaFirstEntry() throws Exception {
+    	IJavaProject p = JavaCore.create(project);
+    	IClasspathEntry[] entries = p.readRawClasspath();
+    	assertTrue(entries[0].getPath().toString().contains("src/main/java"));
     }
 
 }
