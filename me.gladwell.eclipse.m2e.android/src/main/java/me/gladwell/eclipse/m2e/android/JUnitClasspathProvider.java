@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME;
 import static org.eclipse.jdt.launching.JavaRuntime.newArchiveRuntimeClasspathEntry;
@@ -24,11 +25,14 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 
 public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
@@ -78,7 +82,31 @@ public class JUnitClasspathProvider implements IRuntimeClasspathProvider {
 
     public IRuntimeClasspathEntry[] resolveClasspath(IRuntimeClasspathEntry[] classpath, ILaunchConfiguration config)
             throws CoreException {
-        return classpathProvider.resolveClasspath(classpath, config);
+        List<IRuntimeClasspathEntry> resolvedClasspath = newArrayList(classpathProvider.resolveClasspath(classpath,
+                config));
+
+        removeMavenBuildOutputFolder(config, resolvedClasspath);
+
+        return resolvedClasspath.toArray(new IRuntimeClasspathEntry[resolvedClasspath.size()]);
+    }
+    
+    private void removeMavenBuildOutputFolder(ILaunchConfiguration config, List<IRuntimeClasspathEntry> classpath) throws CoreException {
+        IProject project = workspace.getRoot().getProject(config.getAttribute(ATTR_PROJECT_NAME, (String) null));
+        EclipseAndroidProject androidProject = factory.createAndroidProject(project);
+        MavenAndroidProject mavenProject = factory2.createAndroidProject(androidProject);
+        
+        final String mavenOutputDirectory = mavenProject.getOutputDirectory();
+        Path mavenOutputDirectoryPath = new Path(mavenOutputDirectory);
+        IPath binFolderPath = project.getFolder("bin" + File.separator + "classes").getLocation();
+        
+        if (!mavenOutputDirectoryPath.equals(binFolderPath)) {
+            Iterables.removeIf(classpath, new Predicate<IRuntimeClasspathEntry>() {
+
+                public boolean apply(IRuntimeClasspathEntry entry) {
+                    return mavenOutputDirectory.equals(entry.getLocation());
+                }
+            });
+        }
     }
 
 }
