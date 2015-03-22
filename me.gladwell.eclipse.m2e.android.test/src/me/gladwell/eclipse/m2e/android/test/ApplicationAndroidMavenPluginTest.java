@@ -20,12 +20,14 @@ import java.io.File;
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
 import me.gladwell.eclipse.m2e.android.JUnitClasspathProvider;
 
+import org.codehaus.plexus.util.FileUtils;
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
@@ -68,6 +70,8 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
 
         project = importAndroidProject(PROJECT_NAME);
         javaProject = JavaCore.create(project);
+        
+        project.getFile("test.launch_renamed").move((project.getFile("test.launch").getFullPath()), true, monitor);
     }
 
     public void testConfigure() throws Exception {
@@ -212,9 +216,10 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         assertEquals(ITestElement.Result.OK, testListener.launchResult());
     }
 
-    // TODO quarantined integration test that fails when run after another integration test
-    public void ignoreConfigureAddsAndroidTestClasspathProviderToTestRunner() throws Exception {
+    public void testConfigureAddsAndroidTestClasspathProviderToTestRunner() throws Exception {
         // given
+        buildAndroidProject(project, IncrementalProjectBuilder.FULL_BUILD);
+        
         ILaunchConfiguration configuration = launchManager.getLaunchConfiguration(project.getFile("test.launch"));
 
         // when

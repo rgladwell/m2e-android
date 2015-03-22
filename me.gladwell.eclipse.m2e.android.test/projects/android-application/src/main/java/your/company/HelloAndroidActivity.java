@@ -22,6 +22,10 @@ public class HelloAndroidActivity extends Activity {
 		Log.i(TAG, StringUtils.capitalize("onCreate"));
         setContentView(R.layout.main);
     }
+    
+    public static boolean isAndroidForMavenEclipseGreat() {
+        return true;
+    }
 
 }
 
