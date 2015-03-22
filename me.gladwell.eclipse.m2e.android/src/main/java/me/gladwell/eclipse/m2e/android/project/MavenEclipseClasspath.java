@@ -46,7 +46,7 @@ public class MavenEclipseClasspath implements Classpath {
         List<SourceEntry> entries = new ArrayList<SourceEntry>();
         for(IClasspathEntryDescriptor entry : classpath.getEntryDescriptors()) {
             if(entry.getOutputLocation() != null && entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-                entries.add(new EclipseSourceEntry(project.getProject(), classpath, entry));
+                entries.add(new EclipseSourceEntry(project.getProject(), entry));
             }
         }
         return entries;
@@ -84,16 +84,18 @@ public class MavenEclipseClasspath implements Classpath {
     }
 
     public void markExported(String path) {
-        IClasspathEntry oldEntry = findContainerMatching(classpath, path);
-        IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), true);
-        classpath.removeEntry(oldEntry.getPath());
-        classpath.addEntry(newEntry);
+        setClassPathEntryExported(path, true);
     }
 
     public void markNotExported(String path) {
+        setClassPathEntryExported(path, false);
+    }
+    
+    private void setClassPathEntryExported(String path, boolean exported) {
         IClasspathEntry oldEntry = findContainerMatching(classpath, path);
-        if(oldEntry != null) {
-            IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), false);
+        if (oldEntry != null) {
+            IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), oldEntry.getAccessRules(),
+                    oldEntry.getExtraAttributes(), exported);
             classpath.removeEntry(oldEntry.getPath());
             classpath.addEntry(newEntry);
         } else {
@@ -102,7 +104,7 @@ public class MavenEclipseClasspath implements Classpath {
     }
 
     public SourceEntry getSourceEntry(String path) {
-        return new EclipseSourceEntry(project.getProject(), classpath, findSourceEntryDescriptor(classpath, path));
+        return new EclipseSourceEntry(project.getProject(), findSourceEntryDescriptor(classpath, path));
     }
 
 }

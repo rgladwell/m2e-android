@@ -81,6 +81,9 @@
                 <configuration>
                     <source>1.6</source>
                     <target>1.6</target>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
                 </configuration>
             </plugin>
         </plugins>

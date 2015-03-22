@@ -5,25 +5,21 @@ import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 import java.io.File;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
 public class EclipseSourceEntry implements SourceEntry {
 
     private final IProject project;
-    private final IClasspathDescriptor classpath;
     private final IClasspathEntryDescriptor entry;
 
-    public EclipseSourceEntry(IProject project, IClasspathDescriptor classpath, IClasspathEntryDescriptor entry) {
+    public EclipseSourceEntry(IProject project, IClasspathEntryDescriptor entry) {
         super();
         this.project = project;
-        this.classpath = classpath;
         this.entry = entry;
     }
 
     public void setOutputLocation(String path) {
-        classpath.removeEntry(entry.getPath());
-        classpath.addSourceEntry(entry.getPath(), project.getFullPath().append(path), true);
+        entry.setOutputLocation(project.getFullPath().append(path));
     }
 
     public String getOutputLocation() {
