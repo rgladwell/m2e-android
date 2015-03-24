@@ -101,7 +101,7 @@ public class AttachDocumentsClasspathLoader extends ClasspathLoaderDecorator {
     public Iterable<IClasspathEntry> load(IJavaProject project) throws FileNotFoundException {
         Iterable<IClasspathEntry> classpath = super.load(project);
 
-        if(configuration.isDownloadSources()) {
+        if(configuration.isDownloadJavaDoc()) {
             List<IClasspathEntry> processed = new ArrayList<IClasspathEntry>();
                 try {
                     MavenProject mavenProject = registry.getProject(project.getProject()).getMavenProject(new NullProgressMonitor());

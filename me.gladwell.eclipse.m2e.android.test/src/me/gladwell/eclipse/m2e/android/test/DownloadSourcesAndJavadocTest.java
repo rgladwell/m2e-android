@@ -11,6 +11,7 @@ package me.gladwell.eclipse.m2e.android.test;
 import static me.gladwell.eclipse.m2e.android.AndroidMavenPlugin.CONTAINER_NONRUNTIME_DEPENDENCIES;
 import static org.eclipse.jdt.core.JavaCore.setClasspathContainer;
 import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.not;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,8 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -26,9 +28,9 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.m2e.core.MavenPlugin;
+import org.eclipse.m2e.core.internal.IMavenConstants;
 import org.eclipse.m2e.core.internal.preferences.MavenConfigurationImpl;
-import org.eclipse.m2e.tests.common.JobHelpers;
-import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
+import org.eclipse.m2e.core.internal.preferences.MavenPreferenceConstants;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -46,7 +48,6 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
     private static final String PROJECT_NAME = "android-application";
 
     private MavenConfigurationImpl mavenConfiguration;
-    private IProject project;
 
     @Override
     protected void setUp() throws Exception {
@@ -54,19 +55,29 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
         mavenConfiguration = (MavenConfigurationImpl) MavenPlugin.getMavenConfiguration();
         mavenConfiguration.setDownloadSources(true);
-
-        project = importAndroidProject(PROJECT_NAME);
+        enableDownloadJavaDoc();
         waitForJobsToComplete(monitor);
     }
-
     @Override
     protected void tearDown() throws Exception {
         mavenConfiguration.setDownloadSources(false);
+        disableDownloadJavaDoc();
         super.tearDown();
     }
 
+    private void enableDownloadJavaDoc() {
+        IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(IMavenConstants.PLUGIN_ID);
+        preferences.putBoolean(MavenPreferenceConstants.P_DOWNLOAD_JAVADOC, true);
+    }
+
+    private void disableDownloadJavaDoc() {
+        IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(IMavenConstants.PLUGIN_ID);
+        preferences.putBoolean(MavenPreferenceConstants.P_DOWNLOAD_JAVADOC, false);
+    }
+
     @Test
-    public void testSourcesAttached() throws JavaModelException {
+    public void testSourcesAttached() throws Exception {
+        IProject project = importAndroidProject(PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
         IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
         assertNotNull(entry.getSourceAttachmentPath());
@@ -74,6 +85,7 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
 
     @Test
     public void testCustomSourcesAttached() throws Exception {
+        IProject project = importAndroidProject(PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
 
         setCustomSourceAttachment(javaProject);
@@ -84,6 +96,7 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
     }
 
     public void testUpdatingMavenProjectWithEntryWithCustomSourceAttachmentNotOverrideAttachment() throws Exception {
+        IProject project = importAndroidProject(PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
 
         setCustomSourceAttachment(javaProject);
@@ -95,9 +108,18 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
     }
 
     public void testDocumentationAttached() throws Exception {
+        IProject project = importAndroidProject(PROJECT_NAME);
         IJavaProject javaProject = JavaCore.create(project);
         IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
         assertThat(entry, hasExtraAttribute(IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME));
+    }
+
+    public void testDocumentationNotAttachedIfJavaDocDisabled() throws Exception {
+        disableDownloadJavaDoc();
+        IProject project = importAndroidProject(PROJECT_NAME);
+        IJavaProject javaProject = JavaCore.create(project);
+        IClasspathEntry entry = getClasspathEntry(javaProject, CONTAINER_NONRUNTIME_DEPENDENCIES, DEPENDENCY_JAR);
+        assertThat(entry, not(hasExtraAttribute(IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME)));
     }
 
     private Matcher<IClasspathEntry> hasExtraAttribute(final String expected) {

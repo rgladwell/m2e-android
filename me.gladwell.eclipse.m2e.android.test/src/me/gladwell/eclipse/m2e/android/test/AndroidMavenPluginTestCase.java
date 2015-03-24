@@ -9,6 +9,7 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static java.io.File.separator;
+import static org.codehaus.plexus.util.FileUtils.cleanDirectory;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +51,7 @@ import org.eclipse.m2e.tests.common.WorkspaceHelpers;
 import org.eclipse.m2e.tests.common.JobHelpers.IJobMatcher;
 
 import com.android.ide.eclipse.adt.internal.sdk.Sdk;
+import com.google.inject.Inject;
 
 @SuppressWarnings("restriction")
 public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTestCase {
@@ -58,6 +60,8 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
 
     protected AndroidMavenPlugin plugin;
 
+    @Inject File stateLocation;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -65,7 +69,12 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         plugin = AndroidMavenPlugin.getDefault();
         plugin.getInjector().injectMembers(this);
 
+        cleanNonruntimeClasspathCache();
         waitForAdtToLoad();
+    }
+
+    private void cleanNonruntimeClasspathCache() throws IOException {
+        cleanDirectory(stateLocation);
     }
 
     protected void waitForAdtToLoad() throws InterruptedException, Exception {
