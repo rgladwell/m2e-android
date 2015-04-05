@@ -27,6 +27,10 @@ env:
     - TARGET_PLATFORM=luna
     - TARGET_PLATFORM=mars
 
+matrix:
+  allow_failures:
+    - env: TARGET_PLATFORM=mars
+
 cache:
   directories:
     - $HOME/.m2
