@@ -12,10 +12,17 @@ import static com.google.inject.Scopes.SINGLETON;
 
 import java.io.File;
 
+import org.apache.maven.project.MavenProject;
+import org.eclipse.m2e.core.embedder.IMaven;
+import org.eclipse.m2e.core.project.IMavenProjectRegistry;
+
 import me.gladwell.eclipse.m2e.android.AndroidMavenPlugin;
+import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
+import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 
 public class ConfigurationModule extends AbstractModule {
 
@@ -33,6 +40,16 @@ public class ConfigurationModule extends AbstractModule {
 
         bind(ClasspathPersister.class).to(ObjectSerializationClasspathPersister.class);
         bind(EventBus.class).in(SINGLETON);
+    }
+
+    @Provides
+    public ClasspathAttacher<JavadocsEntryAttacher> javadocClasspathAttacher(IMaven maven, IMavenProjectRegistry registry, AndroidProjectFactory<MavenAndroidProject, MavenProject> factory) {
+        return new ClasspathAttacher<JavadocsEntryAttacher>(new JavadocsEntryAttacher(), "javadoc", maven, registry, factory);
+    }
+
+    @Provides
+    public ClasspathAttacher<SourcesEntryAttacher> sourcesClasspathAttacher(IMaven maven, IMavenProjectRegistry registry, AndroidProjectFactory<MavenAndroidProject, MavenProject> factory) {
+        return new ClasspathAttacher<SourcesEntryAttacher>(new SourcesEntryAttacher(), "sources", maven, registry, factory);
     }
 
 }
