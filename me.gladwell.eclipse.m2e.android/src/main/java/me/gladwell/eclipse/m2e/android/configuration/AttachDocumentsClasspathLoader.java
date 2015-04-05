@@ -9,6 +9,7 @@
 package me.gladwell.eclipse.m2e.android.configuration;
 
 import static java.util.Arrays.asList;
+import static me.gladwell.eclipse.m2e.android.Log.debug;
 import static me.gladwell.eclipse.m2e.android.Log.warn;
 import static org.eclipse.jdt.core.IClasspathAttribute.JAVADOC_LOCATION_ATTRIBUTE_NAME;
 import static org.eclipse.jdt.core.IClasspathEntry.CPE_LIBRARY;
@@ -114,22 +115,31 @@ public class AttachDocumentsClasspathLoader extends ClasspathLoaderDecorator {
                             ClasspathAttributes attributes = new ClasspathAttributes(entry.getExtraAttributes());
                             if(CPE_LIBRARY == entry.getEntryKind() && !attributes.hasAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME)) {
                                 Dependency dependency = findDependency(entry, androidProject.getNonRuntimeDependencies());
-                                Artifact docs = maven.resolve(dependency.getGroup(),
-                                                                        dependency.getName(),
-                                                                        dependency.getVersion(),
-                                                                        "jar",
-                                                                        CLASSIFIER_DOCS,
-                                                                        repositories,
-                                                                        new NullProgressMonitor());
-
-                                attributes.set(newClasspathAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME, getJavaDocUrl(docs.getFile())));
-
-                                IClasspathEntry entryWithDocs = JavaCore.newLibraryEntry(entry.getPath(), entry.getSourceAttachmentPath(),
-                                        null, entry.getAccessRules(),
-                                        attributes.toArray(),
-                                        entry.isExported());
-
-                                processed.add(entryWithDocs);
+                                if(!maven.isUnavailable(dependency.getGroup(),
+                                        dependency.getName(),
+                                        dependency.getVersion(),
+                                        "jar",
+                                        CLASSIFIER_DOCS,
+                                        repositories)) {
+                                    Artifact docs = maven.resolve(dependency.getGroup(),
+                                                                            dependency.getName(),
+                                                                            dependency.getVersion(),
+                                                                            "jar",
+                                                                            CLASSIFIER_DOCS,
+                                                                            repositories,
+                                                                            new NullProgressMonitor());
+    
+                                    attributes.set(newClasspathAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME, getJavaDocUrl(docs.getFile())));
+    
+                                    IClasspathEntry entryWithDocs = JavaCore.newLibraryEntry(entry.getPath(), entry.getSourceAttachmentPath(),
+                                            null, entry.getAccessRules(),
+                                            attributes.toArray(),
+                                            entry.isExported());
+    
+                                    processed.add(entryWithDocs);
+                                } else {
+                                    debug("could not resolve javadocs for classpath entry=[" + entry + "]");
+                                }
                             } else {
                                 processed.add(entry);
                             }

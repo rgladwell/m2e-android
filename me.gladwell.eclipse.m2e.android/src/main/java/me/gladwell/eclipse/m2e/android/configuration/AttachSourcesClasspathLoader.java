@@ -8,6 +8,7 @@
 
 package me.gladwell.eclipse.m2e.android.configuration;
 
+import static me.gladwell.eclipse.m2e.android.Log.debug;
 import static me.gladwell.eclipse.m2e.android.Log.warn;
 import static org.eclipse.jdt.core.IClasspathEntry.CPE_LIBRARY;
 
@@ -70,15 +71,24 @@ public class AttachSourcesClasspathLoader extends ClasspathLoaderDecorator {
                     try {
                         if(CPE_LIBRARY == entry.getEntryKind() && entry.getSourceAttachmentPath() == null) {
                             Dependency dependency = findDependency(entry, androidProject.getNonRuntimeDependencies());
-                            Artifact sources = maven.resolve(dependency.getGroup(),
+                            if(!maven.isUnavailable(dependency.getGroup(),
                                                                     dependency.getName(),
                                                                     dependency.getVersion(),
                                                                     "jar",
                                                                     CLASSIFIER_SOURCES,
-                                                                    repositories,
-                                                                    new NullProgressMonitor());
-                            IClasspathEntry entryWithSources = JavaCore.newLibraryEntry(entry.getPath(), Path.fromOSString(sources.getFile().getAbsolutePath()), null);
-                            processed.add(entryWithSources);
+                                                                    repositories)) {
+                                Artifact sources = maven.resolve(dependency.getGroup(),
+                                                                        dependency.getName(),
+                                                                        dependency.getVersion(),
+                                                                        "jar",
+                                                                        CLASSIFIER_SOURCES,
+                                                                        repositories,
+                                                                        new NullProgressMonitor());
+                                IClasspathEntry entryWithSources = JavaCore.newLibraryEntry(entry.getPath(), Path.fromOSString(sources.getFile().getAbsolutePath()), null);
+                                processed.add(entryWithSources);
+                            } else {
+                                debug("could not resolve sources for classpath entry=[" + entry + "]");
+                            }
                         } else {
                             processed.add(entry);
                         }
