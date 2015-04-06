@@ -20,7 +20,7 @@
 <listEntry value="4"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="M2E-ANDROID-DEBUG" value="true"/>
+<mapEntry key="M2E_ANDROID_DEBUG" value="true"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=me.gladwell.eclipse.m2e.android.test"/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>

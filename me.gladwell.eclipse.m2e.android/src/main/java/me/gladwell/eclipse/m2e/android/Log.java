@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.Status;
 
 public class Log {
 
-    private static final boolean DEBUG = Boolean.parseBoolean(System.getenv("M2E-ANDROID-DEBUG"));
+    private static final boolean DEBUG = Boolean.parseBoolean(System.getenv("M2E_ANDROID_DEBUG"));
     private final static ILog log = AndroidMavenPlugin.getDefault().getLog();
 
     private Log() {}
