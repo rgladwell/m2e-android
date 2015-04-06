@@ -26,7 +26,9 @@ public class EclipseEventsToEventBusListener implements IMavenProjectChangedList
 
     public void mavenProjectChanged(MavenProjectChangedEvent[] events, IProgressMonitor monitor) {
         for(MavenProjectChangedEvent event : events) {
-            eventBus.post(event);
+            if(event.getKind() != MavenProjectChangedEvent.KIND_REMOVED) {
+                eventBus.post(event);
+            }
         }
     }
 
