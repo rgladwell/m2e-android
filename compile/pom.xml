@@ -1,0 +1,18 @@
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>compile</artifactId>
+  <packaging>eclipse-target-definition</packaging>
+  <name>Luna ADT/Andmore Compile Target Definition</name>
+  <description>Multi-toolkit target including Luna with ADT/Andmore so that Andmore and ADT support
+    can be correcty compiled.</description>
+
+  <parent>
+    <artifactId>m2e-android</artifactId>
+    <groupId>me.gladwell.eclipse.m2e.android</groupId>
+    <version>1.2.2-SNAPSHOT</version>
+  </parent>
+
+</project>

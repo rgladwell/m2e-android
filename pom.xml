@@ -51,7 +51,7 @@
   
   <properties>
     <tycho-version>0.22.0</tycho-version>
-    <target.platform>mars</target.platform>
+    <target.platform>compile</target.platform>
   </properties>
 
   <modules>
@@ -65,6 +65,7 @@
     <module>luna</module>
     <module>mars</module>
     <module>andmore</module>
+    <module>compile</module>
   </modules>
 
   <build>
