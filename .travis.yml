@@ -33,10 +33,6 @@ matrix:
     - env: TARGET_PLATFORM=mars
     - env: TARGET_PLATFORM=andmore
 
-cache:
-  directories:
-    - $HOME/.m2
-
 before_install:
   # install android sdk dependencies in local repo
   - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
