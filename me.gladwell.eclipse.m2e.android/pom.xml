@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>me.gladwell.eclipse.m2e.android</artifactId>
-  <name>Android for Maven Eclipse</name>
+  <name>Android for Maven Eclipse Core Plug-in</name>
   <packaging>eclipse-plugin</packaging>
 
   <build>
