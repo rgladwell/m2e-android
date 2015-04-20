@@ -31,7 +31,6 @@ env:
 matrix:
   allow_failures:
     - env: TARGET_PLATFORM=mars
-    - env: TARGET_PLATFORM=andmore
 
 before_install:
   # install android sdk dependencies in local repo

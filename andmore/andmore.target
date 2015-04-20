@@ -3,8 +3,8 @@
 <target name="Andmore (Luna)" sequenceNumber="43">
    <locations>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="org.eclipse.andmore.android" version="0.5.0.201504151834"/>
-         <repository location="http://download.eclipse.org/andmore/nightly"/>
+         <unit id="org.eclipse.andmore.android" version="0.5.0.201504161308"/>
+         <repository location="http://download.eclipse.org/andmore/milestone/0.5-M1"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="org.eclipse.m2e.feature.feature.group" version="1.5.0.20140606-0033"/>
