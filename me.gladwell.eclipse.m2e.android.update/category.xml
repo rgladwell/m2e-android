@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/me.gladwell.eclipse.m2e.android.feature_1.3.0.jar" id="me.gladwell.eclipse.m2e.android.feature" version="1.3.0">
+   <feature url="features/me.gladwell.eclipse.m2e.android.feature_1.3.1.qualifier.jar" id="me.gladwell.eclipse.m2e.android.feature" version="1.3.1.qualifier">
       <category name="me.gladwell.eclipse.m2e.android.category"/>
    </feature>
    <category-def name="me.gladwell.eclipse.m2e.android.category" label="Android for Maven Eclipse"/>
