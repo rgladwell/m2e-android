@@ -71,6 +71,13 @@ public class DownloadSourcesAndJavadocTest extends AndroidMavenPluginTestCase {
         IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode(IMavenConstants.PLUGIN_ID);
         preferences.putBoolean(MavenPreferenceConstants.P_DOWNLOAD_JAVADOC, false);
     }
+    
+    public void testEntryWithNoJavaDocAndSourcesIsPresent() throws Exception {
+        IProject project = importAndroidProject(PROJECT_NAME);
+        IJavaProject javaProject = JavaCore.create(project);
+        
+        assertClasspathContains(javaProject, "ant-1.8.0.jar");
+    }
 
     @Test
     public void testSourcesAttached() throws Exception {
