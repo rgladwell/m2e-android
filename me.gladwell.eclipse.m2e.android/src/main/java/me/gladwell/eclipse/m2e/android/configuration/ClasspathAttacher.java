@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.core.embedder.IMaven;
+import org.eclipse.m2e.core.project.IMavenProjectFacade;
 import org.eclipse.m2e.core.project.IMavenProjectRegistry;
 
 import com.google.inject.Inject;
@@ -52,7 +53,14 @@ public class ClasspathAttacher<T extends EntryAttacher> {
     public Iterable<IClasspathEntry> attach(IJavaProject project, Iterable<IClasspathEntry> classpath) {
         List<IClasspathEntry> processed = new ArrayList<IClasspathEntry>();
         try {
-            MavenProject mavenProject = registry.getProject(project.getProject()).getMavenProject(new NullProgressMonitor());
+            IMavenProjectFacade mavenProjectFacade = registry.getProject(project.getProject());
+
+            if (mavenProjectFacade == null) {
+                warn("maven project not yet registered for " + project);
+                return processed;
+            }
+
+            MavenProject mavenProject = mavenProjectFacade.getMavenProject(new NullProgressMonitor());
             MavenAndroidProject androidProject = factory.createAndroidProject(mavenProject);
             List<ArtifactRepository> repositories = mavenProject.getRemoteArtifactRepositories();
 
