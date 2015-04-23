@@ -35,13 +35,8 @@ $ mvn install
 To configure your development environment please follow these steps:
 
  * Install [Eclipse Luna](http://eclipse.org/downloads).
- * Install latest [Android Development Tools](http://developer.android.com/sdk/installing/installing-adt.html).
- * Install Andmore from [development update site](http://download.eclipse.org/andmore/milestone/0.5-M1)
  * Install [Eclipse Plug-in Development Environment.](http://www.eclipse.org/pde/).
- * In Eclipse select _Help -> Install new software..._ and select the _Luna_ update site from the _Work With_ drop down.
- * Un-check the _Group items by category_ check box.
- * Search for the "m2e - Extensions Development Support (Optional)" plugin.
- * Select, install and restart Eclipse.
+ * Restart Eclipse.
 
 This project consists of several sub-modules, including:
 
@@ -56,10 +51,11 @@ To clone them into your Eclipse workspace follow these steps:
 
  * Clone this git repository into your local workspace.
  * In Eclipse select _File_ -> _Import..._ in the menu and then select _Maven_ -> _Existing Maven Projects_.
- * Select the `m2e-android` folder you just cloned and select the parent and some of the sub-projects (excluding the targets i.e. `luna`, `mars`, etc.).
+ * Select the `m2e-android` folder you just cloned and select the parent and some of the sub-projects (excluding the targets i.e. `luna`, `mars`, etc., but *including* the `compile` target).
  * Click _Finish_.
  * This should install some additional m2e extensions if not already installed
  * Restart Eclipse when prompted.
+ * In _Preferences_ -> _Plug-In Development_ -> _Target Platform_ choose `compile` and click _OK_. This will take some time because of downloading all dependencies needed to compile m2e-android.
 
 ##Further Reading
 
