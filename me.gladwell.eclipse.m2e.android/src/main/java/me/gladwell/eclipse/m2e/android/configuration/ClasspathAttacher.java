@@ -85,6 +85,7 @@ public class ClasspathAttacher<T extends EntryAttacher> {
                             processed.add(attacher.attach(entry, docs));
                         } else {
                             debug(classifier + " unavailable for classpath entry=[" + entry + "]");
+                            processed.add(entry);
                         }
                     } else {
                         processed.add(entry);
