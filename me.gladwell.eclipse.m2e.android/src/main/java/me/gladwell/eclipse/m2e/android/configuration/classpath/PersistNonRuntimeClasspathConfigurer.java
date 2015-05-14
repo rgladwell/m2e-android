@@ -73,9 +73,10 @@ public class PersistNonRuntimeClasspathConfigurer implements RawClasspathConfigu
             IClasspathContainer container = getClasspathContainer(new Path(CONTAINER_NONRUNTIME_DEPENDENCIES), javaProject);
 
             for (IClasspathEntry entry : classpath.getEntries()) {
-                if (nonRuntimeDependencyPaths.contains(entry.getPath().toOSString())) {
+                if (nonRuntimeDependencyPaths.contains(entry.getPath().toOSString())
+                        || nonRuntimeDependencyPaths.contains(entry.getPath().toString())) {
                     IClasspathEntry containerEntry = findEntryMatching(container.getClasspathEntries(), entry.getPath());
-                    if(containerEntry == null) {
+                    if (containerEntry == null) {
                         nonRuntimeDependenciesEntries.add(entry);
                     } else {
                         nonRuntimeDependenciesEntries.add(containerEntry);
