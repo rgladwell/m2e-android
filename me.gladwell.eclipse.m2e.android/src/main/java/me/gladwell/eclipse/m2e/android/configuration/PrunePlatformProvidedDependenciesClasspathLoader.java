@@ -18,6 +18,8 @@ import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.apache.maven.project.MavenProject;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
@@ -46,8 +48,9 @@ public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathL
 
         IMavenProjectFacade facade = projectRegistry.getProject(project.getProject());
         if(facade != null) {
-            MavenProject mavenProject = facade.getMavenProject();
-            if (mavenProject != null) {
+            try {
+                MavenProject mavenProject = facade.getMavenProject(new NullProgressMonitor());
+                
                 final MavenAndroidProject androidProject = mavenProjectFactory.createAndroidProject(mavenProject);
                 final List<String> platformProvidedDependencies = androidProject.getPlatformProvidedDependencies();
 
@@ -65,6 +68,8 @@ public class PrunePlatformProvidedDependenciesClasspathLoader extends ClasspathL
 
                     return prunedNonRuntimeDependencies;
                 }
+            } catch (CoreException e) {
+                throw new ProjectConfigurationException(e);
             }
         } else {
             warn("maven project not yet registered for " + project);

@@ -122,7 +122,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
     }
 
     public void testConfigureDoesNotAddPlatformDependencyToClasspath() throws Exception {
-        assertClasspathDoesNotContain(javaProject, "android-2.3.3.jar");
+        assertClasspathDoesNotContain(javaProject, "android-4.3.1_r3.jar");
     }
 
     public void testConfigureDoesNotAddPlatformProvidedDependenciesToClasspath() throws Exception {
