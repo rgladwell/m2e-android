@@ -28,10 +28,6 @@ env:
     - TARGET_PLATFORM=mars
     - TARGET_PLATFORM=andmore
 
-matrix:
-  allow_failures:
-    - env: TARGET_PLATFORM=mars
-
 before_install:
   # install android sdk dependencies in local repo
   - git clone https://github.com/mosabua/maven-android-sdk-deployer.git

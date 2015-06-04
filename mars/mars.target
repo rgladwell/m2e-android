@@ -10,8 +10,8 @@
          <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="org.eclipse.m2e.feature.feature.group" version="1.6.0.20150325-2013"/>
-         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.6.0.20150325-2013"/>
+         <unit id="org.eclipse.m2e.feature.feature.group" version="1.6.0.20150526-2032"/>
+         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.6.0.20150526-2032"/>
          <repository location="http://download.eclipse.org/technology/m2e/milestones/1.6"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">

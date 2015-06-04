@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Eclipse 4.4.x (Luna)" sequenceNumber="43">
+<target name="Eclipse 4.4.x (Mars)" sequenceNumber="43">
    <locations>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.6.1720515"/>
-         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.6.1720515"/>
-         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.6.1720515"/>
-         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.6.1720515"/>
-         <repository location="https://dl-ssl.google.com/android/eclipse/"/>
+        <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.6.1720515"/>
+        <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.6.1720515"/>
+        <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.6.1720515"/>
+        <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.6.1720515"/>
+        <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="org.eclipse.m2e.feature.feature.group" version="1.5.0.20140606-0033"/>
-         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.5.0.20140606-0033"/>
-         <repository location="http://download.eclipse.org/technology/m2e/milestones/1.5"/>
+        <unit id="org.eclipse.m2e.feature.feature.group" version="1.6.0.20150526-2032"/>
+        <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.6.0.20150526-2032"/>
+        <repository location="http://download.eclipse.org/technology/m2e/milestones/1.6"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <repository location="http://download.eclipse.org/releases/luna/"/>
-         <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
+        <repository location="http://download.eclipse.org/releases/mars/"/>
+        <unit id="org.eclipse.sdk.ide" version="0.0.0"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="org.eclipse.andmore.android" version="0.5.0.201504161308"/>
