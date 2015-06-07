@@ -48,9 +48,9 @@ $ echo 'adtUsed=true'$'\n'pingId=844 > ~/.android/ddms.cfg
 
 ###...have a clear intention
 
-Commits should be traceable and grouped according to their intention as
-outlined in the
-[Government Digital Service Manual](https://www.gov.uk/service-manual/making-software/version-control.html).
+Commits should be clear, traceable and grouped according to their intention as
+outlined in
+[this git style guide](https://github.com/agis-/git-style-guide/blob/master/README.md).
 Commit messages should be clear and follow the
 [standard git format](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
