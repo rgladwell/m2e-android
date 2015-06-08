@@ -10,6 +10,7 @@
           <goal>generate-sources</goal>
           <goal>unpack</goal>
           <goal>proguard</goal>
+          <goal>manifest-merger</goal>
         </goals>
       </pluginExecutionFilter>
       <action>

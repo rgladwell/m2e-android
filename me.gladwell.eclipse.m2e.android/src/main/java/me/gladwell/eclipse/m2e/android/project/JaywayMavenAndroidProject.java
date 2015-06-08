@@ -127,6 +127,10 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
     public File getAndroidManifestFile() {
         return getConfigurationParameter("androidManifestFile", File.class);
     }
+    
+    public File getDestinationManifestFile() {
+        return getConfigurationParameter("destinationManifestFile", File.class);
+    }
 
     public boolean isIgnoreOptionalWarningsInGenFolder() {
         Boolean parameter = getConfigurationParameter(IGNORE_WARNING_CONFIGURATION_NAME, Boolean.class);
