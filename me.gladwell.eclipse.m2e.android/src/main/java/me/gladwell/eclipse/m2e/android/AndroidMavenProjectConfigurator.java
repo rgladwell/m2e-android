@@ -14,7 +14,6 @@ import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspa
 import me.gladwell.eclipse.m2e.android.configuration.classpath.ClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.classpath.RawClasspathConfigurer;
 import me.gladwell.eclipse.m2e.android.configuration.workspace.WorkspaceConfigurer;
-import me.gladwell.eclipse.m2e.android.project.EclipseAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.AndroidProjectFactory;
 import me.gladwell.eclipse.m2e.android.project.IDEAndroidProject;
 import me.gladwell.eclipse.m2e.android.project.IDEAndroidProjectFactory;
@@ -22,7 +21,6 @@ import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.project.MavenProject;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -93,6 +91,13 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
 
     public AbstractBuildParticipant getBuildParticipant(IMavenProjectFacade f, MojoExecution e,
             IPluginExecutionMetadata m) {
+
+        MavenAndroidProject project = mavenProjectFactory.createAndroidProject(f.getMavenProject());
+
+        if (e.getGoal().equals("manifest-merger")) {
+            return new ManifestMergerBuildParticipant(e, project.getDestinationManifestFile());
+        }
+
         return null;
     }
 

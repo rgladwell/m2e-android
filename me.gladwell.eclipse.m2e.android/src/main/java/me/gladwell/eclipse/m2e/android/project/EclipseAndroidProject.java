@@ -199,11 +199,16 @@ public class EclipseAndroidProject implements IDEAndroidProject {
 
             Collections.sort(buildCommands, new Comparator<ICommand>() {
                 public int compare(ICommand command1, ICommand command2) {
-                    if (IMavenConstants.BUILDER_ID.equals(command1.getBuilderName())
-                            && toolkit.builder().equals(command2.getBuilderName())) {
+                    String builder1 = command1.getBuilderName();
+                    String builder2 = command2.getBuilderName();
+
+                    if (IMavenConstants.BUILDER_ID.equals(builder1) && toolkit.builder().equals(builder2)) {
+                        return -1;
+                    } else if (toolkit.builder().equals(builder1) && IMavenConstants.BUILDER_ID.equals(builder2)) {
                         return 1;
-                    } else if (toolkit.builder().equals(command1.getBuilderName())
-                            && IMavenConstants.BUILDER_ID.equals(command2.getBuilderName())) {
+                    } else if (IMavenConstants.BUILDER_ID.equals(builder1)) {
+                        return 1;
+                    } else if (IMavenConstants.BUILDER_ID.equals(builder2)) {
                         return -1;
                     }
 

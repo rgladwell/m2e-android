@@ -32,6 +32,8 @@ public interface MavenAndroidProject {
     public File getResourceFolder();
 
     public File getAndroidManifestFile();
+    
+    public File getDestinationManifestFile();
 
     public List<String> getPlatformProvidedDependencies();
 
