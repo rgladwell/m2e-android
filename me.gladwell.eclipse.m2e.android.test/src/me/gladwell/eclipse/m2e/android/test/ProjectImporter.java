@@ -51,6 +51,11 @@ public class ProjectImporter {
         this.folderName = folderName;
         return this;
     }
+    
+    public ProjectImporter withResolverConfiguration(ResolverConfiguration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
 
     public IProject into(IWorkspace workspace) throws Exception {
         File source = new File("projects" + separator + projectName);
