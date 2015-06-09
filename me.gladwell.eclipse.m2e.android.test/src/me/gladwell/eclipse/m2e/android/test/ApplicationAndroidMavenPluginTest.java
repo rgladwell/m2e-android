@@ -12,14 +12,13 @@ import static java.io.File.separator;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsIncludePattern;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.hasAttribute;
+import static me.gladwell.eclipse.m2e.android.test.Classpaths.findSourceEntry;
+import static me.gladwell.eclipse.m2e.android.test.Matchers.hasAndroidNature;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_CLASSPATH_PROVIDER;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_SOURCE_PATH_PROVIDER;
-import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.not;
-
-import static me.gladwell.eclipse.m2e.android.test.Classpaths.findSourceEntry;
-import static me.gladwell.eclipse.m2e.android.test.Matchers.hasAndroidNature;
+import static org.junit.Assert.assertThat;
 
 import java.io.File;
 
@@ -89,7 +88,7 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         assertThat(project, hasAndroidNature());
     }
 
-    public void testConfigureApkBuilderBeforeMavenBuilder() throws Exception {
+    public void testConfigureApkBuilderAfterMavenBuilder() throws Exception {
         boolean foundApkBuilder = false;
         for (ICommand command : project.getDescription().getBuildSpec()) {
             if (APK_ADT_BUILDER.equals(command.getBuilderName())) {
@@ -97,12 +96,25 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
             } else if (APK_ANDMORE_BUILDER.equals(command.getBuilderName())) {
                 foundApkBuilder = true;
             } else if (IMavenConstants.BUILDER_ID.equals(command.getBuilderName())) {
-                assertTrue("project APKBuilder not configured before maven builder", foundApkBuilder);
+                assertFalse("project APKBuilder not configured after maven builder", foundApkBuilder);
                 return;
             }
         }
 
         fail("project does not contain maven builder build command");
+    }
+    
+    public void testConfigureMavenBuilderAfterOtherBuildersExceptApkBuilder() throws Exception {
+        boolean foundMavenBuilder = false;
+        for (ICommand command : project.getDescription().getBuildSpec()) {
+            if (IMavenConstants.BUILDER_ID.equals(command.getBuilderName())) {
+                foundMavenBuilder = true;
+            } else if (!APK_ADT_BUILDER.equals(command.getBuilderName()) && !APK_ANDMORE_BUILDER.equals(command.getBuilderName())) {
+                assertFalse("project maven builder not configured after all builders except APK builder", foundMavenBuilder);
+            }
+        }
+        
+        assertTrue("project does not contain maven builder build command", foundMavenBuilder);
     }
 
     public void testConfigureDoesNotAddTargetDirectoryToClasspath() throws Exception {
