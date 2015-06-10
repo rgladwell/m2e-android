@@ -147,7 +147,9 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
     protected void buildAndroidProject(IProject project, int kind) throws CoreException, InterruptedException {
         ResourcesPlugin.getWorkspace().build(project.getBuildConfigs(), kind, true, monitor);
         project.build(kind, "com.android.ide.eclipse.adt.ResourceManagerBuilder", new HashMap<String, String>(), monitor);
+        project.build(kind, "org.eclipse.andmore.ResourceManagerBuilder", new HashMap<String, String>(), monitor);
         project.build(kind, "com.android.ide.eclipse.adt.PreCompilerBuilder", new HashMap<String, String>(), monitor);
+        project.build(kind, "org.eclipse.andmore.PreCompilerBuilder", new HashMap<String, String>(), monitor);
         project.build(kind, "org.eclipse.jdt.core.javabuilder", new HashMap<String, String>(), monitor);
         project.build(kind, IMavenConstants.BUILDER_ID, new HashMap<String, String>(), monitor);
     
