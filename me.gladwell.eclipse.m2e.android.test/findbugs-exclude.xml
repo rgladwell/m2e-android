@@ -1,0 +1,7 @@
+<FindBugsFilter>
+    <Match>
+        <Class name="me.gladwell.eclipse.m2e.android.test.FileMatchers$1" />
+        <Method name="describeMismatch" />
+        <Bug pattern="UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS" />
+    </Match>
+</FindBugsFilter>
