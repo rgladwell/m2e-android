@@ -12,3 +12,4 @@ pom.xml.*
 #Other
 .vagrant
 .checkstyle
+rebel.xml
