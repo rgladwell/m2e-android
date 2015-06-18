@@ -32,5 +32,11 @@ public class Log {
             log.log(status(Status.INFO, "[DEBUG] " + message));
         }
     }
+    
+    public static void debug(String message, Throwable t) {
+        if(DEBUG) {
+            log.log(status(Status.INFO, "[DEBUG] " + message, t));
+        }
+    }
 
 }

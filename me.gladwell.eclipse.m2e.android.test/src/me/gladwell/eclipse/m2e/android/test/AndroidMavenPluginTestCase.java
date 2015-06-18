@@ -233,7 +233,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
             }
         }
 
-        throw new RuntimeException("ClasspathEntry [" + path + "] nt found in container [" + id + "]");
+        throw new RuntimeException("ClasspathEntry [" + path + "] not found in container [" + id + "]");
     }
 
     protected void assertErrorMarker(IProject project, String type) throws CoreException {
