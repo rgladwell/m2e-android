@@ -92,7 +92,7 @@ public class ClasspathAttacher<T extends EntryAttacher> {
                     }
 
                 } catch (Exception e) {
-                    warn("could not resolve " + classifier + " for classpath entry=[" + entry + "]", e);
+                    debug("could not resolve " + classifier + " for classpath entry=[" + entry + "]", e);
                     processed.add(entry);
                 }
             }
