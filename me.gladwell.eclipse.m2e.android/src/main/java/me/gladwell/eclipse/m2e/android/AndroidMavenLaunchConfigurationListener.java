@@ -12,6 +12,8 @@ import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_C
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME;
 import static org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants.ATTR_SOURCE_PATH_PROVIDER;
 
+import static me.gladwell.eclipse.m2e.android.Log.debug;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,12 @@ public class AndroidMavenLaunchConfigurationListener implements ILaunchConfigura
     private void updateLaunchConfiguration(ILaunchConfiguration configuration) {
         try {
             String projectName = configuration.getAttribute(ATTR_PROJECT_NAME, (String) null);
+            
+            if (projectName == null) {
+                debug("Cannot update launch configuration because projectName is null.");
+                return;
+            }
+            
             IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
             IDEAndroidProject eclipseProject = factory.createAndroidProject(project);
 
