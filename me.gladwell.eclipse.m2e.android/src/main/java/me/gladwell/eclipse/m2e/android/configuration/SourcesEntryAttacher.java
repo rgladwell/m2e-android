@@ -16,7 +16,12 @@ import org.eclipse.jdt.core.JavaCore;
 public class SourcesEntryAttacher implements EntryAttacher {
 
     public IClasspathEntry attach(IClasspathEntry entry, Artifact sources) {
-        return JavaCore.newLibraryEntry(entry.getPath(), Path.fromOSString(sources.getFile().getAbsolutePath()), null);
+        return JavaCore.newLibraryEntry(entry.getPath(),
+                Path.fromOSString(sources.getFile().getAbsolutePath()),
+                null,
+                entry.getAccessRules(),
+                entry.getExtraAttributes(),
+                entry.isExported());
     }
 
     public boolean isAttached(IClasspathEntry entry) {
