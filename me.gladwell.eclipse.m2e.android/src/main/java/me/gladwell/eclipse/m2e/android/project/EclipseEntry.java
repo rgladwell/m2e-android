@@ -9,9 +9,7 @@
 package me.gladwell.eclipse.m2e.android.project;
 
 import static me.gladwell.eclipse.m2e.android.configuration.Classpaths.findContainerMatching;
-import static org.eclipse.jdt.core.JavaCore.newContainerEntry;
 
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
@@ -27,11 +25,9 @@ public class EclipseEntry implements Entry {
     }
 
     public void markNotExported() {
-        IClasspathEntryDescriptor oldEntry = findContainerMatching(classpath, path);
-        if(oldEntry != null) {
-            IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), false);
-            classpath.removeEntry(oldEntry.getPath());
-            classpath.addEntry(newEntry);
+        IClasspathEntryDescriptor entry = findContainerMatching(classpath, path);
+        if(entry != null) {
+            entry.setExported(false);
         } else {
             // TODO log warning here
         }
