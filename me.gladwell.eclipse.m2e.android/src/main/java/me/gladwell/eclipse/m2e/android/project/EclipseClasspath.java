@@ -66,7 +66,7 @@ public class EclipseClasspath implements Classpath {
     }
 
     public void removeContainer(String containerId) {
-        IClasspathEntry entry = findContainerContaining(classpath, containerId);
+        IClasspathEntryDescriptor entry = findContainerContaining(classpath, containerId);
         classpath.removeEntry(entry.getPath());
     }
 
@@ -94,10 +94,10 @@ public class EclipseClasspath implements Classpath {
     }
 
     private void setClassPathEntryExported(String path, boolean exported) {
-        IClasspathEntry oldEntry = findContainerMatching(classpath, path);
+        IClasspathEntryDescriptor oldEntry = findContainerMatching(classpath, path);
         if (oldEntry != null) {
-            IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), oldEntry.getAccessRules(),
-                    oldEntry.getExtraAttributes(), exported);
+            IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), oldEntry.toClasspathEntry().getAccessRules(),
+                    oldEntry.toClasspathEntry().getExtraAttributes(), exported);
             classpath.removeEntry(oldEntry.getPath());
             classpath.addEntry(newEntry);
         } else {
