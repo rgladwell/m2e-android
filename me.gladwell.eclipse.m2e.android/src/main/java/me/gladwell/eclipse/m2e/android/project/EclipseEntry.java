@@ -13,6 +13,7 @@ import static org.eclipse.jdt.core.JavaCore.newContainerEntry;
 
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
+import org.eclipse.m2e.jdt.IClasspathEntryDescriptor;
 
 public class EclipseEntry implements Entry {
 
@@ -26,7 +27,7 @@ public class EclipseEntry implements Entry {
     }
 
     public void markNotExported() {
-        IClasspathEntry oldEntry = findContainerMatching(classpath, path);
+        IClasspathEntryDescriptor oldEntry = findContainerMatching(classpath, path);
         if(oldEntry != null) {
             IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), false);
             classpath.removeEntry(oldEntry.getPath());
