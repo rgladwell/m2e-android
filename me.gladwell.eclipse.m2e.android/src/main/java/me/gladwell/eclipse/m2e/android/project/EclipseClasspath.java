@@ -94,12 +94,9 @@ public class EclipseClasspath implements Classpath {
     }
 
     private void setClassPathEntryExported(String path, boolean exported) {
-        IClasspathEntryDescriptor oldEntry = findContainerMatching(classpath, path);
-        if (oldEntry != null) {
-            IClasspathEntry newEntry = newContainerEntry(oldEntry.getPath(), oldEntry.toClasspathEntry().getAccessRules(),
-                    oldEntry.toClasspathEntry().getExtraAttributes(), exported);
-            classpath.removeEntry(oldEntry.getPath());
-            classpath.addEntry(newEntry);
+        IClasspathEntryDescriptor entry = findContainerMatching(classpath, path);
+        if (entry != null) {
+            entry.setExported(exported);
         } else {
             // TODO log warning here
         }
