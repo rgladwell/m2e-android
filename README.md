@@ -55,7 +55,7 @@ To clone them into your Eclipse workspace follow these steps:
  * Click _Finish_.
  * This should install some additional m2e extensions if not already installed
  * Restart Eclipse when prompted.
- * In _Preferences_ -> _Plug-In Development_ -> _Target Platform_ choose `compile` and click _OK_. This will take some time because of downloading all dependencies needed to compile m2e-android.
+ * In _Preferences_ -> _Plug-In Development_ -> _Target Platform_ choose `Maven for Android Eclipse` and click _OK_. It may take some time to downloads the dependencies required to compile m2e-android.
 
 ##Further Reading
 

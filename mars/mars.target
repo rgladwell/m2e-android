@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Eclipse 4.5.x (Mars)" sequenceNumber="43">
+<target name="Maven for Android Eclipse (Mars)" sequenceNumber="43">
    <locations>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.6.1720515"/>
