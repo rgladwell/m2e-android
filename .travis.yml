@@ -6,6 +6,7 @@ android:
   components:
     - build-tools-21.1.1
     - android-8
+    - addon-google_apis-google-8
     - addon-google_apis-google-18
   licenses:
     - android-sdk-license-5be876d5
@@ -32,7 +33,7 @@ before_install:
   # install android sdk dependencies in local repo
   - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
   - cd maven-android-sdk-deployer
-  - mvn install -P 4.3
+  - mvn install -P 4.3,2.2
   - cd ..
 
   # start windowing session
