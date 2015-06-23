@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Andmore (Luna)" sequenceNumber="43">
+<target name="Maven for Android Eclipse (Andmore)" sequenceNumber="43">
    <locations>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="org.eclipse.andmore.android" version="0.5.0.201504161308"/>

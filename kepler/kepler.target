@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
-<target name="Eclipse Kepler 4.3.0">
+<target name="Maven for Android Eclipse (Kepler)">
    <locations>
       <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.6.1720515"/>

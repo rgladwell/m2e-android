@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
-<target name="eclipse 3.7.0" sequenceNumber="13">
+<target name="Maven for Android Eclipse (Juno)" sequenceNumber="13">
    <locations>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.6.1720515"/>
