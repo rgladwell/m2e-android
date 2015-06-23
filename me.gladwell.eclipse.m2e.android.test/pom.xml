@@ -81,7 +81,7 @@
               <rules>
                 <requireFilesExist>
                   <files>
-                    <file>${env.ANDROID_HOME}/platforms/android-7</file>
+                    <file>${env.ANDROID_HOME}/platforms/android-8</file>
                     <file>${env.ANDROID_HOME}/platforms/android-10</file>
                   </files>
                 </requireFilesExist>
