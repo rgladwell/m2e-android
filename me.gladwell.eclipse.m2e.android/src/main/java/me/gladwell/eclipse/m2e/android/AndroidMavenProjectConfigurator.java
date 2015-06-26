@@ -26,6 +26,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.m2e.core.lifecyclemapping.model.IPluginExecutionMetadata;
 import org.eclipse.m2e.core.project.IMavenProjectFacade;
@@ -35,6 +36,8 @@ import org.eclipse.m2e.core.project.configurator.AbstractProjectConfigurator;
 import org.eclipse.m2e.core.project.configurator.ProjectConfigurationRequest;
 import org.eclipse.m2e.jdt.IClasspathDescriptor;
 import org.eclipse.m2e.jdt.IJavaProjectConfigurator;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.Version;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -42,6 +45,8 @@ import com.google.inject.Singleton;
 @Singleton
 public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator implements IJavaProjectConfigurator {
 
+    private static final Version M2E_VERSION_NEW_CONFIGURATOR_ORDER = new Version(1, 6, 0);
+    
     @Inject private AbstractProjectConfigurator javaProjectConfigurator;
 
     @Inject private List<WorkspaceConfigurer> workspaceConfigurers;
@@ -66,7 +71,9 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
                     .getProject());
 
             if (mavenProject.isAndroidProject()) {
-                javaProjectConfigurator.configure(request, monitor);
+                if (shouldCallJavaProjectConfigurator()) {
+                    javaProjectConfigurator.configure(request, monitor);
+                }
 
                 for (WorkspaceConfigurer configurer : workspaceConfigurers) {
                     try {
@@ -117,6 +124,12 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
             throw new CoreException(new Status(IStatus.ERROR, AndroidMavenPlugin.PLUGIN_ID,
                     "error configuring project classpath", e));
         }
+    }
+    
+    private static boolean shouldCallJavaProjectConfigurator() {
+        Bundle bundle = Platform.getBundle("org.eclipse.m2e.core");
+        
+        return bundle.getVersion().compareTo(M2E_VERSION_NEW_CONFIGURATOR_ORDER) < 0;
     }
 
 }
