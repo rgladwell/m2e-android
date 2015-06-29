@@ -11,6 +11,9 @@ package me.gladwell.eclipse.m2e.android;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.m2e.core.embedder.IMavenConfiguration;
 import org.eclipse.m2e.core.embedder.IMavenConfigurationChangeListener;
 import org.eclipse.m2e.core.project.IMavenProjectChangedListener;
@@ -37,6 +40,7 @@ public class AndroidMavenPlugin extends Plugin {
     private @Inject IMavenProjectChangedListener mavenProjectChangedListener;
     private @Inject IMavenConfiguration configuration;
     private @Inject IMavenConfigurationChangeListener mavenConfigurationListener;
+    private @Inject IElementChangedListener elementChangedListener;
 
     /**
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
@@ -48,6 +52,7 @@ public class AndroidMavenPlugin extends Plugin {
         launchManager.addLaunchConfigurationListener(launchConfigurationListener);
         projectManager.addMavenProjectChangedListener(mavenProjectChangedListener);
         configuration.addConfigurationChangeListener(mavenConfigurationListener);
+        JavaCore.addElementChangedListener(elementChangedListener, ElementChangedEvent.POST_CHANGE);
     }
 
     /**
@@ -56,6 +61,7 @@ public class AndroidMavenPlugin extends Plugin {
     public void stop(BundleContext context) throws Exception {
         launchManager.removeLaunchConfigurationListener(launchConfigurationListener);
         projectManager.removeMavenProjectChangedListener(mavenProjectChangedListener);
+        JavaCore.removeElementChangedListener(elementChangedListener);
         plugin = null;
         super.stop(context);
     }

@@ -19,6 +19,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfigurationListener;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.launching.IRuntimeClasspathProvider;
 import org.eclipse.m2e.core.MavenPlugin;
 import org.eclipse.m2e.core.embedder.IMavenConfigurationChangeListener;
@@ -65,6 +66,7 @@ public class PluginModule extends AbstractModule {
         bind(ILaunchManager.class).toInstance(DebugPlugin.getDefault().getLaunchManager());
         bind(IMavenProjectRegistry.class).toInstance(MavenPlugin.getMavenProjectRegistry());
         bind(IMavenConfigurationChangeListener.class).to(EclipseEventsToEventBusListener.class);
+        bind(IElementChangedListener.class).to(ClasspathChangeListener.class);
     }
 
 }

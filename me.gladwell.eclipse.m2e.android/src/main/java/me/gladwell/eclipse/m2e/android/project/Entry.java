@@ -12,4 +12,7 @@ public interface Entry {
 
     void markNotExported();
 
+    boolean isPresent();
+    
+    boolean isExported();
 }
