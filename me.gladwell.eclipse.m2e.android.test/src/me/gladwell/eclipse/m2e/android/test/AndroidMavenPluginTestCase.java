@@ -149,6 +149,7 @@ public abstract class AndroidMavenPluginTestCase extends AbstractMavenProjectTes
         project.build(kind, "com.android.ide.eclipse.adt.ResourceManagerBuilder", new HashMap<String, String>(), monitor);
         project.build(kind, "com.android.ide.eclipse.adt.PreCompilerBuilder", new HashMap<String, String>(), monitor);
         project.build(kind, "org.eclipse.jdt.core.javabuilder", new HashMap<String, String>(), monitor);
+        project.build(kind, IMavenConstants.BUILDER_ID, new HashMap<String, String>(), monitor);
     
         waitForJobsToComplete();
     }
