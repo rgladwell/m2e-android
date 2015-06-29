@@ -35,5 +35,17 @@ public class EclipseEntry implements Entry {
             // TODO log warning here
         }
     }
+    
+    public boolean isPresent() {
+       return findContainerMatching(classpath, path) != null;
+    }
+
+    public boolean isExported() {
+        IClasspathEntry entry = findContainerMatching(classpath, path);
+        if (entry != null) {
+            return entry.isExported();
+        }
+        return false;
+    }
 
 }
