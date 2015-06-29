@@ -6,7 +6,8 @@
        <configurator
              class="me.gladwell.eclipse.m2e.inject.GuiceExtensionFactory:me.gladwell.eclipse.m2e.android.AndroidMavenProjectConfigurator"
              id="me.gladwell.eclipse.m2e.android.androidDevelopmentToolsProjectConfigurator"
-             name="Android Development Tools Project Configurator">
+             name="Android Development Tools Project Configurator"
+             runsAfter="org.eclipse.m2e.jdt.javaConfigurator?">
        </configurator>
     </extension>
     <extension
