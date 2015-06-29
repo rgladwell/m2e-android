@@ -11,6 +11,8 @@ import org.eclipse.m2e.core.embedder.IMavenConfiguration;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
+import me.gladwell.eclipse.m2e.android.AndroidMavenProjectConfigurator;
+
 public class ClasspathModule extends AbstractModule {
 
     @Override
@@ -44,7 +46,9 @@ public class ClasspathModule extends AbstractModule {
         classpathConfigurers.add(new ModifySourceFolderOutputClasspathConfigurer());
         classpathConfigurers.add(new RemoveJREClasspathContainerConfigurer());
         classpathConfigurers.add(new MarkMavenClasspathContianerExportedConfigurer());
-        classpathConfigurers.add(new MarkAndroidClasspathContainerNotExportedConfigurer());
+        if (!AndroidMavenProjectConfigurator.usesM2E1_6OrNewer()) {
+            classpathConfigurers.add(new MarkAndroidClasspathContainerNotExportedConfigurer());
+        }
         classpathConfigurers.add(new IgnoreOptionalWarningsConfigurer());
 
         return Collections.unmodifiableList(classpathConfigurers);

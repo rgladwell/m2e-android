@@ -71,7 +71,7 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
                     .getProject());
 
             if (mavenProject.isAndroidProject()) {
-                if (shouldCallJavaProjectConfigurator()) {
+                if (!usesM2E1_6OrNewer()) {
                     javaProjectConfigurator.configure(request, monitor);
                 }
 
@@ -126,10 +126,10 @@ public class AndroidMavenProjectConfigurator extends AbstractProjectConfigurator
         }
     }
     
-    private static boolean shouldCallJavaProjectConfigurator() {
+    public static boolean usesM2E1_6OrNewer() {
         Bundle bundle = Platform.getBundle("org.eclipse.m2e.core");
         
-        return bundle.getVersion().compareTo(M2E_VERSION_NEW_CONFIGURATOR_ORDER) < 0;
+        return bundle.getVersion().compareTo(M2E_VERSION_NEW_CONFIGURATOR_ORDER) >= 0;
     }
 
 }
