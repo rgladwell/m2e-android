@@ -13,6 +13,7 @@ Special thanks to our patrons who crowdfunded project development through [Patre
  * [Raphael Ackermann](https://twitter.com/acraphae)
  * George Baker.
  * Weizhi Yao.
+ * Stephen Buergler.
 
 #Building
 
