@@ -81,8 +81,18 @@ Only publish **one bug** per report accompanied by:
  - **Crash data**, including [stack traces](http://i.imgur.com/jacoj.jpg), log
 files, screenshots and other relevant information.
 
+If you are sendling log files, please ensure that **debug mode** is enabled so we get full log files. To do so please follow these instructions:
+
+  1. Open you [eclipse.ini](https://wiki.eclipse.org/Eclipse.ini) file in a text editor.
+  2. At the bottom of the file add the following line:
+
+```
+-DM2E_ANDROID_DEBUG=true
+```
+
+You should now have debug logging for m2e-android enabled when you restart Eclipse.
+
 ###...Unique
 
 Please search for duplicates before reporting a bug and ensure summaries
 include relevant keywords to make it easier for others to find duplicates.
-
