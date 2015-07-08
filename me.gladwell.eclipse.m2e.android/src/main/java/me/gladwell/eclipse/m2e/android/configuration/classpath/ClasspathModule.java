@@ -33,6 +33,7 @@ public class ClasspathModule extends AbstractModule {
         rawClasspathConfigurers.add(persistConfigurer);
         rawClasspathConfigurers.add(new RemoveNonRuntimeDependenciesConfigurer());
         rawClasspathConfigurers.add(removeProjectsConfigurer);
+        rawClasspathConfigurers.add(new ReorderClasspathConfigurer());
 
         return Collections.unmodifiableList(rawClasspathConfigurers);
     }

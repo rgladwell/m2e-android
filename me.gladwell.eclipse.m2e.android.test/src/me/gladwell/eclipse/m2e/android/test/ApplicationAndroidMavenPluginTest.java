@@ -9,9 +9,11 @@
 package me.gladwell.eclipse.m2e.android.test;
 
 import static java.io.File.separator;
+import static java.util.Arrays.asList;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsEntry;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.containsIncludePattern;
 import static me.gladwell.eclipse.m2e.android.test.ClasspathMatchers.hasAttribute;
+import static me.gladwell.eclipse.m2e.android.test.Classpaths.bySourceFolderOrdering;
 import static me.gladwell.eclipse.m2e.android.test.Classpaths.findSourceEntry;
 import static me.gladwell.eclipse.m2e.android.test.Matchers.hasAndroidNature;
 import static org.eclipse.jdt.core.IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS;
@@ -21,6 +23,10 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
@@ -400,9 +406,18 @@ public class ApplicationAndroidMavenPluginTest extends AndroidMavenPluginTestCas
         IClasspathEntry mainJava = findSourceEntry(javaProject.getRawClasspath(), "src" + separator + "main" + separator + "java");
         assertThat(mainJava, hasAttribute(IClasspathAttribute.OPTIONAL, "true"));
     }
-    
+
     public void testConfigureDoesNotRemovePomDerivedAttributeFromMavenContainer() throws Exception {
         IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
         assertThat(mavenContainer, hasAttribute(IClasspathManager.POMDERIVED_ATTRIBUTE, "true"));
     }
+
+    public void testSourceFolderOrder() throws Exception {
+        IClasspathEntry[] rawClasspath = Arrays.copyOf(javaProject.getRawClasspath(), javaProject.getRawClasspath().length);
+        List<IClasspathEntry> sorted = asList(rawClasspath);
+        Collections.sort(sorted, bySourceFolderOrdering);
+
+        assertEquals(sorted, asList(javaProject.getRawClasspath()));
+    }
+
 }

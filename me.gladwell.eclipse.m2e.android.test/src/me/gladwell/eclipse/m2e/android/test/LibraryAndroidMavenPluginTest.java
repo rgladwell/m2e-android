@@ -8,9 +8,14 @@
 
 package me.gladwell.eclipse.m2e.android.test;
 
+import static java.util.Arrays.asList;
+import static me.gladwell.eclipse.m2e.android.test.Classpaths.bySourceFolderOrdering;
 import static org.eclipse.m2e.core.MavenPlugin.getProjectConfigurationManager;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -102,6 +107,16 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         IJavaProject javaProject = JavaCore.create(libraryProject);
         IClasspathEntry mavenContainer = getClasspathContainer(javaProject, IClasspathManager.CONTAINER_ID);
         assertTrue(!mavenContainer.isExported());
+    }
+
+    public void testSourceFolderOrder() throws Exception {
+        IProject libraryProject = importAndroidProject(ANDROID_LIB_PROJECT_NAME);
+        IJavaProject javaProject = JavaCore.create(libraryProject);
+        IClasspathEntry[] rawClasspath = Arrays.copyOf(javaProject.getRawClasspath(), javaProject.getRawClasspath().length);
+        List<IClasspathEntry> sorted = asList(rawClasspath);
+        Collections.sort(sorted, bySourceFolderOrdering);
+
+        assertEquals(sorted, asList(javaProject.getRawClasspath()));
     }
 
 }

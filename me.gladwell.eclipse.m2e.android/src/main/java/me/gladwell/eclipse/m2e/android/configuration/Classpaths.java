@@ -10,7 +10,10 @@ package me.gladwell.eclipse.m2e.android.configuration;
 
 import static com.google.common.base.Predicates.and;
 
+import java.util.Comparator;
 import java.util.List;
+
+import me.gladwell.eclipse.m2e.android.project.MavenAndroidProject;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
@@ -22,6 +25,27 @@ import com.google.common.base.Predicate;
 public class Classpaths {
 
     private Classpaths() {
+    }
+
+    public static Comparator<IClasspathEntry> bySourceFolderOrdering(final MavenAndroidProject project) {
+
+        return new Comparator<IClasspathEntry>() {
+
+            public int compare(IClasspathEntry left, IClasspathEntry right) {
+                SourceType ltype = SourceType.forPathIn(project, left);
+                SourceType rtype = SourceType.forPathIn(project, right);
+
+                int result;
+
+                if(ltype.priority < 0 || rtype.priority < 0) {
+                    result = left.getEntryKind() - right.getEntryKind();
+                } else {
+                    result = ltype.priority - rtype.priority;
+                }
+
+                return result;
+            }
+        };
     }
 
     public static IClasspathEntryDescriptor findContainerMatching(final IClasspathDescriptor classpath, final String path) {

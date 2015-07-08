@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2013, 2014 Ricardo Gladwell and David Carver
+ * Copyright (c) 2012, 2013, 2014, 2015 Ricardo Gladwell and David Carver
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import me.gladwell.eclipse.m2e.android.resolve.LibraryResolver;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.Resource;
 import org.apache.maven.project.MavenProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -152,6 +153,28 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
 
     public String getOutputDirectory() {
         return mavenProject.getBuild().getOutputDirectory();
+    }
+
+    public List<String> getTestSourcePaths() {
+        return mavenProject.getTestCompileSourceRoots();
+    }
+
+    public List<String> getResourcePaths() {
+        List<Resource> resources = mavenProject.getResources();
+        List<String> resourcePaths = new ArrayList<String>(resources.size());
+        for(Resource resource: resources) {
+            resourcePaths.add(resource.getDirectory());
+        }
+        return resourcePaths;
+    }
+
+    public List<String> getTestResourcePaths() {
+        List<Resource> resources = mavenProject.getTestResources();
+        List<String> resourcePaths = new ArrayList<String>(resources.size());
+        for(Resource resource: resources) {
+            resourcePaths.add(resource.getDirectory());
+        }
+        return resourcePaths;
     }
 
 }
