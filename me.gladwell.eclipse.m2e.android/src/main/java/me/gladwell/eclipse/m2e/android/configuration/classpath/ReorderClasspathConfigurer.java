@@ -28,6 +28,10 @@ public class ReorderClasspathConfigurer implements RawClasspathConfigurer {
         try {
             IJavaProject javaproject = JavaCore.create(eclipseProject.getProject());
             IClasspathEntry[] tosort = javaproject.readRawClasspath();
+            System.out.println("classpath:");
+            for(IClasspathEntry entry : tosort) {
+                System.out.println("   " + entry.getPath());
+            }
             sort(tosort, bySourceFolderOrdering(mavenProject));
             javaproject.setRawClasspath(tosort, new NullProgressMonitor());
             javaproject.save(new NullProgressMonitor(), false);

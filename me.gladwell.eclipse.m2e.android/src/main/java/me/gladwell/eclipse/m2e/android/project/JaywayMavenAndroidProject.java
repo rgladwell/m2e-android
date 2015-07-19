@@ -177,4 +177,9 @@ public class JaywayMavenAndroidProject implements MavenAndroidProject {
         return resourcePaths;
     }
 
+    @Override
+    public String getBuildFolder() {
+        return mavenProject.getBuild().getDirectory();
+    }
+
 }

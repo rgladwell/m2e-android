@@ -49,4 +49,6 @@ public interface MavenAndroidProject {
 
     public List<String> getTestResourcePaths();
 
+    public String getBuildFolder();
+
 }

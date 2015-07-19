@@ -43,14 +43,22 @@ enum SourceType {
             return segment.toString().equals("gen");
         }
     },
-    TEST_JAVA(3) {
+    DERIVED(3) {
+        @Override
+        protected boolean matches(MavenAndroidProject project, IClasspathEntry entry) {
+            IPath segment = entry.getPath().removeFirstSegments(1);
+//            System.out.println("DERIVED?" + segment.toFile().getAbsolutePath() + " compared to " + project.getBuildFolder());
+            return segment.toFile().getAbsolutePath().startsWith(project.getBuildFolder());
+        }
+    },
+    TEST_JAVA(4) {
         @Override
         protected boolean matches(MavenAndroidProject project, IClasspathEntry entry) {
             IPath segment = entry.getPath().removeFirstSegments(1);
             return contains(project.getTestSourcePaths(), segment);
         }
     },
-    TEST_RESOURCES(4) {
+    TEST_RESOURCES(5) {
         @Override
         protected boolean matches(MavenAndroidProject project, IClasspathEntry entry) {
             IPath segment = entry.getPath().removeFirstSegments(1);

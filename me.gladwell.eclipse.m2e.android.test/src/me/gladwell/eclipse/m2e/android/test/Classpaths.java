@@ -46,6 +46,7 @@ public class Classpaths {
                 "src/main/java",
                 "src/main/resources",
                 "gen",
+                "target/generated-sources/annotations",
                 "src/test/java",
                 "src/test/resources"
         });

@@ -43,6 +43,7 @@ public class Classpaths {
                     result = ltype.priority - rtype.priority;
                 }
 
+                System.out.println("comparing " + left.getPath() + "(" + ltype + ") to " + right.getPath()+ "(" + rtype + ") result = " + result);
                 return result;
             }
         };
