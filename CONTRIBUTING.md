@@ -78,8 +78,8 @@ Only publish **one bug** per report accompanied by:
  - A **detailed description** of the issue focusing on the **facts**.
  - **Expected** and **actual results**.
  - **Versions** of software, platform and operating system used.
- - **Crash data**, including [stack traces](http://i.imgur.com/jacoj.jpg), log
-files, screenshots and other relevant information.
+ - **Crash data**, including [stack traces](http://i.imgur.com/jacoj.jpg), [log
+files](https://wiki.eclipse.org/FAQ_Where_can_I_find_that_elusive_.log_file%3F), screenshots and other relevant information.
 
 If you are sendling log files, please ensure that **debug mode** is enabled so we get full log files. To do so please follow these instructions:
 
