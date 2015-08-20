@@ -3,10 +3,10 @@
 <target name="Maven for Android Eclipse (Luna)" sequenceNumber="43">
    <locations>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.6.1720515"/>
-         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.6.1720515"/>
-         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.6.1720515"/>
-         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.6.1720515"/>
+         <unit id="com.android.ide.eclipse.adt.feature.feature.group" version="23.0.7.2120684"/>
+         <unit id="com.android.ide.eclipse.ddms.feature.feature.group" version="23.0.7.2120684"/>
+         <unit id="com.android.ide.eclipse.hierarchyviewer.feature.feature.group" version="23.0.7.2120684"/>
+         <unit id="com.android.ide.eclipse.traceview.feature.feature.group" version="23.0.7.2120684"/>
          <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
