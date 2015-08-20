@@ -49,3 +49,11 @@ script:
 
 after_success:
   - if [[ $TRAVIS_PULL_REQUEST == "false" && $TARGET_PLATFORM == "luna" ]]; then mvn -Dgithub.global.oauth2Token=$GITHUB_AUTH_TOKEN -pl me.gladwell.eclipse.m2e.android.update com.github.github:site-maven-plugin:site; fi
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/45c0e632fcb1b921d733
+    on_success: change
+    on_failure: always
+    on_start: never
