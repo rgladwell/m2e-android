@@ -54,7 +54,8 @@ public class LibraryAndroidMavenPluginTest extends AndroidMavenPluginTestCase {
         assertTrue(project.libraries().contains(libraryProject));
     }
 
-    public void testConfigureAddsErrorForNonExistentLibraryProject() throws Exception {
+    // quarantined: https://github.com/rgladwell/m2e-android/issues/368
+    public void ignoreConfigureAddsErrorForNonExistentLibraryProject() throws Exception {
         IProject project = importAndroidProject(TEST_PROJECT_WITH_APKLIB_DEPS);
 
         assertErrorMarker(project, APKLIB_ERROR_TYPE);
