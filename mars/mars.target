@@ -10,9 +10,9 @@
          <repository location="https://dl-ssl.google.com/android/eclipse/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-         <unit id="org.eclipse.m2e.feature.feature.group" version="1.6.2.20150819-1555"/>
-         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.6.2.20150819-1555"/>
-         <repository location="http://download.eclipse.org/technology/m2e/snapshots/1.6.2/latest/"/>
+         <unit id="org.eclipse.m2e.feature.feature.group" version="1.7.0.20150819-1552"/>
+         <unit id="org.eclipse.m2e.sdk.feature.feature.group" version="1.7.0.20150819-1552"/>
+         <repository location="http://download.eclipse.org/technology/m2e/snapshots/1.7.0/latest/"/>
       </location>
       <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
          <repository location="http://download.eclipse.org/releases/mars/"/>
