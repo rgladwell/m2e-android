@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/rgladwell/m2e-android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rgladwell/m2e-android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-_Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 Ricardo Gladwell, Hugo Josefson, Anthony Dannane, Mykola Nikishov, Raphael Ackermann, Csaba Kozák, and Sonatype Inc.. All rights reserved. This program and the accompanying materials are made available under the terms of the [Eclipse Public License 1.0](http://www.eclipse.org/legal) which accompanies this distribution_
+_Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, 2015 Ricardo Gladwell, Hugo Josefson, Anthony Dannane, Mykola Nikishov, Raphael Ackermann, Csaba Kozák, and Sonatype Inc.. All rights reserved. This program and the accompanying materials are made available under the terms of the [Eclipse Public License 1.0](http://www.eclipse.org/legal) which accompanies this distribution_
 
 Android for Maven Eclipse (**m2e-android**) adds [Maven](http://maven.apache.org/) support to the [Android Developer Tools](http://developer.android.com/tools/sdk/eclipse-adt.html) (ADT). This is developer documentation, for user instructions on how to install please see the [project web site.](http://rgladwell.github.com/m2e-android/)
 
@@ -21,9 +21,9 @@ Before you start you need to:
 
  * Install the [Android SDK](http://developer.android.com/sdk/index.html).
  * Create `ANDROID_HOME` environment variable containing the Android SDK install path. 
- * Ensure you have updated the Android SDK (execute `android update sdk --no-ui --obsolete --force`).
+ * Ensure you have installed the requried Android dependencies (execute `android update sdk --filter platform-tools,build-tools-21.1.1,android-18,addon-google_apis-google-18,android-10,addon-google_apis-google-10,android-8,addon-google_apis-google-8 --no-ui --force`).
  * Install the latest [Maven 3](http://maven.apache.org/download.html) for command line [Tycho](http://tycho.sonatype.org/) support.
- * Install the [Maven Android SDK Deployer](https://github.com/mosabua/maven-android-sdk-deployer).
+ * Install the [Maven Android SDK Deployer](https://github.com/mosabua/maven-android-sdk-deployer) and deploy the 4.1 and 4.3 APIs (`mvn install -P 4.3,2.2`).
 
 To build execute the following command from the project folder:
 
