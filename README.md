@@ -1,4 +1,4 @@
-#Android for Maven Eclipse [![Stories in Ready](http://badge.waffle.io/rgladwell/m2e-android.png)](http://waffle.io/rgladwell/m2e-android) [![Build Status](https://travis-ci.org/rgladwell/m2e-android.svg?branch=master)](https://travis-ci.org/rgladwell/m2e-android) [![Codacy Badge](https://api.codacy.com/project/badge/2174d349529848a8a7e141f044545e1d)](https://www.codacy.com/app/ricardo_3/m2e-android)
+#Android for Maven Eclipse [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/) [![Build Status](https://travis-ci.org/rgladwell/m2e-android.svg?branch=master)](https://travis-ci.org/rgladwell/m2e-android) [![Codacy Badge](https://api.codacy.com/project/badge/2174d349529848a8a7e141f044545e1d)](https://www.codacy.com/app/ricardo_3/m2e-android)
 
 [![Join the chat at https://gitter.im/rgladwell/m2e-android](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rgladwell/m2e-android?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -8,7 +8,7 @@ Android for Maven Eclipse (**m2e-android**) adds [Maven](http://maven.apache.org
 
 *Lead Maintainer*: [Ricardo Gladwell](http://gladwell.me)
 
-Special thanks to our patrons who crowdfunded project development through [Patreon](http://www.patreon.com/rgladwell):
+Special thanks to our patrons who crowdfunded project development through Patreon:
 
  * [Raphael Ackermann](https://twitter.com/acraphae)
  * George Baker.
