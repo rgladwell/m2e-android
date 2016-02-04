@@ -8,11 +8,9 @@
 
 package me.gladwell.eclipse.m2e.android.project;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
-import me.gladwell.eclipse.m2e.android.configuration.ProjectConfigurationException;
 
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.StringUtils;
@@ -23,6 +21,9 @@ import org.eclipse.m2e.core.embedder.MavenModelManager;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import me.gladwell.eclipse.m2e.android.Log;
+import me.gladwell.eclipse.m2e.android.configuration.DependencyNotFoundInWorkspace;
 
 @Singleton
 public class EclipseAndroidWorkspace implements AndroidWorkspace {
@@ -53,7 +54,13 @@ public class EclipseAndroidWorkspace implements AndroidWorkspace {
                 try {
                     mavenProject = mavenModelManager.readMavenProject(androidProject.getPom(), null);
                 } catch (CoreException e) {
-                    throw new ProjectConfigurationException(e);
+                	// This indicates that another project is malformed in some way - best to log and move on
+                	Log.warn(MessageFormat.format("Exception while reading project {0}", project.getName()), e);
+                	continue;
+                } catch(NullPointerException e) {
+                	// This specifically occurs when the pom.xml file for a Maven-feature project is missing
+                	Log.warn(MessageFormat.format("Exception while reading project {0}", project.getName()), e);
+                	continue;
                 }
 
                 if (StringUtils.equals(dependency.getName(), project.getName())
